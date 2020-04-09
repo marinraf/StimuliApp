@@ -21,8 +21,8 @@ You can easily create the most common stimuli (gabors, random dots, images, soun
 
 ## Requirements
 
-iOS 11.0+
-Xcode 11.0+
+- iOS 11.0+
+- Xcode 11.0+
 
 
 ## Installation
