@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DisplayViewController" customModule="Stimulios" customModuleProvider="target">
+            <connections>
+                <outlet property="controlView" destination="axi-Tc-fGK" id="vGS-Xz-vFS"/>
+                <outlet property="metalView" destination="VSh-Bq-PWM" id="t13-YG-g9n"/>
+                <outlet property="textField" destination="4p3-67-03q" id="jbz-un-Rbf"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <mtkView contentMode="scaleToFill" colorPixelFormat="BGRA8Unorm" depthStencilPixelFormat="Depth32Float" translatesAutoresizingMaskIntoConstraints="NO" id="VSh-Bq-PWM">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                </mtkView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="axi-Tc-fGK">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4p3-67-03q">
+                            <rect key="frame" x="107" y="120" width="200" height="34"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="200" id="zsZ-1E-qzv"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="i3h-O7-IRC"/>
+                            </connections>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="4p3-67-03q" firstAttribute="top" secondItem="axi-Tc-fGK" secondAttribute="top" constant="120" id="EQ7-aC-wCF"/>
+                        <constraint firstItem="4p3-67-03q" firstAttribute="centerX" secondItem="axi-Tc-fGK" secondAttribute="centerX" id="ruR-oe-TK5"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="axi-Tc-fGK" secondAttribute="bottom" id="6m2-1p-HKb"/>
+                <constraint firstItem="axi-Tc-fGK" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Vfh-rR-3Va"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="axi-Tc-fGK" secondAttribute="trailing" id="bwO-fw-vs3"/>
+                <constraint firstAttribute="bottom" secondItem="VSh-Bq-PWM" secondAttribute="bottom" id="jXV-oI-qJf"/>
+                <constraint firstItem="VSh-Bq-PWM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="p0d-Id-FhK"/>
+                <constraint firstItem="VSh-Bq-PWM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="qet-kB-q8y"/>
+                <constraint firstItem="axi-Tc-fGK" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="rx2-eq-rbI"/>
+                <constraint firstAttribute="trailing" secondItem="VSh-Bq-PWM" secondAttribute="trailing" id="x4Z-OU-hob"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="137.68115942028987" y="100.44642857142857"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="SavedMedia" representedClassName="SavedMedia" syncable="YES">
+        <attribute name="dataString" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="SavedResult" representedClassName="SavedResult" syncable="YES">
+        <attribute name="dataString" attributeType="String" syncable="YES"/>
+        <attribute name="id" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="SavedTest" representedClassName="SavedTest" syncable="YES">
+        <attribute name="dataString" attributeType="String" customClassName="Test" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="SavedTest" positionX="-54" positionY="-9" width="128" height="75"/>
+        <element name="SavedMedia" positionX="-54" positionY="9" width="128" height="75"/>
+        <element name="SavedResult" positionX="-45" positionY="27" width="128" height="75"/>
+    </elements>
+</model>

@@ -1,0 +1,9 @@
+.DS_STORE
+*.cer
+*.mobileprovision
+*.zip
+*.ipa
+*.xcodeproj/xcuserdata
+xcuserdata
+*.xccheckout
+DerivedData
