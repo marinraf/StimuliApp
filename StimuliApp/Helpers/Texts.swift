@@ -141,6 +141,7 @@ The maximum frame rate of the screen. This value can be 60 or 120 Hz depending o
 
     static let audioRate = """
 The sampling frequency at which sounds are played.
+It is usually a value from 44100 to 48000 Hz, depending on the device.
 """
 
     static var resolution: String {

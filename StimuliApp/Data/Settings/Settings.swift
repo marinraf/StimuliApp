@@ -2,6 +2,7 @@
 //  Copyright © 2020 Rafael Marín. All rights reserved.
 
 import Foundation
+import AVFoundation
 
 class Settings {
 
@@ -46,7 +47,7 @@ class Settings {
 
         self.screenInfo = device.screenInfo
         self.maximumFrameRate = device.maximumFrameRate
-        self.audioRate = Constants.audioRate
+        self.audioRate = Int(AVAudioSession.sharedInstance().sampleRate)
         self.radiansPerDegree = Constants.radiansPerDegree
 
         self.distance = Constants.defaultDistanceCm

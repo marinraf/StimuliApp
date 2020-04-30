@@ -369,7 +369,7 @@ ushort wedge(Object object, float2 point)
 ushort getInside(Object object, float2 point, ushort shape)
 {
     if (shape == 0) {
-        return rectangle(object, point);
+        return 0;
     } else if (shape == 1) {
         return ellipse(object, point);
     } else if (shape == 2) {
@@ -674,15 +674,15 @@ kernel void dots(texture2d<float, access::write> output [[texture(0)]],
 
     uint number = uint(object.variable0 + 0.5);
     float coherence = object.variable1;
-    float dotsLife= object.variable2 * data.frameRate;
-    int behaviour = int(object.variable3 + 0.5);
 
-    float radius1 = object.variable4 / 2;
-    int directionType1 = int(object.variable5 +0.5);
-    float distance1 = object.variable6;
-    float direction1 = object.variable7;
-    float3 color1 = float3(object.variable8, object.variable9, object.variable10);
+    float dotsLife1 = max(object.variable2 * data.frameRate, 1.0);
+    float radius1 = object.variable3 / 2;
+    int directionType1 = int(object.variable4 +0.5);
+    float distance1 = object.variable5;
+    float direction1 = object.variable6;
+    float3 color1 = float3(object.variable7, object.variable8, object.variable9);
 
+    float dotsLife2 = max(object.variable10 * data.frameRate, 1.0);
     float radius2 = object.variable11 / 2;
     int directionType2 = int(object.variable12 +0.5);
     float distance2 = object.variable13;
@@ -696,6 +696,7 @@ kernel void dots(texture2d<float, access::write> output [[texture(0)]],
     float speedY;
     float speedAngular;
     float3 color0;
+    float dotsLife;
 
     int2 pos = int2(position.x * screenMaxSize, position.y * screenMaxSize);
 
@@ -704,7 +705,6 @@ kernel void dots(texture2d<float, access::write> output [[texture(0)]],
     }
 
     Loki rng = Loki(idDot, data.randomSeed, 0);
-    float random0 = rng.rand();
     float random1 = rng.rand();
     float random2 = rng.rand();
 
@@ -712,13 +712,8 @@ kernel void dots(texture2d<float, access::write> output [[texture(0)]],
     float random3 = rng2.rand() * 2 - 1;
     float random4 = rng2.rand() * 2 - 1;
 
-    duration = fmod(data.timeInFrames + (initialDuration * dotsLife), dotsLife) / dotsLife;
-    if (duration < (1 / dotsLife)) {
-        position.x = random1;
-        position.y = random2;
-    }
-
-    if ((behaviour == 0 && type < coherence) || (behaviour == 1 && random0 < coherence)) {
+    if (type < coherence) {
+        dotsLife = dotsLife1;
         radius = radius1;
         directionType = directionType1;
         direction = direction1;
@@ -727,6 +722,7 @@ kernel void dots(texture2d<float, access::write> output [[texture(0)]],
         speedY = data.status * distance1 / screenMaxSize / dotsLife;
         color0 = color1;
     } else {
+        dotsLife = dotsLife2;
         radius = radius2;
         directionType = directionType2;
         direction = direction2;
@@ -734,6 +730,13 @@ kernel void dots(texture2d<float, access::write> output [[texture(0)]],
         speedX = data.status * distance2 / screenMaxSize / dotsLife;
         speedY = data.status * distance2 / screenMaxSize / dotsLife;
         color0 = color2;
+    }
+
+    duration = fmod(data.timeInFrames + (initialDuration * dotsLife), dotsLife) / dotsLife;
+
+    if (duration < (1 / dotsLife)) {
+        position.x = random1;
+        position.y = random2;
     }
 
     if (directionType == 0) { //random

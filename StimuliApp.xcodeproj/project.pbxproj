@@ -690,10 +690,10 @@
 				CCD311C42292A8C2004F44E5 /* DisplayRender.swift */,
 				962586CF22B8B4850013EFF2 /* DisplayTouches.swift */,
 				CCD311CE2292A92B004F44E5 /* Renderer.swift */,
+				7403C0B4233B376900AF129C /* PositionsBufferProvider.swift */,
 				9683BF0722A7AA9D00D7FA1B /* Compute.metal */,
 				CC4BF6C922A916B5006C4822 /* Functions.metal */,
 				74B409C1243EF8CD0053AD69 /* Functions.h */,
-				7403C0B4233B376900AF129C /* PositionsBufferProvider.swift */,
 			);
 			path = RenderMetal;
 			sourceTree = "<group>";
@@ -1205,8 +1205,9 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 554YMB46HK;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1238,7 +1239,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 554YMB46HK;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

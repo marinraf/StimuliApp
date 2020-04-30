@@ -24,6 +24,7 @@ extension Task {
         sceneTask.numberOfTrials = sectionTask.numberOfTrials
         sceneTask.numberOfLayers = scene.numberOfLayers.selectedValue + 1
         sceneTask.continuousResolution = scene.continuousResolution.selectedValue == 0 ? false : true
+
         createDots()
         for _ in 0 ..< sceneTask.numberOfTrials {
             sceneTask.seeds.append(Seed(id: ""))
@@ -195,9 +196,6 @@ extension Task {
             if property.propertyType == .image {
                 typePropValues[index] = Array(repeating: 0, count: trials)
                 index += 1
-            } else if property.propertyType == .behaviour {
-                typePropValues[index] = Array(repeating: Float(property.selectedValue), count: trials)
-                index += 1
             } else if property.propertyType == .direction {
                 typePropValues[index] = Array(repeating: Float(property.selectedValue), count: trials)
                 index += 1
@@ -287,7 +285,11 @@ extension Task {
                                        type: .metal)[0]
 
         //border properties
-        let borderValues = Array(repeating: Float(stimulus.borderProperty.selectedValue), count: trials) //33
+        let borderOn = stimulus.borderProperty.selectedValue
+        if object.type == .dots && borderOn > 0 {
+            sceneTask.dotsBorder = true
+        }
+        let borderValues = Array(repeating: Float(borderOn), count: trials) //33
         var borderPropValues = Array(repeating: zeroArray, count: 5) //34...38
         index = 0
         for property in stimulus.borderProperty.properties {
@@ -301,6 +303,7 @@ extension Task {
                 index += 1
             }
         }
+
 
         //contrast properties
         let contrastValues = Array(repeating: Float(stimulus.contrastProperty.selectedValue), count: trials) //39
@@ -1075,7 +1078,7 @@ extension Task {
             sceneTask.metalFloats[i][objectNumber][MetalValues.imageTextVideoDots] *= pixelSquare
             if sceneTask.metalFloats[i][objectNumber][MetalValues.imageTextVideoDots].toInt >
                 Constants.maxNumberOfDots {
-                return "ERROR: the number of dots is too high, try to reduce the density of dots."
+                return "ERROR: the density of dots is too high, you should reduce it."
             }
         }
         return ""

@@ -32,7 +32,7 @@
 // Only devices that run ios11 and newer
 // Info about devices at: https://www.theiphonewiki.com/wiki/Main_Page
 // Info about screens at: http://www.displaymate.com/index.html
-// To add a device, update the following: public enum, func mapToDevice(), description, and gamma
+// To add a device, update the following: public enum, func mapToDevice(), description, ppi and brightness
 
 import UIKit
 
@@ -140,6 +140,10 @@ enum Device {
     ///
     /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP806/sp806-iphone11pro-max_2x.png)
     case iPhone11ProMax
+    /// Device is an [iPhone SE (2nd generation)](https://support.apple.com/kb/SP820)
+    ///
+    /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP820/iphone-se-2nd-gen_2x.png)
+    case iPhoneSE2
     /// Device is an [iPad 2](https://support.apple.com/kb/SP622)
     ///
     /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP622/SP622_01-ipad2-mul.png)
@@ -333,6 +337,7 @@ enum Device {
         case .iPhone11: return "iPhone 11"
         case .iPhone11Pro: return "iPhone 11 Pro"
         case .iPhone11ProMax: return "iPhone 11 Pro Max"
+        case .iPhoneSE2: return "iPhone SE (2nd generation)"
         case .iPad2: return "iPad 2"
         case .iPad3: return "iPad (3rd generation)"
         case .iPad4: return "iPad (4th generation)"
@@ -387,6 +392,7 @@ enum Device {
         case .iPhone11: return 326
         case .iPhone11Pro: return 458
         case .iPhone11ProMax: return 458
+        case .iPhoneSE2: return 326
         case .iPad2: return 132
         case .iPad3: return 264
         case .iPad4: return 264
@@ -409,6 +415,60 @@ enum Device {
         case .iPadPro12Inch3: return 264
         case .iPadPro11Inch2: return 264
         case .iPadPro12Inch4: return 264
+        case .unknown: return nil
+        case .macOS: return nil
+        }
+    }
+
+    var brightness: Float? {
+        switch self {
+        case .iPodTouch5: return 500
+        case .iPodTouch6: return 500
+        case .iPodTouch7: return 500
+        case .iPhone4: return 500
+        case .iPhone4s: return 500
+        case .iPhone5: return 500
+        case .iPhone5c: return 500
+        case .iPhone5s: return 500
+        case .iPhone6: return 500
+        case .iPhone6Plus: return 500
+        case .iPhone6s: return 550
+        case .iPhone6sPlus: return 550
+        case .iPhone7: return 625
+        case .iPhone7Plus: return 625
+        case .iPhoneSE: return 625
+        case .iPhone8: return 625
+        case .iPhone8Plus: return 625
+        case .iPhoneX: return 625
+        case .iPhoneXS: return 625
+        case .iPhoneXSMax: return 625
+        case .iPhoneXR: return 625
+        case .iPhone11: return 625
+        case .iPhone11Pro: return 800
+        case .iPhone11ProMax: return 800
+        case .iPhoneSE2: return 625
+        case .iPad2: return 500
+        case .iPad3: return 500
+        case .iPad4: return 500
+        case .iPadAir: return 500
+        case .iPadAir2: return 500
+        case .iPad5: return 500
+        case .iPad6: return 500
+        case .iPadAir3: return 500
+        case .iPad7: return 500
+        case .iPadMini: return 500
+        case .iPadMini2: return 500
+        case .iPadMini3: return 500
+        case .iPadMini4: return 500
+        case .iPadMini5: return 500
+        case .iPadPro9Inch: return 500
+        case .iPadPro12Inch: return 600
+        case .iPadPro12Inch2: return 600
+        case .iPadPro10Inch: return 600
+        case .iPadPro11Inch: return 600
+        case .iPadPro12Inch3: return 600
+        case .iPadPro11Inch2: return 600
+        case .iPadPro12Inch4: return 600
         case .unknown: return nil
         case .macOS: return nil
         }
@@ -441,6 +501,7 @@ enum Device {
         case .iPhone11: return .iphone
         case .iPhone11Pro: return .iphone
         case .iPhone11ProMax: return .iphone
+        case .iPhoneSE2: return .iphone
         case .iPad2: return .ipad
         case .iPad3: return .ipad
         case .iPad4: return .ipad

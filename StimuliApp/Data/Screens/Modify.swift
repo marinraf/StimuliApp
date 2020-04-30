@@ -141,6 +141,7 @@ class Modify: Screen {
                 return .invalid
             }
         } else if responses == ["0.0", "0.0", "0.0"] {
+            Flow.shared.saveTest(Flow.shared.test)
             return .saved
         } else {
             return saveFunctionString(responses[0])

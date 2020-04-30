@@ -60,7 +60,9 @@ struct TouchInView {
 extension DisplayRender {
 
     func touchesBegan(_ view: UIView, touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else { return }
+        guard let uitouch = touches.first else { return }
+        guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
+        guard let touch = coalescedTouches.first else { return }
         guard timeInFrames >= Task.shared.sceneTask.responseStartInFrames else { return }
         touching = true
 
@@ -92,9 +94,9 @@ extension DisplayRender {
         guard touching else { return }
         switch Task.shared.sceneTask.responseType {
         case .path:
-            pathTouches(touches: touches, view: view)
+            pathTouches(touches: touches, event:event, view: view)
         case .moveObject:
-            moveObjectTouches(touches: touches, view: view)
+            moveObjectTouches(touches: touches, event:event, view: view)
         default:
             return
         }
@@ -102,6 +104,10 @@ extension DisplayRender {
 
     func touchesEnded(_ view: UIView, touches: Set<UITouch>, with event: UIEvent?) {
         guard touching else { return }
+
+        guard let uitouch = touches.first else { return }
+        guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
+        guard let touch = coalescedTouches.first else { return }
         touching = false
         Task.shared.responseMovingObject = nil
         switch Task.shared.sceneTask.responseType {
@@ -111,9 +117,11 @@ extension DisplayRender {
                 if let float = Task.shared.userResponse.float {
                     Task.shared.userResponse.string = String(float)
                 }
+                Task.shared.userResponse.liftClock = touch.timestamp - startRealTime
                 responded = true
             }
         case .path:
+            Task.shared.userResponse.liftClock = touch.timestamp - startRealTime
             responded = true
         default:
             return
@@ -126,12 +134,14 @@ extension DisplayRender {
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
+            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
             responded = true
         } else if touchInView.location.x > 2 * touchInView.screenSize.width / 3 {
             Task.shared.userResponse.integer = Task.shared.sceneTask.responseObject[1]?.toInt
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
+            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
             responded = true
         }
     }
@@ -142,12 +152,15 @@ extension DisplayRender {
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
+            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            displayRenderDelegate?.stopSineWave()
             responded = true
         } else if touchInView.location.y > 2 * touchInView.screenSize.height / 3 {
             Task.shared.userResponse.integer = Task.shared.sceneTask.responseObject[1]?.toInt
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
+            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
             responded = true
         }
     }
@@ -158,6 +171,7 @@ extension DisplayRender {
         let polar = touchInView.polar
         Task.shared.userResponse.radiusTouches.append(polar.radius)
         Task.shared.userResponse.angleTouches.append(polar.angle)
+        Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
         responded = true
     }
 
@@ -167,7 +181,8 @@ extension DisplayRender {
         let polar = touchInView.polar
         Task.shared.userResponse.radiusTouches.append(polar.radius)
         Task.shared.userResponse.angleTouches.append(polar.angle)
-        Task.shared.userResponse.clocks.append(Float(timeInFrames) * Flow.shared.settings.delta)
+        Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+//        Task.shared.userResponse.clocks.append(Float(timeInFrames) * Flow.shared.settings.delta)
     }
 
     func isTouched(object: Int, trial: Int, touchInView: TouchInView) -> Bool {
@@ -219,6 +234,7 @@ extension DisplayRender {
                     if let float = Task.shared.userResponse.float {
                         Task.shared.userResponse.string = String(float)
                     }
+                    Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
                     responded = true
                     return
                 }
@@ -229,75 +245,82 @@ extension DisplayRender {
             if let float = Task.shared.userResponse.float {
                 Task.shared.userResponse.string = String(float)
             }
+            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
             responded = true
         }
     }
 
-    func pathTouches(touches: Set<UITouch>, view: UIView) {
-        for touch in touches {
-            let touchInView = TouchInView(touch: touch,
-                                          view: view,
-                                          originX: Task.shared.sceneTask.responseOrigin.x,
-                                          originY: Task.shared.sceneTask.responseOrigin.y,
-                                          coordinates: Task.shared.sceneTask.responseCoordinates,
-                                          unit: Task.shared.sceneTask.responseFirstUnit,
-                                          unit1: Task.shared.sceneTask.responseSecondUnit)
+    func pathTouches(touches: Set<UITouch>, event: UIEvent?, view: UIView) {
+        for uitouch in touches {
+            guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
+            for touch in coalescedTouches {
+                let touchInView = TouchInView(touch: touch,
+                                              view: view,
+                                              originX: Task.shared.sceneTask.responseOrigin.x,
+                                              originY: Task.shared.sceneTask.responseOrigin.y,
+                                              coordinates: Task.shared.sceneTask.responseCoordinates,
+                                              unit: Task.shared.sceneTask.responseFirstUnit,
+                                              unit1: Task.shared.sceneTask.responseSecondUnit)
 
-            Task.shared.userResponse.xTouches.append(touchInView.x)
-            Task.shared.userResponse.yTouches.append(touchInView.y)
-            let polar = touchInView.polar
-            Task.shared.userResponse.radiusTouches.append(polar.radius)
-            Task.shared.userResponse.angleTouches.append(polar.angle)
-            Task.shared.userResponse.clocks.append(Float(timeInFrames) * Flow.shared.settings.delta)
+                Task.shared.userResponse.xTouches.append(touchInView.x)
+                Task.shared.userResponse.yTouches.append(touchInView.y)
+                let polar = touchInView.polar
+                Task.shared.userResponse.radiusTouches.append(polar.radius)
+                Task.shared.userResponse.angleTouches.append(polar.angle)
+                Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            }
         }
     }
 
-    func moveObjectTouches(touches: Set<UITouch>, view: UIView) {
-        for touch in touches {
-            let touchInView = TouchInView(touch: touch,
-                                          view: view,
-                                          originX: Task.shared.sceneTask.responseOrigin.x,
-                                          originY: Task.shared.sceneTask.responseOrigin.y,
-                                          coordinates: Task.shared.sceneTask.responseCoordinates,
-                                          unit: Task.shared.sceneTask.responseFirstUnit,
-                                          unit1: Task.shared.sceneTask.responseSecondUnit)
+    func moveObjectTouches(touches: Set<UITouch>, event: UIEvent?, view: UIView) {
+        for uitouch in touches {
+            guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
+            for touch in coalescedTouches {
+                let touchInView = TouchInView(touch: touch,
+                                              view: view,
+                                              originX: Task.shared.sceneTask.responseOrigin.x,
+                                              originY: Task.shared.sceneTask.responseOrigin.y,
+                                              coordinates: Task.shared.sceneTask.responseCoordinates,
+                                              unit: Task.shared.sceneTask.responseFirstUnit,
+                                              unit1: Task.shared.sceneTask.responseSecondUnit)
 
-            Task.shared.userResponse.xTouches.append(touchInView.x)
-            Task.shared.userResponse.yTouches.append(touchInView.y)
-            let polar = touchInView.polar
-            Task.shared.userResponse.radiusTouches.append(polar.radius)
-            Task.shared.userResponse.angleTouches.append(polar.angle)
-            Task.shared.userResponse.clocks.append(Float(timeInFrames) * Flow.shared.settings.delta)
+                Task.shared.userResponse.xTouches.append(touchInView.x)
+                Task.shared.userResponse.yTouches.append(touchInView.y)
+                let polar = touchInView.polar
+                Task.shared.userResponse.radiusTouches.append(polar.radius)
+                Task.shared.userResponse.angleTouches.append(polar.angle)
+                Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
 
-            let trial = Task.shared.sectionTask.currentTrial
-            let numberOfObjects = DataTask.metalValues.count
+                let trial = Task.shared.sectionTask.currentTrial
+                let numberOfObjects = DataTask.metalValues.count
 
-            if Task.shared.responseMovingObject == nil {
-                for object in (0 ..< numberOfObjects).reversed() {
-                    if let objectValue = Task.shared.sceneTask.responseObject[object] {
-                        if isTouched(object: object, trial: trial, touchInView: touchInView) {
+                if Task.shared.responseMovingObject == nil {
+                    for object in (0 ..< numberOfObjects).reversed() {
+                        if let objectValue = Task.shared.sceneTask.responseObject[object] {
+                            if isTouched(object: object, trial: trial, touchInView: touchInView) {
 
-                            Task.shared.sceneTask.xCenter0[trial][object] = touchInView.realX
-                            Task.shared.sceneTask.yCenter0[trial][object] = touchInView.realY
+                                Task.shared.sceneTask.xCenter0[trial][object] = touchInView.realX
+                                Task.shared.sceneTask.yCenter0[trial][object] = touchInView.realY
 
-                            Task.shared.responseMovingObject = object
-                            userResponseTemp = objectValue
-                            if Task.shared.sceneTask.endPath == .touch {
-                                touchObjectTouches(touchInView: touchInView)
+                                Task.shared.responseMovingObject = object
+                                userResponseTemp = objectValue
+                                if Task.shared.sceneTask.endPath == .touch {
+                                    touchObjectTouches(touchInView: touchInView)
+                                }
+                                return
                             }
-                            return
                         }
                     }
-                }
-            } else if let object = Task.shared.responseMovingObject {
+                } else if let object = Task.shared.responseMovingObject {
 
-                Task.shared.sceneTask.xCenter0[trial][object] = touchInView.realX
-                Task.shared.sceneTask.yCenter0[trial][object] = touchInView.realY
+                    Task.shared.sceneTask.xCenter0[trial][object] = touchInView.realX
+                    Task.shared.sceneTask.yCenter0[trial][object] = touchInView.realY
 
-                if Task.shared.sceneTask.endPath == .touch {
-                    touchObjectTouches(touchInView: touchInView)
+                    if Task.shared.sceneTask.endPath == .touch {
+                        touchObjectTouches(touchInView: touchInView)
+                    }
+                    return
                 }
-                return
             }
         }
     }

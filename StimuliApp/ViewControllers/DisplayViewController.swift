@@ -406,6 +406,8 @@ extension DisplayViewController: UITextFieldDelegate {
             }
             displayRender?.inactive = false
             displayRender?.inactiveToMeasureFrame = false
+            let startTime = displayRender?.startRealTime ?? 0
+            Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
             displayRender?.responded = true
             textField.isHidden = true
             button.isHidden = false
@@ -458,51 +460,71 @@ extension DisplayViewController {
 
     @objc func responseAction0() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[0].1
+        let startTime = displayRender?.startRealTime ?? 0
+        Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         displayRender?.responded = true
     }
 
     @objc func responseAction1() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[1].1
+        let startTime = displayRender?.startRealTime ?? 0
+        Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         displayRender?.responded = true
     }
 
     @objc func responseAction2() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[2].1
+        let startTime = displayRender?.startRealTime ?? 0
+        Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         displayRender?.responded = true
     }
 
     @objc func responseAction3() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[3].1
+        let startTime = displayRender?.startRealTime ?? 0
+        Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         displayRender?.responded = true
     }
 
     @objc func responseAction4() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[4].1
+        let startTime = displayRender?.startRealTime ?? 0
+        Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         displayRender?.responded = true
     }
 
     @objc func responseAction5() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[5].1
+        let startTime = displayRender?.startRealTime ?? 0
+        Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         displayRender?.responded = true
     }
 
     @objc func responseAction6() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[6].1
+        let startTime = displayRender?.startRealTime ?? 0
+        Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         displayRender?.responded = true
     }
 
     @objc func responseAction7() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[7].1
+        let startTime = displayRender?.startRealTime ?? 0
+        Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         displayRender?.responded = true
     }
 
     @objc func responseAction8() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[8].1
+        let startTime = displayRender?.startRealTime ?? 0
+        Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         displayRender?.responded = true
     }
 
     @objc func responseAction9() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[9].1
+        let startTime = displayRender?.startRealTime ?? 0
+        Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         displayRender?.responded = true
     }
 }

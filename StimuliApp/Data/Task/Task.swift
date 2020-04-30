@@ -72,7 +72,9 @@ struct UserResponse {
     var yTouches: [Float] = []
     var radiusTouches: [Float] = []
     var angleTouches: [Float] = []
-    var clocks: [Float] = []
+    var clocks: [Double] = []
+
+    var liftClock: Double?
 
     init() {}
 }
@@ -354,8 +356,8 @@ class Task {
 
     func updateScene(device: MTLDevice, trial: Int, status: DisplayRender.Status) {
 
-        updateDependentVariables(trial: trial)
 
+        updateDependentVariables(trial: trial)
         updateData(device: device, trial: trial, timeInFrames: 0, status: status)
 
         DataTask.images = sceneTask.images[trial]

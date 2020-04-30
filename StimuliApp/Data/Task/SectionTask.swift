@@ -136,7 +136,6 @@ class SectionTask {
 
     func calculateResultInfo() -> SectionResult {
 
-        let delta = Flow.shared.settings.delta
         let respondedTrials = correctValue.count
 
         var titles: [String] = ["trial"]
@@ -160,12 +159,12 @@ class SectionTask {
                 break
             case .leftRight, .topBottom, .keyboard, .keys, .touchObject:
                 titles.append("\(sceneTask.name)_responseTime")
-                titlesUnit.append("\(sceneTask.name)_responseTime")
+                titlesUnit.append("\(sceneTask.name)_responseTime (s)")
                 titles.append("\(sceneTask.name)_response")
                 titlesUnit.append("\(sceneTask.name)_response")
             case .touch:
                 titles.append("\(sceneTask.name)_responseTime")
-                titlesUnit.append("\(sceneTask.name)_responseTime")
+                titlesUnit.append("\(sceneTask.name)_responseTime (s)")
 
                 let coordinate = sceneTask.responseCoordinates
                 let unit1 = sceneTask.responseFirstUnit
@@ -185,7 +184,7 @@ class SectionTask {
                 }
             case .path, .moveObject:
                 titles.append("\(sceneTask.name)_responseTime")
-                titlesUnit.append("\(sceneTask.name)_responseTime")
+                titlesUnit.append("\(sceneTask.name)_responseTime (s)")
 
                 if sceneTask.responseType == .moveObject {
                     titles.append("\(sceneTask.name)_response")
@@ -222,7 +221,8 @@ class SectionTask {
 
         for sceneTask in sceneTasks {
             for i in 0 ..< respondedTrials {
-                values[i].append(String(Float(sceneTask.durationInFrames[i]) * delta))
+                let newValue = String(format: "%.4f", sceneTask.realEndTime[i])
+                values[i].append(newValue)
             }
         }
 
@@ -241,7 +241,8 @@ class SectionTask {
                 break
             case .leftRight, .topBottom, .keyboard, .keys, .touchObject:
                 for i in 0 ..< respondedTrials {
-                    values[i].append(String(Float(sceneTask.durationInFrames[i] - 1) * delta))
+                    let newValue = String(format: "%.4f", sceneTask.userResponses[i].clocks.last ?? 0)
+                    values[i].append(newValue)
                     if let response = sceneTask.userResponses[i].string {
                         values[i].append(response)
                     } else {
@@ -252,7 +253,12 @@ class SectionTask {
                 let coordinate = sceneTask.responseCoordinates
 
                 for i in 0 ..< respondedTrials {
-                    values[i].append(String(Float(sceneTask.durationInFrames[i] - 1) * delta))
+                    var clock = sceneTask.userResponses[i].clocks.last ?? 0
+                    if let clock2 = sceneTask.userResponses[i].liftClock {
+                        clock = clock2
+                    }
+                    let newValue = String(format: "%.4f", clock)
+                    values[i].append(newValue)
                     if sceneTask.responseType == .moveObject {
                         if let response = sceneTask.userResponses[i].string {
                             values[i].append(response)
@@ -338,16 +344,18 @@ class SectionTask {
                 switch coordinate {
                 case .cartesian:
                     for i in 0 ..< respondedTrials {
-                        let x = sceneTask.userResponses[i].xTouches.map({ String($0 )}).joined(separator: ";")
-                        let y = sceneTask.userResponses[i].yTouches.map({ String($0 )}).joined(separator: ";")
-                        let time = sceneTask.userResponses[i].clocks.map({ String($0 )}).joined(separator: ";")
+                        let x = sceneTask.userResponses[i].xTouches.map({ String($0) }).joined(separator: ";")
+                        let y = sceneTask.userResponses[i].yTouches.map({ String($0) }).joined(separator: ";")
+                        let time = sceneTask.userResponses[i].clocks.map({
+                            String(format: "%.4f", $0) }).joined(separator: ";")
                         valuesPath[i] += [x, y, time]
                     }
                 case .polar:
                     for i in 0 ..< respondedTrials {
-                        let radius = sceneTask.userResponses[i].radiusTouches.map({ String($0 )}).joined(separator: ";")
-                        let angle = sceneTask.userResponses[i].angleTouches.map({ String($0 )}).joined(separator: ";")
-                        let time = sceneTask.userResponses[i].clocks.map({ String($0 )}).joined(separator: ";")
+                        let radius = sceneTask.userResponses[i].radiusTouches.map({ String($0) }).joined(separator: ";")
+                        let angle = sceneTask.userResponses[i].angleTouches.map({ String($0) }).joined(separator: ";")
+                        let time = sceneTask.userResponses[i].clocks.map({
+                            String(format: "%.4f", $0) }).joined(separator: ";")
                         valuesPath[i] += [radius, angle, time]
                     }
                 }

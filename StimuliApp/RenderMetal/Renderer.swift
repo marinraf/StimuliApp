@@ -166,8 +166,9 @@ extension Renderer: MTKViewDelegate {
         Task.shared.actualFrameTime = CACurrentMediaTime()
         let elapsed = Task.shared.actualFrameTime - Task.shared.previousFrameTime
         Task.shared.previousFrameTime = Task.shared.actualFrameTime
+
         if elapsed > Double(1.25 * Flow.shared.settings.delta) && !displayRender.inactiveToMeasureFrame
-            && !displayRender.responded && !displayRender.responded2 && Task.shared.sectionTask.currentTrial > 0 {
+            && !displayRender.responded {
             let longFrame = LongFrame(scene: Task.shared.sceneTask.name,
                                       trial: Task.shared.sectionTask.currentTrial + 1,
                                       frame: displayRender.timeInFrames,

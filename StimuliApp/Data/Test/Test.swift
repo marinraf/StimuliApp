@@ -46,7 +46,7 @@ class Test: NSObject, Codable {
 
         self.name = TestData.makeNameProperty(text: name)
         self.frameRate = TestData.makeFrameRateProperty(frameRate: Flow.shared.settings.maximumFrameRate,
-                                                        selectedValue: 1)
+                                                        selectedValue: 0)
         self.brightness = TestData.makeBrightnessProperty(float: 0.7)
         self.gamma = TestData.makeGammaProperty(selected: 0)
         self.distance = TestData.makeDistanceProperty(selected: 0)

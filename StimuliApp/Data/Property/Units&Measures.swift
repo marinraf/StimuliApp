@@ -16,6 +16,9 @@ enum Unit: String, Codable, CaseIterable {
     case ppi = "pixels per inch"
     case ppcm = "pixels per cm"
     case none = ""
+    case screenWidthUnits = "screen width units"
+    case screenHeightUnits = "screen height units"
+
 
     var name: String {
         return self.rawValue
@@ -50,6 +53,14 @@ enum Unit: String, Codable, CaseIterable {
         case .ppi: return ""
         case .ppcm: return ""
         case .none: return ""
+        case .screenWidthUnits:
+            let string1 = "Screen width units from -1 to 1."
+            let string2 = "Being width the width size of the screen in landscape mode."
+            return string1 + "\n\n" + string2
+        case .screenHeightUnits:
+            let string1 = "Screen height units from -1 to 1."
+            let string2 = "Being height the height size of the screen in landscape mode."
+            return string1 + "\n\n" + string2
         }
     }
 
@@ -67,6 +78,8 @@ enum Unit: String, Codable, CaseIterable {
         case .ppi: return "ppi"
         case .ppcm: return "ppcm"
         case .none: return ""
+        case .screenWidthUnits: return ""
+        case .screenHeightUnits: return ""
         }
     }
 
@@ -84,6 +97,8 @@ enum Unit: String, Codable, CaseIterable {
         case .ppcm: return Flow.shared.settings.cmPerPixel
         case .ppi: return Flow.shared.settings.inchPerPixel
         case .none: return 1
+        case .screenWidthUnits: return Flow.shared.settings.width / 2
+        case .screenHeightUnits: return Flow.shared.settings.height / 2
         }
     }
 }
@@ -134,7 +149,7 @@ enum UnitType: String, Codable, CaseIterable {
         case .valueFrom3to10: return [.none]
         case .valueFrom0to255: return [.none]
 
-        case .size: return [.pixel, .cm, .inch, .visualAngleDegree]
+        case .size: return [.pixel, .cm, .inch, .visualAngleDegree, .screenWidthUnits, .screenHeightUnits]
         case .angle: return [.angleRad, .angleDegree]
         case .time: return [.second, .frame]
 

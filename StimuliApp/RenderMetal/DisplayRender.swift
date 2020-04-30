@@ -4,6 +4,9 @@
 import Foundation
 import MetalKit
 import GameKit
+import CommonCrypto
+
+var elapsed: Double = 0
 
 // MARK: - Protocol
 protocol DisplayRenderDelegate: class {
@@ -53,10 +56,11 @@ class DisplayRender {
 
     //controlling things
     var timeInFrames: Int = 0
+    var startRealTime: Double = 0
+    var endRealTime: Double = 0
     var sectionNumber: Int = 0
     var randomSeed: Int = 1
     var responded: Bool = false
-    var responded2: Bool = false
     var inactive: Bool = false
     var inactiveToMeasureFrame: Bool = false
     var status: Status = .playing
@@ -100,14 +104,13 @@ class DisplayRender {
         userResponseTemp = nil
         objectsTouched = nil
         responded = false
-        responded2 = false
 
         let trial = Task.shared.sectionTask.currentTrial
 
         Task.shared.sceneTask = Task.shared.sectionTask.sceneTasks[Task.shared.sectionTask.sceneNumber]
 
         Task.shared.responseMovingObject = nil
-
+        
         Task.shared.updateScene(device: device, trial: trial, status: status)
 
         Task.shared.userResponse = UserResponse()
@@ -124,6 +127,8 @@ class DisplayRender {
         displayRenderDelegate?.settingTimeLabel()
 
         displayRenderDelegate?.playSineWaves(audio: Task.shared.sceneTask.sineWaveFloats[trial])
+
+        startRealTime = CACurrentMediaTime()
     }
 
     func update() -> Bool {
@@ -131,18 +136,13 @@ class DisplayRender {
             return false
         }
 
-        guard !responded2 else {
-            inactive = true
-            inactiveToMeasureFrame = true
-            responded = false
-            changeDisplay(realTimeInFrames: timeInFrames - 1)
-            return true
+        if timeInFrames == 0 {
+
         }
 
         if responded {
-            displayRenderDelegate?.stopSineWave()
-            responded2 = true
             responded = false
+            changeDisplay(realTimeInFrames: timeInFrames)
         }
         
         updateLabel()
@@ -326,13 +326,17 @@ class DisplayRender {
     }
 
     func changeToNextSceneInSection(realTimeInFrames: Int) {
-        Task.shared.sceneTask.saveSceneData(timeInFrames: realTimeInFrames, trial: Task.shared.sectionTask.currentTrial)
+        Task.shared.sceneTask.saveSceneData(timeInFrames: realTimeInFrames,
+                                            startTime: startRealTime,
+                                            trial: Task.shared.sectionTask.currentTrial)
         Task.shared.sectionTask.sceneNumber += 1
         initScene()
     }
 
     func lastSceneOfSection(realTimeInFrames: Int) {
-        Task.shared.sceneTask.saveSceneData(timeInFrames: realTimeInFrames, trial: Task.shared.sectionTask.currentTrial)
+        Task.shared.sceneTask.saveSceneData(timeInFrames: realTimeInFrames,
+                                            startTime: startRealTime,
+                                            trial: Task.shared.sectionTask.currentTrial)
         Task.shared.sectionTask.sceneNumber = 0
         if Task.shared.sectionTask.last == 1 {
             Task.shared.sectionTask.numberOfCorrects += 1

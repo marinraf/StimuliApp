@@ -214,11 +214,12 @@ extension Task {
         DataTask.texturePositions[object + Constants.maxNumberOfMetalStimuli] = yMinTexture
 
         let numberOfLayers = Task.shared.numberOfLayers
+        let computed = computeNumberOfGroupsX[computeNumber]
         for x in xMinTextureGroup ... xMaxTextureGroup {
             for y in yMinTextureGroup ... yMaxTextureGroup {
                 var loop = true
                 for layer in 0 ..< numberOfLayers where loop {
-                    let position = (y * computeNumberOfGroupsX[computeNumber] + x) * numberOfLayers + layer
+                    let position = (y * computed + x) * numberOfLayers + layer
                     if DataTask.selectedObjects[position] == 100 {
                         DataTask.selectedObjects[position] = Float(object)
                         loop = false

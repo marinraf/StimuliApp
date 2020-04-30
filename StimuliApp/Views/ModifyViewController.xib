@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -214,6 +214,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="60" id="Brb-Wv-iBI"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zpd-7U-cnT" secondAttribute="trailing" constant="3" id="WbR-gM-kfb"/>
                                         <constraint firstItem="5mo-c0-Sge" firstAttribute="top" secondItem="g9i-0I-pOz" secondAttribute="top" constant="5" id="Yle-FZ-K4T"/>
                                         <constraint firstAttribute="bottom" secondItem="zpd-7U-cnT" secondAttribute="bottom" constant="5" id="cja-aa-k0e"/>
                                         <constraint firstItem="zpd-7U-cnT" firstAttribute="centerX" secondItem="g9i-0I-pOz" secondAttribute="centerX" id="ndo-kK-fgm"/>

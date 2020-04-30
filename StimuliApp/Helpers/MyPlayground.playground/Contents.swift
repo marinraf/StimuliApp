@@ -1,16 +1,16 @@
 import UIKit
 import GameKit
 
-extension Int {
-    static func random(seed: UInt64, minimum: Int, maximum: Int) -> Int {
-        let source = GKMersenneTwisterRandomSource(seed: seed)
+let numberx = 10
 
-        let randomDistribution = GKRandomDistribution(randomSource: source, lowestValue: minimum, highestValue: maximum)
-        return randomDistribution.nextInt()
-    }
-}
+let xmin = 0
+let xmax = 3
+let ymin = 0
+let ymax = 2
 
-let a = Int.random(seed: 956, minimum: 0, maximum: 3)
+let aa = (xmin ... xmax).flatMap({ x in
+    (ymin ... ymax).map({ y in
+        x + y * numberx })})
 
-print(a)
+print(aa)
 

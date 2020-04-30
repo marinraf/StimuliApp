@@ -7,7 +7,6 @@ import GameKit
 struct Constants {
     static let epsilon: Float = 0.00001
     static let minimumResolutionMac: Float = 800
-    static let audioRate: Int = 44100
     static let cmsInInch: Float = 2.54
     static let gamma: Float = 2.2
     static let inversGamma: Float = 0.45454545

@@ -84,6 +84,72 @@ extension StimuliType {
         return StimulusData.createProperty(name: name, info: info, measure: measure, value: value)
     }
 
+//    func createDotsPropertiesOld() -> [Property] {
+//
+//        let density = Property(name: "density",
+//                               info: "The density of dots per pixel.",
+//                               propertyType: .finalFloat,
+//                               unitType: .valueFrom0to1,
+//                               float: 0.001)
+//
+//
+//        let coherence = createProperty(name: "coherence",
+//                                       info: "The proportion of type1 dots from the total number of dots.",
+//                                       measure: .valueFrom0to1,
+//                                       value: 0.5)
+//
+//        let dotsLife = createProperty(name: "dotsLife",
+//                                          info: """
+//                                                The life of each one of the dots. When a dot reaches their life it \
+//                                                disappears and another dot is created in a random position.
+//                                                """,
+//                                          measure: .time,
+//                                          value: 0.05)
+//
+//        let behaviour = Property(name: "behaviour",
+//                                 info: "Possibles types of behaviour.",
+//                                 propertyType: .behaviour,
+//                                 unitType: .decimal,
+//                                 fixedValues: FixedBehaviour.allCases.map({ $0.name }),
+//                                 selectedValue: 0)
+//
+//        let diameter1 = createProperty(name: "diameter1",
+//                                       info: "The diameter of type1 dots.",
+//                                       measure: .size,
+//                                       value: 10)
+//
+//        let direction1 = Property(name: "direction1",
+//                                  info: "Possibles ways to establish the dot direction for type1 dots.",
+//                                  propertyType: .direction,
+//                                  unitType: .decimal,
+//                                  fixedValues: FixedDirection.allCases.map({ $0.name }),
+//                                  selectedValue: 0)
+//
+//        let color1 = createProperty(name: "color1",
+//                                    info: "The color of type1 dots.",
+//                                    measure: .color,
+//                                    value: 0)
+//
+//        let diameter2 = createProperty(name: "diameter2",
+//                                       info: "The diameter of type2 dots.",
+//                                       measure: .size,
+//                                       value: 10)
+//
+//        let direction2 = Property(name: "direction2",
+//                                  info: "Possibles ways to establish the dot direction for type2 dots.",
+//                                  propertyType: .direction,
+//                                  unitType: .decimal,
+//                                  fixedValues: FixedDirection.allCases.map({ $0.name }),
+//                                  selectedValue: 0)
+//
+//        let color2 = createProperty(name: "color2",
+//                                    info: "The color of type2 dots.",
+//                                    measure: .color,
+//                                    value: 0)
+//
+//        return [density, coherence, dotsLife, behaviour, diameter1, direction1, color1, diameter2, direction2, color2]
+//    }
+
     func createDotsProperties() -> [Property] {
 
         let density = Property(name: "density",
@@ -98,20 +164,14 @@ extension StimuliType {
                                        measure: .valueFrom0to1,
                                        value: 0.5)
 
-        let dotsLife = createProperty(name: "dotsLife",
-                                          info: """
-                                                The life of each one of the dots. When a dot reaches their life it \
-                                                disappears and another dot is created in a random position.
-                                                """,
-                                          measure: .time,
-                                          value: 0.05)
-
-        let behaviour = Property(name: "behaviour",
-                                 info: "Possibles types of behaviour.",
-                                 propertyType: .behaviour,
-                                 unitType: .decimal,
-                                 fixedValues: FixedBehaviour.allCases.map({ $0.name }),
-                                 selectedValue: 0)
+        let dotsLife1 = createProperty(name: "dotsLife1",
+                                       info: """
+                                       The life of each one of the dots. When a dot reaches their life it \
+                                       disappears and another dot is created in a random position. If life is zero \
+                                       the dots change their position each frame.
+                                       """,
+                                       measure: .time,
+                                       value: 0.05)
 
         let diameter1 = createProperty(name: "diameter1",
                                        info: "The diameter of type1 dots.",
@@ -130,6 +190,15 @@ extension StimuliType {
                                     measure: .color,
                                     value: 0)
 
+        let dotsLife2 = createProperty(name: "dotsLife2",
+                                       info: """
+                                       The life of each one of the dots. When a dot reaches their life it \
+                                       disappears and another dot is created in a random position. If life is zero \
+                                       the dots change their position each frame.
+                                       """,
+                                       measure: .time,
+                                       value: 0)
+
         let diameter2 = createProperty(name: "diameter2",
                                        info: "The diameter of type2 dots.",
                                        measure: .size,
@@ -140,14 +209,14 @@ extension StimuliType {
                                   propertyType: .direction,
                                   unitType: .decimal,
                                   fixedValues: FixedDirection.allCases.map({ $0.name }),
-                                  selectedValue: 0)
+                                  selectedValue: 1)
 
         let color2 = createProperty(name: "color2",
                                     info: "The color of type2 dots.",
                                     measure: .color,
                                     value: 0)
 
-        return [density, coherence, dotsLife, behaviour, diameter1, direction1, color1, diameter2, direction2, color2]
+        return [density, coherence, dotsLife1, diameter1, direction1, color1, dotsLife2, diameter2, direction2, color2]
     }
 
     private func createTextProperties() -> [Property] {

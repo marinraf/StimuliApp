@@ -19,10 +19,9 @@ class AudioSystem {
         let sess = AVAudioSession.sharedInstance()
 
         do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
-            try sess.setPreferredSampleRate(Double(Flow.shared.settings.audioRate))
             myAUSampleRateHz = Float(Flow.shared.settings.audioRate)
             let durationBuffer = 1 * (256.0/Double(Flow.shared.settings.audioRate))
+            try sess.setCategory(.playback, mode: .default, options: [])
             try sess.setPreferredIOBufferDuration(durationBuffer) // 256 samples
             try sess.setActive(true)
         } catch { }
@@ -65,7 +64,6 @@ class AudioSystem {
     func begin() {
         myAUAmplitude = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         let outputFormat = audioEngine!.outputNode.inputFormat(forBus: 0) // AVAudioFormat
-        myAUSampleRateHz = Float(outputFormat.sampleRate)
         audioEngine!.connect(audioEngine!.mainMixerNode,
                              to: audioEngine!.outputNode,
                              format: outputFormat)

@@ -214,16 +214,22 @@ class SceneTask {
 
     var userResponses: [UserResponse] = [] //trial
     var durationInFrames: [Int] = [] //trial
+    var realStartTime: [Double] = [] // trial
+    var realEndTime: [Double] = [] // trial
+
+    var dotsBorder: Bool = false
 
     var computeNumber: Int {
         return continuousResolution ? numberOfLayers + 2 : numberOfLayers - 1
     }
 
-    func saveSceneData(timeInFrames: Int, trial: Int) {
+    func saveSceneData(timeInFrames: Int, startTime: Double, trial: Int) {
 
         userResponses.append(Task.shared.userResponse)
 
         durationInFrames.append(timeInFrames)
+        realStartTime.append(startTime)
+        realEndTime.append(CACurrentMediaTime() - startTime)
 
         if isResponse {
             let valueType = Task.shared.sectionTask.sectionValueType
