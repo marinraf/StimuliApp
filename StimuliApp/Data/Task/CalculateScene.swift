@@ -58,7 +58,7 @@ extension Task {
             sceneTask.images.append([])
             sceneTask.textObjects.append([])
             sceneTask.videoObjects.append([])
-            sceneTask.audioObjects.append([])
+//            sceneTask.audioObjects.append([])
             sceneTask.sineWaveObjects.append([])
         }
 
@@ -102,20 +102,51 @@ extension Task {
                     return result
                 }
                 texts += 1
-            } else if object.type == .audio {
-                let result = createAudio(from: object, objectNumber: audios)
+
+
+
+            } else if object.type == .audio || object.type == .pureTone {
+
+                var type: TypeData = .audio
+                if object.type == .pureTone {
+                    type = .pureTone
+                }
+
+                let result = createPureTone(from: object, objectNumber: tones, type: type)
                 if result != "" {
                     return result
                 }
-                audios += 1
-            } else if object.type == .pureTone {
-                createPureTone(from: object, objectNumber: tones)
-                tones += 1
-                if tones > Constants.maxNumberOfSineWaveObjects {
+                if object.type == .audio {
+                    audios += 1
+                } else {
+                    tones += 1
+                }
+                if tones + audios > Constants.maxNumberOfSineWaveObjects {
                     return """
                     ERROR: the maximum number of video objects is: \(Constants.maxNumberOfSineWaveObjects).
                     """
                 }
+
+
+
+
+//            } else if object.type == .audio {
+//                let result = createAudio(from: object, objectNumber: audios)
+//                if result != "" {
+//                    return result
+//                }
+//                audios += 1
+//            } else if object.type == .pureTone {
+//                createPureTone(from: object, objectNumber: tones)
+//                tones += 1
+//                if tones > Constants.maxNumberOfSineWaveObjects {
+//                    return """
+//                    ERROR: the maximum number of video objects is: \(Constants.maxNumberOfSineWaveObjects).
+//                    """
+//                }
+
+
+
             } else {
                 createMetal(from: object, objectNumber: metals)
                 metals += 1
@@ -449,27 +480,71 @@ extension Task {
         for trial in 0 ..< sceneTask.numberOfTrials {
             sceneTask.checkPoints[trial].append(checkPoint)
             modifyFinalCheckPoint(trial: trial)
-            sceneTask.checkPoints[trial] = sceneTask.checkPoints[trial].sorted(by: { $0.time < $1.time })
         }
     }
 
     func modifyFinalCheckPoint(trial: Int) {
-        guard sceneTask.durationType == .stimuli else { return }
+        if sceneTask.durationType == .stimuli {
 
-        sceneTask.checkPoints[trial] = sceneTask.checkPoints[trial].filter({ $0.action != .endScene })
+            sceneTask.checkPoints[trial] = sceneTask.checkPoints[trial].filter({ $0.action != .endScene })
 
-        var time: Int = 0
-        for i in 0 ..< sceneTask.endTimesInFrames[trial].count {
-            if sceneTask.activatedBools[trial][i] {
-                time = max(time, sceneTask.endTimesInFrames[trial][i])
+            var time: Int = 0
+            for i in 0 ..< sceneTask.endTimesInFrames[trial].count {
+                if sceneTask.activatedBools[trial][i] {
+                    time = max(time, sceneTask.endTimesInFrames[trial][i])
+                }
             }
+            for checkPoint in sceneTask.checkPoints[trial] {
+                time = max(time, checkPoint.time)
+            }
+            let checkPoint = SceneTask.CheckPoint(time: time, action: .endScene, objectNumber: 0, type: .endScene)
+            sceneTask.checkPoints[trial].append(checkPoint)
         }
-        for checkPoint in sceneTask.checkPoints[trial] {
-            time = max(time, checkPoint.time)
+
+        if let maxTime = sceneTask.checkPoints[trial].last?.time {
+            modifyPureTonesDuration(trial: trial, maxTime: maxTime)
+//            modifyAudioDuration(trial: trial, maxTime: maxTime)
         }
-        let checkPoint = SceneTask.CheckPoint(time: time, action: .endScene, objectNumber: 0, type: .endScene)
-        sceneTask.checkPoints[trial].append(checkPoint)
+
+        sceneTask.checkPoints[trial] = sceneTask.checkPoints[trial].sorted(by: { $0.time < $1.time })
     }
+
+    private func modifyPureTonesDuration(trial: Int, maxTime: Int) {
+        let maxTimeFloat = Float(maxTime) / Float(Flow.shared.settings.frameRate)
+        for i in 0 ..< sceneTask.sineWaveObjects[trial].count {
+
+            let old = sceneTask.sineWaveObjects[trial][i]
+            let end = max(sceneTask.sineWaveObjects[trial][i].end, maxTime)
+            let endFloat = max(sceneTask.sineWaveObjects[trial][i].endFloat, maxTimeFloat)
+
+            let new = SineWaveObject(activated: old.activated,
+                                     dependCorrection: old.dependCorrection,
+                                     start: old.start,
+                                     end: end,
+                                     startFloat: old.startFloat,
+                                     endFloat: endFloat,
+                                     amplitude: old.amplitude,
+                                     frequency: old.frequency,
+                                     channel: old.channel,
+                                     url: old.url)
+
+            sceneTask.sineWaveObjects[trial][i] = new
+        }
+    }
+
+//    private func modifyAudioDuration(trial: Int, maxTime: Int) {
+//        for i in 0 ..< sceneTask.checkPoints[trial].count where sceneTask.checkPoints[trial][i].action == .endAudio {
+//            let old = sceneTask.checkPoints[trial][i]
+//            let time = max(maxTime - 1, old.time)
+//
+//            let new = SceneTask.CheckPoint(time: time,
+//                                           action: old.action,
+//                                           objectNumber: old.objectNumber,
+//                                           type: old.type)
+//
+//            sceneTask.checkPoints[trial][i] = new
+//        }
+//    }
 
     private func createImage(from object: Object, objectNumber: Int) -> String {
         guard let listOfImages = Flow.shared.test.listsOfValues.first(where: { $0.type == .images }) else {
@@ -735,14 +810,9 @@ extension Task {
         return ""
     }
 
-    private func createAudio(from object: Object, objectNumber: Int) -> String {
+    private func createPureTone(from object: Object, objectNumber: Int, type: TypeData) -> String {
 
-        guard let listOfAudios = Flow.shared.test.listsOfValues.first(where: { $0.type == .audios }) else {
-            return  """
-            ERROR: there is not a list of audios. Go to the "list" menu to create a list containing all \
-            the audios you want to play.
-            """
-        }
+
         guard let stimulus = object.stimulus else { return "" }
 
         let frameRate = Float(Flow.shared.settings.frameRate)
@@ -754,7 +824,7 @@ extension Task {
                                         object: object,
                                         position: 10,
                                         objectNumber: objectNumber,
-                                        type: .audio)[0]
+                                        type: type)[0]
 
         let activated = activatedFloats.map({ $0 > 0.5 ? true : false })
 
@@ -763,131 +833,101 @@ extension Task {
                                     object: object,
                                     position: 11,
                                     objectNumber: objectNumber,
-                                    type: .audio)[0]
+                                    type: type)[0]
         let start = startFloats.map({ ($0 * frameRate).toInt })
 
         let durationFloats = getValues(from: stimulus.durationProperty,
                                        object: object,
                                        position: 12,
                                        objectNumber: objectNumber,
-                                       type: .audio)[0]
-        let duration = durationFloats.map({ ($0 * frameRate).toInt })
-
-        let end = zip(start, duration).map(+)
-
-        //audio
-        let audioFloats = getValues(from: stimulus.typeProperty.properties[0],
-                                    object: object,
-                                    position: 0,
-                                    objectNumber: objectNumber,
-                                    type: .audio)[0]
-        let audioInts = audioFloats.map({ $0.toInt - 1 })
-        if let audioNumber = audioInts.first(where: { $0 > listOfAudios.goodValues.count }) {
-            return """
-            ERROR: the audio number: \(audioNumber + 1) does not exist in the list of audios.
-            """
-        }
-        let audioNames = audioInts.map({ listOfAudios.goodValues[$0].somethingId })
-        let allAudioNames = listOfAudios.goodValues.map({ $0.somethingId })
-
-        for name in allAudioNames {
-            var audio: (name: String, url: URL?)
-
-            if audios.first(where: { $0.name == name }) != nil {
-                //do nothing
-            } else {
-                let url = FilesAndPermission.getAudio(audioName: name)
-                audio = (name, url)
-                audios.append(audio)
-            }
-        }
-
-        for i in 0 ..< trials {
-            let audio = audios.first(where: { $0.name == audioNames[i] })
-
-            let audioObject = AudioObject(activated: activated[i],
-                                          start: start[i],
-                                          end: end[i],
-                                          url: audio?.url)
-
-            sceneTask.audioObjects[i].append(audioObject)
-
-            let checkPoint = SceneTask.CheckPoint(time: start[i], action: .startAudio,
-                                                  objectNumber: objectNumber, type: .audio)
-            let checkPoint2 = SceneTask.CheckPoint(time: end[i], action: .endAudio,
-                                                   objectNumber: objectNumber, type: .audio)
-
-            if activated[i] {
-                sceneTask.checkPoints[i] += [checkPoint, checkPoint2]
-            }
-        }
-        return ""
-    }
-
-    private func createPureTone(from object: Object, objectNumber: Int) {
-
-        guard let stimulus = object.stimulus else { return }
-
-        let frameRate = Float(Flow.shared.settings.frameRate)
-
-        let trials = sceneTask.numberOfTrials
-
-        //activated
-        let activatedFloats = getValues(from: stimulus.activatedProperty,
-                                        object: object,
-                                        position: 10,
-                                        objectNumber: objectNumber,
-                                        type: .pureTone)[0]
-
-        let activated = activatedFloats.map({ $0 > 0.5 ? true : false })
-
-        // start, duration, end
-        let startFloats = getValues(from: stimulus.startProperty,
-                                    object: object,
-                                    position: 11,
-                                    objectNumber: objectNumber,
-                                    type: .pureTone)[0]
-        let start = startFloats.map({ ($0 * frameRate).toInt })
-
-        let durationFloats = getValues(from: stimulus.durationProperty,
-                                       object: object,
-                                       position: 12,
-                                       objectNumber: objectNumber,
-                                       type: .pureTone)[0]
+                                       type: type)[0]
         let duration = durationFloats.map({ ($0 * frameRate).toInt })
 
         let endFloats = zip(startFloats, durationFloats).map(+)
         let end = zip(start, duration).map(+)
 
-        //frequency
-        let soundType = FixedSoundType(rawValue: stimulus.typeProperty.properties[0].string) ?? .none
+        var frequencies: [Float] = Array(repeating: -1, count: trials)
 
-        var frequencies: [Float] = Array(repeating: 0, count: trials)
+        var audioNames: [String] = []
 
-        switch soundType {
-        case .pureTone:
-            frequencies = getValues(from: stimulus.typeProperty.properties[0].properties[0],
+        if type == .audio {
+            guard let listOfAudios = Flow.shared.test.listsOfValues.first(where: { $0.type == .audios }) else {
+                return  """
+                ERROR: there is not a list of audios. Go to the "list" menu to create a list containing all \
+                the audios you want to play.
+                """
+            }
+
+            //audio
+            let audioFloats = getValues(from: stimulus.typeProperty.properties[0],
+                                        object: object,
+                                        position: 0,
+                                        objectNumber: objectNumber,
+                                        type: .audio)[0]
+            let audioInts = audioFloats.map({ $0.toInt - 1 })
+            if let audioNumber = audioInts.first(where: { $0 > listOfAudios.goodValues.count }) {
+                return """
+                ERROR: the audio number: \(audioNumber + 1) does not exist in the list of audios.
+                """
+            }
+            audioNames = audioInts.map({ listOfAudios.goodValues[$0].somethingId })
+            let allAudioNames = listOfAudios.goodValues.map({ $0.somethingId })
+
+            for name in allAudioNames {
+                var audio: (name: String, url: URL?)
+
+                if audios.first(where: { $0.name == name }) != nil {
+                    //do nothing
+                } else {
+                    let url = FilesAndPermission.getAudio(audioName: name)
+                    audio = (name, url)
+                    audios.append(audio)
+                }
+            }
+
+            if audios.count > Constants.maxNumberOfAudios {
+                return """
+                There are \(audios.count) audio files in this test.
+                A test can contain a maximum of \(Constants.maxNumberOfAudios) tests.
+                """
+            }
+
+        } else {
+            //frequency
+            let soundType = FixedSoundType(rawValue: stimulus.typeProperty.properties[0].string) ?? .none
+
+            switch soundType {
+            case .pureTone:
+                frequencies = getValues(from: stimulus.typeProperty.properties[0].properties[0],
                                         object: object,
                                         position: 1,
                                         objectNumber: objectNumber,
                                         type: .pureTone)[0]
-        default:
-            break
+            default:
+                frequencies = Array(repeating: 0, count: trials)
+            }
         }
 
+
         //amplitude
-        let amplitudes = getValues(from: stimulus.typeProperty.properties[1],
+        var amplitudes: [Float] = Array(repeating: 1, count: trials)
+        if stimulus.typeProperty.properties.count > 1 {
+            amplitudes = getValues(from: stimulus.typeProperty.properties[1],
                                    object: object,
                                    position: 1,
                                    objectNumber: objectNumber,
-                                   type: .pureTone)[0]
+                                   type: type)[0]
+        }
 
         //channel
-        let channels = getValues(from: stimulus.typeProperty.properties[2],
-                                    object: object,
-                                    position: 2,
-                                    objectNumber: objectNumber,
-                                    type: .pureTone)[0]
+        var channels: [Float] = Array(repeating: 0.5, count: trials)
+        if stimulus.typeProperty.properties.count > 2 {
+            channels = getValues(from: stimulus.typeProperty.properties[2],
+                                 object: object,
+                                 position: 2,
+                                 objectNumber: objectNumber,
+                                 type: .pureTone)[0]
+        }
 
         var dependCorrection = false
         if sceneTask.dependentVariables.first(where: { $0.variableTask.object === object}) != nil {
@@ -895,9 +935,11 @@ extension Task {
         }
 
         for i in 0 ..< trials {
-            let amplitude = amplitudes[i]
-            let frequency = frequencies[i]
-            let channel = channels[i]
+
+            var url: URL? = nil
+            if type == .audio {
+                url = audios.first(where: { $0.name == audioNames[i] })?.url
+            }
 
             let sineWaveObject = SineWaveObject(activated: activated[i],
                                                 dependCorrection: dependCorrection,
@@ -905,9 +947,10 @@ extension Task {
                                                 end: end[i],
                                                 startFloat: startFloats[i],
                                                 endFloat: endFloats[i],
-                                                amplitude: amplitude,
-                                                frequency: frequency,
-                                                channel: channel)
+                                                amplitude: amplitudes[i],
+                                                frequency: frequencies[i],
+                                                channel: channels[i],
+                                                url: url)
 
             sceneTask.sineWaveObjects[i].append(sineWaveObject)
 
@@ -920,7 +963,9 @@ extension Task {
                 sceneTask.checkPoints[i] += [checkPoint, checkPoint2]
             }
         }
+        return ""
     }
+
 
     private func createSineWaveFloats() {
 
@@ -935,6 +980,14 @@ extension Task {
 
             for j in 0 ..< sineWaveObjectNumber {
 
+                var audioNumber: Float = 0
+
+                if let url = sceneTask.sineWaveObjects[i][j].url {
+                    if let idx = Task.shared.audios.firstIndex(where: { $0.url == url }) {
+                        audioNumber = Float(idx)
+                    }
+                }
+
                 sceneTask.sineWaveFloats[i][j + 3] = sceneTask.sineWaveObjects[i][j].startFloat * audioRate
                 sceneTask.sineWaveFloats[i][j + 13] = 0
                 sceneTask.sineWaveFloats[i][j + 23] = sceneTask.sineWaveObjects[i][j].frequency
@@ -943,6 +996,7 @@ extension Task {
                 if sceneTask.sineWaveObjects[i][j].activated || sceneTask.sineWaveObjects[i][j].dependCorrection {
                     sceneTask.sineWaveFloats[i][j + 13] = sceneTask.sineWaveObjects[i][j].endFloat * audioRate
                 }
+                sceneTask.sineWaveFloats[i][j + 53] = audioNumber
             }
 
             sceneTask.sineWaveFloats[i][2] = sceneTask.sineWaveFloats[i][13 ..< 23].max() ?? 0

@@ -177,6 +177,7 @@ class Task {
 
     // create methods
     func createTask(test: Test, preview: Preview) -> String {
+        self.reset()
         self.preview = preview
         self.name = test.name.string
         Flow.shared.test = test
@@ -203,6 +204,7 @@ class Task {
     }
 
     func createSection(section: Section, test: Test) -> String {
+        self.reset()
         preview = .variablesSection
         createRandomSeeds(from: test)
         error = importSettings(from: test)
@@ -213,6 +215,7 @@ class Task {
     }
 
     func createTask(section: Section, scene: Scene, test: Test) -> String {
+        self.reset()
         preview = .previewScene
         let sceneNumber = section.scenes.firstIndex(where: { $0 === scene }) ?? 0
 
@@ -238,6 +241,7 @@ class Task {
     }
 
     func createTask(stimulus: Stimulus) -> String {
+        self.reset()
         preview = .previewStimulus
         let test = createTest(stimulus: stimulus, test: Flow.shared.test)
         createRandomSeeds(from: test)
@@ -263,12 +267,54 @@ class Task {
     }
 
     // private methods
+    private func reset() {
+        name = ""
+        seeds = []
+        error = ""
+        preview = .no
+        gamma = Constants.gamma
+        inversGamma = Constants.inversGamma
+        sectionTasks = []
+
+        sectionTask = SectionTask()
+        sceneTask = SceneTask()
+        dataTask = DataTask()
+        sectionZeroTask = SectionTask()
+
+        actualFrameTime = 0
+        previousFrameTime = 0
+        longFrames = []
+        totalNumberOfFrames = 0
+
+        userResponse = UserResponse()
+
+        computeThreadsPerGroupX = Array(repeating: 1, count: Constants.numberOfComputeKernels)
+        computeThreadsPerGroupY = Array(repeating: 1, count: Constants.numberOfComputeKernels)
+        computeNumberOfGroupsX = Array(repeating: 1, count: Constants.numberOfComputeKernels)
+        computeNumberOfGroupsY = Array(repeating: 1, count: Constants.numberOfComputeKernels)
+        computeNumberOfGroups = Array(repeating: 1, count: Constants.numberOfComputeKernels)
+
+        semiWidth = 0
+        semiHeight = 0
+        computeNumber = 0
+        numberOfLayers = 1
+
+        images = []
+        videos = []
+        audios = []
+
+        dots = []
+        dots1 = []
+
+        xButtonPosition = .topLeft
+
+        responseMovingObject = nil
+
+        responseKeyboard = ""
+    }
+
     private func importSettings(from test: Test) -> String {
         xButtonPosition = FixedXButton(rawValue: test.cancelButtonPosition.string) ?? .topLeft
-        longFrames = []
-        images = []
-        totalNumberOfFrames = 0
-        userResponse = UserResponse()
         let gammaType = FixedGamma(rawValue: test.gamma.string) ?? .linear
         switch gammaType {
         case .linear:
@@ -281,8 +327,6 @@ class Task {
             gamma = test.gamma.properties[0].float
             inversGamma = 1 / gamma
         }
-        sectionTasks = []
-        error = ""
         Flow.shared.settings.update(from: test)
 
         for variable in test.variables {
@@ -500,49 +544,6 @@ class Task {
                         sceneTask.images[trial][object] = index
                     }
                 }
-            case .audio:
-                guard let listOfAudios = Flow.shared.test.listsOfValues.first(where: { $0.type == .audios }) else {
-                    return
-                }
-                if position == 10 || position == 11 || position == 12 {
-
-                    if position == 10 {
-                        sceneTask.audioObjects[trial][object].activated = value.float > 0.5 ? true : false
-                    } else if position == 11 {
-                        let first = sceneTask.audioObjects[trial][object].start
-                        let second = (value.float * frameRate).toInt
-                        sceneTask.audioObjects[trial][object].start = second
-                        sceneTask.audioObjects[trial][object].end += (second - first)
-                    } else {
-                        let start = sceneTask.audioObjects[trial][object].start
-                        let duration = (value.float * frameRate).toInt
-                        sceneTask.audioObjects[trial][object].end = start + duration
-                    }
-                    let activated = sceneTask.audioObjects[trial][object].activated
-                    let start = sceneTask.audioObjects[trial][object].start
-                    let end = sceneTask.audioObjects[trial][object].end
-
-                    sceneTask.checkPoints[trial] = sceneTask.checkPoints[trial].filter({
-                        $0.objectNumber != object || $0.type != .audio
-                    })
-
-                    if activated {
-                        let checkPoint = SceneTask.CheckPoint(time: start, action: .startAudio,
-                                                              objectNumber: object, type: .audio)
-                        let checkPoint2 = SceneTask.CheckPoint(time: end, action: .endAudio,
-                                                               objectNumber: object, type: .audio)
-                        sceneTask.checkPoints[trial] += [checkPoint, checkPoint2]
-                    }
-                    modifyFinalCheckPoint(trial: trial)
-
-                } else if position == 0 {
-                    var textInt = min(value.float.toInt, listOfAudios.goodValues.count) - 1
-                    textInt = max(textInt, 0)
-                    let name = listOfAudios.goodValues[textInt].somethingId
-                    if let audio = audios.first(where: { $0.name == name }) {
-                        sceneTask.audioObjects[trial][object].url = audio.url
-                    }
-                }
             case .video:
                 guard let listOfVideos = Flow.shared.test.listsOfValues.first(where: { $0.type == .videos }) else {
                     return
@@ -648,7 +649,50 @@ class Task {
                 } else if position == 7 {
                     sceneTask.textObjects[trial][object].blue = CGFloat(value.float)
                 }
-            case .pureTone:
+//            case .audio:
+//                guard let listOfAudios = Flow.shared.test.listsOfValues.first(where: { $0.type == .audios }) else {
+//                    return
+//                }
+//                if position == 10 || position == 11 || position == 12 {
+//
+//                    if position == 10 {
+//                        sceneTask.sineWaveObjects[trial][object].activated = value.float > 0.5 ? true : false
+//                    } else if position == 11 {
+//                        let first = sceneTask.audioObjects[trial][object].start
+//                        let second = (value.float * frameRate).toInt
+//                        sceneTask.audioObjects[trial][object].start = second
+//                        sceneTask.audioObjects[trial][object].end += (second - first)
+//                    } else {
+//                        let start = sceneTask.audioObjects[trial][object].start
+//                        let duration = (value.float * frameRate).toInt
+//                        sceneTask.audioObjects[trial][object].end = start + duration
+//                    }
+//                    let activated = sceneTask.audioObjects[trial][object].activated
+//                    let start = sceneTask.audioObjects[trial][object].start
+//                    let end = sceneTask.audioObjects[trial][object].end
+//
+//                    sceneTask.checkPoints[trial] = sceneTask.checkPoints[trial].filter({
+//                        $0.objectNumber != object || $0.type != .audio
+//                    })
+//
+//                    if activated {
+//                        let checkPoint = SceneTask.CheckPoint(time: start, action: .startAudio,
+//                                                              objectNumber: object, type: .audio)
+//                        let checkPoint2 = SceneTask.CheckPoint(time: end, action: .endAudio,
+//                                                               objectNumber: object, type: .audio)
+//                        sceneTask.checkPoints[trial] += [checkPoint, checkPoint2]
+//                    }
+//                    modifyFinalCheckPoint(trial: trial)
+//
+//                } else if position == 0 {
+//                    var textInt = min(value.float.toInt, listOfAudios.goodValues.count) - 1
+//                    textInt = max(textInt, 0)
+//                    let name = listOfAudios.goodValues[textInt].somethingId
+//                    if let audio = audios.first(where: { $0.name == name }) {
+//                        sceneTask.audioObjects[trial][object].url = audio.url
+//                    }
+//                }
+            case .pureTone, .audio:
 
                 if position == 10 || position == 11 || position == 12 {
 

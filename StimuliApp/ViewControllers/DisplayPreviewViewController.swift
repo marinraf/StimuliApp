@@ -308,15 +308,19 @@ extension DisplayPreviewViewController: DisplayRenderDelegate {
         settingPlayingLabel()
     }
 
-    func playAudio(audio: AudioObject) {
-        numberOfPlayables += 1
-        settingPlayingLabel()
-    }
-
-    func stopAudio() {
-        numberOfPlayables -= 1
-        settingPlayingLabel()
-    }
+//    func load(audios: [URL?]) {}
+//
+//    func playAudio(audio: AudioObject) {
+//        numberOfPlayables += 1
+//        settingPlayingLabel()
+//    }
+//
+//    func stopAudio() {
+//        numberOfPlayables -= 1
+//        settingPlayingLabel()
+//    }
+//
+//    func fadeAudio() {}
 
     func playSineWave() {
         numberOfPlayables += 1
@@ -325,6 +329,9 @@ extension DisplayPreviewViewController: DisplayRenderDelegate {
 
     func stopSineWave() {
         numberOfPlayables -= 1
+        if numberOfPlayables < 0 {  // in first scene we stop a sineWave
+            numberOfPlayables = 0
+        }
         settingPlayingLabel()
     }
 

@@ -21,10 +21,11 @@ struct Constants {
     static let maxNumberOfDotObjects: Int = 2
     static let maxNumberOfVideoObjects: Int = 1
     static let maxNumberOfSineWaveObjects: Int = 10
+    static let maxNumberOfAudios: Int = 20
     static let maxLengthSequence: Int = 10000
     static let maxNumberOfTrials: Int = 5000
     static let numberOfMetalFloats: Int = 55
-    static let numberOfSineWaveFloats: Int = 53
+    static let numberOfSineWaveFloats: Int = 63
     static let numberOfDotsFloats: Int = 4 //type, duration, positionX, positionY
     static let sceneZeroDuration: Int = 3 //in seconds
     static let sceneZeroDurationShort: Int = 2 //in seconds

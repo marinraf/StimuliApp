@@ -122,6 +122,11 @@ class Settings {
         ppVisualAngleDegree = ppcm * distance / Constants.distanceDegreeEqualCm
     }
 
+    func updateAudioRate(new: Double) {
+        self.audioRateProperty = SettingsData.makeAudioRateProperty(float: Float(new))
+        self.audioRate = Int(new)
+    }
+
     func updateProperties() {
         if let ppi = device.ppi {
             self.ppi = ppi

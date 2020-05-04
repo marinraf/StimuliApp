@@ -20,8 +20,10 @@ protocol DisplayRenderDelegate: class {
     func deleteText(text: TextObject)
     func playVideo(video: VideoObject)
     func stopVideo()
-    func playAudio(audio: AudioObject)
-    func stopAudio()
+//    func load(audios: [URL?])
+//    func playAudio(audio: AudioObject)
+//    func stopAudio()
+//    func fadeAudio()
     func playSineWaves(audio: [Float])
     func playSineWave()
     func stopSineWave()
@@ -64,6 +66,7 @@ class DisplayRender {
     var inactive: Bool = false
     var inactiveToMeasureFrame: Bool = false
     var status: Status = .playing
+    var nextStopAudio: Bool = false
 
     var counter = 0
 
@@ -90,6 +93,7 @@ class DisplayRender {
 
         // in the first scene we give time to initialize the device and everything, so we use a queue
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+//            self.displayRenderDelegate?.load(audios: Task.shared.audios.map({ $0.url }))
             self.displayRenderDelegate?.addBackButton(position: Task.shared.xButtonPosition)
         })
     }
@@ -126,6 +130,8 @@ class DisplayRender {
 
         displayRenderDelegate?.settingTimeLabel()
 
+//        displayRenderDelegate?.stopAudio()
+
         displayRenderDelegate?.playSineWaves(audio: Task.shared.sceneTask.sineWaveFloats[trial])
 
         startRealTime = CACurrentMediaTime()
@@ -136,9 +142,10 @@ class DisplayRender {
             return false
         }
 
-        if timeInFrames == 0 {
-
-        }
+//        if nextStopAudio {
+//            nextStopAudio = false
+//            displayRenderDelegate?.stopAudio()
+//        }
 
         if responded {
             responded = false
@@ -148,12 +155,6 @@ class DisplayRender {
         updateLabel()
 
         let currentTrial = Task.shared.sectionTask.currentTrial
-
-        let check = Task.shared.sceneTask.checkPoints[currentTrial][counter]
-
-        if timeInFrames + 1 >= check.time && check.type == .endScene {
-            displayRenderDelegate?.stopSineWave()
-        }
 
         while timeInFrames >= Task.shared.sceneTask.checkPoints[currentTrial][counter].time {
 
@@ -224,12 +225,15 @@ class DisplayRender {
         case .endText:
             displayRenderDelegate?.deleteText(text: Task.shared.sceneTask.textObjects[trial][objectNumber])
             return false
-        case .startAudio:
-            displayRenderDelegate?.playAudio(audio: Task.shared.sceneTask.audioObjects[trial][objectNumber])
-            return false
-        case .endAudio:
-            displayRenderDelegate?.stopAudio()
-            return false
+//        case .startAudio:
+//            displayRenderDelegate?.playAudio(audio: Task.shared.sceneTask.audioObjects[trial][objectNumber])
+//            return false
+//        case .endAudio:
+//            displayRenderDelegate?.fadeAudio()
+//            return false
+//        case .endAudioTotal:
+//            displayRenderDelegate?.stopAudio()
+//            return false
         case .startVideo:
             displayRenderDelegate?.playVideo(video: Task.shared.sceneTask.videoObjects[trial][objectNumber])
             return false
@@ -254,10 +258,12 @@ class DisplayRender {
             displayRenderDelegate?.deleteText(text: Task.shared.sceneTask.textObjects[trial][objectNumber])
         case .endText:
             displayRenderDelegate?.drawText(text: Task.shared.sceneTask.textObjects[trial][objectNumber])
-        case .startAudio:
-            displayRenderDelegate?.stopAudio()
-        case .endAudio:
-            displayRenderDelegate?.playAudio(audio: Task.shared.sceneTask.audioObjects[trial][objectNumber])
+//        case .startAudio:
+//            displayRenderDelegate?.stopAudio()
+//        case .endAudio:
+//            break
+//        case .endAudioTotal:
+//            displayRenderDelegate?.playAudio(audio: Task.shared.sceneTask.audioObjects[trial][objectNumber])
         case .startVideo:
             displayRenderDelegate?.stopVideo()
         case .endVideo:

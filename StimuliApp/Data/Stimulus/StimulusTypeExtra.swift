@@ -307,7 +307,17 @@ extension StimuliType {
                              unitType: .positiveIntegerWithoutZero,
                              float: 1)
 
-        return [audio]
+        let amplitude = Property(name: "amplitude",
+                                 info: """
+                                 The amplitude of the sound.
+                                 The perceived loudness of the sound is approximately proportional to the logarithm \
+                                 of the amplitude.
+                                 """,
+                                 propertyType: .finalFloat,
+                                 unitType: .valueFrom0to1,
+                                 float: 0.5)
+
+        return [audio, amplitude]
     }
 
     private func createPureToneProperties() -> [Property] {

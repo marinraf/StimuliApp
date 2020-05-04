@@ -118,10 +118,14 @@ extension DisplayRender {
                     Task.shared.userResponse.string = String(float)
                 }
                 Task.shared.userResponse.liftClock = touch.timestamp - startRealTime
+                displayRenderDelegate?.stopSineWave()
+//                displayRenderDelegate?.fadeAudio()
                 responded = true
             }
         case .path:
             Task.shared.userResponse.liftClock = touch.timestamp - startRealTime
+            displayRenderDelegate?.stopSineWave()
+//            displayRenderDelegate?.fadeAudio()
             responded = true
         default:
             return
@@ -135,6 +139,8 @@ extension DisplayRender {
                 Task.shared.userResponse.string = String(integer)
             }
             Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            displayRenderDelegate?.stopSineWave()
+//            displayRenderDelegate?.fadeAudio()
             responded = true
         } else if touchInView.location.x > 2 * touchInView.screenSize.width / 3 {
             Task.shared.userResponse.integer = Task.shared.sceneTask.responseObject[1]?.toInt
@@ -142,6 +148,8 @@ extension DisplayRender {
                 Task.shared.userResponse.string = String(integer)
             }
             Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            displayRenderDelegate?.stopSineWave()
+//            displayRenderDelegate?.fadeAudio()
             responded = true
         }
     }
@@ -154,6 +162,7 @@ extension DisplayRender {
             }
             Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
             displayRenderDelegate?.stopSineWave()
+//            displayRenderDelegate?.fadeAudio()
             responded = true
         } else if touchInView.location.y > 2 * touchInView.screenSize.height / 3 {
             Task.shared.userResponse.integer = Task.shared.sceneTask.responseObject[1]?.toInt
@@ -161,6 +170,8 @@ extension DisplayRender {
                 Task.shared.userResponse.string = String(integer)
             }
             Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            displayRenderDelegate?.stopSineWave()
+//            displayRenderDelegate?.fadeAudio()
             responded = true
         }
     }
@@ -172,6 +183,8 @@ extension DisplayRender {
         Task.shared.userResponse.radiusTouches.append(polar.radius)
         Task.shared.userResponse.angleTouches.append(polar.angle)
         Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+        displayRenderDelegate?.stopSineWave()
+//        displayRenderDelegate?.fadeAudio()
         responded = true
     }
 
@@ -235,6 +248,8 @@ extension DisplayRender {
                         Task.shared.userResponse.string = String(float)
                     }
                     Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+                    displayRenderDelegate?.stopSineWave()
+//                    displayRenderDelegate?.fadeAudio()
                     responded = true
                     return
                 }
@@ -246,6 +261,8 @@ extension DisplayRender {
                 Task.shared.userResponse.string = String(float)
             }
             Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            displayRenderDelegate?.stopSineWave()
+//            displayRenderDelegate?.fadeAudio()
             responded = true
         }
     }
@@ -343,6 +360,8 @@ extension DisplayRender {
             if let float = Task.shared.userResponse.float {
                 Task.shared.userResponse.string = String(float)
             }
+            displayRenderDelegate?.stopSineWave()
+//            displayRenderDelegate?.fadeAudio()
             responded = true
         }
     }
