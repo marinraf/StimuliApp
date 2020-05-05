@@ -9,7 +9,12 @@ import AVFoundation
 
 class DisplayPreviewViewController: UIViewController {
 
-    var numberOfPlayables: Int = 0
+    var numberOfVideos: Int = 0
+    var numberOfAudios: Int = 0
+
+    var numberOfPlayables: Int {
+        return numberOfVideos + numberOfAudios
+    }
 
     var renderer: Renderer?
     var displayRender: DisplayRender?
@@ -299,43 +304,34 @@ extension DisplayPreviewViewController: DisplayRenderDelegate {
     }
 
     func playVideo(video: VideoObject) {
-        numberOfPlayables += 1
+        numberOfVideos += 1
         settingPlayingLabel()
     }
 
     func stopVideo() {
-        numberOfPlayables -= 1
-        settingPlayingLabel()
-    }
-
-//    func load(audios: [URL?]) {}
-//
-//    func playAudio(audio: AudioObject) {
-//        numberOfPlayables += 1
-//        settingPlayingLabel()
-//    }
-//
-//    func stopAudio() {
-//        numberOfPlayables -= 1
-//        settingPlayingLabel()
-//    }
-//
-//    func fadeAudio() {}
-
-    func playSineWave() {
-        numberOfPlayables += 1
-        settingPlayingLabel()
-    }
-
-    func stopSineWave() {
-        numberOfPlayables -= 1
-        if numberOfPlayables < 0 {  // in first scene we stop a sineWave
-            numberOfPlayables = 0
+        numberOfVideos -= 1
+        if numberOfVideos < 0 {
+            numberOfVideos = 0
         }
         settingPlayingLabel()
     }
 
-    func playSineWaves(audio: [Float]) {
+    func playAudio() {
+        numberOfAudios += 1
+        settingPlayingLabel()
+    }
+
+    func stopAudio() {}
+
+    func stopOneAudio() {
+        numberOfAudios -= 1
+        if numberOfAudios < 0 {  // in first scene we stop a sineWave
+            numberOfAudios = 0
+        }
+        settingPlayingLabel()
+    }
+
+    func playAudios(audio: [Float]) {
         if inactivation {
             displayRender?.status = .stopped
             inactivation = false

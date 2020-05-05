@@ -307,9 +307,7 @@ class Task {
         dots1 = []
 
         xButtonPosition = .topLeft
-
         responseMovingObject = nil
-
         responseKeyboard = ""
     }
 
@@ -535,7 +533,6 @@ class Task {
                 guard let listOfImages = Flow.shared.test.listsOfValues.first(where: { $0.type == .images }) else {
                     return
                 }
-
                 if position == 0 {
                     var textInt = min(value.float.toInt, listOfImages.goodValues.count) - 1
                     textInt = max(textInt, 0)
@@ -649,99 +646,67 @@ class Task {
                 } else if position == 7 {
                     sceneTask.textObjects[trial][object].blue = CGFloat(value.float)
                 }
-//            case .audio:
-//                guard let listOfAudios = Flow.shared.test.listsOfValues.first(where: { $0.type == .audios }) else {
-//                    return
-//                }
-//                if position == 10 || position == 11 || position == 12 {
-//
-//                    if position == 10 {
-//                        sceneTask.sineWaveObjects[trial][object].activated = value.float > 0.5 ? true : false
-//                    } else if position == 11 {
-//                        let first = sceneTask.audioObjects[trial][object].start
-//                        let second = (value.float * frameRate).toInt
-//                        sceneTask.audioObjects[trial][object].start = second
-//                        sceneTask.audioObjects[trial][object].end += (second - first)
-//                    } else {
-//                        let start = sceneTask.audioObjects[trial][object].start
-//                        let duration = (value.float * frameRate).toInt
-//                        sceneTask.audioObjects[trial][object].end = start + duration
-//                    }
-//                    let activated = sceneTask.audioObjects[trial][object].activated
-//                    let start = sceneTask.audioObjects[trial][object].start
-//                    let end = sceneTask.audioObjects[trial][object].end
-//
-//                    sceneTask.checkPoints[trial] = sceneTask.checkPoints[trial].filter({
-//                        $0.objectNumber != object || $0.type != .audio
-//                    })
-//
-//                    if activated {
-//                        let checkPoint = SceneTask.CheckPoint(time: start, action: .startAudio,
-//                                                              objectNumber: object, type: .audio)
-//                        let checkPoint2 = SceneTask.CheckPoint(time: end, action: .endAudio,
-//                                                               objectNumber: object, type: .audio)
-//                        sceneTask.checkPoints[trial] += [checkPoint, checkPoint2]
-//                    }
-//                    modifyFinalCheckPoint(trial: trial)
-//
-//                } else if position == 0 {
-//                    var textInt = min(value.float.toInt, listOfAudios.goodValues.count) - 1
-//                    textInt = max(textInt, 0)
-//                    let name = listOfAudios.goodValues[textInt].somethingId
-//                    if let audio = audios.first(where: { $0.name == name }) {
-//                        sceneTask.audioObjects[trial][object].url = audio.url
-//                    }
-//                }
             case .pureTone, .audio:
 
                 if position == 10 || position == 11 || position == 12 {
 
                     if position == 10 {
-                        sceneTask.sineWaveObjects[trial][object].activated = value.float > 0.5 ? true : false
+                        sceneTask.audioObjects[trial][object].activated = value.float > 0.5 ? true : false
                     } else if position == 11 {
-                        let first = sceneTask.sineWaveObjects[trial][object].startFloat
+                        let first = sceneTask.audioObjects[trial][object].startFloat
                         let second = value.float
-                        sceneTask.sineWaveObjects[trial][object].startFloat = second
-                        sceneTask.sineWaveObjects[trial][object].endFloat += (second - first)
-                        sceneTask.sineWaveObjects[trial][object].start =
-                            (sceneTask.sineWaveObjects[trial][object].startFloat * frameRate).toInt
-                        sceneTask.sineWaveObjects[trial][object].end =
-                            (sceneTask.sineWaveObjects[trial][object].endFloat * frameRate).toInt
+                        sceneTask.audioObjects[trial][object].startFloat = second
+                        sceneTask.audioObjects[trial][object].endFloat += (second - first)
+                        sceneTask.audioObjects[trial][object].start =
+                            (sceneTask.audioObjects[trial][object].startFloat * frameRate).toInt
+                        sceneTask.audioObjects[trial][object].end =
+                            (sceneTask.audioObjects[trial][object].endFloat * frameRate).toInt
                     } else {
-                        let startFloat = sceneTask.sineWaveObjects[trial][object].startFloat
-                        sceneTask.sineWaveObjects[trial][object].endFloat = startFloat + value.float
-                        sceneTask.sineWaveObjects[trial][object].end =
-                            (sceneTask.sineWaveObjects[trial][object].endFloat * frameRate).toInt
+                        let startFloat = sceneTask.audioObjects[trial][object].startFloat
+                        sceneTask.audioObjects[trial][object].endFloat = startFloat + value.float
+                        sceneTask.audioObjects[trial][object].end =
+                            (sceneTask.audioObjects[trial][object].endFloat * frameRate).toInt
                     }
-                    let activated = sceneTask.sineWaveObjects[trial][object].activated
-                    let start = sceneTask.sineWaveObjects[trial][object].start
-                    let end = sceneTask.sineWaveObjects[trial][object].end
+                    let activated = sceneTask.audioObjects[trial][object].activated
+                    let start = sceneTask.audioObjects[trial][object].start
+                    let end = sceneTask.audioObjects[trial][object].end
 
                     sceneTask.checkPoints[trial] = sceneTask.checkPoints[trial].filter({
-                        $0.objectNumber != object || $0.type != .sineWave
+                        $0.objectNumber != object || $0.type != .audio
                     })
 
                     if activated {
-                        let checkPoint = SceneTask.CheckPoint(time: start, action: .startSineWave,
-                                                              objectNumber: object, type: .sineWave)
-                        let checkPoint2 = SceneTask.CheckPoint(time: end, action: .endSineWave,
-                                                               objectNumber: object, type: .sineWave)
+                        let checkPoint = SceneTask.CheckPoint(time: start, action: .startSound,
+                                                              objectNumber: object, type: .audio)
+                        let checkPoint2 = SceneTask.CheckPoint(time: end, action: .endSound,
+                                                               objectNumber: object, type: .audio)
                         sceneTask.checkPoints[trial] += [checkPoint, checkPoint2]
                     }
                     modifyFinalCheckPoint(trial: trial)
-
                 } else if position == 0 {
-                    sceneTask.sineWaveObjects[trial][object].amplitude = value.float
+                    if variable.type == .audio {
+                        guard let listOfAudios = Flow.shared.test.listsOfValues.first(where: {
+                            $0.type == .audios }) else { return }
+                        var textInt = min(value.float.toInt, listOfAudios.goodValues.count) - 1
+                        textInt = max(textInt, 0)
+                        let name = listOfAudios.goodValues[textInt].somethingId
+                        if let audio = audios.first(where: { $0.name == name }) {
+                            sceneTask.audioObjects[trial][object].url = audio.url
+                        }
+                    } else {
+                        sceneTask.audioObjects[trial][object].frequency = value.float
+                    }
                 } else if position == 1 {
-                    sceneTask.sineWaveObjects[trial][object].frequency = value.float
+                    sceneTask.audioObjects[trial][object].amplitude = value.float
+                } else if position == 2 {
+                    sceneTask.audioObjects[trial][object].channel = value.float
                 }
-                modifySineWaveFloats(trial: trial, object: object)
+                modifyAudioFloats(trial: trial, object: object)
             case .timeDependent:
                 if let update = variable.update, let parameter = variable.parameter {
                     update.parameters[trial][parameter] = value.float
                 }
             }
-
             if variable.polarRadius {
                 polarPositions.insert(PolarPosition(a: object, b: position))
             } else if variable.polarAngle {

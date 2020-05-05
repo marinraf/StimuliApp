@@ -134,21 +134,17 @@ class SceneTask {
         case endScene
         case startText
         case endText
-//        case startAudio
-//        case endAudio
-//        case endAudioTotal
         case startVideo
         case endVideo
-        case startSineWave
-        case endSineWave
+        case startSound
+        case endSound
     }
 
     enum CheckPointType {
         case endScene
         case text
-        case audio
         case video
-        case sineWave
+        case audio
     }
 
     struct CheckPoint {
@@ -180,11 +176,10 @@ class SceneTask {
 
     var backgroundFloats: [[Float]] = [] //trial * variable
     var metalFloats: [[[Float]]] = [] //trial * object * variable
-    var sineWaveFloats: [[Float]] = [] //trial * all objects and variables
+    var audioFloats: [[Float]] = [] //trial * all objects and variables
     var textObjects: [[TextObject]] = [] //trial * object
     var videoObjects: [[VideoObject]] = [] //trial * object
-//    var audioObjects: [[AudioObject]] = [] //trial * object
-    var sineWaveObjects: [[SineWaveObject]] = [] //trial * object
+    var audioObjects: [[AudioObject]] = [] //trial * object
     var images: [[Int]] = [] //trial * object
 
     var numberOfTrials: Int = 1

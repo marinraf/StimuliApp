@@ -176,14 +176,14 @@ extension StimuliType {
         let diameter1 = createProperty(name: "diameter1",
                                        info: "The diameter of type1 dots.",
                                        measure: .size,
-                                       value: 10)
+                                       value: 8)
 
         let direction1 = Property(name: "direction1",
                                   info: "Possibles ways to establish the dot direction for type1 dots.",
                                   propertyType: .direction,
                                   unitType: .decimal,
                                   fixedValues: FixedDirection.allCases.map({ $0.name }),
-                                  selectedValue: 0)
+                                  selectedValue: 1)
 
         let color1 = createProperty(name: "color1",
                                     info: "The color of type1 dots.",
@@ -202,14 +202,14 @@ extension StimuliType {
         let diameter2 = createProperty(name: "diameter2",
                                        info: "The diameter of type2 dots.",
                                        measure: .size,
-                                       value: 10)
+                                       value: 8)
 
         let direction2 = Property(name: "direction2",
                                   info: "Possibles ways to establish the dot direction for type2 dots.",
                                   propertyType: .direction,
                                   unitType: .decimal,
                                   fixedValues: FixedDirection.allCases.map({ $0.name }),
-                                  selectedValue: 1)
+                                  selectedValue: 0)
 
         let color2 = createProperty(name: "color2",
                                     info: "The color of type2 dots.",

@@ -21,7 +21,7 @@ extension Task {
                                               type: .endScene)
 
         sceneZeroTask.metalFloats = [[]]
-        sceneZeroTask.sineWaveFloats = [Array(repeating: 0, count: Constants.numberOfSineWaveFloats)]
+        sceneZeroTask.audioFloats = [Array(repeating: 0, count: Constants.numberOfAudioFloats)]
         sceneZeroTask.backgroundFloats = [[]]
         sceneZeroTask.startTimesInFrames = [[]]
         sceneZeroTask.durationTimesInFrames = [[]]

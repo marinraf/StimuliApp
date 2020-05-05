@@ -32,8 +32,8 @@ extension Task {
         }
 
         sceneTask.metalFloats = Array(repeating: [], count: sceneTask.numberOfTrials)
-        let sineWaveArray: [Float] = Array(repeating: 0, count: Constants.numberOfSineWaveFloats)
-        sceneTask.sineWaveFloats = Array(repeating: sineWaveArray, count: sceneTask.numberOfTrials)
+        let audioArray: [Float] = Array(repeating: 0, count: Constants.numberOfAudioFloats)
+        sceneTask.audioFloats = Array(repeating: audioArray, count: sceneTask.numberOfTrials)
 
         var dots = 0
         var videos = 0
@@ -58,8 +58,7 @@ extension Task {
             sceneTask.images.append([])
             sceneTask.textObjects.append([])
             sceneTask.videoObjects.append([])
-//            sceneTask.audioObjects.append([])
-            sceneTask.sineWaveObjects.append([])
+            sceneTask.audioObjects.append([])
         }
 
         for (index, object) in scene.objects.enumerated() {
@@ -103,8 +102,6 @@ extension Task {
                 }
                 texts += 1
 
-
-
             } else if object.type == .audio || object.type == .pureTone {
 
                 var type: TypeData = .audio
@@ -121,32 +118,11 @@ extension Task {
                 } else {
                     tones += 1
                 }
-                if tones + audios > Constants.maxNumberOfSineWaveObjects {
+                if tones + audios > Constants.maxNumberOfAudioObjects {
                     return """
-                    ERROR: the maximum number of video objects is: \(Constants.maxNumberOfSineWaveObjects).
+                    ERROR: the maximum number of video objects is: \(Constants.maxNumberOfAudioObjects).
                     """
                 }
-
-
-
-
-//            } else if object.type == .audio {
-//                let result = createAudio(from: object, objectNumber: audios)
-//                if result != "" {
-//                    return result
-//                }
-//                audios += 1
-//            } else if object.type == .pureTone {
-//                createPureTone(from: object, objectNumber: tones)
-//                tones += 1
-//                if tones > Constants.maxNumberOfSineWaveObjects {
-//                    return """
-//                    ERROR: the maximum number of video objects is: \(Constants.maxNumberOfSineWaveObjects).
-//                    """
-//                }
-
-
-
             } else {
                 createMetal(from: object, objectNumber: metals)
                 metals += 1
@@ -163,7 +139,7 @@ extension Task {
 
         createBackground(from: scene)
         createFinalCheckPoints(from: scene)
-        createSineWaveFloats()
+        createAudioFloats()
         createResponse(from: scene)
 
         firstUpdateSceneTask(sceneTask)
@@ -335,7 +311,6 @@ extension Task {
             }
         }
 
-
         //contrast properties
         let contrastValues = Array(repeating: Float(stimulus.contrastProperty.selectedValue), count: trials) //39
         var contrastPropValues = Array(repeating: zeroArray, count: 2) //40...41
@@ -503,7 +478,6 @@ extension Task {
 
         if let maxTime = sceneTask.checkPoints[trial].last?.time {
             modifyPureTonesDuration(trial: trial, maxTime: maxTime)
-//            modifyAudioDuration(trial: trial, maxTime: maxTime)
         }
 
         sceneTask.checkPoints[trial] = sceneTask.checkPoints[trial].sorted(by: { $0.time < $1.time })
@@ -511,13 +485,13 @@ extension Task {
 
     private func modifyPureTonesDuration(trial: Int, maxTime: Int) {
         let maxTimeFloat = Float(maxTime) / Float(Flow.shared.settings.frameRate)
-        for i in 0 ..< sceneTask.sineWaveObjects[trial].count {
+        for i in 0 ..< sceneTask.audioObjects[trial].count {
 
-            let old = sceneTask.sineWaveObjects[trial][i]
-            let end = max(sceneTask.sineWaveObjects[trial][i].end, maxTime)
-            let endFloat = max(sceneTask.sineWaveObjects[trial][i].endFloat, maxTimeFloat)
+            let old = sceneTask.audioObjects[trial][i]
+            let end = min(sceneTask.audioObjects[trial][i].end, maxTime)
+            let endFloat = min(sceneTask.audioObjects[trial][i].endFloat, maxTimeFloat)
 
-            let new = SineWaveObject(activated: old.activated,
+            let new = AudioObject(activated: old.activated,
                                      dependCorrection: old.dependCorrection,
                                      start: old.start,
                                      end: end,
@@ -528,23 +502,9 @@ extension Task {
                                      channel: old.channel,
                                      url: old.url)
 
-            sceneTask.sineWaveObjects[trial][i] = new
+            sceneTask.audioObjects[trial][i] = new
         }
     }
-
-//    private func modifyAudioDuration(trial: Int, maxTime: Int) {
-//        for i in 0 ..< sceneTask.checkPoints[trial].count where sceneTask.checkPoints[trial][i].action == .endAudio {
-//            let old = sceneTask.checkPoints[trial][i]
-//            let time = max(maxTime - 1, old.time)
-//
-//            let new = SceneTask.CheckPoint(time: time,
-//                                           action: old.action,
-//                                           objectNumber: old.objectNumber,
-//                                           type: old.type)
-//
-//            sceneTask.checkPoints[trial][i] = new
-//        }
-//    }
 
     private func createImage(from object: Object, objectNumber: Int) -> String {
         guard let listOfImages = Flow.shared.test.listsOfValues.first(where: { $0.type == .images }) else {
@@ -900,7 +860,7 @@ extension Task {
             case .pureTone:
                 frequencies = getValues(from: stimulus.typeProperty.properties[0].properties[0],
                                         object: object,
-                                        position: 1,
+                                        position: 0,
                                         objectNumber: objectNumber,
                                         type: .pureTone)[0]
             default:
@@ -941,23 +901,23 @@ extension Task {
                 url = audios.first(where: { $0.name == audioNames[i] })?.url
             }
 
-            let sineWaveObject = SineWaveObject(activated: activated[i],
-                                                dependCorrection: dependCorrection,
-                                                start: start[i],
-                                                end: end[i],
-                                                startFloat: startFloats[i],
-                                                endFloat: endFloats[i],
-                                                amplitude: amplitudes[i],
-                                                frequency: frequencies[i],
-                                                channel: channels[i],
-                                                url: url)
+            let audioObject = AudioObject(activated: activated[i],
+                                          dependCorrection: dependCorrection,
+                                          start: start[i],
+                                          end: end[i],
+                                          startFloat: startFloats[i],
+                                          endFloat: endFloats[i],
+                                          amplitude: amplitudes[i],
+                                          frequency: frequencies[i],
+                                          channel: channels[i],
+                                          url: url)
 
-            sceneTask.sineWaveObjects[i].append(sineWaveObject)
+            sceneTask.audioObjects[i].append(audioObject)
 
-            let checkPoint = SceneTask.CheckPoint(time: start[i], action: .startSineWave,
-                                                  objectNumber: objectNumber, type: .sineWave)
-            let checkPoint2 = SceneTask.CheckPoint(time: end[i], action: .endSineWave,
-                                                   objectNumber: objectNumber, type: .sineWave)
+            let checkPoint = SceneTask.CheckPoint(time: start[i], action: .startSound,
+                                                  objectNumber: objectNumber, type: .audio)
+            let checkPoint2 = SceneTask.CheckPoint(time: end[i], action: .endSound,
+                                                   objectNumber: objectNumber, type: .audio)
 
             if activated[i] {
                 sceneTask.checkPoints[i] += [checkPoint, checkPoint2]
@@ -967,69 +927,69 @@ extension Task {
     }
 
 
-    private func createSineWaveFloats() {
+    private func createAudioFloats() {
 
         let trials = sectionTask.numberOfTrials
         let rampTime = Flow.shared.settings.rampTime
         let audioRate = Float(Flow.shared.settings.audioRate)
 
         for i in 0 ..< trials {
-            let sineWaveObjectNumber = sceneTask.sineWaveObjects[i].count
-            sceneTask.sineWaveFloats[i][0] = rampTime * audioRate
-            sceneTask.sineWaveFloats[i][1] = Float(sineWaveObjectNumber)
+            let audioObjectNumber = sceneTask.audioObjects[i].count
+            sceneTask.audioFloats[i][0] = rampTime * audioRate
+            sceneTask.audioFloats[i][1] = Float(audioObjectNumber)
 
-            for j in 0 ..< sineWaveObjectNumber {
+            for j in 0 ..< audioObjectNumber {
 
                 var audioNumber: Float = 0
 
-                if let url = sceneTask.sineWaveObjects[i][j].url {
+                if let url = sceneTask.audioObjects[i][j].url {
                     if let idx = Task.shared.audios.firstIndex(where: { $0.url == url }) {
                         audioNumber = Float(idx)
                     }
                 }
 
-                sceneTask.sineWaveFloats[i][j + 3] = sceneTask.sineWaveObjects[i][j].startFloat * audioRate
-                sceneTask.sineWaveFloats[i][j + 13] = 0
-                sceneTask.sineWaveFloats[i][j + 23] = sceneTask.sineWaveObjects[i][j].frequency
-                sceneTask.sineWaveFloats[i][j + 33] = sceneTask.sineWaveObjects[i][j].amplitude
-                sceneTask.sineWaveFloats[i][j + 43] = sceneTask.sineWaveObjects[i][j].channel
-                if sceneTask.sineWaveObjects[i][j].activated || sceneTask.sineWaveObjects[i][j].dependCorrection {
-                    sceneTask.sineWaveFloats[i][j + 13] = sceneTask.sineWaveObjects[i][j].endFloat * audioRate
+                sceneTask.audioFloats[i][j + 3] = sceneTask.audioObjects[i][j].startFloat * audioRate
+                sceneTask.audioFloats[i][j + 13] = 0
+                sceneTask.audioFloats[i][j + 23] = sceneTask.audioObjects[i][j].frequency
+                sceneTask.audioFloats[i][j + 33] = sceneTask.audioObjects[i][j].amplitude
+                sceneTask.audioFloats[i][j + 43] = sceneTask.audioObjects[i][j].channel
+                if sceneTask.audioObjects[i][j].activated || sceneTask.audioObjects[i][j].dependCorrection {
+                    sceneTask.audioFloats[i][j + 13] = sceneTask.audioObjects[i][j].endFloat * audioRate
                 }
-                sceneTask.sineWaveFloats[i][j + 53] = audioNumber
+                sceneTask.audioFloats[i][j + 53] = audioNumber
             }
 
-            sceneTask.sineWaveFloats[i][2] = sceneTask.sineWaveFloats[i][13 ..< 23].max() ?? 0
+            sceneTask.audioFloats[i][2] = sceneTask.audioFloats[i][13 ..< 23].max() ?? 0
 
             for j in 3 ..< 23 {
-                sceneTask.sineWaveFloats[i][j] = sceneTask.sineWaveFloats[i][2] - sceneTask.sineWaveFloats[i][j]
+                sceneTask.audioFloats[i][j] = sceneTask.audioFloats[i][2] - sceneTask.audioFloats[i][j]
             }
         }
     }
 
-    func modifySineWaveFloats(trial: Int, object: Int) {
+    func modifyAudioFloats(trial: Int, object: Int) {
         let audioRate = Float(Flow.shared.settings.audioRate)
 
-        sceneTask.sineWaveFloats[trial][object + 3] = sceneTask.sineWaveObjects[trial][object].startFloat * audioRate
-        sceneTask.sineWaveFloats[trial][object + 13] = 0
-        sceneTask.sineWaveFloats[trial][object + 23] = sceneTask.sineWaveObjects[trial][object].frequency
-        sceneTask.sineWaveFloats[trial][object + 33] = sceneTask.sineWaveObjects[trial][object].amplitude
-        sceneTask.sineWaveFloats[trial][object + 43] = sceneTask.sineWaveObjects[trial][object].channel
-        if sceneTask.sineWaveObjects[trial][object].activated {
-            sceneTask.sineWaveFloats[trial][object + 13] = sceneTask.sineWaveObjects[trial][object].endFloat * audioRate
+        sceneTask.audioFloats[trial][object + 3] = sceneTask.audioObjects[trial][object].startFloat * audioRate
+        sceneTask.audioFloats[trial][object + 13] = 0
+        sceneTask.audioFloats[trial][object + 23] = sceneTask.audioObjects[trial][object].frequency
+        sceneTask.audioFloats[trial][object + 33] = sceneTask.audioObjects[trial][object].amplitude
+        sceneTask.audioFloats[trial][object + 43] = sceneTask.audioObjects[trial][object].channel
+        if sceneTask.audioObjects[trial][object].activated {
+            sceneTask.audioFloats[trial][object + 13] = sceneTask.audioObjects[trial][object].endFloat * audioRate
         }
 
-        let oldDuration = sceneTask.sineWaveFloats[trial][2]
+        let oldDuration = sceneTask.audioFloats[trial][2]
 
         for j in 0 ..< 10 where j != object {
-            sceneTask.sineWaveFloats[trial][j + 3] = oldDuration - sceneTask.sineWaveFloats[trial][j + 3]
-            sceneTask.sineWaveFloats[trial][j + 13] = oldDuration - sceneTask.sineWaveFloats[trial][j + 13]
+            sceneTask.audioFloats[trial][j + 3] = oldDuration - sceneTask.audioFloats[trial][j + 3]
+            sceneTask.audioFloats[trial][j + 13] = oldDuration - sceneTask.audioFloats[trial][j + 13]
         }
 
-        sceneTask.sineWaveFloats[trial][2] = sceneTask.sineWaveFloats[trial][13 ..< 23].max() ?? 0
+        sceneTask.audioFloats[trial][2] = sceneTask.audioFloats[trial][13 ..< 23].max() ?? 0
 
         for j in 3 ..< 23 {
-            sceneTask.sineWaveFloats[trial][j] = sceneTask.sineWaveFloats[trial][2] - sceneTask.sineWaveFloats[trial][j]
+            sceneTask.audioFloats[trial][j] = sceneTask.audioFloats[trial][2] - sceneTask.audioFloats[trial][j]
         }
     }
 

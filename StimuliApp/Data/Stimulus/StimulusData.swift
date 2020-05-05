@@ -233,7 +233,7 @@ struct StimulusData {
                                       info: Texts.distanceDots,
                                       propertyType: .timeFloat,
                                       unitType: .size,
-                                      float: 20)
+                                      float: 10)
 
         let distanceAngle = Property(name: "distanceAngle",
                                      info: Texts.distanceAngle,

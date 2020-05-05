@@ -20,13 +20,10 @@ protocol DisplayRenderDelegate: class {
     func deleteText(text: TextObject)
     func playVideo(video: VideoObject)
     func stopVideo()
-//    func load(audios: [URL?])
-//    func playAudio(audio: AudioObject)
-//    func stopAudio()
-//    func fadeAudio()
-    func playSineWaves(audio: [Float])
-    func playSineWave()
-    func stopSineWave()
+    func playAudios(audio: [Float])
+    func playAudio()
+    func stopAudio()
+    func stopOneAudio()
     func showKeyboard(type: FixedKeyboard, inTitle: Bool)
     func settingTimeLabel()
     func settingKeyResponses()
@@ -58,6 +55,7 @@ class DisplayRender {
 
     //controlling things
     var timeInFrames: Int = 0
+    var startRealTime0: Double = 0
     var startRealTime: Double = 0
     var endRealTime: Double = 0
     var sectionNumber: Int = 0
@@ -93,12 +91,12 @@ class DisplayRender {
 
         // in the first scene we give time to initialize the device and everything, so we use a queue
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-//            self.displayRenderDelegate?.load(audios: Task.shared.audios.map({ $0.url }))
             self.displayRenderDelegate?.addBackButton(position: Task.shared.xButtonPosition)
         })
     }
 
     func initScene() {
+        startRealTime0 = CACurrentMediaTime()
         displayRenderDelegate?.clear()
 
         timeInFrames = 0
@@ -130,9 +128,7 @@ class DisplayRender {
 
         displayRenderDelegate?.settingTimeLabel()
 
-//        displayRenderDelegate?.stopAudio()
-
-        displayRenderDelegate?.playSineWaves(audio: Task.shared.sceneTask.sineWaveFloats[trial])
+        displayRenderDelegate?.playAudios(audio: Task.shared.sceneTask.audioFloats[trial])
 
         startRealTime = CACurrentMediaTime()
     }
@@ -141,11 +137,6 @@ class DisplayRender {
         guard !inactive else {
             return false
         }
-
-//        if nextStopAudio {
-//            nextStopAudio = false
-//            displayRenderDelegate?.stopAudio()
-//        }
 
         if responded {
             responded = false
@@ -225,26 +216,17 @@ class DisplayRender {
         case .endText:
             displayRenderDelegate?.deleteText(text: Task.shared.sceneTask.textObjects[trial][objectNumber])
             return false
-//        case .startAudio:
-//            displayRenderDelegate?.playAudio(audio: Task.shared.sceneTask.audioObjects[trial][objectNumber])
-//            return false
-//        case .endAudio:
-//            displayRenderDelegate?.fadeAudio()
-//            return false
-//        case .endAudioTotal:
-//            displayRenderDelegate?.stopAudio()
-//            return false
         case .startVideo:
             displayRenderDelegate?.playVideo(video: Task.shared.sceneTask.videoObjects[trial][objectNumber])
             return false
         case .endVideo:
             displayRenderDelegate?.stopVideo()
             return false
-        case .startSineWave:
-            displayRenderDelegate?.playSineWave()
+        case .startSound:
+            displayRenderDelegate?.playAudio()
             return false
-        case .endSineWave:
-            displayRenderDelegate?.stopSineWave()
+        case .endSound:
+            displayRenderDelegate?.stopOneAudio()
             return false
         }
     }
@@ -258,20 +240,14 @@ class DisplayRender {
             displayRenderDelegate?.deleteText(text: Task.shared.sceneTask.textObjects[trial][objectNumber])
         case .endText:
             displayRenderDelegate?.drawText(text: Task.shared.sceneTask.textObjects[trial][objectNumber])
-//        case .startAudio:
-//            displayRenderDelegate?.stopAudio()
-//        case .endAudio:
-//            break
-//        case .endAudioTotal:
-//            displayRenderDelegate?.playAudio(audio: Task.shared.sceneTask.audioObjects[trial][objectNumber])
         case .startVideo:
             displayRenderDelegate?.stopVideo()
         case .endVideo:
             displayRenderDelegate?.playVideo(video: Task.shared.sceneTask.videoObjects[trial][objectNumber])
-        case .startSineWave:
-            displayRenderDelegate?.stopSineWave()
-        case .endSineWave:
-            displayRenderDelegate?.playSineWave()
+        case .startSound:
+            displayRenderDelegate?.stopOneAudio()
+        case .endSound:
+            displayRenderDelegate?.playAudio()
         }
     }
 
@@ -333,7 +309,7 @@ class DisplayRender {
 
     func changeToNextSceneInSection(realTimeInFrames: Int) {
         Task.shared.sceneTask.saveSceneData(timeInFrames: realTimeInFrames,
-                                            startTime: startRealTime,
+                                            startTime: startRealTime0,
                                             trial: Task.shared.sectionTask.currentTrial)
         Task.shared.sectionTask.sceneNumber += 1
         initScene()
@@ -341,7 +317,7 @@ class DisplayRender {
 
     func lastSceneOfSection(realTimeInFrames: Int) {
         Task.shared.sceneTask.saveSceneData(timeInFrames: realTimeInFrames,
-                                            startTime: startRealTime,
+                                            startTime: startRealTime0,
                                             trial: Task.shared.sectionTask.currentTrial)
         Task.shared.sectionTask.sceneNumber = 0
         if Task.shared.sectionTask.last == 1 {

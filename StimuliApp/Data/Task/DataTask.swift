@@ -38,15 +38,7 @@ struct VideoObject {
     var url: URL?
 }
 
-//struct AudioObject {
-//    var activated: Bool
-//    var start: Int
-//    var end: Int
-//    var url: URL?
-//    var volume: Float
-//}
-
-struct SineWaveObject {
+struct AudioObject {
     var activated: Bool
     var dependCorrection: Bool
     var start: Int

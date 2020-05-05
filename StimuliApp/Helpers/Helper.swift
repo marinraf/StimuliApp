@@ -20,12 +20,12 @@ struct Constants {
     static let maxNumberOfDots: Int = 100000
     static let maxNumberOfDotObjects: Int = 2
     static let maxNumberOfVideoObjects: Int = 1
-    static let maxNumberOfSineWaveObjects: Int = 10
-    static let maxNumberOfAudios: Int = 20
+    static let maxNumberOfAudioObjects: Int = 10 //number of audio objects in a scene
+    static let maxNumberOfAudios: Int = 20 // number of audios in the list
     static let maxLengthSequence: Int = 10000
     static let maxNumberOfTrials: Int = 5000
     static let numberOfMetalFloats: Int = 55
-    static let numberOfSineWaveFloats: Int = 63
+    static let numberOfAudioFloats: Int = 63
     static let numberOfDotsFloats: Int = 4 //type, duration, positionX, positionY
     static let sceneZeroDuration: Int = 3 //in seconds
     static let sceneZeroDurationShort: Int = 2 //in seconds
@@ -91,7 +91,7 @@ struct MetalValues {
     static let modulatorRotation = 54
 }
 
-struct SineWaveValues {
+struct AudioValues {
     static let changingTones = 0
     static let numberOfAudios = 1
     static let toneCounter = 2

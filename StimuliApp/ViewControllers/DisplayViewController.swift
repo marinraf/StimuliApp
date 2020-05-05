@@ -41,7 +41,6 @@ class DisplayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print(Flow.shared.settings.brightness)
         Flow.shared.enterFullScreen()
 
         //audio
@@ -170,7 +169,6 @@ extension DisplayViewController: DisplayRenderDelegate {
     }
 
     func end() {
-//        stopAudio()
         stopVideo()
 
         Task.shared.saveTaskDataTime()
@@ -200,7 +198,6 @@ extension DisplayViewController: DisplayRenderDelegate {
     }
 
     func clear() {
-//        stopAudio()
         stopVideo()
         for i in addedViewsTag {
             if let viewWithTag = self.view.viewWithTag(i) {
@@ -213,8 +210,7 @@ extension DisplayViewController: DisplayRenderDelegate {
 
     func pause() {
         player?.pause()
-        audioSystem.pauseSong()
-        audioSystem.pauseSound()
+        audioSystem.pauseAudio()
         switch Task.shared.preview {
         case .no, .previewTest:
             showAlertCancelTest(resume: { _ in self.resumeFromPause() }, end: { _ in self.end() })
@@ -265,8 +261,7 @@ extension DisplayViewController: DisplayRenderDelegate {
     func showKeyboard(type: FixedKeyboard, inTitle: Bool) {
         self.inTitle = inTitle
         player?.pause()
-        audioSystem.pauseSong()
-        audioSystem.pauseSound()
+        audioSystem.pauseAudio()
         textField.isHidden = false
         numberKeyboard = type == .numeric ? true : false
         textField.text = ""
@@ -279,8 +274,7 @@ extension DisplayViewController: DisplayRenderDelegate {
         displayRender?.inactive = false
         displayRender?.inactiveToMeasureFrame = false
         player?.play()
-        audioSystem.resumeSong()
-        audioSystem.resumeSound()
+        audioSystem.resumeAudio()
     }
 
     func addVideoPlayer(videoUrl: URL, to view: UIView) {
@@ -332,31 +326,11 @@ extension DisplayViewController: DisplayRenderDelegate {
         }
     }
 
-//    func load(audios: [URL?]) {
-//        audioSystem.loadAudios(songs: audios)
-//    }
-
-//    func playAudio(audio: AudioObject) {
-//        guard audio.activated else { return }
-//
-//        guard let audioToPlay = audio.url else { return }
-//        audioSystem.playSong(song: audioToPlay, volume: audio.volume)
-//        audioPlayer = audioSystem.audioPlayer
-//    }
-//
-//    func stopAudio() {
-//        audioSystem.stopSong()
-//    }
-//
-//    func fadeAudio() {
-//        audioSystem.fadeOutSong()
-//    }
-
-    func playSineWaves(audio: [Float]) {
-        if audio[SineWaveValues.numberOfAudios] > 0.5 {
-            audioSystem.playSound(audio: audio)
+    func playAudios(audio: [Float]) {
+        if audio[AudioValues.numberOfAudios] > 0.5 {
+            audioSystem.playAudios(audio: audio)
         } else {
-            audioSystem.stopSound()
+            audioSystem.stopAudio()
         }
     }
 
@@ -364,10 +338,12 @@ extension DisplayViewController: DisplayRenderDelegate {
          _ = keyCommands
     }
 
-    func playSineWave() {}
+    func playAudio() {}
 
-    func stopSineWave() {
-        audioSystem.stopSound()
+    func stopOneAudio() {}
+
+    func stopAudio() {
+        audioSystem.stopAudio()
     }
 
     func settingTimeLabel() {}
@@ -416,8 +392,7 @@ extension DisplayViewController: UITextFieldDelegate {
             displayRender?.inactiveToMeasureFrame = false
             let startTime = displayRender?.startRealTime ?? 0
             Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-            stopSineWave()
-//            fadeAudio()
+            stopAudio()
             displayRender?.responded = true
             textField.isHidden = true
             button.isHidden = false
@@ -472,8 +447,7 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[0].1
         let startTime = displayRender?.startRealTime ?? 0
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-        stopSineWave()
-//        fadeAudio()
+        stopAudio()
         displayRender?.responded = true
     }
 
@@ -481,8 +455,7 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[1].1
         let startTime = displayRender?.startRealTime ?? 0
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-        stopSineWave()
-//        fadeAudio()
+        stopAudio()
         displayRender?.responded = true
     }
 
@@ -490,8 +463,7 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[2].1
         let startTime = displayRender?.startRealTime ?? 0
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-        stopSineWave()
-//        fadeAudio()
+        stopAudio()
         displayRender?.responded = true
     }
 
@@ -499,8 +471,7 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[3].1
         let startTime = displayRender?.startRealTime ?? 0
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-        stopSineWave()
-//        fadeAudio()
+        stopAudio()
         displayRender?.responded = true
     }
 
@@ -508,8 +479,7 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[4].1
         let startTime = displayRender?.startRealTime ?? 0
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-        stopSineWave()
-//        fadeAudio()
+        stopAudio()
         displayRender?.responded = true
     }
 
@@ -517,8 +487,7 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[5].1
         let startTime = displayRender?.startRealTime ?? 0
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-        stopSineWave()
-//        fadeAudio()
+        stopAudio()
         displayRender?.responded = true
     }
 
@@ -526,8 +495,7 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[6].1
         let startTime = displayRender?.startRealTime ?? 0
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-        stopSineWave()
-//        fadeAudio()
+        stopAudio()
         displayRender?.responded = true
     }
 
@@ -535,8 +503,7 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[7].1
         let startTime = displayRender?.startRealTime ?? 0
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-        stopSineWave()
-//        fadeAudio()
+        stopAudio()
         displayRender?.responded = true
     }
 
@@ -544,8 +511,7 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[8].1
         let startTime = displayRender?.startRealTime ?? 0
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-        stopSineWave()
-//        fadeAudio()
+        stopAudio()
         displayRender?.responded = true
     }
 
@@ -553,8 +519,7 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[9].1
         let startTime = displayRender?.startRealTime ?? 0
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
-        stopSineWave()
-//        fadeAudio()
+        stopAudio()
         displayRender?.responded = true
     }
 }
