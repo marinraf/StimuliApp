@@ -369,7 +369,7 @@ ushort wedge(Object object, float2 point)
 ushort getInside(Object object, float2 point, ushort shape)
 {
     if (shape == 0) {
-        return 0;
+        return rectangle(object, point);
     } else if (shape == 1) {
         return ellipse(object, point);
     } else if (shape == 2) {
