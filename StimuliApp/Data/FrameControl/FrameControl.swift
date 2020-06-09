@@ -92,7 +92,7 @@ class FrameControl {
 
         self.numberOfErrors = 0
 
-        self.debug = true
+        self.debug = false
 
         if maximumFrameRate == 120 {
             if frameRate == 60 {
@@ -175,6 +175,8 @@ class FrameControl {
         #endif
 
         delay = constantDelay - diff
+
+        print(delay)
 
         let responded = displayRender.responded
 

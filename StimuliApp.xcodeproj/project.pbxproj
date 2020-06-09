@@ -10,6 +10,7 @@
 		741000122466EB2700DCF20F /* FrameControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741000112466EB2700DCF20F /* FrameControl.swift */; };
 		741BDA52241E986100F6E3BC /* EditListOfValuesBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741BDA51241E986100F6E3BC /* EditListOfValuesBlock.swift */; };
 		741BDA54241F9CAA00F6E3BC /* SelectListOfValuesBlockMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741BDA53241F9CAA00F6E3BC /* SelectListOfValuesBlockMenu.swift */; };
+		745E2115248FD4CF00D28721 /* PositionsBufferProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745E2114248FD4CF00D28721 /* PositionsBufferProvider.swift */; };
 		7471DE5F23BBAB8300220DCC /* MacBundle.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 7471DE5923BBAB2E00220DCC /* MacBundle.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7471DE6823BBB03000220DCC /* MacApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7471DE6423BBAC7C00220DCC /* MacApp.m */; };
 		74AEA811243F1E4F00E326F8 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 74AEA810243F1E4F00E326F8 /* .gitignore */; };
@@ -162,6 +163,7 @@
 		741000112466EB2700DCF20F /* FrameControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameControl.swift; sourceTree = "<group>"; };
 		741BDA51241E986100F6E3BC /* EditListOfValuesBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListOfValuesBlock.swift; sourceTree = "<group>"; };
 		741BDA53241F9CAA00F6E3BC /* SelectListOfValuesBlockMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectListOfValuesBlockMenu.swift; sourceTree = "<group>"; };
+		745E2114248FD4CF00D28721 /* PositionsBufferProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionsBufferProvider.swift; sourceTree = "<group>"; };
 		7471DE5923BBAB2E00220DCC /* MacBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		7471DE5B23BBAB2E00220DCC /* MacBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MacBundle-Info.plist"; sourceTree = "<group>"; };
 		7471DE6323BBAC7C00220DCC /* MacApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MacApp.h; path = "StimuliApp/Supporting Files/MacApp.h"; sourceTree = SOURCE_ROOT; };
@@ -702,6 +704,7 @@
 				9683BF0722A7AA9D00D7FA1B /* Compute.metal */,
 				CC4BF6C922A916B5006C4822 /* Functions.metal */,
 				74B409C1243EF8CD0053AD69 /* Functions.h */,
+				745E2114248FD4CF00D28721 /* PositionsBufferProvider.swift */,
 			);
 			path = RenderMetal;
 			sourceTree = "<group>";
@@ -990,6 +993,7 @@
 				9696A6B121E3D52800FE5C56 /* MainViewController.swift in Sources */,
 				96940E6F229A915700CD1734 /* CalculateSectionZero.swift in Sources */,
 				9676A2C1222454E8001594FF /* EditSectionMenu.swift in Sources */,
+				745E2115248FD4CF00D28721 /* PositionsBufferProvider.swift in Sources */,
 				74B409C0243EF7F00053AD69 /* LokiHeader.metal in Sources */,
 				CC460C6E21E4C24200475EC5 /* SettingsMenu.swift in Sources */,
 				9696A6B421E3D63E00FE5C56 /* Helper.swift in Sources */,
