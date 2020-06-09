@@ -156,7 +156,7 @@ class SceneTask {
 
     var id: String = ""
     var name: String = ""
-    var calculateLongFrames: Bool = true
+    var frameControl: Bool = true
     var seeds: [Seed] = [] //trial
 
     var activatedBools: [[Bool]] = [] //trial * object
@@ -199,6 +199,8 @@ class SceneTask {
     var responseFirstUnit: Unit = .none
     var responseSecondUnit: Unit = .none
     var responseStartInFrames: Int = 0
+    var responseEndInFrames: Int = 0
+    var responseOutWindow: Bool = false
     var responseOrigin: (x: Float, y: Float) = (0, 0)
     var responseObject: [Float?] = [] //object or left right or up bottom
     var responseKeyboard: FixedKeyboard = .normal
@@ -209,7 +211,6 @@ class SceneTask {
     var isResponse: Bool = false
 
     var userResponses: [UserResponse] = [] //trial
-    var durationInFrames: [Int] = [] //trial
     var realStartTime: [Double] = [] // trial
     var realEndTime: [Double] = [] // trial
 
@@ -219,13 +220,19 @@ class SceneTask {
         return continuousResolution ? numberOfLayers + 2 : numberOfLayers - 1
     }
 
-    func saveSceneData(timeInFrames: Int, startTime: Double, trial: Int) {
+    func saveSceneTime(time: Double) {
+        let count = realEndTime.count
+        if count > 0 {
+            realEndTime[count - 1] = time
+        }
+    }
+
+    func saveSceneData(startTime: Double, trial: Int, badTiming: Bool) {
 
         userResponses.append(Task.shared.userResponse)
 
-        durationInFrames.append(timeInFrames)
         realStartTime.append(startTime)
-        realEndTime.append(CACurrentMediaTime() - startTime)
+        realEndTime.append(startTime)
 
         if isResponse {
             let valueType = Task.shared.sectionTask.sectionValueType
@@ -281,7 +288,9 @@ class SceneTask {
             }
 
             if let distance = distance {
-                if distance < Task.shared.sectionTask.sectionValueDifference {
+                if badTiming {
+                    Task.shared.sectionTask.last = 0
+                } else if distance < Task.shared.sectionTask.sectionValueDifference {
                     Task.shared.sectionTask.last = 1
                 } else {
                     Task.shared.sectionTask.last = 0

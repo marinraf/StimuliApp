@@ -464,7 +464,7 @@ enum Device {
         case .iPadPro9Inch: return 500
         case .iPadPro12Inch: return 600
         case .iPadPro12Inch2: return 600
-        case .iPadPro10Inch: return 600
+        case .iPadPro10Inch: return nil
         case .iPadPro11Inch: return 600
         case .iPadPro12Inch3: return 600
         case .iPadPro11Inch2: return 600

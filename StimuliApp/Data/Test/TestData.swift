@@ -33,10 +33,10 @@ struct TestData {
     }
 
     static func makeBrightnessProperty(float: Float) -> Property {
-        return Property(name: "brightness",
+        return Property(name: "luminance",
                         info: Texts.brightness,
                         propertyType: .simpleFloat,
-                        unitType: .valueFrom0to1,
+                        unitType: .brightness,
                         float: float)
     }
 

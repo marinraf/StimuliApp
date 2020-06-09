@@ -6,6 +6,8 @@ import UIKit
 import AudioToolbox
 import AVFoundation
 
+var soundCounter: Int = 1
+
 struct AudioFile {
     let url: URL
     let buffer: AVAudioPCMBuffer
@@ -21,19 +23,28 @@ class AudioSystem {
     var audioPlayer: AVAudioPlayer?
     var originalCounter: Int = 0
     var audioFiles: [AudioFile] = []
+    var sess: AVAudioSession?
     
 
     func setup(songs: [URL?]) {
-        let sess = AVAudioSession.sharedInstance()
+        sess = AVAudioSession.sharedInstance()
 
-        do {
-            Flow.shared.settings.updateAudioRate(new: sess.sampleRate)
-            myAUSampleRateHz = Float(Flow.shared.settings.audioRate)
-            let durationBuffer = 1 * (256.0/Double(Flow.shared.settings.audioRate))
-            try sess.setCategory(.playback, mode: .default, options: [])
-            try sess.setPreferredIOBufferDuration(durationBuffer) // 256 samples
-            try sess.setActive(true)
-        } catch { }
+        if let sess = sess {
+            do {
+                let durationBuffer = Constants.bufferAudio
+                try sess.setCategory(.playback, mode: .default, options: [])
+                try sess.setPreferredIOBufferDuration(durationBuffer)
+                try sess.setActive(true)
+
+                Flow.shared.settings.updateAudioRate(new: sess.sampleRate)
+                myAUSampleRateHz = Float(Flow.shared.settings.audioRate)
+
+                print("setting songs")
+                print("in settings", Flow.shared.settings.audioRate)
+                print("in sess", sess.sampleRate)
+                print("")
+            } catch { }
+        }
 
         audioEngine = AVAudioEngine()
 
@@ -88,9 +99,13 @@ class AudioSystem {
     }
 
     func playAudios(audio: [Float]) {
-        myAUToneCounter = audio[2].toInt
+        Timer.scheduledTimer(withTimeInterval: Flow.shared.frameControl.delay, repeats: false) { (_) in
+            self.playAudiosDelay(audio: audio)
+        }
+    }
+
+    func playAudiosDelay(audio: [Float]) {
         myAUToneCounterStop = 0
-        self.originalCounter = myAUToneCounter
         myAUChangingTones = audio[0]
         myAUNumberOfAudios = Int32(audio[1] + 0.1)
 
@@ -115,26 +130,19 @@ class AudioSystem {
                     Int32(audio[57] + 0.1), Int32(audio[58] + 0.1), Int32(audio[59] + 0.1), Int32(audio[60] + 0.1),
                     Int32(audio[61] + 0.1), Int32(audio[62] + 0.1))
 
+        myAUToneCounter = audio[2].toInt
 
-        print("")
-        print("PLAYING AUDIOS")
-        print("start", myAUStart.0)
-        print("end", myAUEnd.0)
-        print("frequency", myAUFrequency.0)
-        print("amplitude", myAUAmplitude.0)
-        print("channel", myAUChannel.0)
-        print("song", myAUSong.0)
-        print("")
-        print("start", myAUStart.1)
-        print("end", myAUEnd.1)
-        print("frequency", myAUFrequency.1)
-        print("amplitude", myAUAmplitude.1)
-        print("channel", myAUChannel.1)
-        print("song", myAUSong.1)
-        print("")
+        self.originalCounter = myAUToneCounter
     }
 
+    
     func stopAudio() {
+        Timer.scheduledTimer(withTimeInterval: Flow.shared.frameControl.delay, repeats: false) { (_) in
+            self.stopAudioDelay()
+        }
+    }
+
+    func stopAudioDelay() {
         if myAUToneCounter > 10 {
             myAUToneCounterStop = Int(myAUChangingTones)
         }
@@ -187,17 +195,6 @@ class AudioSystem {
             var error: NSError? = nil
             let status = converter.convert(to: outputBuffer, error: &error, withInputFrom: inputCallback)
             assert(status != .error)
-
-            let prueba = Array(UnsafeBufferPointer(start: outputBuffer.floatChannelData![0],
-                                                   count: Int(outputBuffer.frameLength)))
-
-            print("")
-            print("LOADING AUDIOS")
-            print("format", outputBuffer.format)
-            print("bytes per frame", outputBuffer.format.streamDescription.pointee.mBytesPerFrame)
-            print("count", prueba.count)
-            print("framelength", outputBuffer.frameLength)
-            print("")
 
             if i == 0 {
                 myAudios.0 = outputBuffer

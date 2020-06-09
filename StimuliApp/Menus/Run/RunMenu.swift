@@ -7,6 +7,7 @@ class RunMenu: Menu {
 
     // MARK: - Setting
     override func setting() {
+        Flow.shared.applyChangesInProperties()
         sections = []
         makeSection0()
     }
@@ -25,6 +26,7 @@ class RunMenu: Menu {
     private func makeTest(from test: Test, sectionNumber: Int) {
         var option = Option(name: "Run: " + test.name.string)
         option.style = .runTest
+        Task.shared.reset()
         option.nextScreen = {
             Flow.shared.test = test
             var manualDistance = false

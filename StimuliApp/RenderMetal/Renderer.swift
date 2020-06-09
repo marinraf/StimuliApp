@@ -15,11 +15,12 @@ class Renderer: NSObject {
 
     var dotBuffer: MTLBuffer?
     var dotBuffer1: MTLBuffer?
-    var positionsBufferProviders: [PositionsBufferProvider] = []
+    var uniformsBuffers: [MTLBuffer] = []
 
     var objectThreadsPerGroupX: [Int] = Array(repeating: 1, count: Constants.numberOfObjectKernels + 1)
     var objectThreadsPerGroupY: [Int] = Array(repeating: 1, count: Constants.numberOfObjectKernels + 1)
 
+//    var previousPresentedTime: CFTimeInterval = 0.0
 
 
     // MARK: - Init
@@ -130,12 +131,13 @@ class Renderer: NSObject {
 
             let max = Constants.maxNumberOfMetalStimuli * Task.shared.computeNumberOfGroups[i] * 3
 
-            let positionsBufferProvider = PositionsBufferProvider(device: device,
-                                                                 inflightBuffersCount: 3,
-                                                                 sizeOfUniformsBuffer: max * MemoryLayout<Float>.stride)
-
-            positionsBufferProviders.append(positionsBufferProvider)
+            let uniformBuffer = device.makeBuffer(length: max * MemoryLayout<Float>.stride, options: [])!
+            uniformsBuffers.append(uniformBuffer)
+            memcpy(uniformBuffer.contents(),
+                   &DataTask.selectedObjects,
+                   DataTask.selectedObjects.count * MemoryLayout<Float>.stride)
         }
+
         let max = Constants.maxNumberOfDots * Constants.numberOfDotsFloats
 
         dotBuffer = device.makeBuffer(length: max * MemoryLayout<Float>.stride, options: [])
@@ -160,47 +162,42 @@ class Renderer: NSObject {
 // MARK: - Extension Renderer
 extension Renderer: MTKViewDelegate {
 
-    private func updateFrameControl() {
-        guard Task.shared.sceneTask.calculateLongFrames else { return }
-        guard let displayRender = displayRender else { return }
-        Task.shared.actualFrameTime = CACurrentMediaTime()
-        let elapsed = Task.shared.actualFrameTime - Task.shared.previousFrameTime
-        Task.shared.previousFrameTime = Task.shared.actualFrameTime
-
-        if elapsed > Double(1.25 * Flow.shared.settings.delta) && !displayRender.inactiveToMeasureFrame
-            && !displayRender.responded {
-            let longFrame = LongFrame(scene: Task.shared.sceneTask.name,
-                                      trial: Task.shared.sectionTask.currentTrial + 1,
-                                      frame: displayRender.timeInFrames,
-                                      duration: elapsed)
-            Task.shared.longFrames.append(longFrame)
-        }
-        Task.shared.totalNumberOfFrames += 1
-    }
-
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {}
 
     func draw(in view: MTKView) {
 
-        updateFrameControl()
-
-        let positionsBufferProvider = positionsBufferProviders[Task.shared.computeNumber]
-
-        _ = positionsBufferProvider.semaphore.wait(timeout: .distantFuture)
+        Flow.shared.frameControl.updateDrawTime(displayRender: displayRender)
 
          guard let drawable = view.currentDrawable,
             let commandBuffer = commandQueue.makeCommandBuffer(),
             let commandEncoder = commandBuffer.makeComputeCommandEncoder()
             else { return }
 
-        commandBuffer.addCompletedHandler { (_) in
-          positionsBufferProvider.semaphore.signal()
-        }
+//        #if targetEnvironment(macCatalyst)
+//        if #available(macCatalyst 13.4, *) {
+//            drawable.addPresentedHandler({ [weak self] drawable in
+//                guard let strongSelf = self else {
+//                    return
+//                }
+//                let presentationDuration = drawable.presentedTime - strongSelf.previousPresentedTime
+//                print(CACurrentMediaTime(), presentationDuration)
+//                strongSelf.previousPresentedTime = drawable.presentedTime
+//            })
+//        } else {
+//            // Fallback on earlier versions
+//        }
+//        #endif
+
+        Flow.shared.frameControl.updateTextureTime(displayRender: displayRender)
 
         _ = displayRender?.update()
 
         updateObjectTextures()
 
+        let uniformBuffer = uniformsBuffers[Task.shared.computeNumber]
+        memcpy(uniformBuffer.contents(),
+               &DataTask.selectedObjects,
+               DataTask.selectedObjects.count * MemoryLayout<Float>.stride)
 
         var dotPosition = 0
 
@@ -241,13 +238,28 @@ extension Renderer: MTKViewDelegate {
             }
         }
 
+        Flow.shared.frameControl.updateEncodeTime()
+
         commandEncodeCompute(commandBuffer: commandBuffer,
                              commandEncoder: commandEncoder,
-                             positionsBufferProvider: positionsBufferProvider,
+                             uniformBuffer: uniformBuffer,
                              texture0: drawable.texture)
 
         commandEncoder.endEncoding()
+
+        #if targetEnvironment(macCatalyst)
+        print("este")
         commandBuffer.present(drawable)
+        #else
+        if Flow.shared.settings.frameRate == Flow.shared.settings.maximumFrameRate {
+            commandBuffer.present(drawable)
+        } else {
+            commandBuffer.present(drawable, afterMinimumDuration: Double(Flow.shared.settings.delta) - 0.001)
+        }
+        #endif
+
+        Flow.shared.frameControl.updateCommitTime(drawable: drawable)
+
         commandBuffer.commit()
     }
 
@@ -410,7 +422,7 @@ extension Renderer: MTKViewDelegate {
 
     private func commandEncodeCompute(commandBuffer: MTLCommandBuffer,
                                       commandEncoder: MTLComputeCommandEncoder,
-                                      positionsBufferProvider: PositionsBufferProvider,
+                                      uniformBuffer: MTLBuffer,
                                       texture0: MTLTexture) {
 
         //init
@@ -435,9 +447,7 @@ extension Renderer: MTKViewDelegate {
                                 length: DataTask.texturePositions.count * MemoryLayout<Float>.stride,
                                 index: 1)
 
-        let positionsBuffer = positionsBufferProvider.nextPositionsBuffer()
-
-        commandEncoder.setBuffer(positionsBuffer, offset: 0, index: 2)
+        commandEncoder.setBuffer(uniformBuffer, offset: 0, index: 2)
 
         //threads
         let threadsPerThreadgroup = MTLSizeMake(Task.shared.computeThreadsPerGroupX[computeNumber],

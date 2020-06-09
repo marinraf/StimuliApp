@@ -37,8 +37,8 @@ extension Task {
         sceneZeroTask.backgroundFloats = [[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1]]
         sceneZeroTask.seeds = [Seed(id: "")]
         sceneZeroTask.activatedBools = [[]]
-        sceneZeroTask.name = "sceneZero"
-        sceneZeroTask.calculateLongFrames = false
+        sceneZeroTask.name = "sceneZero0o"
+        sceneZeroTask.frameControl = false
 
         sectionZeroTask.sceneTasks = [sceneZeroTask]
 

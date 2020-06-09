@@ -17,6 +17,8 @@ class Settings {
 
     var distance: Float
     var brightness: Double
+    var maximumBrightness: Float
+    var maximumBrightnessApple: Float
     var ppi: Float
     var ppiCanChange: Bool
     var resolutionCanChange: Bool
@@ -28,9 +30,11 @@ class Settings {
     var rampTime: Float
     var frameRate: Int
     var delta: Float
+    var delayAudio60: Float
+    var delayAudio120: Float
 
     let userProperties: [Property]
-    let deviceProperties: [Property]
+    var deviceProperties: [Property]
 
     let descriptionProperty: Property
     let systemProperty: Property
@@ -39,8 +43,12 @@ class Settings {
     var rampTimeProperty: Property
     var ppiProperty: Property
     var maximumFrameRateProperty: Property
+    var maximumBrightnessProperty: Property
     var audioRateProperty: Property
     var resolutionProperty: Property
+
+    var delayAudio60Property: Property
+    var delayAudio120Property: Property
 
     init(device: Device) {
         self.device = device
@@ -52,6 +60,12 @@ class Settings {
 
         self.distance = Constants.defaultDistanceCm
         self.brightness = Constants.defaultBrightness
+
+        if let maximumBrightnessApple = device.brightness {
+            self.maximumBrightnessApple = maximumBrightnessApple
+        } else {
+            self.maximumBrightnessApple = Constants.epsilon
+        }
 
         if let ppi = device.ppi {
             self.ppi = ppi
@@ -89,6 +103,15 @@ class Settings {
         self.rampTime = UserDefaults.standard.bool(forKey: "rampTimeSaved") ?
             UserDefaults.standard.float(forKey: "rampTime") : Constants.rampTime
 
+        self.delayAudio60 = UserDefaults.standard.bool(forKey: "delayAudio60Saved") ?
+            UserDefaults.standard.float(forKey: "delayAudio60") : 0
+
+        self.delayAudio120 = UserDefaults.standard.bool(forKey: "delayAudio120Saved") ?
+            UserDefaults.standard.float(forKey: "delayAudio120") : 0
+
+        self.maximumBrightness = UserDefaults.standard.bool(forKey: "maximumBrightnessSaved") ?
+            UserDefaults.standard.float(forKey: "maximumBrightness") : self.maximumBrightnessApple
+
         self.delta = 1 / Float(self.frameRate)
 
         let systemString = "\(device.systemName), version: \(device.systemVersion)"
@@ -101,6 +124,7 @@ class Settings {
         self.descriptionProperty = SettingsData.makeDescriptionProperty(text: device.description)
         self.systemProperty = SettingsData.makeSystemProperty(text: systemString)
         self.maximumFrameRateProperty = SettingsData.makeFrameRateProperty(float: Float(self.maximumFrameRate))
+        self.maximumBrightnessProperty = SettingsData.makeBrightnessProperty(float: self.maximumBrightness)
         self.audioRateProperty = SettingsData.makeAudioRateProperty(float: Float(self.audioRate))
         self.resolutionProperty = SettingsData.makeResolutionProperty(float: self.width,
                                                                       float1: self.height,
@@ -108,11 +132,18 @@ class Settings {
         self.ppiProperty = SettingsData.makePpiProperty(float: self.ppi, onlyInfo: !ppiCanChange)
 
         self.rampTimeProperty = SettingsData.makeRampTimeProperty(float: self.rampTime)
+        self.delayAudio60Property = SettingsData.makeDelayAudio60Property(float: self.delayAudio60)
+        self.delayAudio120Property = SettingsData.makeDelayAudio120Property(float: self.delayAudio120)
 
         self.userProperties = [userProperty, emailProperty]
-        self.deviceProperties = [descriptionProperty, systemProperty, maximumFrameRateProperty, audioRateProperty,
-                                 resolutionProperty, ppiProperty, rampTimeProperty]
+        self.deviceProperties = [descriptionProperty, systemProperty, audioRateProperty, maximumFrameRateProperty,
+                                 resolutionProperty, ppiProperty, maximumBrightnessProperty, rampTimeProperty,
+                                 delayAudio60Property]
+
+        if self.maximumFrameRate == 120 {
+            self.deviceProperties.append(delayAudio120Property)
         }
+    }
 
     func update(from test: Test) {
         distance = test.distance.properties[0].float
@@ -141,7 +172,7 @@ class Settings {
             self.width = width
             self.resolutionCanChange = false
         } else {
-            let width = max(UserDefaults.standard.float(forKey: "screenResolution"), Constants.minimumResolutionMac)
+            let width = max(UserDefaults.standard.float(forKey: "testWindowSize"), Constants.minimumResolutionMac)
             self.width = width
             self.resolutionCanChange = true
         }
@@ -149,7 +180,7 @@ class Settings {
         if let height = device.height {
             self.height = height
         } else {
-            let height = max(UserDefaults.standard.float(forKey: "screenResolution1"), Constants.minimumResolutionMac)
+            let height = max(UserDefaults.standard.float(forKey: "testWindowSize1"), Constants.minimumResolutionMac)
             self.height = height
         }
 
@@ -161,6 +192,15 @@ class Settings {
 
         self.rampTime = UserDefaults.standard.bool(forKey: "rampTimeSaved") ?
             UserDefaults.standard.float(forKey: "rampTime") : Constants.rampTime
+
+        self.delayAudio60 = UserDefaults.standard.bool(forKey: "delayAudio60Saved") ?
+            UserDefaults.standard.float(forKey: "delayAudio60") : 0
+
+        self.delayAudio120 = UserDefaults.standard.bool(forKey: "delayAudio120Saved") ?
+            UserDefaults.standard.float(forKey: "delayAudio120") : 0
+
+        self.maximumBrightness = UserDefaults.standard.bool(forKey: "maximumBrightnessSaved") ?
+            UserDefaults.standard.float(forKey: "maximumBrightness") : self.maximumBrightnessApple
     }
 
     var info: String {
@@ -172,6 +212,7 @@ class Settings {
         SCREEN RESOLUTION: \(resolutionProperty.string)
         PPI: \(ppiProperty.string)
         RAMPTIME: \(rampTimeProperty.string)
+        MAXIMUM LUMINANCE: \(maximumBrightnessProperty.string)
         """
     }
 }

@@ -132,8 +132,6 @@ class SectionTask {
         }
     }
 
-    func saveSectionData() {}
-
     func calculateResultInfo() -> SectionResult {
 
         let respondedTrials = correctValue.count
@@ -221,7 +219,7 @@ class SectionTask {
 
         for sceneTask in sceneTasks {
             for i in 0 ..< respondedTrials {
-                let newValue = String(format: "%.4f", sceneTask.realEndTime[i])
+                let newValue = String(format: "%.4f", sceneTask.realEndTime[i] - sceneTask.realStartTime[i])
                 values[i].append(newValue)
             }
         }

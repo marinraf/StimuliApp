@@ -44,7 +44,12 @@ struct TouchInView {
 
         self.location = touch.location(in: view)
         self.screenSize = view.bounds.size
-        self.screenRetina = UIScreen.main.scale
+
+        if Flow.shared.settings.device.type == .mac {
+            self.screenRetina = 1
+        } else {
+            self.screenRetina = UIScreen.main.scale
+        }
 
         self.realX = Float((location.x - screenSize.width / 2) * screenRetina)
         self.realY = Float((-location.y + screenSize.height / 2) * screenRetina)
@@ -63,7 +68,16 @@ extension DisplayRender {
         guard let uitouch = touches.first else { return }
         guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
         guard let touch = coalescedTouches.first else { return }
-        guard timeInFrames >= Task.shared.sceneTask.responseStartInFrames else { return }
+
+        badTiming = timeInFrames < Task.shared.sceneTask.responseStartInFrames ||
+            timeInFrames > Task.shared.sceneTask.responseEndInFrames
+
+        print("bad, out")
+        print(badTiming)
+        print(Task.shared.sceneTask.responseOutWindow)
+
+        guard !badTiming || Task.shared.sceneTask.responseOutWindow else { return }
+
         touching = true
 
         let touchInView = TouchInView(touch: touch,
@@ -117,12 +131,12 @@ extension DisplayRender {
                 if let float = Task.shared.userResponse.float {
                     Task.shared.userResponse.string = String(float)
                 }
-                Task.shared.userResponse.liftClock = touch.timestamp - startRealTime
+                Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTime
                 displayRenderDelegate?.stopAudio()
                 responded = true
             }
         case .path:
-            Task.shared.userResponse.liftClock = touch.timestamp - startRealTime
+            Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTime
             displayRenderDelegate?.stopAudio()
             responded = true
         default:
@@ -136,7 +150,7 @@ extension DisplayRender {
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
-            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
             displayRenderDelegate?.stopAudio()
             responded = true
         } else if touchInView.location.x > 2 * touchInView.screenSize.width / 3 {
@@ -144,7 +158,7 @@ extension DisplayRender {
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
-            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
             displayRenderDelegate?.stopAudio()
             responded = true
         }
@@ -156,7 +170,7 @@ extension DisplayRender {
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
-            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
             displayRenderDelegate?.stopAudio()
             responded = true
         } else if touchInView.location.y > 2 * touchInView.screenSize.height / 3 {
@@ -164,7 +178,7 @@ extension DisplayRender {
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
-            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
             displayRenderDelegate?.stopAudio()
             responded = true
         }
@@ -176,7 +190,7 @@ extension DisplayRender {
         let polar = touchInView.polar
         Task.shared.userResponse.radiusTouches.append(polar.radius)
         Task.shared.userResponse.angleTouches.append(polar.angle)
-        Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+        Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
         displayRenderDelegate?.stopAudio()
         responded = true
     }
@@ -187,7 +201,7 @@ extension DisplayRender {
         let polar = touchInView.polar
         Task.shared.userResponse.radiusTouches.append(polar.radius)
         Task.shared.userResponse.angleTouches.append(polar.angle)
-        Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+        Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
     }
 
     func isTouched(object: Int, trial: Int, touchInView: TouchInView) -> Bool {
@@ -239,7 +253,8 @@ extension DisplayRender {
                     if let float = Task.shared.userResponse.float {
                         Task.shared.userResponse.string = String(float)
                     }
-                    Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+                    Task.shared.userResponse.clocks.append(touchInView.touch.timestamp -
+                        Flow.shared.frameControl.initSceneTime)
                     displayRenderDelegate?.stopAudio()
                     responded = true
                     return
@@ -251,7 +266,7 @@ extension DisplayRender {
             if let float = Task.shared.userResponse.float {
                 Task.shared.userResponse.string = String(float)
             }
-            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
             displayRenderDelegate?.stopAudio()
             responded = true
         }
@@ -274,7 +289,8 @@ extension DisplayRender {
                 let polar = touchInView.polar
                 Task.shared.userResponse.radiusTouches.append(polar.radius)
                 Task.shared.userResponse.angleTouches.append(polar.angle)
-                Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+                Task.shared.userResponse.clocks.append(touchInView.touch.timestamp -
+                    Flow.shared.frameControl.initSceneTime)
             }
         }
     }
@@ -296,7 +312,8 @@ extension DisplayRender {
                 let polar = touchInView.polar
                 Task.shared.userResponse.radiusTouches.append(polar.radius)
                 Task.shared.userResponse.angleTouches.append(polar.angle)
-                Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - startRealTime)
+                Task.shared.userResponse.clocks.append(touchInView.touch.timestamp -
+                    Flow.shared.frameControl.initSceneTime)
 
                 let trial = Task.shared.sectionTask.currentTrial
                 let numberOfObjects = DataTask.metalValues.count

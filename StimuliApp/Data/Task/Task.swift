@@ -47,22 +47,6 @@ struct Seed {
     }
 }
 
-struct LongFrame {
-    let scene: String
-    let trial: Int
-    let frame: Int
-    let duration: Double
-
-    var info: String {
-        return """
-        scene: \(scene)
-        trial: \(trial)
-        frame: \(frame)
-        duration: \(duration)
-        """
-    }
-}
-
 struct UserResponse {
     var integer: Int?
     var float: Float?
@@ -106,13 +90,9 @@ class Task {
 
     var sectionTask = SectionTask()
     var sceneTask = SceneTask()
+    var previousSceneTask = SceneTask()
     var dataTask = DataTask()
     var sectionZeroTask = SectionTask()
-
-    var actualFrameTime: Double = 0
-    var previousFrameTime: Double = 0
-    var longFrames: [LongFrame] = []
-    var totalNumberOfFrames: Int = 0
 
     var userResponse: UserResponse = UserResponse()
 
@@ -140,44 +120,8 @@ class Task {
 
     var responseKeyboard: String = ""
 
-    var percentageLongFrames: String {
-        let value: Double = Double(longFrames.count) / Double(totalNumberOfFrames) * 100
-
-        let percentage = String(format: "%.05f", value)
-
-        return "\(percentage)%"
-    }
-
-    var longFramesString: String {
-        let duration = String(format: "%.05f", Flow.shared.settings.delta)
-
-        var longlist = ""
-
-        for longFrame in longFrames {
-            longlist += longFrame.info
-            longlist += "\n"
-        }
-
-        return """
-        Frame rate: \(Flow.shared.settings.frameRate) Hz.
-
-        Expected duration of a frame: \(duration).
-
-        The number of long frames is: \(longFrames.count)
-
-        from a total number of: \(totalNumberOfFrames) frames.
-
-        The percentage of long frames is: \(percentageLongFrames).
-
-        List of long frames:
-
-        \(longlist)
-        """
-    }
-
     // create methods
     func createTask(test: Test, preview: Preview) -> String {
-        self.reset()
         self.preview = preview
         self.name = test.name.string
         Flow.shared.test = test
@@ -204,7 +148,6 @@ class Task {
     }
 
     func createSection(section: Section, test: Test) -> String {
-        self.reset()
         preview = .variablesSection
         createRandomSeeds(from: test)
         error = importSettings(from: test)
@@ -215,7 +158,6 @@ class Task {
     }
 
     func createTask(section: Section, scene: Scene, test: Test) -> String {
-        self.reset()
         preview = .previewScene
         let sceneNumber = section.scenes.firstIndex(where: { $0 === scene }) ?? 0
 
@@ -241,7 +183,6 @@ class Task {
     }
 
     func createTask(stimulus: Stimulus) -> String {
-        self.reset()
         preview = .previewStimulus
         let test = createTest(stimulus: stimulus, test: Flow.shared.test)
         createRandomSeeds(from: test)
@@ -267,7 +208,7 @@ class Task {
     }
 
     // private methods
-    private func reset() {
+    func reset() {
         name = ""
         seeds = []
         error = ""
@@ -280,11 +221,6 @@ class Task {
         sceneTask = SceneTask()
         dataTask = DataTask()
         sectionZeroTask = SectionTask()
-
-        actualFrameTime = 0
-        previousFrameTime = 0
-        longFrames = []
-        totalNumberOfFrames = 0
 
         userResponse = UserResponse()
 
@@ -326,6 +262,14 @@ class Task {
             inversGamma = 1 / gamma
         }
         Flow.shared.settings.update(from: test)
+
+        var delayAudio = Flow.shared.settings.delayAudio60
+        if Flow.shared.settings.frameRate == 120 {
+            delayAudio = Flow.shared.settings.delayAudio120
+        }
+        Flow.shared.frameControl = FrameControl(frameRate: Flow.shared.settings.frameRate,
+                                                maximumFrameRate: Double(Flow.shared.settings.maximumFrameRate),
+                                                delayAudio: Double(delayAudio))
 
         for variable in test.variables {
             guard let listOfValues = variable.listOfValues  else {
@@ -726,12 +670,6 @@ class Task {
         }
     }
 
-    func saveTaskDataTime() {
-        if !longFrames.isEmpty {
-            longFrames.remove(at: 0)
-        }
-    }
-
     func saveTestAsResult() {
 
         let result = Result(name: name, order: Flow.shared.results.count)
@@ -747,7 +685,11 @@ class Task {
         let settings = Flow.shared.settings.info
 
         var testOptions = ["FRAME RATE: \(Flow.shared.test.frameRate.string)"]
-        testOptions += ["BRIGHTNESS: \(Flow.shared.test.brightness.string)"]
+
+        if Flow.shared.settings.device.type != .mac  {
+            testOptions += ["LUMINANCE: \(Flow.shared.test.brightness.string)"]
+        }
+        
         testOptions += ["VIEWING DISTANCE: \(Flow.shared.test.distance.properties[0].string)"]
         testOptions += ["GAMMA: \(Flow.shared.test.gamma.string)"]
         if let gamma = FixedGamma(rawValue: Flow.shared.test.gamma.string) {
@@ -778,13 +720,33 @@ class Task {
 
         var stimuli: [String] = []
 
+        for scene in Flow.shared.test.scenes {
+            let sceneName = scene.name.string
+            let colorProperty = scene.color
+
+            for property in [colorProperty] + colorProperty.allProperties
+                where (property.timeDependency == .alwaysConstant || property.timeDependency == .constant) &&
+                    property.propertyType != .origin2d && property.propertyType != .position2d &&
+                    property.propertyType != .size2d && property.propertyType != .color {
+                        let name = sceneName + "_background_" + property.name
+                        let value = property.string
+                        let string = name + ": " + value
+                        stimuli.append(string)
+            }
+        }
+
+
         for stimulus in Flow.shared.test.stimuli {
             let stimulusName = stimulus.name.string
-            for property in stimulus.allProperties where property.timeDependency != .variable {
-                let name = stimulusName + "_" + property.name
-                let value = property.string
-                let string = name + ": " + value
-                stimuli.append(string)
+            for property in stimulus.allProperties
+                where (property.timeDependency == .alwaysConstant || property.timeDependency == .constant) &&
+                    property.propertyType != .origin2d && property.propertyType != .position2d &&
+                    property.propertyType != .size2d && property.propertyType != .color {
+
+                        let name = stimulusName + "_" + property.name
+                        let value = property.string
+                        let string = name + ": " + value
+                        stimuli.append(string)
             }
         }
 
@@ -792,7 +754,7 @@ class Task {
 
         result.data += "VALUES OF THE CONSTANT PROPERTIES:" + "\n\n" + stimuliString + Constants.separator
 
-        result.data += "FRAME RATE:" + "\n\n" + longFramesString + Constants.separator
+        result.data += "FRAME RATE:" + "\n\n" + Flow.shared.frameControl.longFramesString + Constants.separator
 
         _ = Flow.shared.createSaveAndSelectNewResult(result)
     }

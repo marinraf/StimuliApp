@@ -152,6 +152,24 @@ struct SceneData {
                                  unitType: .time,
                                  float: 0)
 
+        let endTime = Property(name: "endTime",
+                                 info: """
+                                 Maximum time until which it is possible to respond.
+                                 """,
+                                 propertyType: .simpleFloat,
+                                 unitType: .time,
+                                 float: 1000)
+
+        let wrongTiming = Property(name: "wrongTiming",
+                                 info: """
+                                 If 0 it is not possible to respond before startTime or after endTime.
+                                 If 1 it is possible to respond before startTime or after endTime but the \
+                                 response is considered incorrect.
+                                 """,
+                                 propertyType: .simpleFloat,
+                                 unitType: .activated,
+                                 float: 1000)
+
         let leftValue = Property(name: "leftValue",
                                  info: "Numeric value for the left response.",
                                  propertyType: .simpleFloat,
@@ -308,22 +326,32 @@ struct SceneData {
             break
         case .leftRight:
             property.properties.append(startTime)
+            property.properties.append(endTime)
+            property.properties.append(wrongTiming)
             property.properties.append(leftValue)
             property.properties.append(rightValue)
         case .topBottom:
             property.properties.append(startTime)
+            property.properties.append(endTime)
+            property.properties.append(wrongTiming)
             property.properties.append(topValue)
             property.properties.append(bottomValue)
         case .touch:
             property.properties.append(startTime)
+            property.properties.append(endTime)
+            property.properties.append(wrongTiming)
             property.properties.append(origin)
             property.properties.append(position)
         case .path:
             property.properties.append(startTime)
+            property.properties.append(endTime)
+            property.properties.append(wrongTiming)
             property.properties.append(origin)
             property.properties.append(position)
         case .touchObject:
             property.properties.append(startTime)
+            property.properties.append(endTime)
+            property.properties.append(wrongTiming)
             let backgroundProperty = makePropertyToAddToResponse(object: nil)
             property.properties.append(backgroundProperty)
             for object in Flow.shared.scene.movableObjects {
@@ -332,6 +360,8 @@ struct SceneData {
             }
         case .moveObject:
             property.properties.append(startTime)
+            property.properties.append(endTime)
+            property.properties.append(wrongTiming)
             property.properties.append(origin)
             property.properties.append(position)
             property.properties.append(endPath)

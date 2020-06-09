@@ -11,6 +11,8 @@ enum Unit: String, Codable, CaseIterable {
     case hz = "hertzs"
     case second = "seconds"
     case frame = "frames"
+    case cdm2 = "decimal value from 0 to 1"
+    case maxcdm2 = "candelas per m²"
     case angleDegree = "degrees"
     case angleRad = "radians"
     case ppi = "pixels per inch"
@@ -48,6 +50,18 @@ enum Unit: String, Codable, CaseIterable {
             let string1 = "Frame rate of the test is set to: \(Flow.shared.settings.frameRate) Hz."
             let string2 = "The duration of one frame is: \(Flow.shared.settings.delta) seconds."
             return string1 + "\n\n" + string2
+        case .cdm2:
+            return """
+            The maximum value of luminance set for this decive is: \(Flow.shared.settings.maximumBrightness) cd/m²
+            """
+        case .maxcdm2:
+            if Flow.shared.settings.maximumBrightnessApple > 1 {
+                return """
+                The value that Apple provides for this device is: \(Flow.shared.settings.maximumBrightnessApple) cd/m²
+                """
+            } else {
+                return ""
+            }
         case .angleDegree: return ""
         case .angleRad: return ""
         case .ppi: return ""
@@ -73,6 +87,8 @@ enum Unit: String, Codable, CaseIterable {
         case .hz: return "Hz"
         case .second: return "s"
         case .frame: return "frames"
+        case .cdm2: return ""
+        case .maxcdm2: return "cd/m²"
         case .angleDegree: return "º"
         case .angleRad: return "rad"
         case .ppi: return "ppi"
@@ -92,6 +108,8 @@ enum Unit: String, Codable, CaseIterable {
         case .hz: return 1
         case .second: return 1
         case .frame: return Flow.shared.settings.delta
+        case .cdm2: return 1
+        case .maxcdm2: return 1
         case .angleDegree: return Flow.shared.settings.radiansPerDegree
         case .angleRad: return 1
         case .ppcm: return Flow.shared.settings.cmPerPixel
@@ -122,8 +140,12 @@ enum UnitType: String, Codable, CaseIterable {
     case angle = "angle"
     case time = "time"
 
+    case brightness = "brightness 0-1"
+    case maxBrightness = "brightness in cd per m²"
+
     case externalSize = "external size"
     case rampTime = "ramp time"
+    case delayTime = "delay time"
     case pixelDensity = "pixel density"
     case pixelSize = "pixel size"
     case diagonalSize = "diagonal size"
@@ -153,8 +175,12 @@ enum UnitType: String, Codable, CaseIterable {
         case .angle: return [.angleRad, .angleDegree]
         case .time: return [.second, .frame]
 
+        case .brightness: return [.cdm2]
+        case .maxBrightness: return [.maxcdm2]
+
         case .externalSize: return [.cm, .inch]
         case .rampTime: return [.second]
+        case .delayTime: return [.second]
         case .pixelDensity: return [.ppi]
         case .pixelSize: return [.pixel]
         case .diagonalSize: return [.cm, .inch]
@@ -168,7 +194,7 @@ enum UnitType: String, Codable, CaseIterable {
 
     func delimit(float: Float) -> Float {
         switch self {
-        case .decimal, .size, .variableUnit, .responseUnit:
+        case .decimal, .size, .variableUnit, .responseUnit, .delayTime:
             return float
         case .positiveDecimalWithoutZero:
             return max(Constants.epsilon, abs(float))
@@ -201,6 +227,22 @@ enum UnitType: String, Codable, CaseIterable {
                 return 255
             } else {
                 return Float(roundf(float))
+            }
+        case .brightness:
+            if float < 0.25 {
+                return 0.25
+            } else if float > 1 {
+                return 1
+            } else {
+                return float
+            }
+        case .maxBrightness:
+            if float < Constants.epsilon {
+                return Constants.epsilon
+            } else if float > 3000 {
+                return 3000
+            } else {
+                return float
             }
         case .integer:
             return roundf(float)

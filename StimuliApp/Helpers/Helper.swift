@@ -10,6 +10,7 @@ struct Constants {
     static let cmsInInch: Float = 2.54
     static let gamma: Float = 2.2
     static let inversGamma: Float = 0.45454545
+    static let gammaPerBrightness: Double = 2.4 // when brightness is high the gamma fit is aprox 2.4 not 2.2
     static let rampTime: Float = 0.005
     static let distanceDegreeEqualCm: Float = 57.2943
     static let defaultDistanceCm: Float = 50
@@ -30,6 +31,10 @@ struct Constants {
     static let sceneZeroDuration: Int = 3 //in seconds
     static let sceneZeroDurationShort: Int = 2 //in seconds
     static let sceneSimpleDuration: Int = 1000 //in seconds
+    static let bufferAudio: Double = 0.002 //in seconds (the value will be something similar not this exact value)
+    static let delayAudio60: Double = 0.050 //in seconds (to sync audio and video, corrected in settings)
+    static let delayAudio120: Double = 0.020 //in seconds (to sync audio and video, corrected in settings)
+
     static let separator = "\n\n\n******************************\n\n\n"
 
     static let metalViewTag = 100

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7403C0B5233B376900AF129C /* PositionsBufferProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7403C0B4233B376900AF129C /* PositionsBufferProvider.swift */; };
+		741000122466EB2700DCF20F /* FrameControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741000112466EB2700DCF20F /* FrameControl.swift */; };
 		741BDA52241E986100F6E3BC /* EditListOfValuesBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741BDA51241E986100F6E3BC /* EditListOfValuesBlock.swift */; };
 		741BDA54241F9CAA00F6E3BC /* SelectListOfValuesBlockMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741BDA53241F9CAA00F6E3BC /* SelectListOfValuesBlockMenu.swift */; };
 		7471DE5F23BBAB8300220DCC /* MacBundle.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 7471DE5923BBAB2E00220DCC /* MacBundle.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -159,7 +159,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		7403C0B4233B376900AF129C /* PositionsBufferProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionsBufferProvider.swift; sourceTree = "<group>"; };
+		741000112466EB2700DCF20F /* FrameControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameControl.swift; sourceTree = "<group>"; };
 		741BDA51241E986100F6E3BC /* EditListOfValuesBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListOfValuesBlock.swift; sourceTree = "<group>"; };
 		741BDA53241F9CAA00F6E3BC /* SelectListOfValuesBlockMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectListOfValuesBlockMenu.swift; sourceTree = "<group>"; };
 		7471DE5923BBAB2E00220DCC /* MacBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -316,6 +316,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		741000102466EAF400DCF20F /* FrameControl */ = {
+			isa = PBXGroup;
+			children = (
+				741000112466EB2700DCF20F /* FrameControl.swift */,
+			);
+			path = FrameControl;
+			sourceTree = "<group>";
+		};
 		9601AC372222A63200178C62 /* Object */ = {
 			isa = PBXGroup;
 			children = (
@@ -647,6 +655,7 @@
 		CC460C9821E4F7FB00475EC5 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				741000102466EAF400DCF20F /* FrameControl */,
 				CCD311E02292B85D004F44E5 /* Task */,
 				96A3E20621FEE57100585E6E /* DataModelAndFlow */,
 				CC460C7721E4C59B00475EC5 /* Screens */,
@@ -690,7 +699,6 @@
 				CCD311C42292A8C2004F44E5 /* DisplayRender.swift */,
 				962586CF22B8B4850013EFF2 /* DisplayTouches.swift */,
 				CCD311CE2292A92B004F44E5 /* Renderer.swift */,
-				7403C0B4233B376900AF129C /* PositionsBufferProvider.swift */,
 				9683BF0722A7AA9D00D7FA1B /* Compute.metal */,
 				CC4BF6C922A916B5006C4822 /* Functions.metal */,
 				74B409C1243EF8CD0053AD69 /* Functions.h */,
@@ -894,6 +902,7 @@
 				96F263B821F381F700C5F83B /* Flow.swift in Sources */,
 				9683BF0822A7AA9D00D7FA1B /* Compute.metal in Sources */,
 				96A3E20A21FEE94900585E6E /* StimulusData.swift in Sources */,
+				741000122466EB2700DCF20F /* FrameControl.swift in Sources */,
 				74AF81C423B750C9007B73EE /* ObjectFromStimulusMenu2.swift in Sources */,
 				CC4BF6CA22A916B5006C4822 /* Functions.metal in Sources */,
 				96F263BA21F3A04400C5F83B /* Modify.swift in Sources */,
@@ -906,7 +915,6 @@
 				CC5D18F022A6700B005F69F5 /* CreateFakeTest.swift in Sources */,
 				962586D022B8B4850013EFF2 /* DisplayTouches.swift in Sources */,
 				CCD9022B222FB19F0078F429 /* VariableData.swift in Sources */,
-				7403C0B5233B376900AF129C /* PositionsBufferProvider.swift in Sources */,
 				CCFB8AE9228D913300D80F65 /* EditListOfValuesVideo.swift in Sources */,
 				9676A2BD22245044001594FF /* SectionData.swift in Sources */,
 				CCD9022D222FBB730078F429 /* NavigationControllerTab.swift in Sources */,
@@ -1026,7 +1034,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 554YMB46HK;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/MacBundle-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1054,7 +1062,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 554YMB46HK;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/MacBundle-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1114,7 +1122,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1126,6 +1134,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				MTL_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
@@ -1133,7 +1142,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/**";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 			};
 			name = Debug;
@@ -1184,6 +1193,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				MTL_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
@@ -1205,16 +1215,16 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 554YMB46HK;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.4.1;
 				MTL_ENABLE_MODULES = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.idibaps.Stimulios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1223,7 +1233,7 @@
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
 				SWIFT_OBJC_BRIDGING_HEADER = "StimuliApp/Audio/StimuliApp-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1239,7 +1249,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 554YMB46HK;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -1247,7 +1257,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.4.1;
 				MTL_ENABLE_MODULES = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.idibaps.Stimulios;
 				PRODUCT_NAME = "$(TARGET_NAME)";

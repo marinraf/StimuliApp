@@ -43,7 +43,7 @@ class DisplayPreviewViewController: UIViewController {
 
     @IBAction func frameMinusPressed(_ sender: Any) {
         guard let timeInFrames = displayRender?.timeInFrames else { return }
-        if timeInFrames > 0 {
+        if timeInFrames > 1 {
             displayRender?.timeInFrames -= 1
             displayRender?.status = .minusButton
             displayRender?.reverse()
@@ -111,16 +111,17 @@ class DisplayPreviewViewController: UIViewController {
 
         //brightness
         UIApplication.shared.isIdleTimerDisabled = true
-        UIScreen.main.brightness = CGFloat(Flow.shared.settings.brightness - 0.01)
-        UIScreen.main.brightness = CGFloat(Flow.shared.settings.brightness)
+        let brightness = pow(Flow.shared.settings.brightness, (1.0 / Constants.gammaPerBrightness))
+        UIScreen.main.brightness = CGFloat(brightness - 0.01)
+        UIScreen.main.brightness = CGFloat(brightness)
 
         //metal device
         metalView.device = MTLCreateSystemDefaultDevice()
         metalView.framebufferOnly = false
 
         if Flow.shared.settings.device.type == .mac {
-            screenSize = CGSize(width: CGFloat(Flow.shared.settings.width) / UIScreen.main.scale,
-                                height: CGFloat(Flow.shared.settings.height) / UIScreen.main.scale)
+            screenSize = CGSize(width: CGFloat(Flow.shared.settings.width),
+                                height: CGFloat(Flow.shared.settings.height))
         }
 
         metalView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
@@ -219,8 +220,13 @@ class DisplayPreviewViewController: UIViewController {
 // MARK: - Extension functions
 extension DisplayPreviewViewController: DisplayRenderDelegate {
 
+    func pauseToSync() {}
+
+    func showFirstMessageTest() {}
+
     func settingTimeLabel() {
-        let frame = displayRender?.timeInFrames ?? 0
+        var frame = displayRender?.timeInFrames ?? 0
+        frame = max(frame, 1)
         let time = Float(frame) * Flow.shared.settings.delta
         let trial = Task.shared.sectionTask.currentTrial + 1
         let totalTrials = Task.shared.sectionTask.numberOfTrials

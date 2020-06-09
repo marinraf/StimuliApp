@@ -30,6 +30,7 @@
 
 float myAUSampleRateHz;
 long int myAUToneCounter;
+double myAUToneCounterLoop;
 long int myAUToneCounterStop;
 float myAUChangingTones;
 int myAUNumberOfAudios;
@@ -79,9 +80,6 @@ AVAudioPCMBuffer *myAudios[20];
                                                              busses: @[outputBus]];
 
     self.maximumFramesToRender =  512;
-
-    //    prueba2 = [[NSMutableArray alloc] init];
-    //    NSLog(@"size of myObject: %u", audio0.frameLength);
 
     for (int i = 0; i < 20; ++i) {
         free(myValues[i]);
@@ -168,6 +166,8 @@ double r2()
 
         // example C routine to create an audio output waveform
         int n = frameCount;
+        myAUToneCounterLoop = CACurrentMediaTime();
+
         for (int i = 0; i < n; i++) {
             float left = 0;
             float right = 0; // default to silence
@@ -197,8 +197,6 @@ double r2()
                         }
 
                         float x = myAUAmplitude[j] * v1 * stop;
-
-//                        NSLog(@"x: %f", x);
 
                         if (myAUFrequency[j] > 0.1) {
                             float dp = 2.0 * M_PI * myAUFrequency[j] / myAUSampleRateHz; // calculate phase increment

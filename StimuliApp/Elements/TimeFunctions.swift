@@ -336,22 +336,22 @@ enum TimeFunctions: String, Codable, CaseIterable {
 
             case .rectangleWave:
                 let value = t.truncatingRemainder(dividingBy: (c[4] + c[5]))
-                return value < c[4] ? c[2] : c[3]
+                return value <= c[4] ? c[2] : c[3]
 
             case .triangleWave:
                 let value = t.truncatingRemainder(dividingBy: (c[4] + c[5]))
-                if value < c[4] {
+                if value <= c[4] {
                     return c[2] + value / c[4] * (c[3] - c[2])
                 } else {
                     return c[3] - (value - c[4]) / c[5] * (c[3] - c[2])
                 }
 
             case .pulse:
-                if t < c[4] {
+                if t <= c[4] {
                     return t * c[2] / c[4]
-                } else if t < c[4] + c[3] {
+                } else if t <= c[4] + c[3] {
                     return c[2]
-                } else if t < 2 * c[4] + c[3] {
+                } else if t <= 2 * c[4] + c[3] {
                     return c[2] - (t - (c[4] + c[3])) * c[2] / c[4]
                 } else {
                     return 0

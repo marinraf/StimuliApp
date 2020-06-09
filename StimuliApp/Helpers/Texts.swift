@@ -112,16 +112,16 @@ corresponding value to zero.
         The pixel density per inch of the screen.
         This value is provided directly when the device is identified.
         If the device is not correctly identified, you can provide a value manually.
-        This value is only necessary if you plan to work with centimeters, inches or visual degrees instead of pixels.
+        This value is only necessary if you plan to work in centimeters, inches or visual degrees instead of pixels.
         """
         #if targetEnvironment(macCatalyst)
         text =  """
         The pixel density per inch of the screen.
-        It is important that you calculate this value yourself, if you plan to work with centimeters, inches \
+        It is important that you calculate this value yourself, if you plan to work in centimeters, inches \
         or visual degrees.
         Do not use the value provided by apple or the manufacturer of your screen, because the value of your current \
         ppi can depend on some system settings.
-        The only way to make sure that you are using the right value for the ppi is to measure it yourself.
+        The only way to be sure that you are using the right value for the ppi is to measure it yourself.
         To do that, first measure the size of the test window in pixels and then the length of the diagonal of the \
         test window in inches.
         With these values you can easily get your ppi, for example using:
@@ -139,9 +139,45 @@ corresponding value to zero.
 The maximum frame rate of the screen. This value can be 60 or 120 Hz depending on the device.
 """
 
+    static let maximumBrightness = """
+The maximum luminance of the device in cd/m².
+
+StimuliApp identifies most of the devices and sets as a default value for maximumLuminance the value included in \
+the specifications by Apple.
+
+You can also manually specify maximumLuminance if you have measured the maximum luminance using a photometer.
+
+StimuliApp uses the maximumLuminance parameter, so you can directly read the luminance of your tests and \
+stimuli directly in cd/m².
+"""
+
     static let audioRate = """
 The sampling frequency at which sounds are played.
 It is usually a value from 44100 to 48000 Hz, depending on the device.
+"""
+
+    static let delayAudio60 = """
+Delay correction (negative or positive) to apply for the audiovisual synchronization on tests where \
+the screen frame rate is 60Hz.
+
+When the user specifies that the auditory and visual signals should be presented at the same, \
+some small audiovisual delays occur. The average delay is around -10 to 10 ms depending on the device.
+It is possible to correct this average delay.
+
+You need to present several times an audiovisual signal specified to be presented at the same time and \
+calculate the average delay measuring the signals with an oscilloscope.
+Then, you should include the average delay in the delayAudio60 variable using a positive sign if you want \
+that the correction delays the auditory signal presentation and a negative sign if you want that the correction \
+delays the visual signal presentation.
+
+The variability of the delay across presentations (precision) is less than 1 millisecond \
+(standard deviation) and cannot be corrected.
+"""
+
+    static let delayAudio120 = """
+Delay correction to apply for the audiovisual synchronization on tests where the screen frame rate is 120 Hz.
+
+This delay correction is necessary because the average delay is different when the device is working at 60 or 120 Hz.
 """
 
     static var resolution: String {
@@ -159,6 +195,20 @@ It is usually a value from 44100 to 48000 Hz, depending on the device.
     }
 
     // MARK: - Test
+    static let firstMessageTest = """
+Remember to disable Notifications while performing the test.
+
+For stimuliApp to display luminance properly:
+
+- Disable TrueTone and Night Shift in your device (Settings -> Display & Brightness).
+
+- Disable Auto-Brightness (Settings -> Accessibility, Display & Text Size).
+"""
+
+    static let needToSync = """
+Screen needs to re-sync. Press OK to continue.
+"""
+
     static let testName = """
 A name to identify this test.
 """
@@ -173,21 +223,28 @@ On this device, the refresh rate of the screen is always 60 HZ.
 """
 
     static let brightness = """
-You can control the brightness of the screen with this parameter.
+You can control the luminance of the screen with this parameter.
 
-The new brightness will only be effective once the test begins.
+The perceived brightness is approximately proportional to the logarithm of the luminance that you set \
+with this parameter.
 
-There are two options on iOS and iPadOS that can automatically change the brightness and color \
-temperature settings of the device:
-True Tone and Night Shift.
+The new luminance will only be effective once the test begins.
 
-It is important to disable these two options in your device's preferences menu to avoid unwanted \
-changes when running a test.
+There are a few preferences on iOS and iPadOS that can automatically change the brightness and color temperature \
+settings of the device:
+
+Auto-Brightness can be found in your device Settings, Accessibility, Display & Text Size.
+
+TrueTone and Night Shift options can be found in your device Settings, Display & Brightness.
+
+Remember to disable these options to avoid unwanted changes of brightness when running a test.
+
+Even with the Auto-Brightness adjustment disabled, the brightness of the device can be slightly increased \
+automatically if you are under a bright light (outside).
 """
 
     static let gamma = """
-iOS and iPadOS devices usually have screens with a gamma value around 2.2.
-You can "correct" this gamma value if you want the luminance values to be linear.
+Establish how the luminance raises with the input value.
 """
 
     static let gammaValue = """
@@ -197,7 +254,7 @@ Numeric value of gamma.
     static let viewingDistance = """
 Viewing distance from the participant to the screen.
 
-This value is used to calculate the actual pixel size of any property that is measured in visual angle degrees.
+This value is used to calculate the actual pixel size of any property that is measured in visual degrees.
 """
 
     static let distanceValue = """
@@ -221,7 +278,8 @@ The first section of the test.
 """
 
     static let linear = """
-The gamma is transformed to make the luminance linear, assuming the screen has a gamma value of 2.2.
+The gamma is transformed to make the luminance linear, assuming the screen has a gamma value of 2.2, \
+which is the gamma used in iOS and iPadOs devices.
 The correction is simply to raise the luminance to the power of 1/2.2
 """
 
@@ -231,8 +289,9 @@ This option is a good choice if you are drawing images.
 """
 
     static let calibrated = """
-The best option if you can use a photometer to calibrate the screen.
-You can enter the measured gamma value and it will be corrected by raising the luminance to the power of 1/gamma
+If you are using stimuliApp on a computer or with an external monitor, you may want to calibrate it with a \
+photometer and manually enter the correction value for gamma.
+The correction is simply to raise the luminance to the power of 1/gamma.
 """
 
     static let constant = """
@@ -268,7 +327,7 @@ Boolean variable that establishes whether the stimulus is active or not.
 Useful when you have stimuli that should be presented in some trials and not presented in other trials.
 Use this variable to control the presence of the stimulus rather than using contrast = 0 or volume = 0 \
 or other workarounds.
-Making the stimulus inactive is the only way to make sure nor CPU neither GPU cycles are used to compute the stimulus.
+Making the stimulus inactive is the only way to make sure neither CPU or GPU cycles are used to compute the stimulus.
 """
 
     static let start = """
@@ -393,7 +452,7 @@ No border.
 """
 
     static let borderNormal = """
-The border has the same contrast, noise and modulation than the stimulus.
+The border has the same contrast, noise and modulation as the stimulus.
 """
     static let borderOpaque = """
 The border has always contrast = 1 and zero noise and modulation, independently of the stimulus values.

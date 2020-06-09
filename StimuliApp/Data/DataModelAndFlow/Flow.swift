@@ -23,6 +23,7 @@ class Flow {
     var property: Property
     var group: Int
     var settings: Settings
+    var frameControl: FrameControl
     private var dataModel: DataModel
     var macApp: NSObjectProtocol?
 
@@ -42,6 +43,7 @@ class Flow {
         self.property = Property()
         self.group = 0
         self.settings = Settings(device: Device())
+        self.frameControl = FrameControl(frameRate: 60, maximumFrameRate: 60, delayAudio: 0)
         let fetchedTests = dataModel.fetchAllTests()
         let fetchedResults = dataModel.fetchAllResults()
         tests = fetchedTests.sorted(by: { $0.order < $1.order })
@@ -56,6 +58,47 @@ class Flow {
     var navigationController: UINavigationController? {
         return tabBarController.navigationController ??
             tabBarController.selectedViewController as? UINavigationController
+    }
+
+    // MARK: - Changes in properties (for legacy properties)
+    func applyChangesInProperties() {
+        for test in self.tests {
+            if test.brightness.unitType == .valueFrom0to1 || test.brightness.name == "brightness" {
+                let oldValue = test.brightness.float
+                test.brightness = TestData.makeBrightnessProperty(float: oldValue)
+                saveTest(test)
+            }
+            for scene in test.scenes {
+                let endTime = Property(name: "endTime",
+                                         info: """
+                                         Maximum time until which it is possible to respond.
+                                         """,
+                                         propertyType: .simpleFloat,
+                                         unitType: .time,
+                                         float: 1000)
+
+                let wrongTiming = Property(name: "wrongTiming",
+                                         info: """
+                                         If 0 it is not possible to respond before startTime or after endTime.
+                                         If 1 it is possible to respond before startTime or after endTime but the \
+                                         response is considered incorrect.
+                                         """,
+                                         propertyType: .simpleFloat,
+                                         unitType: .activated,
+                                         float: 0)
+
+                guard let responseType = FixedResponse(rawValue: scene.responseType.string) else { continue }
+                switch  responseType {
+                case .none, .keyboard, .keys:
+                    break
+                case .leftRight, .topBottom, .touch, .path, .touchObject, .moveObject:
+                    if scene.responseType.properties[1].name != "endTime" {
+                        scene.responseType.properties.insert(endTime, at: 1)
+                        scene.responseType.properties.insert(wrongTiming, at: 2)
+                    }
+                }
+            }
+        }
     }
 
     // MARK: - Full Screen Mac

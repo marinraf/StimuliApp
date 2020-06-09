@@ -74,7 +74,6 @@ class Section: Codable {
         if let i = oldScenesId.firstIndex(of: responseValue.somethingId) {
             responseValue.somethingId = scenesId[i]
         }
-        print("yes")
     }
 
     var managedByBlocks: Bool {

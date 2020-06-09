@@ -49,17 +49,21 @@ class DisplayViewController: UIViewController {
 
         //brightness
         UIApplication.shared.isIdleTimerDisabled = true
-        UIScreen.main.brightness = CGFloat(Flow.shared.settings.brightness - 0.01)
-        UIScreen.main.brightness = CGFloat(Flow.shared.settings.brightness)
+        let brightness = pow(Flow.shared.settings.brightness, (1.0 / Constants.gammaPerBrightness))
+        UIScreen.main.brightness = CGFloat(brightness - 0.01)
+        UIScreen.main.brightness = CGFloat(brightness)
 
         //metal device
         metalView.device = MTLCreateSystemDefaultDevice()
         metalView.framebufferOnly = false
 
         if Flow.shared.settings.device.type == .mac {
-            screenSize = CGSize(width: CGFloat(Flow.shared.settings.width) / UIScreen.main.scale,
-                                height: CGFloat(Flow.shared.settings.height) / UIScreen.main.scale)
+            screenSize = CGSize(width: CGFloat(Flow.shared.settings.width),
+                                height: CGFloat(Flow.shared.settings.height))
         }
+
+        print("screenSize")
+        print(screenSize)
 
         metalView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
         metalView.preferredFramesPerSecond = Flow.shared.settings.frameRate
@@ -118,6 +122,22 @@ class DisplayViewController: UIViewController {
 // MARK: - Extension functions
 extension DisplayViewController: DisplayRenderDelegate {
 
+    func pauseToSync() {
+        displayRender?.inactive = true
+        Flow.shared.frameControl.measure = false
+        player?.pause()
+        audioSystem.pauseAudio()
+        showAlertNeedToSync(resume: { _ in self.resumeFromPause() }, end: { _ in self.end() })
+    }
+
+    func showFirstMessageTest() {
+        displayRender?.inactive = true
+        Flow.shared.frameControl.measure = false
+        player?.pause()
+        audioSystem.pauseAudio()
+        showAlertFirstMessageTest(resume: { _ in self.resumeFromPauseFirst() }, end: { _ in self.end() })
+    }
+
     func addBackButton(position: FixedXButton) {
 
         switch position {
@@ -164,22 +184,25 @@ extension DisplayViewController: DisplayRenderDelegate {
 
     @objc func buttonAction(sender: UIButton!) {
         displayRender?.inactive = true
-        displayRender?.inactiveToMeasureFrame = true
+        Flow.shared.frameControl.measure = false
         pause()
     }
 
     func end() {
+        Task.shared.previousSceneTask = Task.shared.sceneTask
+        Flow.shared.frameControl.initScene = true
+        
         stopVideo()
 
-        Task.shared.saveTaskDataTime()
+        Flow.shared.frameControl.printFrameControl()
 
         switch Task.shared.preview {
 
         case .no:
             showAlertTestIsFinished(action: { _ in
+                Task.shared.saveTestAsResult()
                 Flow.shared.initTabControllerMenu()
             })
-            Task.shared.saveTestAsResult()
         case .previewTest:
             showAlertTestIsFinishedPreview(action: { _ in
                 Flow.shared.navigateBack()
@@ -272,7 +295,13 @@ extension DisplayViewController: DisplayRenderDelegate {
 
     func resumeFromPause() {
         displayRender?.inactive = false
-        displayRender?.inactiveToMeasureFrame = false
+        Flow.shared.frameControl.measure = true
+        player?.play()
+        audioSystem.resumeAudio()
+    }
+
+    func resumeFromPauseFirst() {
+        displayRender?.inactive = false
         player?.play()
         audioSystem.resumeAudio()
     }
@@ -389,8 +418,8 @@ extension DisplayViewController: UITextFieldDelegate {
                 Task.shared.responseKeyboard = text
             }
             displayRender?.inactive = false
-            displayRender?.inactiveToMeasureFrame = false
-            let startTime = displayRender?.startRealTime ?? 0
+            Flow.shared.frameControl.measure = true
+            let startTime = Flow.shared.frameControl.initSceneTime
             Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
             stopAudio()
             displayRender?.responded = true
@@ -445,7 +474,7 @@ extension DisplayViewController {
 
     @objc func responseAction0() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[0].1
-        let startTime = displayRender?.startRealTime ?? 0
+        let startTime = Flow.shared.frameControl.initSceneTime
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         stopAudio()
         displayRender?.responded = true
@@ -453,7 +482,7 @@ extension DisplayViewController {
 
     @objc func responseAction1() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[1].1
-        let startTime = displayRender?.startRealTime ?? 0
+        let startTime = Flow.shared.frameControl.initSceneTime
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         stopAudio()
         displayRender?.responded = true
@@ -461,7 +490,7 @@ extension DisplayViewController {
 
     @objc func responseAction2() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[2].1
-        let startTime = displayRender?.startRealTime ?? 0
+        let startTime = Flow.shared.frameControl.initSceneTime
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         stopAudio()
         displayRender?.responded = true
@@ -469,7 +498,7 @@ extension DisplayViewController {
 
     @objc func responseAction3() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[3].1
-        let startTime = displayRender?.startRealTime ?? 0
+        let startTime = Flow.shared.frameControl.initSceneTime
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         stopAudio()
         displayRender?.responded = true
@@ -477,7 +506,7 @@ extension DisplayViewController {
 
     @objc func responseAction4() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[4].1
-        let startTime = displayRender?.startRealTime ?? 0
+        let startTime = Flow.shared.frameControl.initSceneTime
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         stopAudio()
         displayRender?.responded = true
@@ -485,7 +514,7 @@ extension DisplayViewController {
 
     @objc func responseAction5() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[5].1
-        let startTime = displayRender?.startRealTime ?? 0
+        let startTime = Flow.shared.frameControl.initSceneTime
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         stopAudio()
         displayRender?.responded = true
@@ -493,7 +522,7 @@ extension DisplayViewController {
 
     @objc func responseAction6() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[6].1
-        let startTime = displayRender?.startRealTime ?? 0
+        let startTime = Flow.shared.frameControl.initSceneTime
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         stopAudio()
         displayRender?.responded = true
@@ -501,7 +530,7 @@ extension DisplayViewController {
 
     @objc func responseAction7() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[7].1
-        let startTime = displayRender?.startRealTime ?? 0
+        let startTime = Flow.shared.frameControl.initSceneTime
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         stopAudio()
         displayRender?.responded = true
@@ -509,7 +538,7 @@ extension DisplayViewController {
 
     @objc func responseAction8() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[8].1
-        let startTime = displayRender?.startRealTime ?? 0
+        let startTime = Flow.shared.frameControl.initSceneTime
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         stopAudio()
         displayRender?.responded = true
@@ -517,7 +546,7 @@ extension DisplayViewController {
 
     @objc func responseAction9() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[9].1
-        let startTime = displayRender?.startRealTime ?? 0
+        let startTime = Flow.shared.frameControl.initSceneTime
         Task.shared.userResponse.clocks.append(CACurrentMediaTime() - startTime)
         stopAudio()
         displayRender?.responded = true

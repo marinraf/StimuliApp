@@ -6,6 +6,7 @@
 
 extern float myAUSampleRateHz;
 extern long int myAUToneCounter;
+extern double myAUToneCounterLoop;
 extern long int myAUToneCounterStop;
 extern float myAUChangingTones;
 extern int myAUNumberOfAudios;

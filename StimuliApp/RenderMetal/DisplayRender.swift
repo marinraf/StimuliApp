@@ -27,6 +27,8 @@ protocol DisplayRenderDelegate: class {
     func showKeyboard(type: FixedKeyboard, inTitle: Bool)
     func settingTimeLabel()
     func settingKeyResponses()
+    func showFirstMessageTest()
+    func pauseToSync()
 }
 
 // MARK: - DisplayRender
@@ -55,16 +57,12 @@ class DisplayRender {
 
     //controlling things
     var timeInFrames: Int = 0
-    var startRealTime0: Double = 0
-    var startRealTime: Double = 0
-    var endRealTime: Double = 0
     var sectionNumber: Int = 0
     var randomSeed: Int = 1
     var responded: Bool = false
+    var badTiming: Bool = false
     var inactive: Bool = false
-    var inactiveToMeasureFrame: Bool = false
     var status: Status = .playing
-    var nextStopAudio: Bool = false
 
     var counter = 0
 
@@ -75,6 +73,8 @@ class DisplayRender {
     var keyboard: Bool = false
     var keyboardType: FixedKeyboard = .normal
     var responseInTitle: Bool = false
+
+    var needToSync: Bool = false
 
     // MARK: - Init
     init(device: MTLDevice, size: CGSize, previewScene: Bool) {
@@ -93,10 +93,21 @@ class DisplayRender {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
             self.displayRenderDelegate?.addBackButton(position: Task.shared.xButtonPosition)
         })
+
+        switch Task.shared.preview {
+        case .no:
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+                self.displayRenderDelegate?.showFirstMessageTest()
+            })
+        default:
+            break
+        }
     }
 
     func initScene() {
-        startRealTime0 = CACurrentMediaTime()
+
+        Flow.shared.frameControl.initScene = true
+
         displayRenderDelegate?.clear()
 
         timeInFrames = 0
@@ -122,20 +133,23 @@ class DisplayRender {
         responseInTitle = Task.shared.sceneTask.responseInTitle
 
         inactive = false
-        inactiveToMeasureFrame = false
+        Flow.shared.frameControl.measure = true
 
         displayRenderDelegate?.settingKeyResponses()
 
         displayRenderDelegate?.settingTimeLabel()
 
         displayRenderDelegate?.playAudios(audio: Task.shared.sceneTask.audioFloats[trial])
-
-        startRealTime = CACurrentMediaTime()
     }
 
     func update() -> Bool {
         guard !inactive else {
             return false
+        }
+
+        if needToSync {
+            needToSync = false
+            displayRenderDelegate?.pauseToSync()
         }
 
         if responded {
@@ -204,7 +218,7 @@ class DisplayRender {
         case .endScene:
             if keyboard {
                 inactive = true
-                inactiveToMeasureFrame = true
+                Flow.shared.frameControl.measure = false
                 displayRenderDelegate?.showKeyboard(type: keyboardType, inTitle: responseInTitle)
             } else {
                 changeDisplay(realTimeInFrames: timeInFrames)
@@ -258,10 +272,10 @@ class DisplayRender {
         }
         inactive = true
         if Task.shared.sectionTask.sceneNumber < Task.shared.sectionTask.sceneTasks.count - 1 {
-            changeToNextSceneInSection(realTimeInFrames: realTimeInFrames)
+            changeToNextSceneInSection()
         } else {
             var exitLoop = false
-            lastSceneOfSection(realTimeInFrames: realTimeInFrames)
+            lastSceneOfSection()
             for condition in Task.shared.sectionTask.conditions where !exitLoop {
                 guard let type = condition.type else {
                     if Task.shared.sectionTask.currentTrial + 1 < Task.shared.sectionTask.numberOfTrials {
@@ -307,18 +321,20 @@ class DisplayRender {
         }
     }
 
-    func changeToNextSceneInSection(realTimeInFrames: Int) {
-        Task.shared.sceneTask.saveSceneData(timeInFrames: realTimeInFrames,
-                                            startTime: startRealTime0,
-                                            trial: Task.shared.sectionTask.currentTrial)
+    func changeToNextSceneInSection() {
+        Task.shared.previousSceneTask = Task.shared.sceneTask
+        Task.shared.sceneTask.saveSceneData(startTime: Flow.shared.frameControl.initSceneTime,
+                                            trial: Task.shared.sectionTask.currentTrial,
+                                            badTiming: badTiming)
         Task.shared.sectionTask.sceneNumber += 1
         initScene()
     }
 
-    func lastSceneOfSection(realTimeInFrames: Int) {
-        Task.shared.sceneTask.saveSceneData(timeInFrames: realTimeInFrames,
-                                            startTime: startRealTime0,
-                                            trial: Task.shared.sectionTask.currentTrial)
+    func lastSceneOfSection() {
+        Task.shared.previousSceneTask = Task.shared.sceneTask
+        Task.shared.sceneTask.saveSceneData(startTime: Flow.shared.frameControl.initSceneTime,
+                                            trial: Task.shared.sectionTask.currentTrial,
+                                            badTiming: badTiming)
         Task.shared.sectionTask.sceneNumber = 0
         if Task.shared.sectionTask.last == 1 {
             Task.shared.sectionTask.numberOfCorrects += 1
@@ -330,7 +346,6 @@ class DisplayRender {
     }
 
     func changeToSection(sectionNumber: Int) {
-        Task.shared.sectionTask.saveSectionData()
         if Task.shared.sectionTask.currentTrial < Task.shared.sectionTask.numberOfTrials - 1 {
             Task.shared.sectionTask.currentTrial += 1
         } else {

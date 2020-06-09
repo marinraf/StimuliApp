@@ -123,6 +123,7 @@ class MenuViewController: UIViewController {
 
     private func preview() {
         if menu.buttonImage == "preview test" {
+            Task.shared.reset()
             Task.shared.error = Task.shared.createTask(test: Flow.shared.test, preview: .previewTest)
             if Task.shared.error == "" {
                 Flow.shared.navigate(to: Display())
@@ -130,6 +131,7 @@ class MenuViewController: UIViewController {
                 Flow.shared.navigate(to: InfoExport(type: .previewErrorStimulusOrTest))
             }
         } else if menu.buttonImage == "preview scene" {
+            Task.shared.reset()
             Task.shared.error = Task.shared.createTask(section: Flow.shared.section,
                                                        scene: Flow.shared.scene,
                                                        test: Flow.shared.test)
@@ -139,6 +141,7 @@ class MenuViewController: UIViewController {
                 Flow.shared.navigate(to: InfoExport(type: .previewErrorStimulusOrTest))
             }
         } else if menu.buttonImage == "preview stimulus" {
+            Task.shared.reset()
             Task.shared.error = Task.shared.createTask(stimulus: Flow.shared.stimulus)
             if Task.shared.error == "" {
                 Flow.shared.navigate(to: Display())
@@ -146,6 +149,7 @@ class MenuViewController: UIViewController {
                 Flow.shared.navigate(to: InfoExport(type: .previewErrorStimulusOrTest))
             }
         } else if menu.buttonImage == "preview variables" {
+            Task.shared.reset()
             Task.shared.error = Task.shared.createSection(section: Flow.shared.section, test: Flow.shared.test)
             if Task.shared.error == "" {
                 Flow.shared.navigate(to: InfoExport(type: .previewVariables))

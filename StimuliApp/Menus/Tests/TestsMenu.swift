@@ -7,6 +7,7 @@ class TestsMenu: Menu {
 
     // MARK: - Setting
     override func setting() {
+        Flow.shared.applyChangesInProperties()
         sections = []
         makeSection0()
         makeSection1()

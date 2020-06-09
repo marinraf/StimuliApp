@@ -24,13 +24,29 @@ extension UIViewController {
                                         action2: @escaping (UIAlertAction) -> Void) {
         let message0 = Texts.longFrames
 
-        let message = message0 + "\n\n" + Task.shared.longFramesString
+        let message = message0 + "\n\n" + Flow.shared.frameControl.longFramesString
 
         let alert = UIAlertController(title: "Test finished",
                                       message: message,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: action))
         alert.addAction(UIAlertAction(title: "More Info", style: UIAlertAction.Style.default, handler: action2))
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func showAlertFirstMessageTest(resume: @escaping (UIAlertAction) -> Void, end: @escaping (UIAlertAction) -> Void) {
+        let alert = UIAlertController(title: "Running test",
+                                      message: Texts.firstMessageTest,
+                                      preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: resume))
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func showAlertNeedToSync(resume: @escaping (UIAlertAction) -> Void, end: @escaping (UIAlertAction) -> Void) {
+        let alert = UIAlertController(title: "Re-sync",
+                                      message: Texts.needToSync,
+                                      preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: resume))
         self.present(alert, animated: true, completion: nil)
     }
 

@@ -72,6 +72,18 @@ struct SettingsData {
         return property
     }
 
+    static func makeBrightnessProperty(float: Float) -> Property {
+
+        let property = Property(name: "maximumLuminance",
+                                info: Texts.maximumBrightness,
+                                propertyType: .simpleFloat,
+                                unitType: .maxBrightness,
+                                float: float)
+
+        property.onlyInfo = false
+        return property
+    }
+
     static func makeAudioRateProperty(float: Float) -> Property {
 
         let property = Property(name: "audioRate",
@@ -82,6 +94,24 @@ struct SettingsData {
 
         property.onlyInfo = true
         return property
+    }
+
+    static func makeDelayAudio60Property(float: Float) -> Property {
+
+        return Property(name: "delayAudio60",
+                        info: Texts.delayAudio60,
+                        propertyType: .simpleFloat,
+                        unitType: .delayTime,
+                        float: float)
+    }
+
+    static func makeDelayAudio120Property(float: Float) -> Property {
+
+        return Property(name: "delayAudio120",
+                        info: Texts.delayAudio120,
+                        propertyType: .simpleFloat,
+                        unitType: .delayTime,
+                        float: float)
     }
 
     static func makeResolutionProperty(float: Float, float1: Float, onlyInfo: Bool) -> Property {

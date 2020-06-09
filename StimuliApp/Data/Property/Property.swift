@@ -721,7 +721,27 @@ class Property: Codable {
         let exp = abs(timeExponent)
         let expString = exp == 1 ? "" : exp.exponentiate()
 
-        if unit == .none {
+        if unit == .cdm2 {
+            if Flow.shared.settings.maximumBrightness > 10 {
+                let value = self.float * Flow.shared.settings.maximumBrightness
+                return " (\(value) cd/m²)"
+            } else {
+                return ""
+            }
+        } else if name.hasSuffix("Luminance") && timeExponent == 0 && properties.isEmpty
+            && timeDependency != .variable && name != "maximumLuminance" {
+            if Flow.shared.settings.maximumBrightness > 10 {
+
+                var value = self.float * Flow.shared.settings.maximumBrightness
+
+                if Flow.shared.settings.device.type != .mac  {
+                    value *=  Flow.shared.test.brightness.float
+                }
+                return " (\(value) cd/m²)"
+            } else {
+                return ""
+            }
+        } else if unit == .none {
             if timeExponent == 0 {
                 return ""
             } else if timeExponent < 0 {

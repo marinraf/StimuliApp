@@ -38,7 +38,11 @@ class EditTestMenu: Menu {
         sections.append(section)
 
         makeOption(from: Flow.shared.test.frameRate, sectionNumber: sectionNumber)
-        makeOption(from: Flow.shared.test.brightness, sectionNumber: sectionNumber)
+
+        if Flow.shared.settings.device.type != .mac {
+            makeOption(from: Flow.shared.test.brightness, sectionNumber: sectionNumber)
+        }
+        
         makeOption(from: Flow.shared.test.distance, sectionNumber: sectionNumber)
         makeOption(from: Flow.shared.test.cancelButtonPosition, sectionNumber: sectionNumber)
         makeOption(from: Flow.shared.test.randomness, sectionNumber: sectionNumber)

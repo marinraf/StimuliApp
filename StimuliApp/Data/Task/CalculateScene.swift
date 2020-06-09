@@ -1025,21 +1025,27 @@ extension Task {
             }
         case .leftRight, .topBottom:
             sceneTask.responseStartInFrames = (scene.responseType.properties[0].float * frameRate).toInt
-            sceneTask.responseObject = [scene.responseType.properties[1].float, scene.responseType.properties[2].float]
+            sceneTask.responseEndInFrames = (scene.responseType.properties[1].float * frameRate).toInt
+            sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
+            sceneTask.responseObject = [scene.responseType.properties[3].float, scene.responseType.properties[4].float]
         case .touch, .path:
             sceneTask.responseStartInFrames = (scene.responseType.properties[0].float * frameRate).toInt
-            sceneTask.responseOrigin = getOrigin2dValue(from: scene.responseType.properties[1])
-            sceneTask.responseCoordinates = FixedPositionResponse(rawValue: scene.responseType.properties[2].string) ??
+            sceneTask.responseEndInFrames = (scene.responseType.properties[1].float * frameRate).toInt
+            sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
+            sceneTask.responseOrigin = getOrigin2dValue(from: scene.responseType.properties[3])
+            sceneTask.responseCoordinates = FixedPositionResponse(rawValue: scene.responseType.properties[4].string) ??
                 .cartesian
-            sceneTask.responseFirstUnit = Unit(rawValue: scene.responseType.properties[2].properties[0].string) ??
+            sceneTask.responseFirstUnit = Unit(rawValue: scene.responseType.properties[4].properties[0].string) ??
                 .none
-            sceneTask.responseSecondUnit = Unit(rawValue: scene.responseType.properties[2].properties[1].string) ??
+            sceneTask.responseSecondUnit = Unit(rawValue: scene.responseType.properties[4].properties[1].string) ??
                 .none
         case .touchObject:
             sceneTask.responseStartInFrames = (scene.responseType.properties[0].float * frameRate).toInt
-            let backgroundInteractive = FixedObjectResponse(rawValue: scene.responseType.properties[1].string) ?? .no
+            sceneTask.responseEndInFrames = (scene.responseType.properties[1].float * frameRate).toInt
+            sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
+            let backgroundInteractive = FixedObjectResponse(rawValue: scene.responseType.properties[3].string) ?? .no
             if backgroundInteractive == .yes {
-                let objectValue = scene.responseType.properties[1].properties[0].float
+                let objectValue = scene.responseType.properties[3].properties[0].float
                 sceneTask.responseBackground = objectValue
             } else {
                 sceneTask.responseBackground = nil
@@ -1056,14 +1062,16 @@ extension Task {
             }
         case .moveObject:
             sceneTask.responseStartInFrames = (scene.responseType.properties[0].float * frameRate).toInt
-            sceneTask.responseOrigin = getOrigin2dValue(from: scene.responseType.properties[1])
-            sceneTask.responseCoordinates = FixedPositionResponse(rawValue: scene.responseType.properties[2].string) ??
+            sceneTask.responseEndInFrames = (scene.responseType.properties[1].float * frameRate).toInt
+            sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
+            sceneTask.responseOrigin = getOrigin2dValue(from: scene.responseType.properties[3])
+            sceneTask.responseCoordinates = FixedPositionResponse(rawValue: scene.responseType.properties[4].string) ??
                 .cartesian
-            sceneTask.responseFirstUnit = Unit(rawValue: scene.responseType.properties[2].properties[0].string) ??
+            sceneTask.responseFirstUnit = Unit(rawValue: scene.responseType.properties[4].properties[0].string) ??
                 .none
-            sceneTask.responseSecondUnit = Unit(rawValue: scene.responseType.properties[2].properties[1].string) ??
+            sceneTask.responseSecondUnit = Unit(rawValue: scene.responseType.properties[4].properties[1].string) ??
                 .none
-            sceneTask.endPath = FixedEndPath(rawValue: scene.responseType.properties[3].string) ?? .lift
+            sceneTask.endPath = FixedEndPath(rawValue: scene.responseType.properties[5].string) ?? .lift
             sceneTask.responseObject = Array(repeating: nil, count: sceneTask.numberOfMetals)
             for property in scene.responseType.properties {
                 if let objectNumber = scene.movableObjects.firstIndex(where: { $0.id == property.somethingId }) {
