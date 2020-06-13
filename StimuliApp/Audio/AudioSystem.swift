@@ -38,11 +38,6 @@ class AudioSystem {
 
                 Flow.shared.settings.updateAudioRate(new: sess.sampleRate)
                 myAUSampleRateHz = Float(Flow.shared.settings.audioRate)
-
-                print("setting songs")
-                print("in settings", Flow.shared.settings.audioRate)
-                print("in sess", sess.sampleRate)
-                print("")
             } catch { }
         }
 

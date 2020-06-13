@@ -168,7 +168,6 @@ extension Renderer: MTKViewDelegate {
         Flow.shared.frameControl.updateDrawTime(displayRender: displayRender)
 
         let positionsBufferProvider = positionsBufferProviders[Task.shared.computeNumber]
-
         _ = positionsBufferProvider.semaphore.wait(timeout: .distantFuture)
 
          guard let drawable = view.currentDrawable,
@@ -177,7 +176,7 @@ extension Renderer: MTKViewDelegate {
             else { return }
 
         commandBuffer.addCompletedHandler { (_) in
-          positionsBufferProvider.semaphore.signal()
+            positionsBufferProvider.semaphore.signal()
         }
 
 //        #if targetEnvironment(macCatalyst)
@@ -200,7 +199,6 @@ extension Renderer: MTKViewDelegate {
         _ = displayRender?.update()
 
         updateObjectTextures()
-
 
         var dotPosition = 0
 

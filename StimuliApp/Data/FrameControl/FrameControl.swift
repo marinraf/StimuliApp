@@ -176,8 +176,6 @@ class FrameControl {
 
         delay = constantDelay - diff
 
-        print(delay)
-
         let responded = displayRender.responded
 
         if initScene {

@@ -72,10 +72,6 @@ extension DisplayRender {
         badTiming = timeInFrames < Task.shared.sceneTask.responseStartInFrames ||
             timeInFrames > Task.shared.sceneTask.responseEndInFrames
 
-        print("bad, out")
-        print(badTiming)
-        print(Task.shared.sceneTask.responseOutWindow)
-
         guard !badTiming || Task.shared.sceneTask.responseOutWindow else { return }
 
         touching = true

@@ -62,9 +62,6 @@ class DisplayViewController: UIViewController {
                                 height: CGFloat(Flow.shared.settings.height))
         }
 
-        print("screenSize")
-        print(screenSize)
-
         metalView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
         metalView.preferredFramesPerSecond = Flow.shared.settings.frameRate
         guard let device = metalView.device else {
@@ -90,6 +87,7 @@ class DisplayViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         self.tabBarController?.tabBar.isHidden = true
 
