@@ -94,13 +94,15 @@ class DisplayRender {
             self.displayRenderDelegate?.addBackButton(position: Task.shared.xButtonPosition)
         })
 
-        switch Task.shared.preview {
-        case .no:
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
-                self.displayRenderDelegate?.showFirstMessageTest()
-            })
-        default:
-            break
+        if Flow.shared.settings.device.type != .mac {
+            switch Task.shared.preview {
+            case .no:
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+                    self.displayRenderDelegate?.showFirstMessageTest()
+                })
+            default:
+                break
+            }
         }
     }
 

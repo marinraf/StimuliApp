@@ -114,6 +114,24 @@ struct SettingsData {
                         float: float)
     }
 
+    static func makePositionXProperty(float: Float) -> Property {
+
+        return Property(name: "testWindowPositionX",
+                        info: Texts.testWindowPositionX,
+                        propertyType: .simpleFloat,
+                        unitType: .positiveIntegerOrZero,
+                        float: float)
+    }
+
+    static func makePositionYProperty(float: Float) -> Property {
+
+        return Property(name: "testWindowPositionY",
+                        info: Texts.testWindowPositionY,
+                        propertyType: .simpleFloat,
+                        unitType: .positiveIntegerOrZero,
+                        float: float)
+    }
+
     static func makeResolutionProperty(float: Float, float1: Float, onlyInfo: Bool) -> Property {
 
         

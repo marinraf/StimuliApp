@@ -26,6 +26,9 @@ class DisplayPreviewViewController: UIViewController {
     var inactivation = true
 
     var screenSize: CGSize = UIScreen.main.bounds.size
+    var x: CGFloat = 0
+    var y: CGFloat = 0
+
 
     let button = UIButton(type: .custom)
 
@@ -122,6 +125,8 @@ class DisplayPreviewViewController: UIViewController {
         if Flow.shared.settings.device.type == .mac {
             screenSize = CGSize(width: CGFloat(Flow.shared.settings.width),
                                 height: CGFloat(Flow.shared.settings.height))
+            x = CGFloat(Flow.shared.settings.positionX)
+            y = CGFloat(Flow.shared.settings.positionY)
         }
 
         metalView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
@@ -150,7 +155,7 @@ class DisplayPreviewViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
 
         var size = view.bounds.size
-        view.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
+        view.frame = CGRect(x: x, y: y, width: screenSize.width, height: screenSize.height)
         size = view.bounds.size
 
         if size.width >= size.height {

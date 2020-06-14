@@ -36,7 +36,11 @@ cmd + R
 
 ## Contribute
 
-We would love you for the contribution to StimuliApp, check the LICENSE file for more info.
+We would love you for the contribution to StimuliApp, check the [LICENSE](https://github.com/marinraf/StimuliApp/blob/master/LICENSE)  file for more info.
+
+
+## Documentation and tutorials
+You can consult our [documentation](https://github.com/marinraf/StimuliApp/blob/master/StimuliApp_documentation.pdf)  or visit our [website](https://www.stimuliapp.com) for more information and tutorials.
 
 
 ## License and support

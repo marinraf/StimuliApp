@@ -17,6 +17,7 @@
 		74AF81C423B750C9007B73EE /* ObjectFromStimulusMenu2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF81C323B750C9007B73EE /* ObjectFromStimulusMenu2.swift */; };
 		74B409C0243EF7F00053AD69 /* LokiHeader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 74B409BF243EF7F00053AD69 /* LokiHeader.metal */; };
 		74B409C3243F0DAD0053AD69 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 74B409C2243F0DAD0053AD69 /* LICENSE */; };
+		74CB34E1249672DF00DE9A6F /* StimuliApp_documentation.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74CB34E0249672DF00DE9A6F /* StimuliApp_documentation.pdf */; };
 		9601AC302221B3B300178C62 /* EditListOfValuesDoble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9601AC2F2221B3B300178C62 /* EditListOfValuesDoble.swift */; };
 		9601AC322221B47000178C62 /* EditListOfValuesTriple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9601AC312221B47000178C62 /* EditListOfValuesTriple.swift */; };
 		9601AC3422229D5F00178C62 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9601AC3322229D5F00178C62 /* Object.swift */; };
@@ -175,6 +176,7 @@
 		74B409C2243F0DAD0053AD69 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		74B409C4243F0DED0053AD69 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		74B8905423E2A5C600BF12AC /* privacyPolicy.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = privacyPolicy.md; sourceTree = "<group>"; };
+		74CB34E0249672DF00DE9A6F /* StimuliApp_documentation.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = StimuliApp_documentation.pdf; sourceTree = "<group>"; };
 		9601AC2F2221B3B300178C62 /* EditListOfValuesDoble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListOfValuesDoble.swift; sourceTree = "<group>"; };
 		9601AC312221B47000178C62 /* EditListOfValuesTriple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListOfValuesTriple.swift; sourceTree = "<group>"; };
 		9601AC3322229D5F00178C62 /* Object.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
@@ -437,6 +439,7 @@
 		9696A68321E3D4F700FE5C56 = {
 			isa = PBXGroup;
 			children = (
+				74CB34E0249672DF00DE9A6F /* StimuliApp_documentation.pdf */,
 				74AEA810243F1E4F00E326F8 /* .gitignore */,
 				74B409C4243F0DED0053AD69 /* README.md */,
 				74B409C2243F0DAD0053AD69 /* LICENSE */,
@@ -866,6 +869,7 @@
 			files = (
 				CC460C7B21E4C61100475EC5 /* ModifyViewController.xib in Resources */,
 				9696A69A21E3D4F700FE5C56 /* LaunchScreen.storyboard in Resources */,
+				74CB34E1249672DF00DE9A6F /* StimuliApp_documentation.pdf in Resources */,
 				74B409C3243F0DAD0053AD69 /* LICENSE in Resources */,
 				96457D50222DA3180015E8FF /* SelectTableViewCell.xib in Resources */,
 				96E9F47B229EBE2E001A40BE /* SelectViewController.xib in Resources */,

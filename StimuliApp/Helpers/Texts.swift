@@ -187,12 +187,27 @@ This delay correction is necessary because the average delay is different when t
         #if targetEnvironment(macCatalyst)
         text =  """
         Tests are always run and previewed with StimuliApp in fullscreen mode.
-        A test window is created with the size indicated in this property.
-        The window is positioned starting in the upper left corner of the screen.
+
+        When a test is run, a test window is created with the size indicated in this property.
+
+        Depending on your computer's CPU and GPU model, you may find that running tests \
+        using a large window results in a drop in performance and unstable frame rate.
+
+        If that is the case, you can try reducing the size of the window.
+
+        You can change the position of the window in the screen with the testWindowPosition properties.
         """
         #endif
         return text
     }
+
+    static let testWindowPositionX = """
+The x position of the test window, from the upper left corner of the screen.
+"""
+
+    static let testWindowPositionY = """
+The y position of the test window, from the upper left corner of the screen.
+"""
 
     // MARK: - Test
     static let firstMessageTest = """

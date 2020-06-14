@@ -32,6 +32,8 @@ class Settings {
     var delta: Float
     var delayAudio60: Float
     var delayAudio120: Float
+    var positionX: Float
+    var positionY: Float
 
     let userProperties: [Property]
     var deviceProperties: [Property]
@@ -46,6 +48,8 @@ class Settings {
     var maximumBrightnessProperty: Property
     var audioRateProperty: Property
     var resolutionProperty: Property
+    var positionXProperty: Property
+    var positionYProperty: Property
 
     var delayAudio60Property: Property
     var delayAudio120Property: Property
@@ -112,6 +116,12 @@ class Settings {
         self.maximumBrightness = UserDefaults.standard.bool(forKey: "maximumBrightnessSaved") ?
             UserDefaults.standard.float(forKey: "maximumBrightness") : self.maximumBrightnessApple
 
+        self.positionX = UserDefaults.standard.bool(forKey: "testWindowPositionXSaved") ?
+            UserDefaults.standard.float(forKey: "testWindowPositionX") : 0
+
+        self.positionY = UserDefaults.standard.bool(forKey: "testWindowPositionYSaved") ?
+            UserDefaults.standard.float(forKey: "testWindowPositionY") : 0
+
         self.delta = 1 / Float(self.frameRate)
 
         let systemString = "\(device.systemName), version: \(device.systemVersion)"
@@ -135,10 +145,20 @@ class Settings {
         self.delayAudio60Property = SettingsData.makeDelayAudio60Property(float: self.delayAudio60)
         self.delayAudio120Property = SettingsData.makeDelayAudio120Property(float: self.delayAudio120)
 
+        self.positionXProperty = SettingsData.makePositionXProperty(float: positionX)
+        self.positionYProperty = SettingsData.makePositionYProperty(float: positionY)
+
         self.userProperties = [userProperty, emailProperty]
+
+        #if targetEnvironment(macCatalyst)
+        self.deviceProperties = [descriptionProperty, systemProperty, audioRateProperty, maximumFrameRateProperty,
+                                 resolutionProperty, positionXProperty, positionYProperty, ppiProperty,
+                                 maximumBrightnessProperty, rampTimeProperty, delayAudio60Property]
+        #else
         self.deviceProperties = [descriptionProperty, systemProperty, audioRateProperty, maximumFrameRateProperty,
                                  resolutionProperty, ppiProperty, maximumBrightnessProperty, rampTimeProperty,
                                  delayAudio60Property]
+        #endif
 
         if self.maximumFrameRate == 120 {
             self.deviceProperties.append(delayAudio120Property)
@@ -201,6 +221,12 @@ class Settings {
 
         self.maximumBrightness = UserDefaults.standard.bool(forKey: "maximumBrightnessSaved") ?
             UserDefaults.standard.float(forKey: "maximumBrightness") : self.maximumBrightnessApple
+
+        self.positionX = UserDefaults.standard.bool(forKey: "testWindowPositionXSaved") ?
+            UserDefaults.standard.float(forKey: "testWindowPositionX") : 0
+
+        self.positionY = UserDefaults.standard.bool(forKey: "testWindowPositionYSaved") ?
+            UserDefaults.standard.float(forKey: "testWindowPositionY") : 0
     }
 
     var info: String {

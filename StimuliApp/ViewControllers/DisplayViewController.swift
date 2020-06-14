@@ -23,6 +23,8 @@ class DisplayViewController: UIViewController {
     var inTitle = false
 
     var screenSize: CGSize = UIScreen.main.bounds.size
+    var x: CGFloat = 0
+    var y: CGFloat = 0
 
     let button = UIButton(type: .custom)
 
@@ -60,6 +62,8 @@ class DisplayViewController: UIViewController {
         if Flow.shared.settings.device.type == .mac {
             screenSize = CGSize(width: CGFloat(Flow.shared.settings.width),
                                 height: CGFloat(Flow.shared.settings.height))
+            x = CGFloat(Flow.shared.settings.positionX)
+            y = CGFloat(Flow.shared.settings.positionY)
         }
 
         metalView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
@@ -92,7 +96,7 @@ class DisplayViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
 
         var size = view.bounds.size
-        view.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
+        view.frame = CGRect(x: x, y:y, width: screenSize.width, height: screenSize.height)
         size = view.bounds.size
 
         if size.width >= size.height {
@@ -292,6 +296,9 @@ extension DisplayViewController: DisplayRenderDelegate {
     }
 
     func resumeFromPause() {
+        if Flow.shared.settings.device.type == .mac {
+            view.frame = CGRect(x: x, y:y, width: screenSize.width, height: screenSize.height)
+        }
         displayRender?.inactive = false
         Flow.shared.frameControl.measure = true
         player?.play()
