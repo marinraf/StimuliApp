@@ -42,7 +42,7 @@ We would love you for the contribution to StimuliApp, check the [LICENSE](https:
 ## Documentation and tutorials
 You can consult our [documentation](https://www.stimuliapp.com/ipa/StimuliApp_documentation.pdf)  or visit our [website](https://www.stimuliapp.com) for more information and tutorials.
 
-º
+
 ## License and support
 
 Licensed under the MIT license. See LICENSE for more information.
