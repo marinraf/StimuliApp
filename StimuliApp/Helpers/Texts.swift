@@ -659,8 +659,9 @@ numberOfDifferentTrials * repetitions.
 """
 
     static let trialValueVariable = """
-It is possible to associate a value for each trial in the section.
+ It is possible to associate a different value for each trial in the section.
 To do this, it is necessary to select the variable that will be used to calculate the value of each trial.
+If no variable is selected, the value of each trial will always be considered zero.
 """
 
     static let trialValueSame = """
@@ -674,8 +675,7 @@ that we have selected.
 """
 
     static let responseValueParameter = """
-If there is a trialValue in the section, it is possible to select one of the parameters of any response to be the \
-responseValue of the section.
+It is possible to select one of the parameters of any response to be the responseValue of the section.
 The responseValue can be a numeric value or a position vector.
 """
 

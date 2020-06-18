@@ -168,7 +168,7 @@ struct SceneData {
                                  """,
                                  propertyType: .simpleFloat,
                                  unitType: .activated,
-                                 float: 1000)
+                                 float: 0)
 
         let leftValue = Property(name: "leftValue",
                                  info: "Numeric value for the left response.",
@@ -373,6 +373,9 @@ struct SceneData {
             property.properties.append(keyboardType)
             property.properties.append(responseInTitle)
         case .keys:
+            property.properties.append(startTime)
+            property.properties.append(endTime)
+            property.properties.append(wrongTiming)
             property.properties.append(key1)
             property.properties.append(key2)
             property.properties.append(key3)

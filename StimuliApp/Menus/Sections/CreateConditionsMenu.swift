@@ -42,9 +42,9 @@ class CreateConditionsMenu: Menu {
             Flow.shared.saveTest(Flow.shared.test)
 
             switch condition {
-            case .lastCorrect, .lastIncorrect:
+            case .lastCorrect, .lastIncorrect, .lastResponded, .lastNotResponded:
                 return nil
-            case .numberCorrects, .numberOfTrials, .numberIncorrects, .numberOfResponses:
+            case .numberCorrects, .numberOfTrials, .numberIncorrects, .numberOfResponses, .numberOfNotResponses:
                 let modify = Modify(title: "number of trials",
                                     info: "number of trials",
                                     property: newProperty)

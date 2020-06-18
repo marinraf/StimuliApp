@@ -10,6 +10,7 @@ class EditVariableMenu: Menu {
         guard Flow.shared.variable.property?.timeDependency == .variable else {
             sections = []
             title2 = "This variable no longer exists"
+            backButton = "< Section: \(Flow.shared.section.name.string)"
             return
         }
         buttonImage = "preview scene"

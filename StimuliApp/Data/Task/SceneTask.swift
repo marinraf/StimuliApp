@@ -198,8 +198,8 @@ class SceneTask {
     var responseCoordinates: FixedPositionResponse = .cartesian
     var responseFirstUnit: Unit = .none
     var responseSecondUnit: Unit = .none
-    var responseStartInFrames: Int = 0
-    var responseEndInFrames: Int = 0
+    var responseStart: Double = 0
+    var responseEnd: Double = 0
     var responseOutWindow: Bool = false
     var responseOrigin: (x: Float, y: Float) = (0, 0)
     var responseObject: [Float?] = [] //object or left right or up bottom
@@ -234,69 +234,77 @@ class SceneTask {
         realStartTime.append(startTime)
         realEndTime.append(startTime)
 
+        if Task.shared.userResponse.string != nil && !badTiming {
+            Task.shared.sectionTask.lastResponded = 1
+        } else {
+            Task.shared.sectionTask.lastResponded = 0
+        }
+
         if isResponse {
             let valueType = Task.shared.sectionTask.sectionValueType
             var distance: Float?
 
             if let valueType = valueType {
-                switch valueType {
 
+                var value1: Float = 0
+
+                if Task.shared.sectionTask.sectionValues.count > trial {
+                    value1 = Task.shared.sectionTask.sectionValues[trial]
+                }
+
+                switch valueType {
                 case .value:
-                    let value = Task.shared.sectionTask.sectionValues[trial]
                     if let response = Task.shared.userResponse.float {
-                        distance = abs(response - value)
+                        distance = abs(response - value1)
                     } else if let response = Task.shared.userResponse.string {
                         if let float = Float(response) {
-                            distance = abs(float - value)
+                            distance = abs(float - value1)
                         }
                     }
                 case .position:
-                    let valueX = Task.shared.sectionTask.sectionValues[trial]
-                    let valueY = Task.shared.sectionTask.sectionValues1[trial]
-
                     let positionX = Task.shared.userResponse.xTouches.last
                     let positionY = Task.shared.userResponse.yTouches.last
+                    let value2 = Task.shared.sectionTask.sectionValues1[trial]
 
                     if let positionX = positionX, let positionY = positionY {
                         let position = (positionX, positionY)
-                        let value = (valueX, valueY)
+                        let value = (value1, value2)
 
                         distance = AppUtility.calculateDistance(position, value)
                     }
                 case .xPosition:
-                    let valueX = Task.shared.sectionTask.sectionValues[trial]
                     if let positionX = Task.shared.userResponse.xTouches.last {
-                        distance = abs(positionX - valueX)
+                        distance = abs(positionX - value1)
                     }
                 case .yPosition:
-                    let valueY = Task.shared.sectionTask.sectionValues[trial]
                     if let positionY = Task.shared.userResponse.yTouches.last {
-                        distance = abs(positionY - valueY)
+                        distance = abs(positionY - value1)
                     }
                 case .radiusPosition:
-                    let valueRadius = Task.shared.sectionTask.sectionValues[trial]
                     if let positionRadius = Task.shared.userResponse.radiusTouches.last {
-                        distance = abs(positionRadius - valueRadius)
+                        distance = abs(positionRadius - value1)
                     }
                 case .anglePosition:
-                    let valueAngle = Task.shared.sectionTask.sectionValues[trial]
                     if let positionAngle = Task.shared.userResponse.angleTouches.last {
-                        distance = abs(positionAngle - valueAngle)
+                        distance = abs(positionAngle - value1)
                     }
                 }
-
             }
 
             if let distance = distance {
                 if badTiming {
                     Task.shared.sectionTask.last = 0
+                    Task.shared.sectionTask.lastRespondedReal = 0
                 } else if distance < Task.shared.sectionTask.sectionValueDifference {
                     Task.shared.sectionTask.last = 1
+                    Task.shared.sectionTask.lastRespondedReal = 1
                 } else {
                     Task.shared.sectionTask.last = 0
+                    Task.shared.sectionTask.lastRespondedReal = 1
                 }
             } else {
                 Task.shared.sectionTask.last = 0
+                Task.shared.sectionTask.lastRespondedReal = 0
             }
         }
     }

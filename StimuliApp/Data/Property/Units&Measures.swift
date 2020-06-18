@@ -282,6 +282,8 @@ enum PropertyType: String, Codable, CaseIterable {
 
     case simpleFloat
 
+    case simpleFloatText
+
     case string
     case key
 
@@ -340,6 +342,7 @@ enum PropertyType: String, Codable, CaseIterable {
     var timeDependencies: [TimeDependency] {
         switch self {
         case .simpleFloat: return [.alwaysConstant]
+        case .simpleFloatText: return [.constant, .variable]
         case .string: return [.alwaysConstant]
         case .key: return [.alwaysConstant]
         case .select: return [.alwaysConstant]
@@ -390,6 +393,7 @@ enum PropertyType: String, Codable, CaseIterable {
     var numberKeyboard: Bool {
         switch self {
         case .simpleFloat: return true
+        case .simpleFloatText: return true
         case .string: return false
         case .key: return false
         case .select: return false
@@ -440,6 +444,7 @@ enum PropertyType: String, Codable, CaseIterable {
     var fixedValues: [String] {
         switch self {
         case .simpleFloat: return []
+        case .simpleFloatText: return []
         case .string: return []
         case .key: return []
         case .select: return []
@@ -490,6 +495,7 @@ enum PropertyType: String, Codable, CaseIterable {
     var fixedValuesInfo: [String] {
         switch self {
         case .simpleFloat: return []
+        case .simpleFloatText: return []
         case .string: return []
         case .key: return[]
         case .select: return []

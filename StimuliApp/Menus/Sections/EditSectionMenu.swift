@@ -265,7 +265,7 @@ class EditSectionMenu: Menu {
     }
 
     private func makeValue(from value: Property, sectionNumber: Int) {
-        let name = value.variable?.name ?? "none"
+        let name = value.variable?.name ?? "fixed value = 0"
         var option = Option(name: "trialValueVariable:")
         option.style = .standard
         option.detail = name
@@ -291,20 +291,16 @@ class EditSectionMenu: Menu {
         if Flow.shared.section.responseValue.somethingId == "" {
             option.detail = "none"
         }
-        if Flow.shared.section.trialValue.somethingId == "" {
-            option.style = .onlyInfo
-            sections[sectionNumber].options.append(option)
-        } else {
-            option.style = .standard
-            option.detail = name
-            option.nextScreen = {
-                return CorrectFromResponseMenu(title: "", style: .select)
-            }
-            sections[sectionNumber].options.append(option)
 
-            for element in correct.properties {
-                makeOption(from: element, sectionNumber: sectionNumber, position: 1)
-            }
+        option.style = .standard
+        option.detail = name
+        option.nextScreen = {
+            return CorrectFromResponseMenu(title: "", style: .select)
+        }
+        sections[sectionNumber].options.append(option)
+
+        for element in correct.properties {
+            makeOption(from: element, sectionNumber: sectionNumber, position: 1)
         }
     }
 

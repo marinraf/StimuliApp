@@ -48,12 +48,13 @@ class SectionTask {
     var currentTrial: Int = 0
     var numberOfCorrects: Int = 0
     var numberOfIncorrects: Int = 0
+    var numberOfResponded: Int = 0
+    var numberOfNotResponded: Int = 0
     var last: Int = 1 //by default is correct
+    var lastResponded: Int = 0 //by default is not responded
+    var lastRespondedReal: Int = -1 //this is changed only by the scene with trial value, by default we do not know
     var correctValue: [Int] = [] //trial
-
-    var numberOfResponded: Int {
-        return numberOfCorrects + numberOfIncorrects
-    }
+    var respondedValue: [Int] = [] //trial
 
     var infoName: String {
         return "SECTION: " + name
@@ -208,6 +209,8 @@ class SectionTask {
             if sceneTask.isResponse {
                 titles.append("correct")
                 titlesUnit.append("correct")
+                titles.append("respondedInTime")
+                titlesUnit.append("respondedInTime")
             }
         }
 
@@ -289,6 +292,7 @@ class SectionTask {
             if sceneTask.isResponse {
                 for i in 0 ..< respondedTrials {
                     values[i].append(String(correctValue[i]))
+                    values[i].append(String(respondedValue[i]))
                 }
             }
         }

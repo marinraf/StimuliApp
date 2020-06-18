@@ -37,7 +37,7 @@ class ValueFromVariableMenu: Menu {
     }
 
     private func makeEmptyOption(sectionNumber: Int) {
-        var option = Option(name: "none")
+        var option = Option(name: "fixed value = 0")
         option.style = .onlySelect
         option.nextScreen = {
             Flow.shared.section.trialValue.somethingId = ""

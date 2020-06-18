@@ -34,6 +34,8 @@ struct Constants {
     static let bufferAudio: Double = 0.002 //in seconds (the value will be something similar not this exact value)
     static let delayAudio60: Double = 0.050 //in seconds (to sync audio and video, corrected in settings)
     static let delayAudio120: Double = 0.020 //in seconds (to sync audio and video, corrected in settings)
+    static let delayResponse: Double = 0.025 // in seconds (from initScene to first presentation of drawable)
+    // delayResponse is only used in macos to better measure reaction times
 
     static let separator = "\n\n\n******************************\n\n\n"
 

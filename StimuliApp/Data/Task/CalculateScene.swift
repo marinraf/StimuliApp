@@ -996,7 +996,6 @@ extension Task {
     func createResponse(from scene: Scene) {
 
         sceneTask.responseKeys = []
-        let frameRate = Float(Flow.shared.settings.frameRate)
 
         let responseType = FixedResponse(rawValue: scene.responseType.string) ?? .none
         sceneTask.responseType = responseType
@@ -1008,7 +1007,12 @@ extension Task {
             sceneTask.responseKeyboard = FixedKeyboard(rawValue: scene.responseType.properties[0].string) ?? .normal
             sceneTask.responseInTitle = FixedResponseInTitle(rawValue: scene.responseType.properties[1].string) == .yes
         case .keys:
+            sceneTask.responseStart = Double(scene.responseType.properties[0].float)
+            sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
+            sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
+
             sceneTask.responseKeys = Array.init(repeating: ("", ""), count: 10)
+            
             var i = 0
             for property in scene.responseType.properties where property.selectedValue != 0 {
                 var key = ""
@@ -1024,13 +1028,13 @@ extension Task {
                 i += 1
             }
         case .leftRight, .topBottom:
-            sceneTask.responseStartInFrames = (scene.responseType.properties[0].float * frameRate).toInt
-            sceneTask.responseEndInFrames = (scene.responseType.properties[1].float * frameRate).toInt
+            sceneTask.responseStart = Double(scene.responseType.properties[0].float)
+            sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
             sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
             sceneTask.responseObject = [scene.responseType.properties[3].float, scene.responseType.properties[4].float]
         case .touch, .path:
-            sceneTask.responseStartInFrames = (scene.responseType.properties[0].float * frameRate).toInt
-            sceneTask.responseEndInFrames = (scene.responseType.properties[1].float * frameRate).toInt
+            sceneTask.responseStart = Double(scene.responseType.properties[0].float)
+            sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
             sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
             sceneTask.responseOrigin = getOrigin2dValue(from: scene.responseType.properties[3])
             sceneTask.responseCoordinates = FixedPositionResponse(rawValue: scene.responseType.properties[4].string) ??
@@ -1040,8 +1044,8 @@ extension Task {
             sceneTask.responseSecondUnit = Unit(rawValue: scene.responseType.properties[4].properties[1].string) ??
                 .none
         case .touchObject:
-            sceneTask.responseStartInFrames = (scene.responseType.properties[0].float * frameRate).toInt
-            sceneTask.responseEndInFrames = (scene.responseType.properties[1].float * frameRate).toInt
+            sceneTask.responseStart = Double(scene.responseType.properties[0].float)
+            sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
             sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
             let backgroundInteractive = FixedObjectResponse(rawValue: scene.responseType.properties[3].string) ?? .no
             if backgroundInteractive == .yes {
@@ -1061,8 +1065,8 @@ extension Task {
                 }
             }
         case .moveObject:
-            sceneTask.responseStartInFrames = (scene.responseType.properties[0].float * frameRate).toInt
-            sceneTask.responseEndInFrames = (scene.responseType.properties[1].float * frameRate).toInt
+            sceneTask.responseStart = Double(scene.responseType.properties[0].float)
+            sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
             sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
             sceneTask.responseOrigin = getOrigin2dValue(from: scene.responseType.properties[3])
             sceneTask.responseCoordinates = FixedPositionResponse(rawValue: scene.responseType.properties[4].string) ??

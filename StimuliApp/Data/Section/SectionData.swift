@@ -185,9 +185,12 @@ enum FixedValueType: String, Codable, CaseIterable {
 enum FixedCondition: String, Codable, CaseIterable {
 
     case numberOfTrials = "when the number of trials = n"
-    case numberOfResponses = "when the number of trials responded = n"
+    case numberOfResponses = "when the number of trials responded in time = n"
+    case numberOfNotResponses = "when the number of trials not responded in time = n"
     case numberCorrects = "when the number of correct trials = n"
     case numberIncorrects = "when the number of incorrect trials = n"
+    case lastResponded = "when the last trial was responded in time"
+    case lastNotResponded = "when the last trial was not responded in time"
     case lastCorrect = "when the last trial was correct"
     case lastIncorrect = "when the last trial was incorrect"
 

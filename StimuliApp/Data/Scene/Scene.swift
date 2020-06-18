@@ -80,6 +80,16 @@ class Scene: Codable {
                 property.somethingId = newObjectsId[i]
             }
         }
+
+        let oldColorPropertiesId = [oldScene.color.id] + oldScene.color.allProperties.map({ $0.id })
+        let newColorPropertiesId = [self.color.id] + self.color.allProperties.map({ $0.id })
+
+        for variable in self.objects[0].variables {
+            if let i = oldColorPropertiesId.firstIndex(of: variable.propertyId) {
+                variable.propertyId = newColorPropertiesId[i]
+            }
+
+        }
     }
 
     var variables: [Variable] {

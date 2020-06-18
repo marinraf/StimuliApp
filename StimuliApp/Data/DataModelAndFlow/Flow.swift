@@ -60,14 +60,73 @@ class Flow {
             tabBarController.selectedViewController as? UINavigationController
     }
 
-    // MARK: - Changes in properties (for legacy properties)
+    // MARK: - Changes in properties (for legacy properties and to control screensize)
     func applyChangesInProperties() {
         for test in self.tests {
+
+            var changed = false
+            var changeSize = false
+
+            var factorWidth: Float = 1
+            var factorHeight: Float = 1
+
+            if let width = test.screenWidth {
+                factorWidth = width / Flow.shared.settings.width
+                if factorWidth < 1 - Constants.epsilon || factorWidth > 1 + Constants.epsilon {
+                    changeSize = true
+                }
+            } else {
+                test.screenWidth = Flow.shared.settings.width
+                changed = true
+            }
+
+            if let height = test.screenHeight {
+                factorHeight = height / Flow.shared.settings.height
+                if factorHeight < 1 - Constants.epsilon || factorHeight > 1 + Constants.epsilon {
+                    changeSize = true
+                }
+            } else {
+                test.screenHeight = Flow.shared.settings.height
+                changed = true
+
+            }
+
+            if changeSize {
+                test.screenWidth = Flow.shared.settings.width
+                test.screenHeight = Flow.shared.settings.height
+                changed = true
+                for property in test.allProperties where property.unit == .screenWidthUnits {
+                    property.float = property.float / factorWidth
+                    property.float1 = property.float1 / factorWidth
+                    property.float2 = property.float2 / factorWidth
+                }
+
+                for property in test.allProperties where property.unit == .screenHeightUnits {
+                    property.float = property.float / factorHeight
+                    property.float1 = property.float1 / factorHeight
+                    property.float2 = property.float2 / factorHeight
+                }
+            }
+
+
             if test.brightness.unitType == .valueFrom0to1 || test.brightness.name == "brightness" {
                 let oldValue = test.brightness.float
                 test.brightness = TestData.makeBrightnessProperty(float: oldValue)
-                saveTest(test)
+                changed = true
             }
+
+            for section in test.sections {
+                for property in section.next.properties {
+                    if property.info == "when the number of trials responded = n" {
+                        changed = true
+                        property.info = "when the number of trials responded in time = n"
+                        if let last = property.name.last {
+                            property.name = "when the number of trials responded in time = " + String(last)
+                        }
+                    }
+                }
+            }
+
             for scene in test.scenes {
                 let endTime = Property(name: "endTime",
                                          info: """
@@ -87,16 +146,21 @@ class Flow {
                                          unitType: .activated,
                                          float: 0)
 
-                guard let responseType = FixedResponse(rawValue: scene.responseType.string) else { continue }
-                switch  responseType {
-                case .none, .keyboard, .keys:
-                    break
-                case .leftRight, .topBottom, .touch, .path, .touchObject, .moveObject:
-                    if scene.responseType.properties[1].name != "endTime" {
-                        scene.responseType.properties.insert(endTime, at: 1)
-                        scene.responseType.properties.insert(wrongTiming, at: 2)
+                if let responseType = FixedResponse(rawValue: scene.responseType.string) {
+                    switch  responseType {
+                    case .none, .keyboard, .keys:
+                        break
+                    case .leftRight, .topBottom, .touch, .path, .touchObject, .moveObject:
+                        if scene.responseType.properties[1].name != "endTime" {
+                            changed = true
+                            scene.responseType.properties.insert(endTime, at: 1)
+                            scene.responseType.properties.insert(wrongTiming, at: 2)
+                        }
                     }
                 }
+            }
+            if changed {
+                saveTest(test)
             }
         }
     }

@@ -243,13 +243,13 @@ extension StimuliType {
 
         let positionX = Property(name: "positionX",
                                  info: "The x position relative to the center of the screen.",
-                                 propertyType: .finalFloat,
+                                 propertyType: .simpleFloatText,
                                  unitType: .size,
                                  float: 0)
 
         let positionY = Property(name: "positionY",
                                  info: "The y position relative to the center of the screen.",
-                                 propertyType: .finalFloat,
+                                 propertyType: .simpleFloatText,
                                  unitType: .size,
                                  float: 0)
 

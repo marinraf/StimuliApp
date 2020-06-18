@@ -298,6 +298,25 @@ class DisplayRender {
                         changeToSection(sectionNumber: condition.sectionNumber)
                         exitLoop = true
                     }
+                case .lastResponded:
+                    if Task.shared.sectionTask.lastRespondedReal == 1 ||
+                        (Task.shared.sectionTask.lastRespondedReal == -1  &&
+                            Task.shared.sectionTask.lastResponded == 1) {
+                        changeToSection(sectionNumber: condition.sectionNumber)
+                        exitLoop = true
+                    }
+                case .lastNotResponded:
+                    if Task.shared.sectionTask.lastRespondedReal == 0 ||
+                        (Task.shared.sectionTask.lastRespondedReal == -1  &&
+                            Task.shared.sectionTask.lastResponded == 0) {
+                        changeToSection(sectionNumber: condition.sectionNumber)
+                        exitLoop = true
+                    }
+                case .numberOfNotResponses:
+                    if Task.shared.sectionTask.numberOfNotResponded == condition.n {
+                        changeToSection(sectionNumber: condition.sectionNumber)
+                        exitLoop = true
+                    }
                 case .numberCorrects:
                     if Task.shared.sectionTask.numberOfCorrects == condition.n {
                         changeToSection(sectionNumber: condition.sectionNumber)
@@ -345,9 +364,20 @@ class DisplayRender {
             Task.shared.sectionTask.numberOfIncorrects += 1
             Task.shared.sectionTask.correctValue.append(0)
         }
+        if Task.shared.sectionTask.lastRespondedReal == 1 ||
+            (Task.shared.sectionTask.lastRespondedReal == -1  && Task.shared.sectionTask.lastResponded == 1) {
+            Task.shared.sectionTask.numberOfResponded += 1
+            Task.shared.sectionTask.respondedValue.append(1)
+        } else {
+            Task.shared.sectionTask.numberOfNotResponded += 1
+            Task.shared.sectionTask.respondedValue.append(0)
+        }
     }
 
     func changeToSection(sectionNumber: Int) {
+        Task.shared.sectionTask.lastResponded = 0
+        Task.shared.sectionTask.lastRespondedReal = -1
+
         if Task.shared.sectionTask.currentTrial < Task.shared.sectionTask.numberOfTrials - 1 {
             Task.shared.sectionTask.currentTrial += 1
         } else {

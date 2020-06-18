@@ -194,7 +194,7 @@ class Menu: Screen {
                     makeOption(from: element, sectionNumber: sectionNumber,
                                position: position + 1)
                 }
-            case .simpleFloat, .doblePosition, .dobleSize, .triple, .sequence, .finalFloat,
+            case .simpleFloat, .simpleFloatText, .doblePosition, .dobleSize, .triple, .sequence, .finalFloat,
                  .image, .text, .video, .audio:
                 makeOptionFloat(from: property, sectionNumber: sectionNumber,
                                 position: position, defaultSettings: defaultSettings)

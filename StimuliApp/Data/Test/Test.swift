@@ -20,6 +20,8 @@ class Test: NSObject, Codable {
     var listsOfValues: [ListOfValues]
     var collapse: [String: Bool]
     var files: [String]
+    var screenWidth: Float?
+    var screenHeight: Float?
 
     override init() {
         id = UUID().uuidString
@@ -37,6 +39,8 @@ class Test: NSObject, Codable {
         listsOfValues = []
         collapse = [:]
         files = []
+        screenWidth = nil
+        screenHeight = nil
     }
 
     //new test
@@ -59,6 +63,9 @@ class Test: NSObject, Codable {
         self.listsOfValues = []
         self.collapse = [:]
         self.files = []
+
+        self.screenWidth = Flow.shared.settings.width
+        self.screenHeight = Flow.shared.settings.height
     }
 
     var scenes: [Scene] {

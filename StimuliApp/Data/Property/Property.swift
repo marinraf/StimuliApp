@@ -337,7 +337,7 @@ class Property: Codable {
             default:
                 return unit.si
             }
-        case .timeFloat, .simpleFloat, .finalFloat:
+        case .timeFloat, .simpleFloat, .simpleFloatText, .finalFloat:
             switch self.timeDependency {
             case .variable:
                 let unitToShow = si(unit, timeUnit)
@@ -402,7 +402,7 @@ class Property: Codable {
             default:
                 return values[0] + ";" + values[1] + ";" + values[2]
             }
-        case .timeFloat, .simpleFloat, .finalFloat:
+        case .timeFloat, .simpleFloat, .simpleFloatText, .finalFloat:
             switch self.timeDependency {
             case .alwaysConstant, .constant:
                 return values[0]
@@ -431,7 +431,7 @@ class Property: Codable {
             return [values[0], values[1], ""]
         case .triple, .sequence:
             return [values[0], values[1], values[2]]
-        case .timeFloat, .simpleFloat, .finalFloat:
+        case .timeFloat, .simpleFloat, .simpleFloatText, .finalFloat:
             return [values[0], "", ""]
         }
     }
@@ -479,7 +479,7 @@ class Property: Codable {
             let value2 = numberFormatter.string(from: newNewFloat1 as NSNumber) ?? ""
             let value3 = numberFormatter.string(from: newNewFloat2 as NSNumber) ?? ""
             return [value, value2, value3]
-        case .timeFloat, .simpleFloat, .finalFloat:
+        case .timeFloat, .simpleFloat, .simpleFloatText, .finalFloat:
             if timeUnit == .frame && unit == .none && timeExponent == 1 {
                 newNewFloat = roundf(newNewFloat)
             }
@@ -683,14 +683,23 @@ class Property: Codable {
 
         let properties = [self] + self.properties
 
-        for object in Flow.shared.test.objects where object.stimulus === Flow.shared.stimulus {
-
-            for variable in object.variables where properties.contains(where: { $0 === variable.property }) {
-                Flow.shared.deleteVariable(variable)
+        var isColorScene = false
+        for scene in Flow.shared.test.scenes {
+            if scene.color.allProperties.contains(where: { $0.id == self.id }) {
+                isColorScene = true
             }
+        }
 
-            if timeDependency == .variable {
-                object.addVariable(from: self)
+        if !isColorScene {
+            for object in Flow.shared.test.objects where object.stimulus === Flow.shared.stimulus {
+
+                for variable in object.variables where properties.contains(where: { $0 === variable.property }) {
+                    Flow.shared.deleteVariable(variable)
+                }
+
+                if timeDependency == .variable {
+                    object.addVariable(from: self)
+                }
             }
         }
 
@@ -833,7 +842,7 @@ class Property: Codable {
         case .gamma:
             TestData.addPropertiesToGamma(property: self)
 
-        case .simpleFloat, .string, .key, .select, .dobleSize, .doblePosition, .triple, .sequence,
+        case .simpleFloat, .simpleFloatText, .string, .key, .select, .dobleSize, .doblePosition, .triple, .sequence,
              .finalFloat, .listOrder, .selectionDifferent, .selectionOrder, .correctType,
              .image, .text, .video, .audio, .font, .behaviour:
             break

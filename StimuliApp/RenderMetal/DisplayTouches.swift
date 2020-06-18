@@ -6,6 +6,7 @@ import MetalKit
 struct TouchInView {
 
     var touch: UITouch
+    var time: Double
     var view: UIView
     var originX: Float
     var originY: Float
@@ -27,6 +28,7 @@ struct TouchInView {
     var polar: (radius: Float, angle: Float)
 
     init(touch: UITouch,
+         time: Double,
          view: UIView,
          originX: Float,
          originY: Float,
@@ -35,6 +37,7 @@ struct TouchInView {
          unit1: Unit) {
 
         self.touch = touch
+        self.time = time
         self.view = view
         self.originX = originX
         self.originY = originY
@@ -69,14 +72,17 @@ extension DisplayRender {
         guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
         guard let touch = coalescedTouches.first else { return }
 
-        badTiming = timeInFrames < Task.shared.sceneTask.responseStartInFrames ||
-            timeInFrames > Task.shared.sceneTask.responseEndInFrames
+        let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
+        guard time > 0 else { return }
+
+        badTiming = time < Task.shared.sceneTask.responseStart || time > Task.shared.sceneTask.responseEnd
 
         guard !badTiming || Task.shared.sceneTask.responseOutWindow else { return }
 
         touching = true
 
         let touchInView = TouchInView(touch: touch,
+                                      time: time,
                                       view: view,
                                       originX: Task.shared.sceneTask.responseOrigin.x,
                                       originY: Task.shared.sceneTask.responseOrigin.y,
@@ -127,12 +133,12 @@ extension DisplayRender {
                 if let float = Task.shared.userResponse.float {
                     Task.shared.userResponse.string = String(float)
                 }
-                Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTime
+                Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
                 displayRenderDelegate?.stopAudio()
                 responded = true
             }
         case .path:
-            Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTime
+            Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
             displayRenderDelegate?.stopAudio()
             responded = true
         default:
@@ -146,7 +152,7 @@ extension DisplayRender {
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
-            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
+            Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
         } else if touchInView.location.x > 2 * touchInView.screenSize.width / 3 {
@@ -154,7 +160,7 @@ extension DisplayRender {
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
-            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
+            Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
         }
@@ -166,7 +172,7 @@ extension DisplayRender {
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
-            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
+            Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
         } else if touchInView.location.y > 2 * touchInView.screenSize.height / 3 {
@@ -174,7 +180,7 @@ extension DisplayRender {
             if let integer = Task.shared.userResponse.integer {
                 Task.shared.userResponse.string = String(integer)
             }
-            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
+            Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
         }
@@ -186,7 +192,7 @@ extension DisplayRender {
         let polar = touchInView.polar
         Task.shared.userResponse.radiusTouches.append(polar.radius)
         Task.shared.userResponse.angleTouches.append(polar.angle)
-        Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
+        Task.shared.userResponse.clocks.append(touchInView.time)
         displayRenderDelegate?.stopAudio()
         responded = true
     }
@@ -197,7 +203,7 @@ extension DisplayRender {
         let polar = touchInView.polar
         Task.shared.userResponse.radiusTouches.append(polar.radius)
         Task.shared.userResponse.angleTouches.append(polar.angle)
-        Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
+        Task.shared.userResponse.clocks.append(touchInView.time)
     }
 
     func isTouched(object: Int, trial: Int, touchInView: TouchInView) -> Bool {
@@ -249,8 +255,7 @@ extension DisplayRender {
                     if let float = Task.shared.userResponse.float {
                         Task.shared.userResponse.string = String(float)
                     }
-                    Task.shared.userResponse.clocks.append(touchInView.touch.timestamp -
-                        Flow.shared.frameControl.initSceneTime)
+                    Task.shared.userResponse.clocks.append(touchInView.time)
                     displayRenderDelegate?.stopAudio()
                     responded = true
                     return
@@ -262,7 +267,7 @@ extension DisplayRender {
             if let float = Task.shared.userResponse.float {
                 Task.shared.userResponse.string = String(float)
             }
-            Task.shared.userResponse.clocks.append(touchInView.touch.timestamp - Flow.shared.frameControl.initSceneTime)
+            Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
         }
@@ -272,7 +277,9 @@ extension DisplayRender {
         for uitouch in touches {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             for touch in coalescedTouches {
+                let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
                 let touchInView = TouchInView(touch: touch,
+                                              time: time,
                                               view: view,
                                               originX: Task.shared.sceneTask.responseOrigin.x,
                                               originY: Task.shared.sceneTask.responseOrigin.y,
@@ -285,8 +292,7 @@ extension DisplayRender {
                 let polar = touchInView.polar
                 Task.shared.userResponse.radiusTouches.append(polar.radius)
                 Task.shared.userResponse.angleTouches.append(polar.angle)
-                Task.shared.userResponse.clocks.append(touchInView.touch.timestamp -
-                    Flow.shared.frameControl.initSceneTime)
+                Task.shared.userResponse.clocks.append(time)
             }
         }
     }
@@ -295,7 +301,9 @@ extension DisplayRender {
         for uitouch in touches {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             for touch in coalescedTouches {
+                let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
                 let touchInView = TouchInView(touch: touch,
+                                              time: time,
                                               view: view,
                                               originX: Task.shared.sceneTask.responseOrigin.x,
                                               originY: Task.shared.sceneTask.responseOrigin.y,
@@ -308,8 +316,7 @@ extension DisplayRender {
                 let polar = touchInView.polar
                 Task.shared.userResponse.radiusTouches.append(polar.radius)
                 Task.shared.userResponse.angleTouches.append(polar.angle)
-                Task.shared.userResponse.clocks.append(touchInView.touch.timestamp -
-                    Flow.shared.frameControl.initSceneTime)
+                Task.shared.userResponse.clocks.append(time)
 
                 let trial = Task.shared.sectionTask.currentTrial
                 let numberOfObjects = DataTask.metalValues.count

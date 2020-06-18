@@ -40,6 +40,7 @@ class FrameControl {
     var type: Int
     var time: Double
     var initScene: Bool
+    var initScene2: Bool
     var initSceneTime: Double
     var frames: [Frame]
     var longFrames: [Frame]
@@ -47,6 +48,7 @@ class FrameControl {
     var allFrames: Int
 
     var previousDrawables: [MTLDrawable]
+    var initSceneDrawable: MTLDrawable?
 
     var drawTime: Double
 
@@ -71,6 +73,7 @@ class FrameControl {
         self.longDuration = 1.25 * delta
         self.time = 0
         self.initScene = false
+        self.initScene2 = false
         self.initSceneTime = 0
         self.frames = []
         self.longFrames = []
@@ -106,6 +109,20 @@ class FrameControl {
             self.type = 0 // iPad or iPhone or mac
             self.constantDelay = Constants.delayAudio60 + delayAudio
         }
+    }
+
+    var initSceneTimeReal: Double {
+        #if targetEnvironment(macCatalyst)
+        if #available(macCatalyst 13.4, *) {
+//            we should use presentedTime but it is not working always, apple bug
+//            return initSceneDrawable?.presentedTime ?? 0
+            return initSceneTime + Constants.delayResponse
+        } else {
+            return initSceneTime + Constants.delayResponse
+        }
+        #else
+        return initSceneDrawable?.presentedTime ?? 0
+        #endif
     }
 
     var totalFrames: Int {
@@ -180,8 +197,9 @@ class FrameControl {
 
         if initScene {
             Task.shared.previousSceneTask.saveSceneTime(time: drawTime)
-            initScene = false
             initSceneTime = drawTime
+            initScene = false
+            initScene2 = true
         }
 
         let duration = drawTime - time
@@ -250,6 +268,11 @@ class FrameControl {
         }
 
         previousDrawables.append(drawable)
+
+        if initScene2 {
+            initSceneDrawable = drawable
+            initScene2 = false
+        }
 
         if previousDrawables.count > 5 {
             previousDrawables.removeFirst()
