@@ -441,13 +441,17 @@ struct AppUtility {
         guard let image = image, let cgImage = image.cgImage else {
             return createTexture(device: device, width: 1, height: 1)
         }
+        #if targetEnvironment(simulator)
+        return createTexture(device: device, width: 1, height: 1)
+        #else
         let textureLoader = MTKTextureLoader(device: device)
         do {
             let textureOut = try textureLoader.newTexture(cgImage: cgImage, options: [:])
             return textureOut
         } catch {
-            fatalError("Can't load texture")
+            return createTexture(device: device, width: 1, height: 1)
         }
+        #endif
     }
 
     static func createTexture(device: MTLDevice, width: Int, height: Int) -> MTLTexture {
