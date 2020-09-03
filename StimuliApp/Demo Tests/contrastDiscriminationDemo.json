@@ -1,0 +1,4844 @@
+{
+    "id":"33C2C2A9-1C0D-470E-905D-A09E4A12FFD3",
+    "collapse":{
+        "DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335Scenes":false,
+        "DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335Repetitions and trials":false,
+        "D495876E-B4DB-45BF-9477-76E682D311BBVariable and values":false,
+        "C50225FF-3707-4A2D-A554-B8F1BF21ABDEBorder":false,
+        "64BE905A-1969-410A-B212-731770555D70Scene name":false,
+        "C50225FF-3707-4A2D-A554-B8F1BF21ABDEStimulus name":false,
+        "883A1AAC-FC6D-4302-9038-A64C380B8E00List name":false,
+        "33C2C2A9-1C0D-470E-905D-A09E4A12FFD3Test name":false,
+        "DC2709B4-5389-4AA0-A4E9-A1F09B8C37BAPossible values":false,
+        "E77DF32B-3991-47F4-97A6-CC4FE268B028Background and layers":false,
+        "DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335Trial value":false,
+        "883A1AAC-FC6D-4302-9038-A64C380B8E00Order of the values":false,
+        "38C09099-CB68-4501-8430-F14C903813C1Selection method":false,
+        "DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335Response value":false,
+        "C50225FF-3707-4A2D-A554-B8F1BF21ABDEPosition":false,
+        "C50225FF-3707-4A2D-A554-B8F1BF21ABDEDuration":false,
+        "59213796-21BD-4E83-9BB3-35554342512CVariable and values":false,
+        "C50225FF-3707-4A2D-A554-B8F1BF21ABDEContrast":false,
+        "E77DF32B-3991-47F4-97A6-CC4FE268B028Objects":false,
+        "64BE905A-1969-410A-B212-731770555D70Scene response":false,
+        "D495876E-B4DB-45BF-9477-76E682D311BBSelection method":false,
+        "DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335Section name":false,
+        "33C2C2A9-1C0D-470E-905D-A09E4A12FFD3First section":false,
+        "D495876E-B4DB-45BF-9477-76E682D311BBRelated variables":false,
+        "C50225FF-3707-4A2D-A554-B8F1BF21ABDEShape and size":false,
+        "D6A1BB20-FC53-421C-9ECF-BD15BDD7C21BList name":false,
+        "E77DF32B-3991-47F4-97A6-CC4FE268B028Scene name":false,
+        "33C2C2A9-1C0D-470E-905D-A09E4A12FFD3Test settings":false,
+        "64BE905A-1969-410A-B212-731770555D70Scene duration":false,
+        "C50225FF-3707-4A2D-A554-B8F1BF21ABDEStimulus type":false,
+        "64BE905A-1969-410A-B212-731770555D70Background and layers":false,
+        "D6A1BB20-FC53-421C-9ECF-BD15BDD7C21BJittering of the values":false,
+        "C50225FF-3707-4A2D-A554-B8F1BF21ABDENoise":false,
+        "124B87A8-5D98-490E-A63A-D5D3B15C6513Test name":false,
+        "E77DF32B-3991-47F4-97A6-CC4FE268B028Scene response":false,
+        "124B87A8-5D98-490E-A63A-D5D3B15C6513First section":false,
+        "DC2709B4-5389-4AA0-A4E9-A1F09B8C37BAList name":false,
+        "124B87A8-5D98-490E-A63A-D5D3B15C6513Test settings":false,
+        "D6A1BB20-FC53-421C-9ECF-BD15BDD7C21BOrder of the values":false,
+        "E77DF32B-3991-47F4-97A6-CC4FE268B028Scene duration":false,
+        "59213796-21BD-4E83-9BB3-35554342512CRelated variables":false,
+        "DC2709B4-5389-4AA0-A4E9-A1F09B8C37BAJittering of the values":false,
+        "38C09099-CB68-4501-8430-F14C903813C1Related variables":false,
+        "DC2709B4-5389-4AA0-A4E9-A1F09B8C37BAOrder of the values":false,
+        "D6A1BB20-FC53-421C-9ECF-BD15BDD7C21BPossible values":false,
+        "DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335Variables in the section":false,
+        "59213796-21BD-4E83-9BB3-35554342512CSelection method":false,
+        "883A1AAC-FC6D-4302-9038-A64C380B8E00Jittering of the values":false,
+        "883A1AAC-FC6D-4302-9038-A64C380B8E00Possible values":false,
+        "38C09099-CB68-4501-8430-F14C903813C1Variable and values":false,
+        "64BE905A-1969-410A-B212-731770555D70Objects":false,
+        "C50225FF-3707-4A2D-A554-B8F1BF21ABDEModulator of contrast":false,
+        "DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335End of trial conditions":false
+    },
+    "gamma":{
+        "timeDependency":"",
+        "float1":0,
+        "name":"gamma",
+        "timeExponent":0,
+        "onlyInfo":false,
+        "info":"iOS and iPadOS devices usually have screens with a gamma value around 2.2.\nYou can \"correct\" this gamma value if you want the luminance values to be linear.",
+        "id":"A3DF2617-8832-4CA3-B259-17E1B2E5ABC0",
+        "propertyType":"gamma",
+        "unitType":"decimal value",
+        "float":0,
+        "fixedValues":[
+            "linear",
+            "normal",
+            "calibrated"
+        ],
+        "somethingId":"",
+        "timeFunction":"linear",
+        "properties":[
+
+        ],
+        "unit":"",
+        "text":"",
+        "selectedValue":0,
+        "listOrder":0,
+        "timeUnit":"seconds",
+        "float2":0
+    },
+    "listsOfValues":[
+        {
+            "values":[
+                {
+                    "timeDependency":"",
+                    "float1":-500,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"7538B228-1299-4F1D-83D4-E568CC3BC773",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":-500,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":0,
+                    "timeUnit":"seconds",
+                    "float2":-500
+                },
+                {
+                    "timeDependency":"",
+                    "float1":500,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"0C7B823B-C851-407A-885C-A3C0A044361E",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":500,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":1,
+                    "timeUnit":"seconds",
+                    "float2":500
+                }
+            ],
+            "startingList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"startingList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting list for the block.",
+                "id":"07E10436-348C-4C12-8CEA-92AE4EAAD4D7",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "jittering":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"jitteringValue",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"If the jittering is not zero, a numeric value in the range (-jitteringValue, jitteringValue) is randomly generated in each trial and added to the corresponding value from the list.",
+                "id":"7F46F5CB-1024-4C36-B9C0-72C23CDED824",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "firstBlockFirstList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstBlockFirstList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The first list for the first block.",
+                "id":"F6074D53-2BE4-45A8-8D1B-80EDEB8E1E54",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "startingBlock":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"startingBlock",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting block of the test.",
+                "id":"D5406E68-FD9A-43DF-8C76-239E0033844C",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "goodValues":[
+                {
+                    "timeDependency":"",
+                    "float1":-500,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"7538B228-1299-4F1D-83D4-E568CC3BC773",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":-500,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":0,
+                    "timeUnit":"seconds",
+                    "float2":-500
+                },
+                {
+                    "timeDependency":"",
+                    "float1":500,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"0C7B823B-C851-407A-885C-A3C0A044361E",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":500,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":1,
+                    "timeUnit":"seconds",
+                    "float2":500
+                }
+            ],
+            "firstBlockSecondList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstBlockSecondList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The second list for the first block.",
+                "id":"8925F1E0-8AFE-4F23-88B4-599F3664AF94",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "numberOfBlocks":{
+                "timeDependency":"",
+                "float1":1,
+                "name":"numberOfBlocks",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The number of blocks.",
+                "id":"312846F0-F5DB-4245-B3FA-287C4F24F4A6",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":1,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":1
+            },
+            "firstBlockProbChangeList":{
+                "timeDependency":"",
+                "float1":0.5,
+                "name":"firstBlockProbChangeList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the list when a trial of the first block is finished.",
+                "id":"69A89EAD-C3B1-4DF1-9B89-44279BA8349E",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0.5,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0.5
+            },
+            "secondBlockStartingList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondBlockStartingList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting list for the second block.",
+                "id":"CEAA8FAC-4F03-4038-B082-DB1820657654",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "secondList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The second list for the block.",
+                "id":"3A191087-C79C-4AD8-B8D8-B544C33B2C0F",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "name":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"name",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"A name to identify this list.",
+                "id":"E0268C35-C3CB-4721-92F3-75E1AAE5648D",
+                "propertyType":"string",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"xPositions",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "secondBlockProbChangeList":{
+                "timeDependency":"",
+                "float1":0.5,
+                "name":"secondBlockProbChangeList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the list when a trial of the second block is finished.",
+                "id":"DE48961D-EE66-464D-A57C-615EA303ADD0",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0.5,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0.5
+            },
+            "type":"values",
+            "id":"883A1AAC-FC6D-4302-9038-A64C380B8E00",
+            "firstList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The first list for the block.",
+                "id":"4BA6303D-3238-4D13-AF65-53991C7CAF4C",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "probChangeList":{
+                "timeDependency":"",
+                "float1":0.5,
+                "name":"probChangeList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the list when a trial is finished.",
+                "id":"9EF5D81F-CCEB-413C-ACBB-DC3050076244",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0.5,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0.5
+            },
+            "firstBlockStartingList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstBlockStartingList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting list for the first block.",
+                "id":"AB878710-BC96-4DCF-A876-FF6B88B01D48",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "probChangeBlock":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"probChangeBlock",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the type of block when a block is finished.",
+                "id":"6D6C032F-1CB8-4911-9B6D-FB9EB8D5F015",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "secondBlockSecondList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondBlockSecondList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The second list for the second block.",
+                "id":"C6437030-2F52-4AB2-8264-AB4AE29C5726",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "reordenation":[
+                0,
+                1
+            ],
+            "valuesOrder":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"shuffled",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"If the values in the list are always in the same order or if they are shuffled every time the test is run.",
+                "id":"0DD28D22-FFB6-4ED1-8CAE-6D45AD46199E",
+                "propertyType":"listOrder",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "in order",
+                    "shuffled"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "dimensions":1,
+            "lengthOfBlocks":{
+                "timeDependency":"",
+                "float1":1,
+                "name":"lengthOfBlocks",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The length of the blocks (the number of trials for each one of the blocks).",
+                "id":"FE5DA42A-7426-49D2-A4E5-B51973C2CC7F",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero decimal value",
+                "float":1,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":1
+            },
+            "order":0,
+            "secondBlockFirstList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondBlockFirstList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The first list for the second block.",
+                "id":"E1CF076C-C9BD-4386-B8B3-143B49F2B295",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "typesOfBlocks":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"typesOfBlocks",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"All blocks can be of the same type or there can be 2 different types of blocks.",
+                "id":"20E005F0-0EA2-48F2-9018-3AACEAEBB384",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "1",
+                    "2"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            }
+        },
+        {
+            "values":[
+                {
+                    "timeDependency":"",
+                    "float1":0.5,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"CEAF7010-6EB6-4DD4-9132-3821B157FA42",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.5,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":0,
+                    "timeUnit":"seconds",
+                    "float2":0.5
+                }
+            ],
+            "startingList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"startingList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting list for the block.",
+                "id":"BEF6F321-FF1F-46F8-96BB-89E2B07289D5",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "jittering":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"jitteringValue",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"If the jittering is not zero, a numeric value in the range (-jitteringValue, jitteringValue) is randomly generated in each trial and added to the corresponding value from the list.",
+                "id":"DB89996C-0348-4698-B7EB-CCC34FE1543C",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "firstBlockFirstList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstBlockFirstList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The first list for the first block.",
+                "id":"A31FDE09-3565-4710-B643-74FD7E525BEB",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "startingBlock":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"startingBlock",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting block of the test.",
+                "id":"5989AE2E-2ECF-4CFA-8F43-FAF10E75C4F0",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "goodValues":[
+                {
+                    "timeDependency":"",
+                    "float1":0.5,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"CEAF7010-6EB6-4DD4-9132-3821B157FA42",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.5,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":0,
+                    "timeUnit":"seconds",
+                    "float2":0.5
+                }
+            ],
+            "firstBlockSecondList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstBlockSecondList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The second list for the first block.",
+                "id":"99D3C029-4349-45C7-9482-7C3823DA97D2",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "numberOfBlocks":{
+                "timeDependency":"",
+                "float1":1,
+                "name":"numberOfBlocks",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The number of blocks.",
+                "id":"AD15C558-C47D-49EC-B25B-45D595DAFB51",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":1,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":1
+            },
+            "firstBlockProbChangeList":{
+                "timeDependency":"",
+                "float1":0.5,
+                "name":"firstBlockProbChangeList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the list when a trial of the first block is finished.",
+                "id":"4E8EBD4D-CE7C-4903-8133-DF1126DB5EDE",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0.5,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0.5
+            },
+            "secondBlockStartingList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondBlockStartingList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting list for the second block.",
+                "id":"5607C257-A868-4D46-8D92-4222CD2CF47C",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "secondList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The second list for the block.",
+                "id":"5232B12C-BF26-4A8F-9998-D75A0CE1566F",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "name":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"name",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"A name to identify this list.",
+                "id":"F3CAA7C4-0187-44DD-B5ED-D1CE5FBD801C",
+                "propertyType":"string",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"contrastTarget",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "secondBlockProbChangeList":{
+                "timeDependency":"",
+                "float1":0.5,
+                "name":"secondBlockProbChangeList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the list when a trial of the second block is finished.",
+                "id":"56119529-B0C4-4CA9-B643-BFF9FA6CCA76",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0.5,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0.5
+            },
+            "type":"values",
+            "id":"DC2709B4-5389-4AA0-A4E9-A1F09B8C37BA",
+            "firstList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The first list for the block.",
+                "id":"48904229-4D47-4652-8E73-134AC56E4F49",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "probChangeList":{
+                "timeDependency":"",
+                "float1":0.5,
+                "name":"probChangeList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the list when a trial is finished.",
+                "id":"86DC89C2-3911-46FB-BD25-6DE57CB5336C",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0.5,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0.5
+            },
+            "firstBlockStartingList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstBlockStartingList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting list for the first block.",
+                "id":"154C2DC5-83C3-4B79-A336-4515602E4822",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "probChangeBlock":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"probChangeBlock",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the type of block when a block is finished.",
+                "id":"3F48BEFC-27CF-49A9-832E-DC1E6B8044E3",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "secondBlockSecondList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondBlockSecondList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The second list for the second block.",
+                "id":"7C823F89-A1AE-4D9D-BBAB-17E609999EFD",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "reordenation":[
+                0
+            ],
+            "valuesOrder":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"shuffled",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"If the values in the list are always in the same order or if they are shuffled every time the test is run.",
+                "id":"843C5866-3080-4ADF-B21E-A575B4E037D6",
+                "propertyType":"listOrder",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "in order",
+                    "shuffled"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "dimensions":1,
+            "lengthOfBlocks":{
+                "timeDependency":"",
+                "float1":1,
+                "name":"lengthOfBlocks",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The length of the blocks (the number of trials for each one of the blocks).",
+                "id":"AC0D854E-896E-4413-A767-72DD86E763EB",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero decimal value",
+                "float":1,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":1
+            },
+            "order":1,
+            "secondBlockFirstList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondBlockFirstList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The first list for the second block.",
+                "id":"C7B3D4F6-4D0A-401B-80A9-6FBB2DDD1563",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "typesOfBlocks":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"typesOfBlocks",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"All blocks can be of the same type or there can be 2 different types of blocks.",
+                "id":"F739CC51-BA0D-4ACF-8C67-A2F72461D84B",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "1",
+                    "2"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            }
+        },
+        {
+            "values":[
+                {
+                    "timeDependency":"",
+                    "float1":0.5,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"75278687-8AB2-4B67-B1D1-21F2E0B07149",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.5,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":0,
+                    "timeUnit":"seconds",
+                    "float2":0.5
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.51216244697570801,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"0B5A821E-FA8B-478D-821C-62D15E018E5A",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.51216244697570801,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":1,
+                    "timeUnit":"seconds",
+                    "float2":0.51216244697570801
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.52462077140808105,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"1747EE63-1214-4CF8-A50D-FE307C130413",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.52462077140808105,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":2,
+                    "timeUnit":"seconds",
+                    "float2":0.52462077140808105
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.53738206624984741,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"0BD137B1-C596-4FBF-8D6A-B5924BBE2D5E",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.53738206624984741,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":3,
+                    "timeUnit":"seconds",
+                    "float2":0.53738206624984741
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.55045384168624878,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"5FA76C26-A9D5-49C8-B3DA-814547DB9E89",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.55045384168624878,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":4,
+                    "timeUnit":"seconds",
+                    "float2":0.55045384168624878
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.56384360790252686,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"2FF58661-5C96-4C2D-A2B0-3037721B1D31",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.56384360790252686,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":5,
+                    "timeUnit":"seconds",
+                    "float2":0.56384360790252686
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.57755899429321289,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"B5D4B711-BF78-4E11-9E57-BEDF0D772828",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.57755899429321289,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":6,
+                    "timeUnit":"seconds",
+                    "float2":0.57755899429321289
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.59160810708999634,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"C4A9162E-C413-4364-B626-FA407623AB5E",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.59160810708999634,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":7,
+                    "timeUnit":"seconds",
+                    "float2":0.59160810708999634
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.60599887371063232,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"7FD4B057-1050-4680-926A-8CA0CB56E03E",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.60599887371063232,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":8,
+                    "timeUnit":"seconds",
+                    "float2":0.60599887371063232
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.62073975801467896,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"3AB6DCB9-3278-4D28-B10F-4521570AAC23",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.62073975801467896,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":9,
+                    "timeUnit":"seconds",
+                    "float2":0.62073975801467896
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.63583916425704956,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"E1CEBB70-4847-4959-8D51-8A354ED476DA",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.63583916425704956,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":10,
+                    "timeUnit":"seconds",
+                    "float2":0.63583916425704956
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.6513059139251709,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"9068D3EE-397F-45CB-93AC-458FF6DE0E3A",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.6513059139251709,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":11,
+                    "timeUnit":"seconds",
+                    "float2":0.6513059139251709
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.66714882850646973,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"203CA5D8-84B6-4757-8048-26B29C5DC638",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.66714882850646973,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":12,
+                    "timeUnit":"seconds",
+                    "float2":0.66714882850646973
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.68337714672088623,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"CFC8884A-7164-44A9-92D9-8A03D1AA5912",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.68337714672088623,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":13,
+                    "timeUnit":"seconds",
+                    "float2":0.68337714672088623
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.70000022649765015,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"FCA51D71-5AFC-4BC9-BC9A-E873139F1AEE",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.70000022649765015,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":14,
+                    "timeUnit":"seconds",
+                    "float2":0.70000022649765015
+                }
+            ],
+            "startingList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"startingList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting list for the block.",
+                "id":"4C2E557C-3B59-45F6-93D6-64ED4D73AA31",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "jittering":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"jitteringValue",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"If the jittering is not zero, a numeric value in the range (-jitteringValue, jitteringValue) is randomly generated in each trial and added to the corresponding value from the list.",
+                "id":"F7807F0B-6ADA-499A-91F3-F83D63D84C77",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "firstBlockFirstList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstBlockFirstList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The first list for the first block.",
+                "id":"E5AB310F-C3D4-4CD2-ABA0-14EC12521921",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "startingBlock":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"startingBlock",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting block of the test.",
+                "id":"680D350E-4FFD-4E6E-A89E-12F3F1A0BB74",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "goodValues":[
+                {
+                    "timeDependency":"",
+                    "float1":0.5,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"75278687-8AB2-4B67-B1D1-21F2E0B07149",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.5,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":0,
+                    "timeUnit":"seconds",
+                    "float2":0.5
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.51216244697570801,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"0B5A821E-FA8B-478D-821C-62D15E018E5A",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.51216244697570801,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":1,
+                    "timeUnit":"seconds",
+                    "float2":0.51216244697570801
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.52462077140808105,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"1747EE63-1214-4CF8-A50D-FE307C130413",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.52462077140808105,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":2,
+                    "timeUnit":"seconds",
+                    "float2":0.52462077140808105
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.53738206624984741,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"0BD137B1-C596-4FBF-8D6A-B5924BBE2D5E",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.53738206624984741,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":3,
+                    "timeUnit":"seconds",
+                    "float2":0.53738206624984741
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.55045384168624878,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"5FA76C26-A9D5-49C8-B3DA-814547DB9E89",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.55045384168624878,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":4,
+                    "timeUnit":"seconds",
+                    "float2":0.55045384168624878
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.56384360790252686,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"2FF58661-5C96-4C2D-A2B0-3037721B1D31",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.56384360790252686,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":5,
+                    "timeUnit":"seconds",
+                    "float2":0.56384360790252686
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.57755899429321289,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"B5D4B711-BF78-4E11-9E57-BEDF0D772828",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.57755899429321289,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":6,
+                    "timeUnit":"seconds",
+                    "float2":0.57755899429321289
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.59160810708999634,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"C4A9162E-C413-4364-B626-FA407623AB5E",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.59160810708999634,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":7,
+                    "timeUnit":"seconds",
+                    "float2":0.59160810708999634
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.60599887371063232,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"7FD4B057-1050-4680-926A-8CA0CB56E03E",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.60599887371063232,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":8,
+                    "timeUnit":"seconds",
+                    "float2":0.60599887371063232
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.62073975801467896,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"3AB6DCB9-3278-4D28-B10F-4521570AAC23",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.62073975801467896,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":9,
+                    "timeUnit":"seconds",
+                    "float2":0.62073975801467896
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.63583916425704956,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"E1CEBB70-4847-4959-8D51-8A354ED476DA",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.63583916425704956,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":10,
+                    "timeUnit":"seconds",
+                    "float2":0.63583916425704956
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.6513059139251709,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"9068D3EE-397F-45CB-93AC-458FF6DE0E3A",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.6513059139251709,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":11,
+                    "timeUnit":"seconds",
+                    "float2":0.6513059139251709
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.66714882850646973,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"203CA5D8-84B6-4757-8048-26B29C5DC638",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.66714882850646973,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":12,
+                    "timeUnit":"seconds",
+                    "float2":0.66714882850646973
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.68337714672088623,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"CFC8884A-7164-44A9-92D9-8A03D1AA5912",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.68337714672088623,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":13,
+                    "timeUnit":"seconds",
+                    "float2":0.68337714672088623
+                },
+                {
+                    "timeDependency":"",
+                    "float1":0.70000022649765015,
+                    "name":"",
+                    "timeExponent":0,
+                    "onlyInfo":false,
+                    "info":"",
+                    "id":"FCA51D71-5AFC-4BC9-BC9A-E873139F1AEE",
+                    "propertyType":"simpleFloat",
+                    "unitType":"same unit as the variable it is applied to",
+                    "float":0.70000022649765015,
+                    "fixedValues":[
+
+                    ],
+                    "somethingId":"",
+                    "timeFunction":"linear",
+                    "properties":[
+
+                    ],
+                    "unit":"",
+                    "text":"",
+                    "selectedValue":0,
+                    "listOrder":14,
+                    "timeUnit":"seconds",
+                    "float2":0.70000022649765015
+                }
+            ],
+            "firstBlockSecondList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstBlockSecondList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The second list for the first block.",
+                "id":"20D1E924-A8B3-404E-8790-6D699D4F421C",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "numberOfBlocks":{
+                "timeDependency":"",
+                "float1":1,
+                "name":"numberOfBlocks",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The number of blocks.",
+                "id":"5113805D-9A61-43E3-8C20-BFE9E8A6F79D",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":1,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":1
+            },
+            "firstBlockProbChangeList":{
+                "timeDependency":"",
+                "float1":0.5,
+                "name":"firstBlockProbChangeList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the list when a trial of the first block is finished.",
+                "id":"9815E1D6-195E-4A28-B44F-1AEB5740B132",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0.5,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0.5
+            },
+            "secondBlockStartingList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondBlockStartingList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting list for the second block.",
+                "id":"2C479F1F-901A-4F92-8485-B411C37575A6",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "secondList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The second list for the block.",
+                "id":"C68E3D8C-3614-48EF-A46F-FB8BABD15AFB",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "name":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"name",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"A name to identify this list.",
+                "id":"E7AE9F6D-5CA4-4304-9450-5FEE97C839B7",
+                "propertyType":"string",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"contrasts",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "secondBlockProbChangeList":{
+                "timeDependency":"",
+                "float1":0.5,
+                "name":"secondBlockProbChangeList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the list when a trial of the second block is finished.",
+                "id":"89A24232-4132-4343-BC28-710BDA853B19",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0.5,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0.5
+            },
+            "type":"values",
+            "id":"D6A1BB20-FC53-421C-9ECF-BD15BDD7C21B",
+            "firstList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The first list for the block.",
+                "id":"77C7EB76-1818-457C-9409-4C15F5BCE052",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "probChangeList":{
+                "timeDependency":"",
+                "float1":0.5,
+                "name":"probChangeList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the list when a trial is finished.",
+                "id":"1CBC010B-303D-4425-9E54-9335814F07A4",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0.5,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0.5
+            },
+            "firstBlockStartingList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"firstBlockStartingList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The starting list for the first block.",
+                "id":"E2A66391-085B-461E-88A2-24E71D0C1F7C",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "random",
+                    "first",
+                    "second"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "probChangeBlock":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"probChangeBlock",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The probability of changing the type of block when a block is finished.",
+                "id":"7F35CC1E-C43F-4FE3-8FC2-86E740645D9A",
+                "propertyType":"simpleFloat",
+                "unitType":"decimal value from 0 to 1",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "secondBlockSecondList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondBlockSecondList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The second list for the second block.",
+                "id":"2F0193FC-2F5F-449A-AC40-E5CEB3BEE6C6",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "reordenation":[
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14
+            ],
+            "valuesOrder":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"shuffled",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"If the values in the list are always in the same order or if they are shuffled every time the test is run.",
+                "id":"C399403A-C61B-4A39-A8AB-CEA4558D3A28",
+                "propertyType":"listOrder",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "in order",
+                    "shuffled"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "dimensions":1,
+            "lengthOfBlocks":{
+                "timeDependency":"",
+                "float1":1,
+                "name":"lengthOfBlocks",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The length of the blocks (the number of trials for each one of the blocks).",
+                "id":"8703AEEC-2845-40C4-B6CF-8838360C3680",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero decimal value",
+                "float":1,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":1
+            },
+            "order":2,
+            "secondBlockFirstList":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"secondBlockFirstList",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The first list for the second block.",
+                "id":"439E5C49-2FDC-49D7-B4FC-118E12B9EC4F",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "typesOfBlocks":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"typesOfBlocks",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"All blocks can be of the same type or there can be 2 different types of blocks.",
+                "id":"EC85A946-F57C-4EBF-A7F5-DC16FE6AB928",
+                "propertyType":"select",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "1",
+                    "2"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            }
+        }
+    ],
+    "stimuli":[
+        {
+            "id":"C50225FF-3707-4A2D-A554-B8F1BF21ABDE",
+            "durationProperty":{
+                "timeDependency":"constant",
+                "float1":1000,
+                "name":"duration",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Duration of the stimulus. By default is set to 1000 seconds.",
+                "id":"629F4907-B4EA-4A5D-A97F-C6F14014DAE5",
+                "propertyType":"finalFloat",
+                "unitType":"time",
+                "float":1000,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"seconds",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":1000
+            },
+            "borderProperty":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"border",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Border around the stimulus.",
+                "id":"028060F7-4CB2-442A-9CCD-0824AD887242",
+                "propertyType":"border",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "none",
+                    "normal",
+                    "opaque"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "startProperty":{
+                "timeDependency":"constant",
+                "float1":0,
+                "name":"start",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Time at which the stimulus begins, measured from the start of the scene.",
+                "id":"C48C7143-F972-4CDB-997B-B65CAC9835A4",
+                "propertyType":"finalFloat",
+                "unitType":"time",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"seconds",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "originProperty":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"originCoordinates",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"By default, the origin of coordinates is placed in the center of the screen, but it is possible to place it in another point of the screen.",
+                "id":"FBB66530-49FF-4778-B521-0884692EF4CF",
+                "propertyType":"origin2d",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "center",
+                    "cartesian vars",
+                    "polar vars"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "shapeProperty":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"shape",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Stimulus shape.",
+                "id":"FF13E6EB-7F9F-441F-940C-0D6E6E084F0C",
+                "propertyType":"shape",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "rectangle",
+                    "ellipse",
+                    "cross",
+                    "polygon",
+                    "ring",
+                    "wedge"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+                    {
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"size",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"The size of the shape containing the stimulus.",
+                        "id":"24463A29-C8F8-4738-AE69-18004D562CCC",
+                        "propertyType":"size2d",
+                        "unitType":"size",
+                        "float":300,
+                        "fixedValues":[
+                            "vector2d",
+                            "cartesian vars",
+                            "x=y"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+                            {
+                                "timeDependency":"constant",
+                                "float1":300,
+                                "name":"size",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"X size = Y size.",
+                                "id":"B66752B7-D727-4DCC-805D-005B246CE992",
+                                "propertyType":"timeFloat",
+                                "unitType":"size",
+                                "float":600,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"pixels",
+                                "text":"",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":300
+                            }
+                        ],
+                        "unit":"pixels",
+                        "text":"",
+                        "selectedValue":2,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    }
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":1,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "activatedProperty":{
+                "timeDependency":"constant",
+                "float1":1,
+                "name":"activated",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Boolean variable that establishes whether the stimulus is active or not.\nUseful when you have stimuli that should be presented in some trials and not presented in other trials.\nUse this variable to control the presence of the stimulus rather than using contrast = 0 or volume = 0 or other workarounds.\nMaking the stimulus inactive is the only way to make sure nor CPU neither GPU cycles are used to compute the stimulus.",
+                "id":"7498D265-21AC-401E-A480-C136ABD3A436",
+                "propertyType":"finalFloat",
+                "unitType":"0 or 1",
+                "float":1,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":1
+            },
+            "order":0,
+            "positionProperty":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"position",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Position of the center of the stimulus relative to the origin of coordinates.\nX increases from left to right and Y increases from bottom to top.\nThe angles are measured counterclockwise from the x axis.",
+                "id":"78E94413-4358-467C-A6B5-07C50BCF4EC6",
+                "propertyType":"position2d",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "vector2d",
+                    "cartesian vars",
+                    "polar vars"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+                    {
+                        "timeDependency":"variable",
+                        "float1":0,
+                        "name":"positionX",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"Horizontal position.",
+                        "id":"0D332D58-91B2-4478-94E8-34843AFBA211",
+                        "propertyType":"timeFloat",
+                        "unitType":"size",
+                        "float":0,
+                        "fixedValues":[
+
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"pixels",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    {
+                        "timeDependency":"constant",
+                        "float1":0,
+                        "name":"positionY",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"Vertical position.",
+                        "id":"84BF6B49-7FF8-4DA3-BCD3-403E166BBC11",
+                        "propertyType":"timeFloat",
+                        "unitType":"size",
+                        "float":0,
+                        "fixedValues":[
+
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"pixels",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    }
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":1,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "rotationProperty":{
+                "timeDependency":"constant",
+                "float1":0,
+                "name":"rotation",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The angle of rotation of the stimulus (both the shape and its content).\nMeasured counterclockwise.",
+                "id":"98E66FE6-D650-4AB3-B418-A1CB267E2997",
+                "propertyType":"timeFloat",
+                "unitType":"angle",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"radians",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "contrastProperty":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"contrast",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Contrast of the stimulus.",
+                "id":"CB8D1B78-6B82-4617-8A40-B38F56CE29CE",
+                "propertyType":"contrast",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "uniform",
+                    "gaussian",
+                    "cosine"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+                    {
+                        "timeDependency":"variable",
+                        "float1":1,
+                        "name":"contrastValue",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"Maximum value of the contrast in the center of the stimulus.",
+                        "id":"CD2FF9EE-8E4D-45E9-9406-F4F3DFF604B3",
+                        "propertyType":"timeFloat",
+                        "unitType":"decimal value from 0 to 1",
+                        "float":1,
+                        "fixedValues":[
+
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":1
+                    },
+                    {
+                        "timeDependency":"constant",
+                        "float1":0,
+                        "name":"contrastCosineValue",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"The stimulus is masked with a circular shape of diameter equal to the maximum size of the stimulus.\nIn the exterior part of the shape, the contrast decay from contrastValue to zero following a cosine function.\nContrastCosineValue is the proportion of the shape that is not affected by the cosine decay.",
+                        "id":"07B28D41-FBE4-4E6D-B572-92811B39CC78",
+                        "propertyType":"timeFloat",
+                        "unitType":"decimal value from 0 to 1",
+                        "float":0.80000001192092896,
+                        "fixedValues":[
+
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    }
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":2,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "modulatorProperty":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"modulator",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Modulator of the contrast of the stimulus.",
+                "id":"00E27503-E85F-4D97-BD21-1326D302FC19",
+                "propertyType":"modulator",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "none",
+                    "sinusoidal"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "typeProperty":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"type",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Stimulus type.",
+                "id":"5C533924-A5B1-445B-A85D-229B095FCAF0",
+                "propertyType":"type",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "patch",
+                    "gradient",
+                    "grating",
+                    "checkerboard",
+                    "radialCheckerboard",
+                    "dots",
+                    "image",
+                    "text",
+                    "video",
+                    "audio",
+                    "pureTone"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+                    {
+                        "timeDependency":"constant",
+                        "float1":100,
+                        "name":"period",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"Size period of the sinusoidal function.",
+                        "id":"1F59919B-A65E-4A2C-B3AD-83ACA4C7ED0D",
+                        "propertyType":"timeFloat",
+                        "unitType":"size",
+                        "float":100,
+                        "fixedValues":[
+
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"pixels",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":100
+                    },
+                    {
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"color1",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"First color.",
+                        "id":"FA54545F-91D6-4AEF-8B42-30CFBF2BB43F",
+                        "propertyType":"color",
+                        "unitType":"decimal value from 0 to 1",
+                        "float":0,
+                        "fixedValues":[
+                            "vector3d",
+                            "RGB vars",
+                            "luminance"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+                            {
+                                "timeDependency":"constant",
+                                "float1":0,
+                                "name":"color1",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"Red - Green - Blue",
+                                "id":"C6CB18FF-A456-4664-8C4E-BAC13E0F00D3",
+                                "propertyType":"triple",
+                                "unitType":"decimal value from 0 to 1",
+                                "float":0,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"",
+                                "text":"",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0
+                            }
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    {
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"color2",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"Second color.",
+                        "id":"AD074D07-6757-4D9D-A2AD-70E054D4A558",
+                        "propertyType":"color",
+                        "unitType":"decimal value from 0 to 1",
+                        "float":1,
+                        "fixedValues":[
+                            "vector3d",
+                            "RGB vars",
+                            "luminance"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+                            {
+                                "timeDependency":"constant",
+                                "float1":1,
+                                "name":"color2",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"Red - Green - Blue",
+                                "id":"1948DF79-4CF1-41D0-A9BF-DA6524DE3736",
+                                "propertyType":"triple",
+                                "unitType":"decimal value from 0 to 1",
+                                "float":1,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"",
+                                "text":"",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":1
+                            }
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    {
+                        "timeDependency":"constant",
+                        "float1":0,
+                        "name":"phase",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"Phase of the sinusoidal function.",
+                        "id":"ACC7BE18-0C39-464F-833E-B428C3D04F06",
+                        "propertyType":"timeFloat",
+                        "unitType":"angle",
+                        "float":0,
+                        "fixedValues":[
+
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"radians",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    {
+                        "timeDependency":"constant",
+                        "float1":0,
+                        "name":"gratingRotation",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"Orientation of the grating. This property only rotates the grating but not the shape that masks it.",
+                        "id":"2F957354-635D-44EB-908C-65AAB29A0863",
+                        "propertyType":"timeFloat",
+                        "unitType":"angle",
+                        "float":0,
+                        "fixedValues":[
+
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"radians",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    }
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":2,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "name":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"name",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"A name to identify this stimulus.",
+                "id":"4170ACE2-7468-4986-A3F4-8F406BEF56DA",
+                "propertyType":"string",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"grating",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "noiseProperty":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"noise",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Noise applied to the stimulus.",
+                "id":"5407E035-454F-4009-9A1B-AC4317724BD3",
+                "propertyType":"noise",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "none",
+                    "gaussian",
+                    "perlin"
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            }
+        }
+    ],
+    "randomness":{
+        "timeDependency":"",
+        "float1":0,
+        "name":"randomness",
+        "timeExponent":0,
+        "onlyInfo":false,
+        "info":"How random numbers are generated.",
+        "id":"59964705-7BB3-4A77-AE41-0612F73E3857",
+        "propertyType":"randomness",
+        "unitType":"decimal value",
+        "float":0,
+        "fixedValues":[
+            "automatically generated",
+            "generated with seeds"
+        ],
+        "somethingId":"",
+        "timeFunction":"linear",
+        "properties":[
+
+        ],
+        "unit":"",
+        "text":"",
+        "selectedValue":0,
+        "listOrder":0,
+        "timeUnit":"seconds",
+        "float2":0
+    },
+    "sections":[
+        {
+            "scenes":[
+                {
+                    "numberOfLayers":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"numberOfLayers",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"The number of layers in the scene.\nBy default, all objects are drawn on the same layer, which is drawn on top of the background.\nIf you want to draw one object on top of another, you must increase the number of layers.\n(This does not apply to video or text objects that are rendered differently, always on top of everything).\n\nWhen drawing objects, a preassigned space is saved for each one of them.\nThis space is slightly larger than the object itself.\nIf two objects are too close to each other, their respective preassigned spaces can interfere, creating an unwanted empty space between the objects.\nTo avoid this, you should increase the number of layers (or separate the objects a bit if possible).\n\nIncreasing the number of layers is computationally costly, so try to use as few layers as possible, especially when working at 120Hz.",
+                        "id":"587CA56B-B211-46F9-8ED5-B73D5637885F",
+                        "propertyType":"select",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+                            "one",
+                            "two",
+                            "three"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    "continuousResolution":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"continuousResolution",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"When using stimuliApp, images are displayed in an sRGB space with 256 possible values for each channel of the RGB color.\nIf you are working only with luminances: R = G = B, there are 256 luminance levels.\n\nSometimes this limitation on the number of different luminance intensities displayable can be an issue.\nBy making the continuosResolution property true, the noisy-bit method is implemented.\nThis method consists of adding a small amount of random noise.\nThe method is described in Allard, R., Faubert, J., 2008. The Noisy-Bit method for digital displays: Converting a 256 luminance resolution into a continuous resolution. Behav. Res. Methods 40, 735–743.\n\nThe noisy-bit method, combined with the 256 luminance levels, is perceptually equivalent to an analog display with a continuous luminance intensity resolution when the spatiotemporal resolution is high enough that the noise becomes negligible.",
+                        "id":"23EB00DE-4B84-4B9C-945C-F89B17ECFD47",
+                        "propertyType":"select",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+                            "no",
+                            "yes"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":1,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    "id":"E77DF32B-3991-47F4-97A6-CC4FE268B028",
+                    "order":0,
+                    "color":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"color",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"Color of the background.",
+                        "id":"4A4A3AAD-EF1D-4A24-9D60-B34C857C5B0F",
+                        "propertyType":"color",
+                        "unitType":"decimal value from 0 to 1",
+                        "float":0.5,
+                        "fixedValues":[
+                            "vector3d",
+                            "RGB vars",
+                            "luminance"
+                        ],
+                        "somethingId":"E77DF32B-3991-47F4-97A6-CC4FE268B028",
+                        "timeFunction":"linear",
+                        "properties":[
+                            {
+                                "timeDependency":"constant",
+                                "float1":0.5,
+                                "name":"color",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"Red - Green - Blue",
+                                "id":"9B109F52-8587-4981-B3C7-E3A623EB6C85",
+                                "propertyType":"triple",
+                                "unitType":"decimal value from 0 to 1",
+                                "float":0.5,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"",
+                                "text":"",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0.5
+                            }
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    "sectionId":"DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335",
+                    "responseType":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"response",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"To select one of the possible types of responses for the scene.\n\nEach time a response is given the scene ends even if the time has not reached the duration of the scene.",
+                        "id":"1F97310A-0647-460F-B4D4-2BC4FEC8A197",
+                        "propertyType":"response",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+                            "none",
+                            "left or right",
+                            "top or bottom",
+                            "touch screen",
+                            "lift finger",
+                            "path",
+                            "touch object",
+                            "move object",
+                            "keyboard",
+                            "keys"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+                            {
+                                "timeDependency":"",
+                                "float1":0,
+                                "name":"startTime",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"Time from which it is possible to respond.\nBy default it is zero, the user can respond at any time.",
+                                "id":"11A5B90D-698B-49F2-B5B4-7162B5522B06",
+                                "propertyType":"simpleFloat",
+                                "unitType":"time",
+                                "float":0,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"seconds",
+                                "text":"",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0
+                            },
+                            {
+                                "timeDependency":"",
+                                "float1":0,
+                                "name":"background",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"To establish whether the background is interactive or not.",
+                                "id":"4BB1179E-2E67-4AE1-BA89-7942655E17E5",
+                                "propertyType":"objectResponse",
+                                "unitType":"decimal value",
+                                "float":0,
+                                "fixedValues":[
+                                    "not interactive",
+                                    "interactive"
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"",
+                                "text":"",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0
+                            },
+                            {
+                                "timeDependency":"",
+                                "float1":0,
+                                "name":"C21E9783-2269-4C84-B581-B9A9D1E93901",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"To establish whether the object is interactive or not.",
+                                "id":"38A7B5CE-C03A-4238-AB00-196E16E756BB",
+                                "propertyType":"objectResponse",
+                                "unitType":"decimal value",
+                                "float":0,
+                                "fixedValues":[
+                                    "not interactive",
+                                    "interactive"
+                                ],
+                                "somethingId":"C21E9783-2269-4C84-B581-B9A9D1E93901",
+                                "timeFunction":"linear",
+                                "properties":[
+                                    {
+                                        "timeDependency":"",
+                                        "float1":0,
+                                        "name":"Value",
+                                        "timeExponent":0,
+                                        "onlyInfo":false,
+                                        "info":"The value associated with this object.",
+                                        "id":"988A8D17-CF87-4356-88FC-6A9F2634B6C0",
+                                        "propertyType":"simpleFloat",
+                                        "unitType":"decimal value",
+                                        "float":0,
+                                        "fixedValues":[
+
+                                        ],
+                                        "somethingId":"C21E9783-2269-4C84-B581-B9A9D1E93901",
+                                        "timeFunction":"linear",
+                                        "properties":[
+
+                                        ],
+                                        "unit":"",
+                                        "text":"",
+                                        "selectedValue":0,
+                                        "listOrder":0,
+                                        "timeUnit":"seconds",
+                                        "float2":0
+                                    }
+                                ],
+                                "unit":"",
+                                "text":"",
+                                "selectedValue":1,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0
+                            },
+                            {
+                                "timeDependency":"",
+                                "float1":0,
+                                "name":"8451D1D3-6705-4A38-9F04-270105207D8C",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"To establish whether the object is interactive or not.",
+                                "id":"61300A3B-5932-44C7-8172-54B94876D50B",
+                                "propertyType":"objectResponse",
+                                "unitType":"decimal value",
+                                "float":0,
+                                "fixedValues":[
+                                    "not interactive",
+                                    "interactive"
+                                ],
+                                "somethingId":"8451D1D3-6705-4A38-9F04-270105207D8C",
+                                "timeFunction":"linear",
+                                "properties":[
+                                    {
+                                        "timeDependency":"",
+                                        "float1":0,
+                                        "name":"Value",
+                                        "timeExponent":0,
+                                        "onlyInfo":false,
+                                        "info":"The value associated with this object.",
+                                        "id":"DE20EAF5-436F-48F0-AF22-D9374014E24A",
+                                        "propertyType":"simpleFloat",
+                                        "unitType":"decimal value",
+                                        "float":1,
+                                        "fixedValues":[
+
+                                        ],
+                                        "somethingId":"8451D1D3-6705-4A38-9F04-270105207D8C",
+                                        "timeFunction":"linear",
+                                        "properties":[
+
+                                        ],
+                                        "unit":"",
+                                        "text":"",
+                                        "selectedValue":0,
+                                        "listOrder":0,
+                                        "timeUnit":"seconds",
+                                        "float2":0
+                                    }
+                                ],
+                                "unit":"",
+                                "text":"",
+                                "selectedValue":1,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0
+                            }
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":6,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    "durationType":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"duration",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"The maximum duration of the scene if no response is given.",
+                        "id":"305F49CF-BFD9-42FA-B68C-74FA5B4EA938",
+                        "propertyType":"sceneDuration",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+                            "constant",
+                            "stimuli end"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+                            {
+                                "timeDependency":"",
+                                "float1":100,
+                                "name":"durationValue",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"The duration of the scene.",
+                                "id":"431CF9EB-F8C8-4CCE-9A4C-4128BF684294",
+                                "propertyType":"simpleFloat",
+                                "unitType":"time",
+                                "float":100,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"seconds",
+                                "text":"",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":100
+                            }
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    "objects":[
+                        {
+                            "id":"54EFEDB5-174C-4337-87FF-A8EF62009CEA",
+                            "order":0,
+                            "sceneId":"E77DF32B-3991-47F4-97A6-CC4FE268B028",
+                            "name":{
+                                "timeDependency":"",
+                                "float1":0,
+                                "name":"name",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"A name to identify this object.",
+                                "id":"6AFE0F81-C604-4402-B319-87AD6B899B80",
+                                "propertyType":"string",
+                                "unitType":"decimal value",
+                                "float":0,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"",
+                                "text":"background",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0
+                            },
+                            "stimulusId":"",
+                            "variables":[
+
+                            ]
+                        },
+                        {
+                            "id":"C21E9783-2269-4C84-B581-B9A9D1E93901",
+                            "order":1,
+                            "sceneId":"E77DF32B-3991-47F4-97A6-CC4FE268B028",
+                            "name":{
+                                "timeDependency":"",
+                                "float1":0,
+                                "name":"name",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"A name to identify this object.",
+                                "id":"820440CB-EB51-429A-9A7F-408732999FDC",
+                                "propertyType":"string",
+                                "unitType":"decimal value",
+                                "float":0,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"",
+                                "text":"object1",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0
+                            },
+                            "stimulusId":"C50225FF-3707-4A2D-A554-B8F1BF21ABDE",
+                            "variables":[
+                                {
+                                    "group":1,
+                                    "id":"59213796-21BD-4E83-9BB3-35554342512C",
+                                    "propertyId":"0D332D58-91B2-4478-94E8-34843AFBA211",
+                                    "objectId":"C21E9783-2269-4C84-B581-B9A9D1E93901",
+                                    "listOfValuesId":"883A1AAC-FC6D-4302-9038-A64C380B8E00",
+                                    "selection":{
+                                        "timeDependency":"",
+                                        "float1":0,
+                                        "name":"selectionMethod",
+                                        "timeExponent":0,
+                                        "onlyInfo":false,
+                                        "info":"The different methods used for the variables to take their values from their list.",
+                                        "id":"C56B0C27-3F60-40D1-B045-DF161FEFC45A",
+                                        "propertyType":"selection",
+                                        "unitType":"decimal value",
+                                        "float":0,
+                                        "fixedValues":[
+                                            "all values in order",
+                                            "all values in random order",
+                                            "one fixed value",
+                                            "one random value",
+                                            "depends on correct"
+                                        ],
+                                        "somethingId":"1",
+                                        "timeFunction":"linear",
+                                        "properties":[
+                                            {
+                                                "timeDependency":"",
+                                                "float1":0,
+                                                "name":"selectionMethodEqual",
+                                                "timeExponent":0,
+                                                "onlyInfo":false,
+                                                "info":"Whether or not the selection of values ​​for all the related variables is the same.",
+                                                "id":"E549585A-E482-4F05-8A07-8D6A07C12E6B",
+                                                "propertyType":"selectionDifferent",
+                                                "unitType":"decimal value",
+                                                "float":0,
+                                                "fixedValues":[
+                                                    "equal",
+                                                    "different"
+                                                ],
+                                                "somethingId":"",
+                                                "timeFunction":"linear",
+                                                "properties":[
+
+                                                ],
+                                                "unit":"",
+                                                "text":"",
+                                                "selectedValue":1,
+                                                "listOrder":0,
+                                                "timeUnit":"seconds",
+                                                "float2":0
+                                            }
+                                        ],
+                                        "unit":"",
+                                        "text":"",
+                                        "selectedValue":3,
+                                        "listOrder":0,
+                                        "timeUnit":"seconds",
+                                        "float2":0
+                                    }
+                                },
+                                {
+                                    "group":0,
+                                    "id":"38C09099-CB68-4501-8430-F14C903813C1",
+                                    "propertyId":"CD2FF9EE-8E4D-45E9-9406-F4F3DFF604B3",
+                                    "objectId":"C21E9783-2269-4C84-B581-B9A9D1E93901",
+                                    "listOfValuesId":"DC2709B4-5389-4AA0-A4E9-A1F09B8C37BA",
+                                    "selection":{
+                                        "timeDependency":"",
+                                        "float1":0,
+                                        "name":"selectionMethod",
+                                        "timeExponent":0,
+                                        "onlyInfo":false,
+                                        "info":"The different methods used for the variables to take their values from their list.",
+                                        "id":"D04CC7C2-BEC7-433C-8E12-2A1768039701",
+                                        "propertyType":"selection",
+                                        "unitType":"decimal value",
+                                        "float":0,
+                                        "fixedValues":[
+                                            "all values in order",
+                                            "all values in random order",
+                                            "one fixed value",
+                                            "one random value",
+                                            "depends on correct"
+                                        ],
+                                        "somethingId":"0",
+                                        "timeFunction":"linear",
+                                        "properties":[
+                                            {
+                                                "timeDependency":"",
+                                                "float1":0,
+                                                "name":"selectionMethodPriority",
+                                                "timeExponent":0,
+                                                "onlyInfo":false,
+                                                "info":"The priority of the method.\n\nFor example:\n\nFirst variable gets its values in order and its possible values are: 0, 1.\n\nSecond variable gets its values in order too and its possible values are: 10, 20, 30.\n\nDepending which variable has a higher priority the result can be:\n\n0,10\n0,20\n0,30\n1,10\n1,20\n1,30\n\nif the first variable has higher priority, or:\n\n0,10\n1,10\n0,20\n1,20\n0,30\n1,30\n\nif the second variable has higher priority.",
+                                                "id":"1B1AE838-8936-4926-93A5-D090B38C4C12",
+                                                "propertyType":"selectionOrder",
+                                                "unitType":"decimal value",
+                                                "float":0,
+                                                "fixedValues":[
+                                                    "high",
+                                                    "medium",
+                                                    "low"
+                                                ],
+                                                "somethingId":"",
+                                                "timeFunction":"linear",
+                                                "properties":[
+
+                                                ],
+                                                "unit":"",
+                                                "text":"",
+                                                "selectedValue":0,
+                                                "listOrder":0,
+                                                "timeUnit":"seconds",
+                                                "float2":0
+                                            }
+                                        ],
+                                        "unit":"",
+                                        "text":"",
+                                        "selectedValue":0,
+                                        "listOrder":0,
+                                        "timeUnit":"seconds",
+                                        "float2":0
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id":"8451D1D3-6705-4A38-9F04-270105207D8C",
+                            "order":2,
+                            "sceneId":"E77DF32B-3991-47F4-97A6-CC4FE268B028",
+                            "name":{
+                                "timeDependency":"",
+                                "float1":0,
+                                "name":"name",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"A name to identify this object.",
+                                "id":"3CAA9AA2-0673-447E-8BCD-B1144AB4008F",
+                                "propertyType":"string",
+                                "unitType":"decimal value",
+                                "float":0,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"",
+                                "text":"object2",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0
+                            },
+                            "stimulusId":"C50225FF-3707-4A2D-A554-B8F1BF21ABDE",
+                            "variables":[
+                                {
+                                    "group":1,
+                                    "id":"A737EEDC-ADFC-4B78-B872-14F2263D743C",
+                                    "propertyId":"0D332D58-91B2-4478-94E8-34843AFBA211",
+                                    "objectId":"8451D1D3-6705-4A38-9F04-270105207D8C",
+                                    "listOfValuesId":"883A1AAC-FC6D-4302-9038-A64C380B8E00",
+                                    "selection":{
+                                        "timeDependency":"",
+                                        "float1":0,
+                                        "name":"selectionMethod",
+                                        "timeExponent":0,
+                                        "onlyInfo":false,
+                                        "info":"The different methods used for the variables to take their values from their list.",
+                                        "id":"ABE55A41-0BA0-4846-919E-EFEFCD6BE012",
+                                        "propertyType":"selection",
+                                        "unitType":"decimal value",
+                                        "float":0,
+                                        "fixedValues":[
+                                            "all values in order",
+                                            "all values in random order",
+                                            "one fixed value",
+                                            "one random value",
+                                            "depends on correct"
+                                        ],
+                                        "somethingId":"1",
+                                        "timeFunction":"linear",
+                                        "properties":[
+                                            {
+                                                "timeDependency":"",
+                                                "float1":0,
+                                                "name":"selectionMethodEqual",
+                                                "timeExponent":0,
+                                                "onlyInfo":false,
+                                                "info":"Whether or not the selection of values ​​for all the related variables is the same.",
+                                                "id":"74ADF13C-6954-4889-82FE-03C742911446",
+                                                "propertyType":"selectionDifferent",
+                                                "unitType":"decimal value",
+                                                "float":0,
+                                                "fixedValues":[
+                                                    "equal",
+                                                    "different"
+                                                ],
+                                                "somethingId":"",
+                                                "timeFunction":"linear",
+                                                "properties":[
+
+                                                ],
+                                                "unit":"",
+                                                "text":"",
+                                                "selectedValue":1,
+                                                "listOrder":0,
+                                                "timeUnit":"seconds",
+                                                "float2":0
+                                            }
+                                        ],
+                                        "unit":"",
+                                        "text":"",
+                                        "selectedValue":3,
+                                        "listOrder":0,
+                                        "timeUnit":"seconds",
+                                        "float2":0
+                                    }
+                                },
+                                {
+                                    "group":0,
+                                    "id":"D495876E-B4DB-45BF-9477-76E682D311BB",
+                                    "propertyId":"CD2FF9EE-8E4D-45E9-9406-F4F3DFF604B3",
+                                    "objectId":"8451D1D3-6705-4A38-9F04-270105207D8C",
+                                    "listOfValuesId":"D6A1BB20-FC53-421C-9ECF-BD15BDD7C21B",
+                                    "selection":{
+                                        "timeDependency":"",
+                                        "float1":0,
+                                        "name":"selectionMethod",
+                                        "timeExponent":0,
+                                        "onlyInfo":false,
+                                        "info":"The different methods used for the variables to take their values from their list.",
+                                        "id":"537FFAC5-F1DF-4F87-A7C5-AE97B0D4B1B8",
+                                        "propertyType":"selection",
+                                        "unitType":"decimal value",
+                                        "float":0,
+                                        "fixedValues":[
+                                            "all values in order",
+                                            "all values in random order",
+                                            "one fixed value",
+                                            "one random value",
+                                            "depends on correct"
+                                        ],
+                                        "somethingId":"0",
+                                        "timeFunction":"linear",
+                                        "properties":[
+                                            {
+                                                "timeDependency":"",
+                                                "float1":0,
+                                                "name":"selectionMethodCorrect",
+                                                "timeExponent":0,
+                                                "onlyInfo":false,
+                                                "info":"How the correct response determines the value of this variable.",
+                                                "id":"4823FD74-E355-426F-8DEF-9252F85F833F",
+                                                "propertyType":"correctType",
+                                                "unitType":"decimal value",
+                                                "float":0,
+                                                "fixedValues":[
+                                                    "correct\/incorrect",
+                                                    "1up\/1down",
+                                                    "1up\/2down",
+                                                    "1up\/3down"
+                                                ],
+                                                "somethingId":"",
+                                                "timeFunction":"linear",
+                                                "properties":[
+
+                                                ],
+                                                "unit":"",
+                                                "text":"",
+                                                "selectedValue":2,
+                                                "listOrder":0,
+                                                "timeUnit":"seconds",
+                                                "float2":0
+                                            },
+                                            {
+                                                "timeDependency":"",
+                                                "float1":1,
+                                                "name":"InitialValue",
+                                                "timeExponent":0,
+                                                "onlyInfo":false,
+                                                "info":"Select one of the values from the list.\nFrom 1 to the total number of values. This will be the first value.\nFrom there, the value will change following the chosen formula.",
+                                                "id":"5A0EFE09-FCD1-4E9C-8677-A36C1011C07B",
+                                                "propertyType":"simpleFloat",
+                                                "unitType":"positive non-zero integer value",
+                                                "float":15,
+                                                "fixedValues":[
+
+                                                ],
+                                                "somethingId":"D495876E-B4DB-45BF-9477-76E682D311BB",
+                                                "timeFunction":"linear",
+                                                "properties":[
+
+                                                ],
+                                                "unit":"",
+                                                "text":"",
+                                                "selectedValue":0,
+                                                "listOrder":0,
+                                                "timeUnit":"seconds",
+                                                "float2":1
+                                            }
+                                        ],
+                                        "unit":"",
+                                        "text":"",
+                                        "selectedValue":4,
+                                        "listOrder":0,
+                                        "timeUnit":"seconds",
+                                        "float2":0
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    "name":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"name",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"A name to identify this scene",
+                        "id":"C4C00870-79B0-4AB1-84FD-1DD8B50A831B",
+                        "propertyType":"string",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"",
+                        "text":"scene1",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    }
+                },
+                {
+                    "numberOfLayers":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"numberOfLayers",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"The number of layers in the scene.\nBy default, all objects are drawn on the same layer, which is drawn on top of the background.\nIf you want to draw one object on top of another, you must increase the number of layers.\n(This does not apply to video or text objects that are rendered differently, always on top of everything).\n\nWhen drawing objects, a preassigned space is saved for each one of them.\nThis space is slightly larger than the object itself.\nIf two objects are too close to each other, their respective preassigned spaces can interfere, creating an unwanted empty space between the objects.\nTo avoid this, you should increase the number of layers (or separate the objects a bit if possible).\n\nIncreasing the number of layers is computationally costly, so try to use as few layers as possible, especially when working at 120Hz.",
+                        "id":"D628CDA3-FC4E-4FC5-9730-04A336D3B83C",
+                        "propertyType":"select",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+                            "one",
+                            "two",
+                            "three"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    "continuousResolution":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"continuousResolution",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"When using stimuliApp, images are displayed in an sRGB space with 256 possible values for each channel of the RGB color.\nIf you are working only with luminances: R = G = B, there are 256 luminance levels.\n\nSometimes this limitation on the number of different luminance intensities displayable can be an issue.\nBy making the continuosResolution property true, the noisy-bit method is implemented.\nThis method consists of adding a small amount of random noise.\nThe method is described in Allard, R., Faubert, J., 2008. The Noisy-Bit method for digital displays: Converting a 256 luminance resolution into a continuous resolution. Behav. Res. Methods 40, 735–743.\n\nThe noisy-bit method, combined with the 256 luminance levels, is perceptually equivalent to an analog display with a continuous luminance intensity resolution when the spatiotemporal resolution is high enough that the noise becomes negligible.",
+                        "id":"71E54E29-89FE-4E9A-9174-E8997DFAB83F",
+                        "propertyType":"select",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+                            "no",
+                            "yes"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    "id":"64BE905A-1969-410A-B212-731770555D70",
+                    "order":1,
+                    "color":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"color",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"Color of the background.",
+                        "id":"A4CB607E-33A4-4FC5-B875-9E5D4BE6C4CA",
+                        "propertyType":"color",
+                        "unitType":"decimal value from 0 to 1",
+                        "float":0.5,
+                        "fixedValues":[
+                            "vector3d",
+                            "RGB vars",
+                            "luminance"
+                        ],
+                        "somethingId":"64BE905A-1969-410A-B212-731770555D70",
+                        "timeFunction":"linear",
+                        "properties":[
+                            {
+                                "timeDependency":"constant",
+                                "float1":0.5,
+                                "name":"color",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"Red - Green - Blue",
+                                "id":"CA2AE3BE-C470-4B12-BC6C-5BFF230BF1A6",
+                                "propertyType":"triple",
+                                "unitType":"decimal value from 0 to 1",
+                                "float":0.5,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"",
+                                "text":"",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0.5
+                            }
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    "sectionId":"DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335",
+                    "responseType":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"response",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"To select one of the possible types of responses for the scene.\n\nEach time a response is given the scene ends even if the time has not reached the duration of the scene.",
+                        "id":"065BBBD7-7696-4169-AB3E-CA8E0F398938",
+                        "propertyType":"response",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+                            "none",
+                            "left or right",
+                            "top or bottom",
+                            "touch screen",
+                            "lift finger",
+                            "path",
+                            "touch object",
+                            "move object",
+                            "keyboard",
+                            "keys"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    "durationType":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"duration",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"The maximum duration of the scene if no response is given.",
+                        "id":"2E39CAB3-9A03-4BF7-8BB0-7A6CB829F69C",
+                        "propertyType":"sceneDuration",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+                            "constant",
+                            "stimuli end"
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+                            {
+                                "timeDependency":"",
+                                "float1":100,
+                                "name":"durationValue",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"The duration of the scene.",
+                                "id":"5336AEFE-CFF5-4E64-A894-0B0550152237",
+                                "propertyType":"simpleFloat",
+                                "unitType":"time",
+                                "float":0.5,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"seconds",
+                                "text":"",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":100
+                            }
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    },
+                    "objects":[
+                        {
+                            "id":"F5E9B881-21E3-4C4F-A385-FCF9CA42D902",
+                            "order":0,
+                            "sceneId":"64BE905A-1969-410A-B212-731770555D70",
+                            "name":{
+                                "timeDependency":"",
+                                "float1":0,
+                                "name":"name",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"A name to identify this object.",
+                                "id":"58E83AC2-E4DB-4E60-BD12-116A97FAB7EB",
+                                "propertyType":"string",
+                                "unitType":"decimal value",
+                                "float":0,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"",
+                                "text":"background",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0
+                            },
+                            "stimulusId":"",
+                            "variables":[
+
+                            ]
+                        }
+                    ],
+                    "name":{
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"name",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"A name to identify this scene",
+                        "id":"21680CA4-C830-434C-9A65-36ECA5C49315",
+                        "propertyType":"string",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"",
+                        "text":"scene2",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    }
+                }
+            ],
+            "alternate":"",
+            "id":"DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335",
+            "order":0,
+            "next":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"when all the section trials have been performed",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The order of the conditions in the menu is the order in which they are evaluated.\n\nIf a condition is true, the action associated with that condition will be performed and the following conditions will not be evaluated.\n\nThe possible actions that can be performed are to go to another section or to end the test.\n\nIf neither condition is true, a new trial in the same section is performed.",
+                "id":"926CD0C2-0624-4F6C-A5EC-D2A99EADE159",
+                "propertyType":"string",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"End the test",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "repetitions":{
+                "timeDependency":"",
+                "float1":1,
+                "name":"repetitions",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"The number of repetitions of all the different trials.",
+                "id":"382398E1-777B-4745-AD1C-A45B3DDB5CBB",
+                "propertyType":"simpleFloat",
+                "unitType":"positive non-zero integer value",
+                "float":30,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":1
+            },
+            "trialValue":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"trialValue",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"",
+                "id":"7C729DC9-97C0-4CA1-A551-45E82EE3FFD9",
+                "propertyType":"value",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"38C09099-CB68-4501-8430-F14C903813C1",
+                "timeFunction":"linear",
+                "properties":[
+                    {
+                        "timeDependency":"",
+                        "float1":0,
+                        "name":"Value",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"",
+                        "id":"84A3E78C-0055-4033-94E0-98A237F28426",
+                        "propertyType":"valueType",
+                        "unitType":"decimal value",
+                        "float":0,
+                        "fixedValues":[
+                            "same",
+                            "other"
+                        ],
+                        "somethingId":"38C09099-CB68-4501-8430-F14C903813C1",
+                        "timeFunction":"linear",
+                        "properties":[
+                            {
+                                "timeDependency":"",
+                                "float1":0,
+                                "name":"when scene1_object1_contrastValue = 0.5",
+                                "timeExponent":0,
+                                "onlyInfo":false,
+                                "info":"",
+                                "id":"0EE6A39A-E324-4A1A-B23D-515B4C525FEF",
+                                "propertyType":"simpleFloat",
+                                "unitType":"same unit as the response",
+                                "float":1,
+                                "fixedValues":[
+
+                                ],
+                                "somethingId":"",
+                                "timeFunction":"linear",
+                                "properties":[
+
+                                ],
+                                "unit":"",
+                                "text":"",
+                                "selectedValue":0,
+                                "listOrder":0,
+                                "timeUnit":"seconds",
+                                "float2":0
+                            }
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":1,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0
+                    }
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "modificable":"",
+            "name":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"name",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"A name to identify this section.",
+                "id":"8D712229-CC77-46FC-AD9E-8B0542DD11FC",
+                "propertyType":"string",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"",
+                "text":"section1",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            },
+            "responseValue":{
+                "timeDependency":"",
+                "float1":0,
+                "name":"responseValue",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"",
+                "id":"0F531610-8519-418D-AC6D-BBC2385F1EE7",
+                "propertyType":"correct",
+                "unitType":"decimal value",
+                "float":0,
+                "fixedValues":[
+                    "value",
+                    "positionVector",
+                    "positionX",
+                    "positionY",
+                    "positionRadius",
+                    "positionAngle"
+                ],
+                "somethingId":"E77DF32B-3991-47F4-97A6-CC4FE268B028",
+                "timeFunction":"linear",
+                "properties":[
+                    {
+                        "timeDependency":"",
+                        "float1":0.0099999997764825821,
+                        "name":"marginError",
+                        "timeExponent":0,
+                        "onlyInfo":false,
+                        "info":"We compare responseValue with trialValue and calculate their difference.\n\nIf they are numeric values: difference = abs(responseValue - trialValue).\nIf they are vectors, the difference is the distance between the points they represent on the screen.\n\nIf distance < marginError the trial is considered correct, otherwise it is considered incorrect.\n\nThe variable used to calculate the trialValue and the response parameter used to calculate the responseValue must have the same units for the comparison to be fair.\n\nFor example, if the trialValue is determined by the anglePosition of certain stimulus and the responseValue is determined by the anglePosition of the touch on the screen, both angle positions must be measured in radians or both must be measured in degrees.",
+                        "id":"24903A12-887B-4289-A5E7-8CCB1DCDA4A3",
+                        "propertyType":"simpleFloat",
+                        "unitType":"same unit as the variable it is applied to",
+                        "float":0.0099999997764825821,
+                        "fixedValues":[
+
+                        ],
+                        "somethingId":"",
+                        "timeFunction":"linear",
+                        "properties":[
+
+                        ],
+                        "unit":"",
+                        "text":"",
+                        "selectedValue":0,
+                        "listOrder":0,
+                        "timeUnit":"seconds",
+                        "float2":0.0099999997764825821
+                    }
+                ],
+                "unit":"",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":0
+            }
+        }
+    ],
+    "files":[
+
+    ],
+    "order":2,
+    "frameRate":{
+        "timeDependency":"",
+        "float1":0,
+        "name":"frameRate",
+        "timeExponent":0,
+        "onlyInfo":true,
+        "info":"On this device, the refresh rate of the screen is always 60 HZ.",
+        "id":"0B63BE65-EBC6-490E-85E6-9914FE493FCD",
+        "propertyType":"select",
+        "unitType":"decimal value",
+        "float":0,
+        "fixedValues":[
+            "60 Hz"
+        ],
+        "somethingId":"",
+        "timeFunction":"linear",
+        "properties":[
+
+        ],
+        "unit":"",
+        "text":"",
+        "selectedValue":0,
+        "listOrder":0,
+        "timeUnit":"seconds",
+        "float2":0
+    },
+    "cancelButtonPosition":{
+        "timeDependency":"",
+        "float1":0,
+        "name":"XButton",
+        "timeExponent":0,
+        "onlyInfo":false,
+        "info":"The position on the screen of the button that is used to cancel test in progress.",
+        "id":"9DC7BB88-67C5-4E2C-B88C-8EBA6D980DFA",
+        "propertyType":"select",
+        "unitType":"decimal value",
+        "float":0,
+        "fixedValues":[
+            "top left",
+            "top right",
+            "bottom left",
+            "bottom right",
+            "no button"
+        ],
+        "somethingId":"",
+        "timeFunction":"linear",
+        "properties":[
+
+        ],
+        "unit":"",
+        "text":"",
+        "selectedValue":0,
+        "listOrder":0,
+        "timeUnit":"seconds",
+        "float2":0
+    },
+    "distance":{
+        "timeDependency":"",
+        "float1":0,
+        "name":"viewingDistance",
+        "timeExponent":0,
+        "onlyInfo":false,
+        "info":"Viewing distance from the participant to the screen.\n\nThis value is used to calculate the actual pixel size of any property that is measured in visual angle degrees.",
+        "id":"E41E6A7E-8DC3-416F-A5E7-1F2EB011BBBB",
+        "propertyType":"distance",
+        "unitType":"decimal value",
+        "float":50,
+        "fixedValues":[
+            "constant",
+            "set each time"
+        ],
+        "somethingId":"",
+        "timeFunction":"linear",
+        "properties":[
+            {
+                "timeDependency":"",
+                "float1":50,
+                "name":"distanceValue",
+                "timeExponent":0,
+                "onlyInfo":false,
+                "info":"Distance value.",
+                "id":"B8F8BCFE-10C5-461E-96EF-19F92543B634",
+                "propertyType":"simpleFloat",
+                "unitType":"external size",
+                "float":50,
+                "fixedValues":[
+
+                ],
+                "somethingId":"",
+                "timeFunction":"linear",
+                "properties":[
+
+                ],
+                "unit":"centimeters",
+                "text":"",
+                "selectedValue":0,
+                "listOrder":0,
+                "timeUnit":"seconds",
+                "float2":50
+            }
+        ],
+        "unit":"",
+        "text":"",
+        "selectedValue":0,
+        "listOrder":0,
+        "timeUnit":"seconds",
+        "float2":0
+    },
+    "brightness":{
+        "timeDependency":"",
+        "float1":0.69999998807907104,
+        "name":"brightness",
+        "timeExponent":0,
+        "onlyInfo":false,
+        "info":"You can control the brightness of the screen with this parameter.\n\nThe new brightness will only be effective once the test begins.\n\nThere are two options on iOS and iPadOS that can automatically change the brightness and color temperature settings of the device:\nTrue Tone and Night Shift.\n\nIt is important to disable these two options in your device's preferences menu to avoid unwanted changes when running a test.",
+        "id":"026BFBBA-1B28-4933-9A66-6418658A1A0F",
+        "propertyType":"simpleFloat",
+        "unitType":"decimal value from 0 to 1",
+        "float":0.69999998807907104,
+        "fixedValues":[
+
+        ],
+        "somethingId":"",
+        "timeFunction":"linear",
+        "properties":[
+
+        ],
+        "unit":"",
+        "text":"",
+        "selectedValue":0,
+        "listOrder":0,
+        "timeUnit":"seconds",
+        "float2":0.69999998807907104
+    },
+    "firstSection":{
+        "timeDependency":"",
+        "float1":0,
+        "name":"firstSection",
+        "timeExponent":0,
+        "onlyInfo":false,
+        "info":"The first section of the test.",
+        "id":"E7A20F2B-7FB9-4249-BFE6-243E06C736AF",
+        "propertyType":"string",
+        "unitType":"decimal value",
+        "float":0,
+        "fixedValues":[
+
+        ],
+        "somethingId":"DAF45A5C-F8A0-437E-ABB3-F1AB3BEE5335",
+        "timeFunction":"linear",
+        "properties":[
+
+        ],
+        "unit":"",
+        "text":"none",
+        "selectedValue":0,
+        "listOrder":0,
+        "timeUnit":"seconds",
+        "float2":0
+    },
+    "name":{
+        "timeDependency":"",
+        "float1":0,
+        "name":"name",
+        "timeExponent":0,
+        "onlyInfo":false,
+        "info":"A name to identify this test.",
+        "id":"B6C55188-CCF8-4C64-8B09-FED756007626",
+        "propertyType":"string",
+        "unitType":"decimal value",
+        "float":0,
+        "fixedValues":[
+
+        ],
+        "somethingId":"",
+        "timeFunction":"linear",
+        "properties":[
+
+        ],
+        "unit":"",
+        "text":"contrastDiscriminationDemo",
+        "selectedValue":0,
+        "listOrder":0,
+        "timeUnit":"seconds",
+        "float2":0
+    }
+}

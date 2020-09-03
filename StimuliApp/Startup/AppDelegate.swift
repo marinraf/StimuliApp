@@ -24,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = Color.selection.toUIColor
         UINavigationBar.appearance().isTranslucent = false
 
+        if isFirstLaunch() {
+            createDemoTests()
+        }
         return true
     }
 
@@ -33,6 +36,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.orientationLock
+    }
+
+    func isFirstLaunch() -> Bool {
+        if !UserDefaults.standard.bool(forKey: "HasLaunched") {
+            UserDefaults.standard.set(true, forKey: "HasLaunched")
+            UserDefaults.standard.synchronize()
+            return true
+        }
+        return false
+    }
+
+    func createDemoTests() {
+        loadJson(fileName: "motionDiscriminationDemo")
+        loadJson(fileName: "contrastDiscriminationDemo")
+        loadJson(fileName: "soundDiscriminationDemo")
+    }
+
+
+    func loadJson(fileName: String) {
+       guard
+            let url = Bundle.main.url(forResource: fileName, withExtension: "json"),
+            let data = try? Data(contentsOf: url)
+       else {
+            return
+       }
+        if Flow.shared.createAndSaveNewTest(from: data) {
+            self.window?.rootViewController?.showAlertOk(title: "Welcome", message: Texts.firstLaunch)
+        }
     }
 
     @objc func importFile(_ url: URL) {
@@ -64,7 +95,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     #if targetEnvironment(macCatalyst)
     override func buildMenu(with builder: UIMenuBuilder) {
             super.buildMenu(with: builder)
-
             builder.remove(menu: .services)
             builder.remove(menu: .format)
             builder.remove(menu: .toolbar)
