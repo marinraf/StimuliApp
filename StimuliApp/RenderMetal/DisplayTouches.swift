@@ -247,10 +247,12 @@ extension DisplayRender {
     func touchObjectTouch(touchInView: TouchInView) {
         let trial = Task.shared.sectionTask.currentTrial
         let numberOfObjects = DataTask.metalValues.count
+        var allowBackground = true
 
         for object in (0 ..< numberOfObjects).reversed() {
-            if let objectValue = Task.shared.sceneTask.responseObject[object] {
-                if isTouched(object: object, trial: trial, touchInView: touchInView) {
+            if isTouched(object: object, trial: trial, touchInView: touchInView) {
+                allowBackground = false
+                if let objectValue = Task.shared.sceneTask.responseObject[object] {
                     Task.shared.userResponse.float = objectValue
                     if let float = Task.shared.userResponse.float {
                         Task.shared.userResponse.string = String(float)
@@ -262,14 +264,16 @@ extension DisplayRender {
                 }
             }
         }
-        if let backgroundValue = Task.shared.sceneTask.responseBackground {
-            Task.shared.userResponse.float = backgroundValue
-            if let float = Task.shared.userResponse.float {
-                Task.shared.userResponse.string = String(float)
+        if allowBackground {
+            if let backgroundValue = Task.shared.sceneTask.responseBackground {
+                Task.shared.userResponse.float = backgroundValue
+                if let float = Task.shared.userResponse.float {
+                    Task.shared.userResponse.string = String(float)
+                }
+                Task.shared.userResponse.clocks.append(touchInView.time)
+                displayRenderDelegate?.stopAudio()
+                responded = true
             }
-            Task.shared.userResponse.clocks.append(touchInView.time)
-            displayRenderDelegate?.stopAudio()
-            responded = true
         }
     }
 
