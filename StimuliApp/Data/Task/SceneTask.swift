@@ -238,7 +238,8 @@ class SceneTask {
         delayTime.append(max((startTimeReal - startTime), 0))
 
         if isNotRealResponse || isRealResponse {
-            if badTiming {
+
+            if badTiming || Task.shared.userResponse.string == nil {
                 Task.shared.sectionTask.respondedInTime = false
             }
         }
