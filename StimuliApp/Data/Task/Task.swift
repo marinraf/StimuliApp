@@ -48,7 +48,6 @@ struct Seed {
 }
 
 struct UserResponse {
-    var integer: Int?
     var float: Float?
     var string: String?
 
@@ -59,6 +58,8 @@ struct UserResponse {
     var clocks: [Double] = []
 
     var liftClock: Double?
+
+    var delay: Double = 0
 
     init() {}
 }

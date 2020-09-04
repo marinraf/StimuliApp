@@ -214,7 +214,7 @@ class FrameControl {
 
             allFrames += 1
 
-            if debug || long {
+            if (debug || long) && !displayRender.inactive {
 
                 let frame = Frame(scene: Task.shared.sceneTask.name,
                                   trial: Task.shared.sectionTask.currentTrial + 1,

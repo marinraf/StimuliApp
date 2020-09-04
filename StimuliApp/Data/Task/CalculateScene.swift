@@ -1002,7 +1002,7 @@ extension Task {
 
         switch responseType {
         case .none:
-            break
+            sceneTask.isNotRealResponse = false
         case .keyboard:
             sceneTask.responseKeyboard = FixedKeyboard(rawValue: scene.responseType.properties[0].string) ?? .normal
             sceneTask.responseInTitle = FixedResponseInTitle(rawValue: scene.responseType.properties[1].string) == .yes
@@ -1043,6 +1043,11 @@ extension Task {
                 .none
             sceneTask.responseSecondUnit = Unit(rawValue: scene.responseType.properties[4].properties[1].string) ??
                 .none
+        case .lift:
+            sceneTask.responseStart = Double(scene.responseType.properties[0].float)
+            sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
+            sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
+            sceneTask.responseObject = [scene.responseType.properties[3].float]
         case .touchObject:
             sceneTask.responseStart = Double(scene.responseType.properties[0].float)
             sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
@@ -1090,7 +1095,8 @@ extension Task {
 
         if let section = scene.section {
             if section.responseValue.somethingId == scene.id { //we are in the scene response
-                sceneTask.isResponse = true
+                sceneTask.isRealResponse = true
+                sceneTask.isNotRealResponse = false
             }
         }
     }

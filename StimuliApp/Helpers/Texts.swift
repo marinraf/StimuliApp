@@ -6,6 +6,22 @@ import Foundation
 struct Texts {
 
     // MARK: - Other
+    #if targetEnvironment(macCatalyst)
+    static let version = "StimuliApp beta " + String(format:"%.1f", Constants.version)
+    #else
+    static let version = "StimuliApp " + String(format:"%.1f", Constants.version)
+    #endif
+
+    static let versionInfo = "StimuliApp version"
+    
+    static let firstLaunch = """
+Welcome to \(version)!!
+
+We have included some demos in the Tests menu to show you some of the StimuliApp features.
+You can duplicate, edit or delete them.
+You'll always find a copy of them available to download on our website (www.stimuliapp.com).
+"""
+
     static let frameRateWeb = "https://www.stimuliapp.com/steady-frame-rate/"
 
     static let resultName = """
@@ -143,7 +159,8 @@ The maximum frame rate of the screen. This value can be 60 or 120 Hz depending o
 The maximum luminance of the device in cd/m².
 
 StimuliApp identifies most of the devices and sets as a default value for maximumLuminance the value included in \
-the specifications by Apple.
+the specifications by Apple. The nominal maximum luminance values were retrieved from apple.com and might slightly \
+differ from the displayed values due to variations across series or the time in use of the displays.
 
 You can also manually specify maximumLuminance if you have measured the maximum luminance using a photometer.
 

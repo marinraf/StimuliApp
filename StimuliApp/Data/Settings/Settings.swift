@@ -38,6 +38,7 @@ class Settings {
     let userProperties: [Property]
     var deviceProperties: [Property]
 
+    let versionProperty: Property
     let descriptionProperty: Property
     let systemProperty: Property
     var userProperty: Property
@@ -131,6 +132,7 @@ class Settings {
         self.userProperty = SettingsData.makeUserProperty(text: userString)
         self.emailProperty = SettingsData.makeEmailProperty(text: emailString)
 
+        self.versionProperty = SettingsData.makeVersionProperty()
         self.descriptionProperty = SettingsData.makeDescriptionProperty(text: device.description)
         self.systemProperty = SettingsData.makeSystemProperty(text: systemString)
         self.maximumFrameRateProperty = SettingsData.makeFrameRateProperty(float: Float(self.maximumFrameRate))
@@ -155,9 +157,9 @@ class Settings {
                                  resolutionProperty, positionXProperty, positionYProperty, ppiProperty,
                                  maximumBrightnessProperty, rampTimeProperty, delayAudio60Property]
         #else
-        self.deviceProperties = [descriptionProperty, systemProperty, audioRateProperty, maximumFrameRateProperty,
-                                 resolutionProperty, ppiProperty, maximumBrightnessProperty, rampTimeProperty,
-                                 delayAudio60Property]
+        self.deviceProperties = [versionProperty, descriptionProperty, systemProperty, audioRateProperty,
+                                 maximumFrameRateProperty, resolutionProperty, ppiProperty, maximumBrightnessProperty,
+                                 rampTimeProperty, delayAudio60Property]
         #endif
 
         if self.maximumFrameRate == 120 {

@@ -23,6 +23,8 @@ class Test: NSObject, Codable {
     var screenWidth: Float?
     var screenHeight: Float?
 
+    var createdWithStimuliAppVersion: Double?
+
     override init() {
         id = UUID().uuidString
         name = Property()
@@ -41,6 +43,8 @@ class Test: NSObject, Codable {
         files = []
         screenWidth = nil
         screenHeight = nil
+
+        createdWithStimuliAppVersion = Constants.version
     }
 
     //new test
@@ -66,6 +70,8 @@ class Test: NSObject, Codable {
 
         self.screenWidth = Flow.shared.settings.width
         self.screenHeight = Flow.shared.settings.height
+
+        createdWithStimuliAppVersion = Constants.version
     }
 
     var scenes: [Scene] {

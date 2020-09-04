@@ -19,6 +19,16 @@ struct SettingsData {
                         text: text)
     }
 
+    static func makeVersionProperty() -> Property {
+
+        let property = Property(name: "version",
+                                info: Texts.versionInfo,
+                                text: Texts.version)
+
+        property.onlyInfo = true
+        return property
+    }
+
     static func makeDescriptionProperty(text: String) -> Property {
 
         let property = Property(name: "description",

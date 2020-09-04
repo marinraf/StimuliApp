@@ -72,7 +72,8 @@ extension DisplayRender {
         guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
         guard let touch = coalescedTouches.first else { return }
 
-        let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
+        let time = touch.timestamp - Flow.shared.frameControl.initSceneTime
+
         guard time > 0 else { return }
 
         badTiming = time < Task.shared.sceneTask.responseStart || time > Task.shared.sceneTask.responseEnd
@@ -101,7 +102,7 @@ extension DisplayRender {
             touchPath(touchInView: touchInView)
         case .touchObject:
             touchObjectTouch(touchInView: touchInView)
-        case .moveObject, .keyboard, .keys, .none:
+        case .moveObject, .keyboard, .keys, .none, .lift:
             break
         }
     }
@@ -119,26 +120,61 @@ extension DisplayRender {
     }
 
     func touchesEnded(_ view: UIView, touches: Set<UITouch>, with event: UIEvent?) {
-        guard touching else { return }
 
-        guard let uitouch = touches.first else { return }
-        guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
-        guard let touch = coalescedTouches.first else { return }
-        touching = false
-        Task.shared.responseMovingObject = nil
         switch Task.shared.sceneTask.responseType {
+        case .lift:
+
+            guard let uitouch = touches.first else { return }
+            guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
+            guard let touch = coalescedTouches.first else { return }
+
+            let time = touch.timestamp - Flow.shared.frameControl.initSceneTime
+
+            guard time > 0 else { return }
+
+            badTiming = time < Task.shared.sceneTask.responseStart || time > Task.shared.sceneTask.responseEnd
+
+            guard !badTiming || Task.shared.sceneTask.responseOutWindow else { return }
+
+            touching = false
+
+            Task.shared.userResponse.float = Task.shared.sceneTask.responseObject[0]
+            if let float = Task.shared.userResponse.float {
+                Task.shared.userResponse.string = String(float)
+            }
+
+            Task.shared.userResponse.clocks.append(time)
+            Task.shared.responseMovingObject = nil
+            Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTime
+            displayRenderDelegate?.stopAudio()
+            responded = true
+
         case .moveObject:
+            guard touching else { return }
+            guard let uitouch = touches.first else { return }
+            guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
+            guard let touch = coalescedTouches.first else { return }
+            touching = false
+            Task.shared.responseMovingObject = nil
+
             if let userResponseTemp = userResponseTemp, Task.shared.sceneTask.endPath == .lift {
                 Task.shared.userResponse.float = userResponseTemp
                 if let float = Task.shared.userResponse.float {
                     Task.shared.userResponse.string = String(float)
                 }
-                Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
+                Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTime
                 displayRenderDelegate?.stopAudio()
                 responded = true
             }
         case .path:
-            Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
+            guard touching else { return }
+            guard let uitouch = touches.first else { return }
+            guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
+            guard let touch = coalescedTouches.first else { return }
+            touching = false
+            Task.shared.responseMovingObject = nil
+
+            Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTime
             displayRenderDelegate?.stopAudio()
             responded = true
         default:
@@ -148,17 +184,22 @@ extension DisplayRender {
 
     func leftRightTouch(touchInView: TouchInView) {
         if touchInView.location.x < touchInView.screenSize.width / 3 {
-            Task.shared.userResponse.integer = Task.shared.sceneTask.responseObject[0]?.toInt
-            if let integer = Task.shared.userResponse.integer {
-                Task.shared.userResponse.string = String(integer)
+
+            if let float = Task.shared.userResponse.float {
+                Task.shared.userResponse.string = String(float)
             }
+            Task.shared.userResponse.float = Task.shared.sceneTask.responseObject[0]
+            if let float = Task.shared.userResponse.float {
+                Task.shared.userResponse.string = String(float)
+            }
+
             Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
         } else if touchInView.location.x > 2 * touchInView.screenSize.width / 3 {
-            Task.shared.userResponse.integer = Task.shared.sceneTask.responseObject[1]?.toInt
-            if let integer = Task.shared.userResponse.integer {
-                Task.shared.userResponse.string = String(integer)
+            Task.shared.userResponse.float = Task.shared.sceneTask.responseObject[1]
+            if let float = Task.shared.userResponse.float {
+                Task.shared.userResponse.string = String(float)
             }
             Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
@@ -168,17 +209,17 @@ extension DisplayRender {
 
     func topBottomTouch(touchInView: TouchInView) {
         if touchInView.location.y < touchInView.screenSize.height / 3 {
-            Task.shared.userResponse.integer = Task.shared.sceneTask.responseObject[0]?.toInt
-            if let integer = Task.shared.userResponse.integer {
-                Task.shared.userResponse.string = String(integer)
+            Task.shared.userResponse.float = Task.shared.sceneTask.responseObject[0]
+            if let float = Task.shared.userResponse.float {
+                Task.shared.userResponse.string = String(float)
             }
             Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
         } else if touchInView.location.y > 2 * touchInView.screenSize.height / 3 {
-            Task.shared.userResponse.integer = Task.shared.sceneTask.responseObject[1]?.toInt
-            if let integer = Task.shared.userResponse.integer {
-                Task.shared.userResponse.string = String(integer)
+            Task.shared.userResponse.float = Task.shared.sceneTask.responseObject[1]
+            if let float = Task.shared.userResponse.float {
+                Task.shared.userResponse.string = String(float)
             }
             Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
@@ -281,7 +322,7 @@ extension DisplayRender {
         for uitouch in touches {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             for touch in coalescedTouches {
-                let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
+                let time = touch.timestamp - Flow.shared.frameControl.initSceneTime
                 let touchInView = TouchInView(touch: touch,
                                               time: time,
                                               view: view,
@@ -305,7 +346,7 @@ extension DisplayRender {
         for uitouch in touches {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             for touch in coalescedTouches {
-                let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
+                let time = touch.timestamp - Flow.shared.frameControl.initSceneTime
                 let touchInView = TouchInView(touch: touch,
                                               time: time,
                                               view: view,

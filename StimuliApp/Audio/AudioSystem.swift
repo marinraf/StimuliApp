@@ -94,12 +94,8 @@ class AudioSystem {
     }
 
     func playAudios(audio: [Float]) {
-        Timer.scheduledTimer(withTimeInterval: Flow.shared.frameControl.delay, repeats: false) { (_) in
-            self.playAudiosDelay(audio: audio)
-        }
-    }
+        let sampleDelay = myAUSampleRateHz * Float(Flow.shared.frameControl.delay)
 
-    func playAudiosDelay(audio: [Float]) {
         myAUToneCounterStop = 0
         myAUChangingTones = audio[0]
         myAUNumberOfAudios = Int32(audio[1] + 0.1)
@@ -125,19 +121,12 @@ class AudioSystem {
                     Int32(audio[57] + 0.1), Int32(audio[58] + 0.1), Int32(audio[59] + 0.1), Int32(audio[60] + 0.1),
                     Int32(audio[61] + 0.1), Int32(audio[62] + 0.1))
 
-        myAUToneCounter = audio[2].toInt
+        myAUToneCounter = Int(audio[2]  + sampleDelay)
 
         self.originalCounter = myAUToneCounter
     }
 
-    
     func stopAudio() {
-        Timer.scheduledTimer(withTimeInterval: Flow.shared.frameControl.delay, repeats: false) { (_) in
-            self.stopAudioDelay()
-        }
-    }
-
-    func stopAudioDelay() {
         if myAUToneCounter > 10 {
             myAUToneCounterStop = Int(myAUChangingTones)
         }

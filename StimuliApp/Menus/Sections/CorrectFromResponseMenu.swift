@@ -22,7 +22,7 @@ class CorrectFromResponseMenu: Menu {
             switch response {
             case .none:
                 break
-            case .leftRight, .topBottom, .keyboard, .keys, .touchObject:
+            case .leftRight, .topBottom, .keyboard, .keys, .touchObject, .lift:
                 makeResponseValue(from: scene, sectionNumber: sectionNumber)
             case .touch, .path:
                 makeResponsePosition(from: scene, sectionNumber: sectionNumber)

@@ -64,7 +64,12 @@ class Flow {
     func applyChangesInProperties() {
         for test in self.tests {
 
-            var changed = false
+            if test.createdWithStimuliAppVersion == Constants.version {
+                continue
+            }
+
+            test.createdWithStimuliAppVersion = Constants.version
+
             var changeSize = false
 
             var factorWidth: Float = 1
@@ -77,7 +82,6 @@ class Flow {
                 }
             } else {
                 test.screenWidth = Flow.shared.settings.width
-                changed = true
             }
 
             if let height = test.screenHeight {
@@ -87,14 +91,12 @@ class Flow {
                 }
             } else {
                 test.screenHeight = Flow.shared.settings.height
-                changed = true
 
             }
 
             if changeSize {
                 test.screenWidth = Flow.shared.settings.width
                 test.screenHeight = Flow.shared.settings.height
-                changed = true
                 for property in test.allProperties where property.unit == .screenWidthUnits {
                     property.float = property.float / factorWidth
                     property.float1 = property.float1 / factorWidth
@@ -112,13 +114,11 @@ class Flow {
             if test.brightness.unitType == .valueFrom0to1 || test.brightness.name == "brightness" {
                 let oldValue = test.brightness.float
                 test.brightness = TestData.makeBrightnessProperty(float: oldValue)
-                changed = true
             }
 
             for section in test.sections {
                 for property in section.next.properties {
                     if property.info == "when the number of trials responded = n" {
-                        changed = true
                         property.info = "when the number of trials responded in time = n"
                         if let last = property.name.last {
                             property.name = "when the number of trials responded in time = " + String(last)
@@ -147,21 +147,25 @@ class Flow {
                                          float: 0)
 
                 if let responseType = FixedResponse(rawValue: scene.responseType.string) {
-                    switch  responseType {
+                    if scene.responseType.fixedValues.count == 9 {
+                        scene.responseType.fixedValues = FixedResponse.allCases.map { $0.name }
+                        if scene.responseType.selectedValue >= 4 {
+                            scene.responseType.selectedValue += 1
+                        }
+                    }
+
+                    switch responseType {
                     case .none, .keyboard, .keys:
                         break
-                    case .leftRight, .topBottom, .touch, .path, .touchObject, .moveObject:
+                    case .leftRight, .topBottom, .touch, .path, .touchObject, .moveObject, .lift:
                         if scene.responseType.properties[1].name != "endTime" {
-                            changed = true
                             scene.responseType.properties.insert(endTime, at: 1)
                             scene.responseType.properties.insert(wrongTiming, at: 2)
                         }
                     }
                 }
             }
-            if changed {
-                saveTest(test)
-            }
+            saveTest(test)
         }
     }
 

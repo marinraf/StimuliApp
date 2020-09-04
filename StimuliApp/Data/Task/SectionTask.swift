@@ -48,13 +48,14 @@ class SectionTask {
     var currentTrial: Int = 0
     var numberOfCorrects: Int = 0
     var numberOfIncorrects: Int = 0
-    var numberOfResponded: Int = 0
-    var numberOfNotResponded: Int = 0
+    var numberOfRespondedInTime: Int = 0
+    var numberOfNotRespondedInTime: Int = 0
     var last: Int = 1 //by default is correct
-    var lastResponded: Int = 0 //by default is not responded
-    var lastRespondedReal: Int = -1 //this is changed only by the scene with trial value, by default we do not know
+
     var correctValue: [Int] = [] //trial
     var respondedValue: [Int] = [] //trial
+
+    var respondedInTime: Bool = true //if any response in the section is not in time or is not given this is false
 
     var infoName: String {
         return "SECTION: " + name
@@ -143,10 +144,15 @@ class SectionTask {
         var titlesPath: [String] = []
         var valuesPath: [[String]] = []
 
+        var includeRespondedInTime = false
+        var includeCorrect = false
+
         //titles & titlesUnit
         for sceneTask in sceneTasks {
             titles.append("\(sceneTask.name)_duration")
             titlesUnit.append("\(sceneTask.name)_duration (s)")
+            titles.append("\(sceneTask.name)_delayDisplay")
+            titlesUnit.append("\(sceneTask.name)_delayDisplay (s)")
         }
 
         titles += infoAllTrialsTitleVariables
@@ -157,14 +163,16 @@ class SectionTask {
             case .none:
                 break
             case .leftRight, .topBottom, .keyboard, .keys, .touchObject:
+                includeRespondedInTime = true
                 titles.append("\(sceneTask.name)_responseTime")
                 titlesUnit.append("\(sceneTask.name)_responseTime (s)")
                 titles.append("\(sceneTask.name)_response")
                 titlesUnit.append("\(sceneTask.name)_response")
             case .touch:
+                includeRespondedInTime = true
+
                 titles.append("\(sceneTask.name)_responseTime")
                 titlesUnit.append("\(sceneTask.name)_responseTime (s)")
-
                 let coordinate = sceneTask.responseCoordinates
                 let unit1 = sceneTask.responseFirstUnit
                 let unit2 = sceneTask.responseSecondUnit
@@ -181,7 +189,14 @@ class SectionTask {
                     titlesUnit.append("\(sceneTask.name)_touchPositionRadius (\(unit1.name))")
                     titlesUnit.append("\(sceneTask.name)_touchPositionAngle (\(unit2.name))")
                 }
+            case .lift:
+                includeRespondedInTime = true
+                titles.append("\(sceneTask.name)_responseTime")
+                titlesUnit.append("\(sceneTask.name)_responseTime (s)")
+                titles.append("\(sceneTask.name)_response")
+                titlesUnit.append("\(sceneTask.name)_response")
             case .path, .moveObject:
+                includeRespondedInTime = true
                 titles.append("\(sceneTask.name)_responseTime")
                 titlesUnit.append("\(sceneTask.name)_responseTime (s)")
 
@@ -206,12 +221,19 @@ class SectionTask {
                     titlesUnit.append("\(sceneTask.name)_finalPositionAngle (\(unit2.name))")
                 }
             }
-            if sceneTask.isResponse {
-                titles.append("correct")
-                titlesUnit.append("correct")
-                titles.append("respondedInTime")
-                titlesUnit.append("respondedInTime")
+            if sceneTask.isRealResponse {
+                includeCorrect = true
             }
+        }
+
+        if includeRespondedInTime {
+            titles.append("respondedInTime")
+            titlesUnit.append("respondedInTime")
+        }
+
+        if includeCorrect {
+            titles.append("correct")
+            titlesUnit.append("correct")
         }
 
         //values
@@ -224,6 +246,8 @@ class SectionTask {
             for i in 0 ..< respondedTrials {
                 let newValue = String(format: "%.4f", sceneTask.realEndTime[i] - sceneTask.realStartTime[i])
                 values[i].append(newValue)
+                let newValue2 = String(format: "%.4f", sceneTask.delayTime[i])
+                values[i].append(newValue2)
             }
         }
 
@@ -242,8 +266,24 @@ class SectionTask {
                 break
             case .leftRight, .topBottom, .keyboard, .keys, .touchObject:
                 for i in 0 ..< respondedTrials {
-                    let newValue = String(format: "%.4f", sceneTask.userResponses[i].clocks.last ?? 0)
-                    values[i].append(newValue)
+                    if let newValue = sceneTask.userResponses[i].clocks.last {
+                        values[i].append(String(format: "%.4f", newValue))
+                    } else {
+                        values[i].append("")
+                    }
+                    if let response = sceneTask.userResponses[i].string {
+                        values[i].append(response)
+                    } else {
+                        values[i].append("noResponse")
+                    }
+                }
+            case .lift:
+                for i in 0 ..< respondedTrials {
+                    if let newValue = sceneTask.userResponses[i].clocks.last {
+                        values[i].append(String(format: "%.4f", newValue))
+                    } else {
+                        values[i].append("")
+                    }
                     if let response = sceneTask.userResponses[i].string {
                         values[i].append(response)
                     } else {
@@ -254,11 +294,13 @@ class SectionTask {
                 let coordinate = sceneTask.responseCoordinates
 
                 for i in 0 ..< respondedTrials {
-                    var clock = sceneTask.userResponses[i].clocks.last ?? 0
-                    if let clock2 = sceneTask.userResponses[i].liftClock {
-                        clock = clock2
+                    var newValue = ""
+                    if let clock = sceneTask.userResponses[i].clocks.last {
+                        newValue = String(format: "%.4f", clock)
                     }
-                    let newValue = String(format: "%.4f", clock)
+                    if let clock2 = sceneTask.userResponses[i].liftClock {
+                        newValue = String(format: "%.4f", clock2)
+                    }
                     values[i].append(newValue)
                     if sceneTask.responseType == .moveObject {
                         if let response = sceneTask.userResponses[i].string {
@@ -289,11 +331,15 @@ class SectionTask {
                     }
                 }
             }
-            if sceneTask.isResponse {
-                for i in 0 ..< respondedTrials {
-                    values[i].append(String(correctValue[i]))
-                    values[i].append(String(respondedValue[i]))
-                }
+        }
+        if includeRespondedInTime {
+            for i in 0 ..< respondedTrials {
+                values[i].append(String(respondedValue[i]))
+            }
+        }
+        if includeCorrect {
+            for i in 0 ..< respondedTrials {
+                values[i].append(String(correctValue[i]))
             }
         }
 

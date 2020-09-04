@@ -299,21 +299,17 @@ class DisplayRender {
                         exitLoop = true
                     }
                 case .lastResponded:
-                    if Task.shared.sectionTask.lastRespondedReal == 1 ||
-                        (Task.shared.sectionTask.lastRespondedReal == -1  &&
-                            Task.shared.sectionTask.lastResponded == 1) {
+                    if Task.shared.sectionTask.respondedInTime {
                         changeToSection(sectionNumber: condition.sectionNumber)
                         exitLoop = true
                     }
                 case .lastNotResponded:
-                    if Task.shared.sectionTask.lastRespondedReal == 0 ||
-                        (Task.shared.sectionTask.lastRespondedReal == -1  &&
-                            Task.shared.sectionTask.lastResponded == 0) {
+                    if !Task.shared.sectionTask.respondedInTime {
                         changeToSection(sectionNumber: condition.sectionNumber)
                         exitLoop = true
                     }
                 case .numberOfNotResponses:
-                    if Task.shared.sectionTask.numberOfNotResponded == condition.n {
+                    if Task.shared.sectionTask.numberOfNotRespondedInTime == condition.n {
                         changeToSection(sectionNumber: condition.sectionNumber)
                         exitLoop = true
                     }
@@ -328,7 +324,7 @@ class DisplayRender {
                         exitLoop = true
                     }
                 case .numberOfResponses:
-                    if Task.shared.sectionTask.numberOfResponded == condition.n {
+                    if Task.shared.sectionTask.numberOfRespondedInTime == condition.n {
                         changeToSection(sectionNumber: condition.sectionNumber)
                         exitLoop = true
                     }
@@ -345,6 +341,7 @@ class DisplayRender {
     func changeToNextSceneInSection() {
         Task.shared.previousSceneTask = Task.shared.sceneTask
         Task.shared.sceneTask.saveSceneData(startTime: Flow.shared.frameControl.initSceneTime,
+                                            startTimeReal: Flow.shared.frameControl.initSceneTimeReal,
                                             trial: Task.shared.sectionTask.currentTrial,
                                             badTiming: badTiming)
         Task.shared.sectionTask.sceneNumber += 1
@@ -354,6 +351,7 @@ class DisplayRender {
     func lastSceneOfSection() {
         Task.shared.previousSceneTask = Task.shared.sceneTask
         Task.shared.sceneTask.saveSceneData(startTime: Flow.shared.frameControl.initSceneTime,
+                                            startTimeReal: Flow.shared.frameControl.initSceneTimeReal,
                                             trial: Task.shared.sectionTask.currentTrial,
                                             badTiming: badTiming)
         Task.shared.sectionTask.sceneNumber = 0
@@ -364,19 +362,17 @@ class DisplayRender {
             Task.shared.sectionTask.numberOfIncorrects += 1
             Task.shared.sectionTask.correctValue.append(0)
         }
-        if Task.shared.sectionTask.lastRespondedReal == 1 ||
-            (Task.shared.sectionTask.lastRespondedReal == -1  && Task.shared.sectionTask.lastResponded == 1) {
-            Task.shared.sectionTask.numberOfResponded += 1
+        if Task.shared.sectionTask.respondedInTime {
+            Task.shared.sectionTask.numberOfRespondedInTime += 1
             Task.shared.sectionTask.respondedValue.append(1)
         } else {
-            Task.shared.sectionTask.numberOfNotResponded += 1
+            Task.shared.sectionTask.numberOfNotRespondedInTime += 1
             Task.shared.sectionTask.respondedValue.append(0)
         }
     }
 
     func changeToSection(sectionNumber: Int) {
-        Task.shared.sectionTask.lastResponded = 0
-        Task.shared.sectionTask.lastRespondedReal = -1
+        Task.shared.sectionTask.respondedInTime = true
 
         if Task.shared.sectionTask.currentTrial < Task.shared.sectionTask.numberOfTrials - 1 {
             Task.shared.sectionTask.currentTrial += 1

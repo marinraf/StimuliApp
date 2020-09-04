@@ -194,6 +194,12 @@ struct SceneData {
                                    unitType: .decimal,
                                    float: 0)
 
+        let liftValue = Property(name: "liftValue",
+                                 info: "Numeric value when the user lifts the finger on time.",
+                                 propertyType: .simpleFloat,
+                                 unitType: .decimal,
+                                 float: 0)
+
         let keyboardType = Property(name: "keyboardType",
                                     info: """
                                     Default and numeric keyboards let you give a response when the scene ends.
@@ -342,6 +348,11 @@ struct SceneData {
             property.properties.append(wrongTiming)
             property.properties.append(origin)
             property.properties.append(position)
+        case .lift:
+            property.properties.append(startTime)
+            property.properties.append(endTime)
+            property.properties.append(wrongTiming)
+            property.properties.append(liftValue)
         case .path:
             property.properties.append(startTime)
             property.properties.append(endTime)
@@ -482,6 +493,7 @@ enum FixedResponse: String, Codable, CaseIterable {
     case leftRight = "left or right"
     case topBottom = "top or bottom"
     case touch = "touch screen"
+    case lift = "lift finger"
     case path = "path"
     case touchObject = "touch object"
     case moveObject = "move object"
@@ -504,6 +516,12 @@ enum FixedResponse: String, Codable, CaseIterable {
 
         case .touch: return """
             Any touch on the screen is considered a response and the position (x, y) or (radius, angle) is saved.
+            """
+
+        case .lift: return """
+            The response is triggered when the user lifts their finger from the screen.
+            This type of response can be useful, for example, to measure reaction times, combined with a previous \
+            touch response that triggers a stimulus.
             """
 
         case .path: return """

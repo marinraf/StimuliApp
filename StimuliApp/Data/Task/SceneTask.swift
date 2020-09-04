@@ -202,17 +202,19 @@ class SceneTask {
     var responseEnd: Double = 0
     var responseOutWindow: Bool = false
     var responseOrigin: (x: Float, y: Float) = (0, 0)
-    var responseObject: [Float?] = [] //object or left right or up bottom
+    var responseObject: [Float?] = [] //object or left right or up bottom or one value for lift
     var responseKeyboard: FixedKeyboard = .normal
     var responseInTitle: Bool = false
     var responseBackground: Float?
     var responseKeys: [(String, String)] = []
 
-    var isResponse: Bool = false
+    var isNotRealResponse: Bool = true
+    var isRealResponse: Bool = false
 
     var userResponses: [UserResponse] = [] //trial
     var realStartTime: [Double] = [] // trial
     var realEndTime: [Double] = [] // trial
+    var delayTime: [Double] = [] // trial
 
     var dotsBorder: Bool = false
 
@@ -227,20 +229,22 @@ class SceneTask {
         }
     }
 
-    func saveSceneData(startTime: Double, trial: Int, badTiming: Bool) {
+    func saveSceneData(startTime: Double, startTimeReal: Double, trial: Int, badTiming: Bool) {
 
         userResponses.append(Task.shared.userResponse)
 
         realStartTime.append(startTime)
         realEndTime.append(startTime)
+        delayTime.append(max((startTimeReal - startTime), 0))
 
-        if Task.shared.userResponse.string != nil && !badTiming {
-            Task.shared.sectionTask.lastResponded = 1
-        } else {
-            Task.shared.sectionTask.lastResponded = 0
+        if isNotRealResponse || isRealResponse {
+            if badTiming {
+                Task.shared.sectionTask.respondedInTime = false
+            }
         }
 
-        if isResponse {
+        if isRealResponse {
+
             let valueType = Task.shared.sectionTask.sectionValueType
             var distance: Float?
 
@@ -294,17 +298,13 @@ class SceneTask {
             if let distance = distance {
                 if badTiming {
                     Task.shared.sectionTask.last = 0
-                    Task.shared.sectionTask.lastRespondedReal = 0
                 } else if distance < Task.shared.sectionTask.sectionValueDifference {
                     Task.shared.sectionTask.last = 1
-                    Task.shared.sectionTask.lastRespondedReal = 1
                 } else {
                     Task.shared.sectionTask.last = 0
-                    Task.shared.sectionTask.lastRespondedReal = 1
                 }
             } else {
                 Task.shared.sectionTask.last = 0
-                Task.shared.sectionTask.lastRespondedReal = 0
             }
         }
     }
