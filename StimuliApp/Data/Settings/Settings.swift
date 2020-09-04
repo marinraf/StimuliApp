@@ -153,9 +153,9 @@ class Settings {
         self.userProperties = [userProperty, emailProperty]
 
         #if targetEnvironment(macCatalyst)
-        self.deviceProperties = [descriptionProperty, systemProperty, audioRateProperty, maximumFrameRateProperty,
-                                 resolutionProperty, positionXProperty, positionYProperty, ppiProperty,
-                                 maximumBrightnessProperty, rampTimeProperty, delayAudio60Property]
+        self.deviceProperties = [versionProperty, descriptionProperty, systemProperty, audioRateProperty,
+                                 maximumFrameRateProperty,resolutionProperty, positionXProperty, positionYProperty,
+                                 ppiProperty, maximumBrightnessProperty, rampTimeProperty, delayAudio60Property]
         #else
         self.deviceProperties = [versionProperty, descriptionProperty, systemProperty, audioRateProperty,
                                  maximumFrameRateProperty, resolutionProperty, ppiProperty, maximumBrightnessProperty,
