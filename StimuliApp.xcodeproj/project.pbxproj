@@ -1243,7 +1243,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 554YMB46HK;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/Info.plist";
@@ -1277,7 +1278,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 554YMB46HK;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
