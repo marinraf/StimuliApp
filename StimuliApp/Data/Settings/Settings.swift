@@ -236,6 +236,7 @@ class Settings {
         return """
         DEVICE: \(descriptionProperty.string)
         SYSTEM: \(systemProperty.string)
+        VERSION: \(versionProperty.string)
         AUDIO RATE: \(audioRateProperty.string)
         SCREEN RESOLUTION: \(resolutionProperty.string)
         PPI: \(ppiProperty.string)

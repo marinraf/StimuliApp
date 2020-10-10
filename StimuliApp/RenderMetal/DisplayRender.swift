@@ -60,7 +60,7 @@ class DisplayRender {
     var sectionNumber: Int = 0
     var randomSeed: Int = 1
     var responded: Bool = false
-    var badTiming: Bool = false
+//    var badTiming: Bool = false
     var inactive: Bool = false
     var status: Status = .playing
 
@@ -342,8 +342,7 @@ class DisplayRender {
         Task.shared.previousSceneTask = Task.shared.sceneTask
         Task.shared.sceneTask.saveSceneData(startTime: Flow.shared.frameControl.initSceneTime,
                                             startTimeReal: Flow.shared.frameControl.initSceneTimeReal,
-                                            trial: Task.shared.sectionTask.currentTrial,
-                                            badTiming: badTiming)
+                                            trial: Task.shared.sectionTask.currentTrial)
         Task.shared.sectionTask.sceneNumber += 1
         initScene()
     }
@@ -352,9 +351,18 @@ class DisplayRender {
         Task.shared.previousSceneTask = Task.shared.sceneTask
         Task.shared.sceneTask.saveSceneData(startTime: Flow.shared.frameControl.initSceneTime,
                                             startTimeReal: Flow.shared.frameControl.initSceneTimeReal,
-                                            trial: Task.shared.sectionTask.currentTrial,
-                                            badTiming: badTiming)
+                                            trial: Task.shared.sectionTask.currentTrial)
         Task.shared.sectionTask.sceneNumber = 0
+
+        if Task.shared.sectionTask.respondedInTime {
+            Task.shared.sectionTask.numberOfRespondedInTime += 1
+            Task.shared.sectionTask.respondedValue.append(1)
+        } else {
+            Task.shared.sectionTask.numberOfNotRespondedInTime += 1
+            Task.shared.sectionTask.respondedValue.append(0)
+            Task.shared.sectionTask.last = 0
+        }
+
         if Task.shared.sectionTask.last == 1 {
             Task.shared.sectionTask.numberOfCorrects += 1
             Task.shared.sectionTask.correctValue.append(1)
@@ -362,13 +370,7 @@ class DisplayRender {
             Task.shared.sectionTask.numberOfIncorrects += 1
             Task.shared.sectionTask.correctValue.append(0)
         }
-        if Task.shared.sectionTask.respondedInTime {
-            Task.shared.sectionTask.numberOfRespondedInTime += 1
-            Task.shared.sectionTask.respondedValue.append(1)
-        } else {
-            Task.shared.sectionTask.numberOfNotRespondedInTime += 1
-            Task.shared.sectionTask.respondedValue.append(0)
-        }
+
     }
 
     func changeToSection(sectionNumber: Int) {

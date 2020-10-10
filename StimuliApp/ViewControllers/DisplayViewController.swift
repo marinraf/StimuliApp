@@ -480,9 +480,9 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[0].1
         let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
         guard time > 0 else { return }
-        displayRender?.badTiming = time < Task.shared.sceneTask.responseStart
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
-        guard !(displayRender?.badTiming ?? true) || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
         stopAudio()
         displayRender?.responded = true
@@ -492,9 +492,9 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[1].1
         let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
         guard time > 0 else { return }
-        displayRender?.badTiming = time < Task.shared.sceneTask.responseStart
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
-        guard !(displayRender?.badTiming ?? true) || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
         stopAudio()
         displayRender?.responded = true
@@ -504,9 +504,9 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[2].1
         let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
         guard time > 0 else { return }
-        displayRender?.badTiming = time < Task.shared.sceneTask.responseStart
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
-        guard !(displayRender?.badTiming ?? true) || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
         stopAudio()
         displayRender?.responded = true
@@ -516,9 +516,9 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[3].1
         let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
         guard time > 0 else { return }
-        displayRender?.badTiming = time < Task.shared.sceneTask.responseStart
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
-        guard !(displayRender?.badTiming ?? true) || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
         stopAudio()
         displayRender?.responded = true
@@ -528,9 +528,9 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[4].1
         let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
         guard time > 0 else { return }
-        displayRender?.badTiming = time < Task.shared.sceneTask.responseStart
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
-        guard !(displayRender?.badTiming ?? true) || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
         stopAudio()
         displayRender?.responded = true
@@ -540,9 +540,9 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[5].1
         let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
         guard time > 0 else { return }
-        displayRender?.badTiming = time < Task.shared.sceneTask.responseStart
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
-        guard !(displayRender?.badTiming ?? true) || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
         stopAudio()
         displayRender?.responded = true
@@ -552,9 +552,9 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[6].1
         let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
         guard time > 0 else { return }
-        displayRender?.badTiming = time < Task.shared.sceneTask.responseStart
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
-        guard !(displayRender?.badTiming ?? true) || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
         stopAudio()
         displayRender?.responded = true
@@ -564,9 +564,9 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[7].1
         let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
         guard time > 0 else { return }
-        displayRender?.badTiming = time < Task.shared.sceneTask.responseStart
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
-        guard !(displayRender?.badTiming ?? true) || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
         stopAudio()
         displayRender?.responded = true
@@ -576,9 +576,9 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[8].1
         let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
         guard time > 0 else { return }
-        displayRender?.badTiming = time < Task.shared.sceneTask.responseStart
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
-        guard !(displayRender?.badTiming ?? true) || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
         stopAudio()
         displayRender?.responded = true
@@ -588,9 +588,9 @@ extension DisplayViewController {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[9].1
         let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
         guard time > 0 else { return }
-        displayRender?.badTiming = time < Task.shared.sceneTask.responseStart
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
-        guard !(displayRender?.badTiming ?? true) || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
         stopAudio()
         displayRender?.responded = true

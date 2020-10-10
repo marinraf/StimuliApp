@@ -218,6 +218,7 @@ class SceneTask {
 
     var dotsBorder: Bool = false
 
+    var badTiming: Bool = false
     var computeNumber: Int {
         return continuousResolution ? numberOfLayers + 2 : numberOfLayers - 1
     }
@@ -229,7 +230,7 @@ class SceneTask {
         }
     }
 
-    func saveSceneData(startTime: Double, startTimeReal: Double, trial: Int, badTiming: Bool) {
+    func saveSceneData(startTime: Double, startTimeReal: Double, trial: Int) {
 
         userResponses.append(Task.shared.userResponse)
 
@@ -239,7 +240,7 @@ class SceneTask {
 
         if isNotRealResponse || isRealResponse {
 
-            if badTiming || Task.shared.userResponse.string == nil {
+            if Task.shared.sceneTask.badTiming || Task.shared.userResponse.string == nil {
                 Task.shared.sectionTask.respondedInTime = false
             }
         }
@@ -297,7 +298,7 @@ class SceneTask {
             }
 
             if let distance = distance {
-                if badTiming {
+                if Task.shared.userResponse.string == nil {
                     Task.shared.sectionTask.last = 0
                 } else if distance < Task.shared.sectionTask.sectionValueDifference {
                     Task.shared.sectionTask.last = 1

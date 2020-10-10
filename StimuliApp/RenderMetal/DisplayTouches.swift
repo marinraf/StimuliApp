@@ -76,9 +76,10 @@ extension DisplayRender {
 
         guard time > 0 else { return }
 
-        badTiming = time < Task.shared.sceneTask.responseStart || time > Task.shared.sceneTask.responseEnd
+        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
+            || time > Task.shared.sceneTask.responseEnd
 
-        guard !badTiming || Task.shared.sceneTask.responseOutWindow else { return }
+        guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
 
         touching = true
 
@@ -132,9 +133,10 @@ extension DisplayRender {
 
             guard time > 0 else { return }
 
-            badTiming = time < Task.shared.sceneTask.responseStart || time > Task.shared.sceneTask.responseEnd
+            Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
+                || time > Task.shared.sceneTask.responseEnd
 
-            guard !badTiming || Task.shared.sceneTask.responseOutWindow else { return }
+            guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
 
             touching = false
 

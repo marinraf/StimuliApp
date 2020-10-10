@@ -43,6 +43,10 @@ We would love you for the contribution to StimuliApp, check the [LICENSE](https:
 You can consult our [documentation](https://www.stimuliapp.com/ipa/StimuliApp_documentation.pdf)  or visit our [website](https://www.stimuliapp.com) for more information and tutorials.
 
 
+## Cite
+[Marin-Campos, R., Dalmau, J., Compte, A., & Linares, D. StimuliApp: Psychophysical tests on mobile devices. Behav Res (2020). https://doi.org/10.3758/s13428-020-01491-4](https://doi.org/10.3758/s13428-020-01491-4)
+
+
 ## License and support
 
 Licensed under the MIT license. See LICENSE for more information.
