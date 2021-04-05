@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             _ = url.startAccessingSecurityScopedResource()
             let data = try Data(contentsOf: url)
-            _ = url.stopAccessingSecurityScopedResource()
+            url.stopAccessingSecurityScopedResource()
             if Flow.shared.createAndSaveNewTest(from: data) {
                 self.window?.rootViewController?.showAlertOk(title: "Test imported",
                                                              message: "The test was imported successfully.")
