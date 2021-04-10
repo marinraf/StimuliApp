@@ -326,7 +326,7 @@ class Property: Codable {
         switch propertyType {
         case .string, .key, .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .sceneDuration,
              .position2d, .size2d, .positionResponse, .origin2d, .originResponse, .value, .valueType,
-             .correct, .color, .objectResponse, .keyResponse, .randomness, .listOrder, .selection,
+             .correct, .correct2, .color, .objectResponse, .keyResponse, .randomness, .listOrder, .selection,
              .selectionDifferent, .distance, .selectionOrder, .correctType, .image, .text, .video, .audio, .font,
              .gamma, .behaviour, .direction, .soundType:
             return ""
@@ -377,7 +377,7 @@ class Property: Codable {
         case .string, .key, .font:
             return text
         case .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .size2d,
-             .position2d, .positionResponse, .origin2d, .originResponse, .value, .valueType, .correct,
+             .position2d, .positionResponse, .origin2d, .originResponse, .value, .valueType, .correct, .correct2,
              .correctType, .sceneDuration, .color, .objectResponse, .keyResponse, .randomness, .listOrder,
              .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction, .soundType, .distance:
             return fixedValues[selectedValue]
@@ -424,7 +424,7 @@ class Property: Codable {
             return [text, "", ""]
         case .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .sceneDuration,
              .position2d, .positionResponse, .origin2d, .originResponse, .size2d, .value, .valueType,
-             .correct, .correctType, .color, .objectResponse, .keyResponse, .randomness, .listOrder,
+             .correct, .correct2, .correctType, .color, .objectResponse, .keyResponse, .randomness, .listOrder,
              .selection, .distance, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction, .soundType:
             return [fixedValues[selectedValue], "", ""]
         case .dobleSize, .doblePosition:
@@ -466,7 +466,7 @@ class Property: Codable {
         case .string, .key, .font:
             return [text]
         case .select, .type, .shape, .border, .contrast, .modulator, .response, .sceneDuration,
-             .correctType, .correct, .position2d, .size2d, .positionResponse, .origin2d, .originResponse,
+             .correctType, .correct, .correct2, .position2d, .size2d, .positionResponse, .origin2d, .originResponse,
              .value, .valueType, .noise, .color, .objectResponse, .keyResponse, .randomness, .listOrder,
              .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction, .soundType, .distance:
             return [fixedValues[selectedValue]]
@@ -839,6 +839,8 @@ class Property: Codable {
             SectionData.addPropertiesToValueType(property: self)
         case .correct:
             SectionData.addPropertiesToCorrect(property: self)
+        case .correct2:
+            SectionData.addPropertiesToCorrect2(property: self)
         case .gamma:
             TestData.addPropertiesToGamma(property: self)
 

@@ -125,12 +125,37 @@ struct SectionData {
 
         property.properties = []
 
-        let newProperty = Property(name: "marginError",
+        let marginProperty = Property(name: "marginError",
                                    info: Texts.marginError,
                                    propertyType: .simpleFloat,
                                    unitType: .variableUnit,
                                    float: 0.01)
+
+        let noResponseProperty = Property(name: "whenNoResponse",
+                                          info: Texts.noResponseValue,
+                                          propertyType: .correct2,
+                                          unitType: .decimal,
+                                          fixedValues: FixedCorrect2.allCases.map { $0.name },
+                                          selectedValue: 0)
+
         if property.somethingId != "" {
+            property.properties.append(marginProperty)
+            property.properties.append(noResponseProperty)
+        }
+    }
+
+    static func addPropertiesToCorrect2(property: Property) {
+
+        property.properties = []
+
+        let newProperty = Property(name: "whenNoResponseValue",
+                                   info: Texts.noResponseValue2,
+                                   propertyType: .simpleFloat,
+                                   unitType: .variableUnit,
+                                   float: 0)
+
+        guard let response = FixedCorrect2(rawValue: property.string) else { return }
+        if response == .defaultValue {
             property.properties.append(newProperty)
         }
     }
@@ -208,5 +233,23 @@ enum FixedCondition: String, Codable, CaseIterable {
         } else {
             return name
         }
+    }
+}
+
+enum FixedCorrect2: String, Codable, CaseIterable {
+
+    case noResponse
+    case defaultValue
+
+
+    var description: String {
+        switch self {
+        case .noResponse: return "noResponse"
+        case .defaultValue: return "default value"
+        }
+    }
+
+    var name: String {
+        return rawValue
     }
 }

@@ -42,6 +42,7 @@ class SectionTask {
     var sectionValues: [Float] = []
     var sectionValues1: [Float] = []
     var sectionValueDifference: Float = 0.001
+    var defaultValueNoResponse: Float? = nil
     var sectionSame: FixedValueType = .same
 
     var sceneNumber: Int = 0
@@ -264,7 +265,7 @@ class SectionTask {
             switch sceneTask.responseType {
             case .none:
                 break
-            case .leftRight, .topBottom, .keyboard, .keys, .touchObject:
+            case .leftRight, .topBottom, .keyboard, .keys, .touchObject, .lift:
                 for i in 0 ..< respondedTrials {
                     if let newValue = sceneTask.userResponses[i].clocks.last {
                         values[i].append(String(format: "%.4f", newValue))
@@ -273,19 +274,12 @@ class SectionTask {
                     }
                     if let response = sceneTask.userResponses[i].string {
                         values[i].append(response)
-                    } else {
-                        values[i].append("noResponse")
-                    }
-                }
-            case .lift:
-                for i in 0 ..< respondedTrials {
-                    if let newValue = sceneTask.userResponses[i].clocks.last {
-                        values[i].append(String(format: "%.4f", newValue))
-                    } else {
-                        values[i].append("")
-                    }
-                    if let response = sceneTask.userResponses[i].string {
-                        values[i].append(response)
+                    } else if sceneTask.isRealResponse {
+                        if let response = Task.shared.sectionTask.defaultValueNoResponse {
+                            values[i].append(String(response))
+                        } else {
+                            values[i].append("noResponse")
+                        }
                     } else {
                         values[i].append("noResponse")
                     }

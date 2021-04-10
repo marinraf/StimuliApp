@@ -771,11 +771,20 @@ extension Task {
     private func calculateSectionValue(from section: Section) {
 
         sectionTask.sectionValueType = FixedResponseValue(rawValue: section.responseValue.string)
+        sectionTask.defaultValueNoResponse = nil
         if section.trialValue.properties.count > 0 {
             sectionTask.sectionSame = FixedValueType(rawValue: section.trialValue.properties[0].string) ?? .same
         }
         if section.responseValue.properties.count > 0 {
             sectionTask.sectionValueDifference = section.responseValue.properties[0].float
+            if section.responseValue.properties.count > 1 {
+
+                if let val = FixedCorrect2(rawValue: section.responseValue.properties[1].string) {
+                    if val == .defaultValue {
+                        sectionTask.defaultValueNoResponse = section.responseValue.properties[1].properties[0].float
+                    }
+                }
+            }
         }
 
         guard let variableValue = sectionTask.variableTasks.first(where: { $0.name == "trialValue" }) else { return }

@@ -315,6 +315,7 @@ enum PropertyType: String, Codable, CaseIterable {
     case value
     case valueType
     case correct
+    case correct2
     case size2d
     case color
 
@@ -370,6 +371,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .value: return [.alwaysConstant]
         case .valueType: return [.alwaysConstant]
         case .correct: return [.alwaysConstant]
+        case .correct2: return [.alwaysConstant]
         case .correctType: return [.alwaysConstant]
         case .size2d: return [.alwaysConstant]
         case .color: return [.alwaysConstant]
@@ -421,6 +423,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .value: return false
         case .valueType: return false
         case .correct: return false
+        case .correct2: return false
         case .correctType: return false
         case .size2d: return false
         case .color: return false
@@ -489,6 +492,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .finalFloat: return []
         case .value: return []
         case .correct: return []
+        case .correct2: return []
         }
     }
 
@@ -540,6 +544,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .finalFloat: return []
         case .value: return []
         case .correct: return []
+        case .correct2: return []
         }
     }
 }

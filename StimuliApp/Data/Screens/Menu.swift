@@ -174,7 +174,7 @@ class Menu: Screen {
             case .select, .size2d, .origin2d, .originResponse, .position2d, .positionResponse, .color,
                  .behaviour, .direction, .soundType, .shape, .border, .noise, .contrast, .modulator, .sceneDuration,
                  .objectResponse, .keyResponse, .gamma, .randomness, .listOrder, .selection,
-                 .selectionDifferent, .selectionOrder, .valueType, .correctType, .distance:
+                 .selectionDifferent, .selectionOrder, .valueType, .correctType, .distance, .correct2:
                 makeOptionSelect(from: property, sectionNumber: sectionNumber, position: position)
                 for element in property.properties {
                     makeOption(from: element, sectionNumber: sectionNumber,

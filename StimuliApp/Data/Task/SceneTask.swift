@@ -295,6 +295,13 @@ class SceneTask {
                         distance = abs(positionAngle - value1)
                     }
                 }
+
+                if distance == nil {
+                    if let defaultNoResponse = Task.shared.sectionTask.defaultValueNoResponse {
+                        distance = abs(defaultNoResponse - value1)
+                        Task.shared.userResponse.string = String(defaultNoResponse)
+                    }
+                }
             }
 
             if let distance = distance {

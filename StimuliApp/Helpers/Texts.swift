@@ -676,9 +676,21 @@ numberOfDifferentTrials * repetitions.
 """
 
     static let trialValueVariable = """
- It is possible to associate a different value for each trial in the section.
+It is possible to associate a different value for each trial in the section.
 To do this, it is necessary to select the variable that will be used to calculate the value of each trial.
 If no variable is selected, the value of each trial will always be considered zero.
+"""
+
+    static let noResponseValue = """
+By default, if the scene is not responded the response value is considered an invalid value expressed by the string: \
+'noResponse'.
+
+It is possible to change that invalid value to a default numeric value.
+This can be useful if there are trials in the experiment where the correct response is to give no response.
+"""
+
+    static let noResponseValue2 = """
+The numeric value to be assigned to the response when the scene is not responded.
 """
 
     static let trialValueSame = """

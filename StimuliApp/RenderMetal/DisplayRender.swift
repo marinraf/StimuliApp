@@ -360,7 +360,9 @@ class DisplayRender {
         } else {
             Task.shared.sectionTask.numberOfNotRespondedInTime += 1
             Task.shared.sectionTask.respondedValue.append(0)
-            Task.shared.sectionTask.last = 0
+            if Task.shared.sectionTask.defaultValueNoResponse == nil {
+                Task.shared.sectionTask.last = 0
+            }
         }
 
         if Task.shared.sectionTask.last == 1 {
