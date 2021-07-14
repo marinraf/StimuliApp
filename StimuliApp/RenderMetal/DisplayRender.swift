@@ -9,7 +9,7 @@ import CommonCrypto
 var elapsed: Double = 0
 
 // MARK: - Protocol
-protocol DisplayRenderDelegate: class {
+protocol DisplayRenderDelegate: AnyObject {
 
     func addBackButton(position: FixedXButton)
 
@@ -103,6 +103,10 @@ class DisplayRender {
             default:
                 break
             }
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+                self.displayRenderDelegate?.showFirstMessageTest()
+            })
         }
     }
 
@@ -360,7 +364,7 @@ class DisplayRender {
         } else {
             Task.shared.sectionTask.numberOfNotRespondedInTime += 1
             Task.shared.sectionTask.respondedValue.append(0)
-            if Task.shared.sectionTask.defaultValueNoResponse == nil {
+            if Task.shared.sectionTask.defaultValueNoResponse == nil || Task.shared.sectionTask.respondedOutTime {
                 Task.shared.sectionTask.last = 0
             }
         }
@@ -377,12 +381,15 @@ class DisplayRender {
 
     func changeToSection(sectionNumber: Int) {
         Task.shared.sectionTask.respondedInTime = true
+        Task.shared.sectionTask.respondedOutTime = false
 
         if Task.shared.sectionTask.currentTrial < Task.shared.sectionTask.numberOfTrials - 1 {
             Task.shared.sectionTask.currentTrial += 1
         } else {
             Task.shared.sectionTask.currentTrial = 0
         }
+
+        Task.shared.updateDependentVariableTrial()
 
         if sectionNumber == -1 {
             inactive = true

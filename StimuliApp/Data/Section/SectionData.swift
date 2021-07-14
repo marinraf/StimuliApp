@@ -125,6 +125,7 @@ struct SectionData {
 
         property.properties = []
 
+        let name = property.string
         let marginProperty = Property(name: "marginError",
                                    info: Texts.marginError,
                                    propertyType: .simpleFloat,
@@ -138,9 +139,37 @@ struct SectionData {
                                           fixedValues: FixedCorrect2.allCases.map { $0.name },
                                           selectedValue: 0)
 
-        if property.somethingId != "" {
-            property.properties.append(marginProperty)
-            property.properties.append(noResponseProperty)
+        let sortedProperty = Property(name: "orderIsImportant",
+                                 info: """
+                                 If 0 when we compare responseValue with trialValue in responses involving more than \
+                                 one object, the order in which the objects are touched is not taken into account.
+
+                                 If 1 the order in which they are touched is taken into account.
+
+                                 For example, if the trialValue = 2;4 and in the response we touch first object with \
+                                 value 4 and then object with value 2 the responseValue is 4;2.
+                                 If orderIsImportant = 1 order is important, so the trial will be considered incorrect,
+                                 if orderIsImportant = 0 order is not important, the trial will be considered correct.
+                                 """,
+                                 propertyType: .simpleFloat,
+                                 unitType: .activated,
+                                 float: 0)     
+
+        if ["value", "positionX", "positionY", "positionRadius", "positionAngle", "distanceModule", "distanceX",
+            "distanceY", "distanceRadius", "distanceAngle"].contains(name) {
+            if property.somethingId != "" {
+                property.properties.append(marginProperty)
+                property.properties.append(noResponseProperty)
+            }
+        } else if name == "positionVector" {
+            if property.somethingId != "" {
+                property.properties.append(marginProperty)
+            }
+        } else if name == "values" {
+            if property.somethingId != "" {
+                property.properties.append(marginProperty)
+                property.properties.append(sortedProperty)
+            }
         }
     }
 
@@ -247,6 +276,23 @@ enum FixedCorrect2: String, Codable, CaseIterable {
         case .noResponse: return "noResponse"
         case .defaultValue: return "default value"
         }
+    }
+
+    var name: String {
+        return rawValue
+    }
+}
+
+enum FixedCorrect3: String, Codable, CaseIterable {
+
+        case vector2Sorted
+        case vector2
+        case vector3Sorted
+        case vector3
+
+
+    var description: String {
+        return self.rawValue
     }
 
     var name: String {

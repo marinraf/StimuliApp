@@ -74,11 +74,21 @@ class Variable: Codable {
         return object?.stimulus
     }
 
-    var name: String {
+    var realName: String {
         let sceneName = scene?.name.string ?? ""
         let objectName = object?.name.string ?? ""
         let propertyName = property?.name ?? ""
         return sceneName + objectName.prependingSymbol() + propertyName.prependingSymbol()
+    }
+
+    var name: String {
+        var name0 = realName
+        if name0 == "__trialValue" {
+            if let list = listOfValues {
+                name0 = "_list_\(list.name.string)"
+            }
+        }
+        return name0
     }
 
     var inGroup: Bool {
@@ -91,7 +101,7 @@ class Variable: Codable {
 
     func allVariablesInSameGroup(section: Section) -> [Variable] {
         if self.inGroup {
-            return section.variables.filter({ $0.group == self.group })
+            return section.allVariables.filter({ $0.group == self.group })
         } else {
             return [self]
         }

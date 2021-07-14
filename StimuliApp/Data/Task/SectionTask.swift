@@ -10,16 +10,6 @@ struct Condition {
     var sectionNumber: Int
 }
 
-enum SectionValueType {
-    case noValue
-    case oneValue
-    case positionValue
-    case x
-    case y
-    case radius
-    case angle
-}
-
 struct SectionResult {
     var result: String
     var csv0: String
@@ -38,9 +28,11 @@ class SectionTask {
     var allVariables: [Variable] = []
     var conditions: [Condition] = []
 
-    var sectionValueType: FixedResponseValue?
+    var sectionValueType: FixedCorrect?
+    var sectionValueType2: FixedCorrect3?
     var sectionValues: [Float] = []
     var sectionValues1: [Float] = []
+    var sectionValues2: [Float] = []
     var sectionValueDifference: Float = 0.001
     var defaultValueNoResponse: Float? = nil
     var sectionSame: FixedValueType = .same
@@ -53,10 +45,15 @@ class SectionTask {
     var numberOfNotRespondedInTime: Int = 0
     var last: Int = 1 //by default is correct
 
+    var dependentValue = 0
+    var previousDependentSum = 0
+    var starting = true
+
     var correctValue: [Int] = [] //trial
     var respondedValue: [Int] = [] //trial
 
     var respondedInTime: Bool = true //if any response in the section is not in time or is not given this is false
+    var respondedOutTime: Bool = false
 
     var infoName: String {
         return "SECTION: " + name
@@ -163,7 +160,24 @@ class SectionTask {
             switch sceneTask.responseType {
             case .none:
                 break
-            case .leftRight, .topBottom, .keyboard, .keys, .touchObject:
+            case .leftRight, .topBottom, .touchObject:
+                includeRespondedInTime = true
+                titles.append("\(sceneTask.name)_responseTime")
+                titlesUnit.append("\(sceneTask.name)_responseTime (s)")
+                titles.append("\(sceneTask.name)_response")
+                titlesUnit.append("\(sceneTask.name)_response")
+
+                titles.append("\(sceneTask.name)_touchPositionX")
+                titles.append("\(sceneTask.name)_touchPositionY")
+                titlesUnit.append("\(sceneTask.name)_touchPositionX (pixels)")
+                titlesUnit.append("\(sceneTask.name)_touchPositionY (pixels)")
+            case .keyboard, .keys:
+                includeRespondedInTime = true
+                titles.append("\(sceneTask.name)_responseTime")
+                titlesUnit.append("\(sceneTask.name)_responseTime (s)")
+                titles.append("\(sceneTask.name)_response")
+                titlesUnit.append("\(sceneTask.name)_response")
+            case .touchMultipleObjects:
                 includeRespondedInTime = true
                 titles.append("\(sceneTask.name)_responseTime")
                 titlesUnit.append("\(sceneTask.name)_responseTime (s)")
@@ -171,13 +185,12 @@ class SectionTask {
                 titlesUnit.append("\(sceneTask.name)_response")
             case .touch:
                 includeRespondedInTime = true
-
                 titles.append("\(sceneTask.name)_responseTime")
                 titlesUnit.append("\(sceneTask.name)_responseTime (s)")
+
                 let coordinate = sceneTask.responseCoordinates
                 let unit1 = sceneTask.responseFirstUnit
                 let unit2 = sceneTask.responseSecondUnit
-
                 switch coordinate {
                 case .cartesian:
                     titles.append("\(sceneTask.name)_touchPositionX")
@@ -189,6 +202,36 @@ class SectionTask {
                     titles.append("\(sceneTask.name)_touchPositionAngle")
                     titlesUnit.append("\(sceneTask.name)_touchPositionRadius (\(unit1.name))")
                     titlesUnit.append("\(sceneTask.name)_touchPositionAngle (\(unit2.name))")
+                }
+            case .twoFingersTouch:
+                includeRespondedInTime = true
+                titles.append("\(sceneTask.name)_responseTime")
+                titlesUnit.append("\(sceneTask.name)_responseTime (s)")
+                titles.append("\(sceneTask.name)_response")
+                titlesUnit.append("\(sceneTask.name)_response")
+
+                let coordinate = sceneTask.responseCoordinates
+                let unit1 = sceneTask.responseFirstUnit
+                let unit2 = sceneTask.responseSecondUnit
+                switch coordinate {
+                case .cartesian:
+                    titles.append("\(sceneTask.name)_touch1PositionX")
+                    titles.append("\(sceneTask.name)_touch1PositionY")
+                    titlesUnit.append("\(sceneTask.name)_touch1PositionX (\(unit1.name))")
+                    titlesUnit.append("\(sceneTask.name)_touch1PositionY (\(unit2.name))")
+                    titles.append("\(sceneTask.name)_touch2PositionX")
+                    titles.append("\(sceneTask.name)_touch2PositionY")
+                    titlesUnit.append("\(sceneTask.name)_touch2PositionX (\(unit1.name))")
+                    titlesUnit.append("\(sceneTask.name)_touch2PositionY (\(unit2.name))")
+                case .polar:
+                    titles.append("\(sceneTask.name)_touch1PositionRadius")
+                    titles.append("\(sceneTask.name)_touch1PositionAngle")
+                    titlesUnit.append("\(sceneTask.name)_touch1PositionRadius (\(unit1.name))")
+                    titlesUnit.append("\(sceneTask.name)_touch1PositionAngle (\(unit2.name))")
+                    titles.append("\(sceneTask.name)_touch2PositionRadius")
+                    titles.append("\(sceneTask.name)_touch2PositionAngle")
+                    titlesUnit.append("\(sceneTask.name)_touch2PositionRadius (\(unit1.name))")
+                    titlesUnit.append("\(sceneTask.name)_touch2PositionAngle (\(unit2.name))")
                 }
             case .lift:
                 includeRespondedInTime = true
@@ -205,10 +248,10 @@ class SectionTask {
                     titles.append("\(sceneTask.name)_response")
                     titlesUnit.append("\(sceneTask.name)_response")
                 }
+
                 let coordinate = sceneTask.responseCoordinates
                 let unit1 = sceneTask.responseFirstUnit
                 let unit2 = sceneTask.responseSecondUnit
-
                 switch coordinate {
                 case .cartesian:
                     titles.append("\(sceneTask.name)_finalPositionX")
@@ -265,44 +308,88 @@ class SectionTask {
             switch sceneTask.responseType {
             case .none:
                 break
-            case .leftRight, .topBottom, .keyboard, .keys, .touchObject, .lift:
+            case .leftRight, .topBottom, .touchObject:
                 for i in 0 ..< respondedTrials {
-                    if let newValue = sceneTask.userResponses[i].clocks.last {
-                        values[i].append(String(format: "%.4f", newValue))
-                    } else {
-                        values[i].append("")
+                    var newValue = "NaN"
+
+                    if let clock2 = sceneTask.userResponses[i].liftClock {
+                        newValue = String(format: "%.4f", clock2)
+                    } else if let clock = sceneTask.userResponses[i].clocks.last {
+                        newValue = String(format: "%.4f", clock)
                     }
+                    values[i].append(newValue)
+
                     if let response = sceneTask.userResponses[i].string {
                         values[i].append(response)
                     } else if sceneTask.isRealResponse {
                         if let response = Task.shared.sectionTask.defaultValueNoResponse {
                             values[i].append(String(response))
                         } else {
-                            values[i].append("noResponse")
+                            values[i].append("NaN")
                         }
                     } else {
-                        values[i].append("noResponse")
+                        values[i].append("NaN")
+                    }
+
+                    if let x = sceneTask.userResponses[i].xTouches.last,
+                        let y = sceneTask.userResponses[i].yTouches.last {
+                        values[i].append("\(x)")
+                        values[i].append("\(y)")
+                    } else {
+                        values[i].append("NaN")
+                        values[i].append("NaN")
                     }
                 }
-            case .touch, .path, .moveObject:
-                let coordinate = sceneTask.responseCoordinates
-
+            case .keyboard, .keys, .lift, .touchMultipleObjects:
                 for i in 0 ..< respondedTrials {
-                    var newValue = ""
-                    if let clock = sceneTask.userResponses[i].clocks.last {
-                        newValue = String(format: "%.4f", clock)
-                    }
+                    var newValue = "NaN"
+
                     if let clock2 = sceneTask.userResponses[i].liftClock {
                         newValue = String(format: "%.4f", clock2)
+                    } else if let clock = sceneTask.userResponses[i].clocks.last {
+                        newValue = String(format: "%.4f", clock)
                     }
                     values[i].append(newValue)
+
+                    if let response = sceneTask.userResponses[i].string {
+                        values[i].append(response)
+                    } else if sceneTask.isRealResponse {
+                        if let response = Task.shared.sectionTask.defaultValueNoResponse {
+                            values[i].append(String(response))
+                        } else {
+                            values[i].append("NaN")
+                        }
+                    } else {
+                        values[i].append("NaN")
+                    }
+                }
+
+            case .touch, .path, .moveObject:
+                for i in 0 ..< respondedTrials {
+                    var newValue = "NaN"
+
+                    if let clock2 = sceneTask.userResponses[i].liftClock {
+                        newValue = String(format: "%.4f", clock2)
+                    } else if let clock = sceneTask.userResponses[i].clocks.last {
+                        newValue = String(format: "%.4f", clock)
+                    }
+                    values[i].append(newValue)
+
                     if sceneTask.responseType == .moveObject {
                         if let response = sceneTask.userResponses[i].string {
                             values[i].append(response)
+                        } else if sceneTask.isRealResponse {
+                            if let response = Task.shared.sectionTask.defaultValueNoResponse {
+                                values[i].append(String(response))
+                            } else {
+                                values[i].append("NaN")
+                            }
                         } else {
-                            values[i].append("noResponse")
+                            values[i].append("NaN")
                         }
                     }
+
+                    let coordinate = sceneTask.responseCoordinates
                     switch coordinate {
                     case .cartesian:
                         if let x = sceneTask.userResponses[i].xTouches.last,
@@ -310,8 +397,8 @@ class SectionTask {
                             values[i].append("\(x)")
                             values[i].append("\(y)")
                         } else {
-                            values[i].append("noPosition")
-                            values[i].append("noPosition")
+                            values[i].append("NaN")
+                            values[i].append("NaN")
                         }
                     case .polar:
                         if let radius = sceneTask.userResponses[i].radiusTouches.last,
@@ -319,8 +406,65 @@ class SectionTask {
                             values[i].append("\(radius)")
                             values[i].append("\(angle)")
                         } else {
-                            values[i].append("noPosition")
-                            values[i].append("noPosition")
+                            values[i].append("NaN")
+                            values[i].append("NaN")
+                        }
+                    }
+                }
+            case .twoFingersTouch:
+                for i in 0 ..< respondedTrials {
+                    var newValue = "NaN"
+
+                    if let clock2 = sceneTask.userResponses[i].liftClock {
+                        newValue = String(format: "%.4f", clock2)
+                    } else if let clock = sceneTask.userResponses[i].clocks.last {
+                        newValue = String(format: "%.4f", clock)
+                    }
+                    values[i].append(newValue)
+
+                    if let response = sceneTask.userResponses[i].string {
+                        values[i].append(response)
+                    } else if sceneTask.isRealResponse {
+                        if let response = Task.shared.sectionTask.defaultValueNoResponse {
+                            values[i].append(String(response))
+                        } else {
+                            values[i].append("NaN")
+                        }
+                    } else {
+                        values[i].append("NaN")
+                    }
+
+                    let coordinate = sceneTask.responseCoordinates
+                    switch coordinate {
+                    case .cartesian:
+                        if let x = sceneTask.userResponses[i].xTouches.last,
+                            let y = sceneTask.userResponses[i].yTouches.last,
+                            let x2 = sceneTask.userResponses[i].xTouch2,
+                            let y2 = sceneTask.userResponses[i].yTouch2 {
+                            values[i].append("\(x)")
+                            values[i].append("\(y)")
+                            values[i].append("\(x2)")
+                            values[i].append("\(y2)")
+                        } else {
+                            values[i].append("NaN")
+                            values[i].append("NaN")
+                            values[i].append("NaN")
+                            values[i].append("NaN")
+                        }
+                    case .polar:
+                        if let radius = sceneTask.userResponses[i].radiusTouches.last,
+                            let angle = sceneTask.userResponses[i].angleTouches.last,
+                            let radius2 = sceneTask.userResponses[i].radiusTouch2,
+                            let angle2 = sceneTask.userResponses[i].angleTouch2 {
+                            values[i].append("\(radius)")
+                            values[i].append("\(angle)")
+                            values[i].append("\(radius2)")
+                            values[i].append("\(angle2)")
+                        } else {
+                            values[i].append("NaN")
+                            values[i].append("NaN")
+                            values[i].append("NaN")
+                            values[i].append("NaN")
                         }
                     }
                 }

@@ -138,6 +138,83 @@ struct SceneData {
             property.properties.append(propertyAngle)
         }
     }
+    
+    static func addPropertiesToDistanceResponse(property: Property) {
+
+        property.properties = []
+
+        guard let selected = FixedPositionResponse(rawValue: property.string) else { return }
+        switch selected {
+        case .cartesian:
+            let propertyX = Property(name: property.name + "X",
+                                     info: "Horizontal position.",
+                                     propertyType: .select,
+                                     unitType: .decimal,
+                                     fixedValues: UnitType.size.possibleUnits.map({ $0.name }),
+                                     selectedValue: 0)
+            let propertyY = Property(name: property.name + "Y",
+                                     info: "Vertical position.",
+                                     propertyType: .select,
+                                     unitType: .decimal,
+                                     fixedValues: UnitType.size.possibleUnits.map({ $0.name }),
+                                     selectedValue: 0)
+            let propertyDistance = Property(name: property.name + "Distance",
+                                            info: "Distance between touches.",
+                                            propertyType: .select,
+                                            unitType: .decimal,
+                                            fixedValues: FixedCartesianDistances.allCases.map({ $0.name }),
+                                            selectedValue: 0)
+            property.properties.append(propertyX)
+            property.properties.append(propertyY)
+            property.properties.append(propertyDistance)
+        case .polar:
+            let propertyRadius = Property(name: property.name + "Radius",
+                                          info: "Radius position.",
+                                          propertyType: .select,
+                                          unitType: .decimal,
+                                          fixedValues: UnitType.size.possibleUnits.map({ $0.name }),
+                                          selectedValue: 0)
+            let propertyAngle = Property(name: property.name + "Angle",
+                                         info: "Angle position.",
+                                         propertyType: .select,
+                                         unitType: .decimal,
+                                         fixedValues: UnitType.angle.possibleUnits.map({ $0.name }),
+                                         selectedValue: 0)
+            let propertyDistance = Property(name: property.name + "Distance",
+                                            info: "Distance between touches.",
+                                            propertyType: .select,
+                                            unitType: .decimal,
+                                            fixedValues: FixedPolarDistances.allCases.map({ $0.name }),
+                                            selectedValue: 0)
+            property.properties.append(propertyRadius)
+            property.properties.append(propertyAngle)
+            property.properties.append(propertyDistance)
+        }
+    }
+
+    static func addPropertiesToEndPathResponse(property: Property) {
+
+        property.properties = []
+
+        guard let selected = FixedEndPath(rawValue: property.string) else { return }
+        switch selected {
+
+        case .lift:
+            break
+        case .touch:
+            let responseValueProperty = Property(name: property.name + "ResponseValue",
+                                                 info: """
+                                                 Select if the value to store as a response is the value of the \
+                                                 object that is moved, the value of the object that makes the movement \
+                                                 stop, or both values (mobile, stop).
+                                                 """,
+                                                 propertyType: .select,
+                                                 unitType: .decimal,
+                                                 fixedValues: FixedEndPathValues.allCases.map({ $0.name }),
+                                                 selectedValue: 0)
+            property.properties.append(responseValueProperty)
+        }
+    }
 
     static func addPropertiesToResponse(property: Property) {
 
@@ -232,7 +309,7 @@ struct SceneData {
                                Touch object: the response path ends when the participant touches any object other \
                                than the moving object.
                                """,
-                               propertyType: .select,
+                               propertyType: .endPathResponse,
                                unitType: .decimal,
                                fixedValues: FixedEndPath.allCases.map({ $0.name }),
                                selectedValue: 0)
@@ -255,6 +332,32 @@ struct SceneData {
                                 unitType: .decimal,
                                 fixedValues: FixedPositionResponse.allCases.map({ $0.name }),
                                 selectedValue: 0)
+
+        let positions = Property(name: "positions",
+                                 info: """
+                                 The response positions, measured in cartesian or polar variables.
+                                 """,
+                                 propertyType: .distanceResponse,
+                                 unitType: .decimal,
+                                 fixedValues: FixedPositionResponse.allCases.map({ $0.name }),
+                                 selectedValue: 0)
+
+        let numberOfObjects = Property(name: "numberOfObjects",
+                                info: """
+                                The number of objects to touch.
+                                """,
+                                propertyType: .simpleFloat,
+                                unitType: .valueFrom2to10,
+                                float: 2)
+
+        let touchBackground = Property(name: "touchBackground",
+                                      info: """
+                                      The action that is performed when the user touches the background.
+                                      """,
+                                      propertyType: .select,
+                                      unitType: .decimal,
+                                      fixedValues: FixedBackground.allCases.map({ $0.name }),
+                                      selectedValue: 0)
 
         let key1 = Property(name: "key1",
                                 info: "The key that triggers the response.",
@@ -348,6 +451,12 @@ struct SceneData {
             property.properties.append(wrongTiming)
             property.properties.append(origin)
             property.properties.append(position)
+        case .twoFingersTouch:
+            property.properties.append(startTime)
+            property.properties.append(endTime)
+            property.properties.append(wrongTiming)
+            property.properties.append(origin)
+            property.properties.append(positions)
         case .lift:
             property.properties.append(startTime)
             property.properties.append(endTime)
@@ -365,6 +474,16 @@ struct SceneData {
             property.properties.append(wrongTiming)
             let backgroundProperty = makePropertyToAddToResponse(object: nil)
             property.properties.append(backgroundProperty)
+            for object in Flow.shared.scene.movableObjects {
+                let newProperty = makePropertyToAddToResponse(object: object)
+                property.properties.append(newProperty)
+            }
+        case .touchMultipleObjects:
+            property.properties.append(startTime)
+            property.properties.append(endTime)
+            property.properties.append(wrongTiming)
+            property.properties.append(numberOfObjects)
+            property.properties.append(touchBackground)
             for object in Flow.shared.scene.movableObjects {
                 let newProperty = makePropertyToAddToResponse(object: object)
                 property.properties.append(newProperty)
@@ -493,9 +612,11 @@ enum FixedResponse: String, Codable, CaseIterable {
     case leftRight = "left or right"
     case topBottom = "top or bottom"
     case touch = "touch screen"
+    case twoFingersTouch = "two finger touch screen"
     case lift = "lift finger"
     case path = "path"
     case touchObject = "touch object"
+    case touchMultipleObjects = "touch multiple objects"
     case moveObject = "move object"
     case keyboard = "keyboard"
     case keys = "keys"
@@ -513,23 +634,29 @@ enum FixedResponse: String, Codable, CaseIterable {
             Any touch on the 1/3 bottom part of the screen is considered a bottom response.
             Any touch on the 1/3 central part of the screen is ignored.
             """
-
         case .touch: return """
             Any touch on the screen is considered a response and the position (x, y) or (radius, angle) is saved.
             """
-
+        case .twoFingersTouch: return """
+            Touching the screen with 2 fingers is considered a response. The positions of both fingers are saved in \
+            cartesian or polar coordinates. Also, the distance between the fingers is saved in the desired coordinate \
+            (x, y, radius, angle) or just the real distance between the touches.
+            """
         case .lift: return """
             The response is triggered when the user lifts their finger from the screen.
             This type of response can be useful, for example, to measure reaction times, combined with a previous \
             touch response that triggers a stimulus.
             """
-
         case .path: return """
             Any touch on the screen initiates a path that ends when the finger is lifted from the screen.
             The path is saved as (x, y) or (radius, angle).
             """
         case .touchObject: return """
             Touching certain objects of the screen can be considered a response with certain numeric value associated.
+            """
+        case .touchMultipleObjects: return """
+            When the user touches a certain number of objects the scene ends.
+            Each time an object is touched its contrast is lowered and the value of the object is saved in the response.
             """
         case .moveObject: return """
             Move an existing object by touching it.
@@ -557,6 +684,12 @@ enum FixedCorrect: String, Codable, CaseIterable {
     case positionY
     case positionRadius
     case positionAngle
+    case distanceModule
+    case distanceX
+    case distanceY
+    case distanceRadius
+    case distanceAngle
+    case values
 
     var description: String {
         switch self {
@@ -566,6 +699,12 @@ enum FixedCorrect: String, Codable, CaseIterable {
         case .positionY: return "The last y component of the touch position."
         case .positionRadius: return "The last radius component of the touch position."
         case .positionAngle: return "The last angle component of the touch position."
+        case .distanceModule: return "Real distance."
+        case .distanceX: return "X distance."
+        case .distanceY: return "Y distance."
+        case .distanceRadius: return "Radius distance."
+        case .distanceAngle: return "Angle distance."
+        case .values: return "The values of the response."
         }
     }
 
@@ -651,29 +790,42 @@ enum FixedPositionResponse: String, Codable, CaseIterable {
     }
 }
 
-enum FixedResponseValue: String, Codable, CaseIterable {
+enum FixedCartesianDistances: String, Codable, CaseIterable {
 
-    case value = "value"
-    case position = "positionVector"
-    case xPosition = "positionX"
-    case yPosition = "positionY"
-    case radiusPosition = "positionRadius"
-    case anglePosition = "positionAngle"
+    case module = "module"
+    case x = "x"
+    case y = "y"
 
     var description: String {
         switch self {
-        case .value:
-            return "value"
-        case .position:
-            return "positionVector"
-        case .xPosition:
-            return "positionX"
-        case .yPosition:
-            return "positionY"
-        case .radiusPosition:
-            return "positionRadius"
-        case .anglePosition:
-            return "positionAngle"
+        case .module:
+            return "Distance between fingers."
+        case .x:
+            return "Distance between fingers in the x coordinate."
+        case .y:
+            return "Distance between fingers in the y coordinate."
+        }
+    }
+
+    var name: String {
+        return self.rawValue
+    }
+}
+
+enum FixedPolarDistances: String, Codable, CaseIterable {
+
+    case module = "module"
+    case radius = "radius"
+    case angle = "angle"
+
+    var description: String {
+        switch self {
+        case .module:
+            return "Distance between fingers."
+        case .radius:
+            return "Radius distance between fingers."
+        case .angle:
+            return "Angular distance between fingers."
         }
     }
 
@@ -752,12 +904,58 @@ enum FixedEndPath: String, Codable, CaseIterable {
     var name: String {
         return self.rawValue
     }
+
+    var description: String {
+        return self.rawValue
+    }
+}
+
+enum FixedEndPathValues: String, Codable, CaseIterable {
+
+    case mobile = "mobile object"
+    case stop = "stop object"
+    case both = "both objects vector (mobile, stop)"
+
+    var name: String {
+        return self.rawValue
+    }
+
+    var description: String {
+        return self.rawValue
+    }
+}
+
+enum FixedResponseDistance: String, Codable, CaseIterable {
+
+    case module = "module"
+    case x = "x"
+    case y = "y"
+    case radius = "radius"
+    case angle = "angle"
+
+    var name: String {
+        return self.rawValue
+    }
+
+    var description: String {
+        return self.rawValue
+    }
 }
 
 enum FixedKeyboard: String, Codable, CaseIterable {
 
     case normal = "default"
     case numeric = "numeric"
+
+    var name: String {
+        return self.rawValue
+    }
+}
+
+enum FixedBackground: String, Codable, CaseIterable {
+
+    case nothing = "does nothing"
+    case ends = "ends scene"
 
     var name: String {
         return self.rawValue

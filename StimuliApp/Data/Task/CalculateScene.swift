@@ -140,8 +140,11 @@ extension Task {
         createBackground(from: scene)
         createFinalCheckPoints(from: scene)
         createAudioFloats()
-        createResponse(from: scene)
-
+        let createResp = createResponse(from: scene)
+        if createResp != "" {
+            return createResp
+        }
+        
         firstUpdateSceneTask(sceneTask)
 
         sectionTask.sceneTasks.append(sceneTask)
@@ -993,7 +996,7 @@ extension Task {
         }
     }
 
-    func createResponse(from scene: Scene) {
+    func createResponse(from scene: Scene) -> String {
 
         sceneTask.responseKeys = []
 
@@ -1032,7 +1035,7 @@ extension Task {
             sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
             sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
             sceneTask.responseObject = [scene.responseType.properties[3].float, scene.responseType.properties[4].float]
-        case .touch, .path:
+        case .touch, .path, .twoFingersTouch:
             sceneTask.responseStart = Double(scene.responseType.properties[0].float)
             sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
             sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
@@ -1043,6 +1046,19 @@ extension Task {
                 .none
             sceneTask.responseSecondUnit = Unit(rawValue: scene.responseType.properties[4].properties[1].string) ??
                 .none
+            if responseType == .twoFingersTouch {
+                let text = scene.responseType.properties[4].properties[2].string
+                sceneTask.responseDistance = FixedResponseDistance(rawValue: text) ??
+                    .module
+
+                if sceneTask.responseDistance == .module && sceneTask.responseFirstUnit != sceneTask.responseSecondUnit
+                    && sceneTask.responseCoordinates == .cartesian {
+                    return """
+                    ERROR: in the response, the units for x coordinate and y coordinate are not the same.
+                    For that reason it is not possible to calculate the module of the distance.
+                    """
+                }
+            }
         case .lift:
             sceneTask.responseStart = Double(scene.responseType.properties[0].float)
             sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
@@ -1069,6 +1085,30 @@ extension Task {
                     }
                 }
             }
+        case .touchMultipleObjects:
+            sceneTask.responseStart = Double(scene.responseType.properties[0].float)
+            sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
+            sceneTask.responseOutWindow = scene.responseType.properties[2].float > 0.5
+            sceneTask.responseDimensions = scene.responseType.properties[3].float.toInt
+
+            let background = scene.responseType.properties[4].selectedValue
+
+            if background == 1 {
+                sceneTask.responseBackground = 0
+            } else {
+                sceneTask.responseBackground = nil
+            }
+            
+            sceneTask.responseObject = Array(repeating: nil, count: sceneTask.numberOfMetals)
+            for property in scene.responseType.properties {
+                if let objectNumber = scene.movableObjects.firstIndex(where: { $0.id == property.somethingId }) {
+                    let interactive = FixedObjectResponse(rawValue: property.string) ?? .no
+                    if interactive == .yes {
+                        let objectValue = property.properties[0].float
+                        sceneTask.responseObject[objectNumber] = objectValue
+                    }
+                }
+            }
         case .moveObject:
             sceneTask.responseStart = Double(scene.responseType.properties[0].float)
             sceneTask.responseEnd = Double(scene.responseType.properties[1].float)
@@ -1082,6 +1122,12 @@ extension Task {
                 .none
             sceneTask.endPath = FixedEndPath(rawValue: scene.responseType.properties[5].string) ?? .lift
             sceneTask.responseObject = Array(repeating: nil, count: sceneTask.numberOfMetals)
+
+            if sceneTask.endPath == .touch {
+                let text = scene.responseType.properties[5].properties[0].string
+                sceneTask.responseMobile = FixedEndPathValues(rawValue: text) ?? .mobile
+            }
+
             for property in scene.responseType.properties {
                 if let objectNumber = scene.movableObjects.firstIndex(where: { $0.id == property.somethingId }) {
                     let interactive = FixedObjectResponse(rawValue: property.string) ?? .no
@@ -1099,6 +1145,7 @@ extension Task {
                 sceneTask.isNotRealResponse = false
             }
         }
+        return ""
     }
 
     // MARK: - Helper functions

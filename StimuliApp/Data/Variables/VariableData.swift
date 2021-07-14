@@ -115,11 +115,11 @@ struct VariableData {
             break
         case .fixed:
             if group != 0 {
-                for variable in Flow.shared.section.variables where variable.group == Int(property.somethingId) {
+                for variable in Flow.shared.section.allVariables where variable.group == Int(property.somethingId) {
                     property.properties.append(makePropertyToAddToSelection(variable: variable))
                 }
             } else {
-                for variable in Flow.shared.section.variables where variable.selection === property {
+                for variable in Flow.shared.section.allVariables where variable.selection === property {
                     property.properties.append(makePropertyToAddToSelection(variable: variable))
                 }
             }
@@ -138,11 +138,11 @@ struct VariableData {
         if correct != .zero {
             let group = Int(property.somethingId) ?? 0
             if group != 0 {
-                for variable in Flow.shared.section.variables where variable.group == Int(property.somethingId) {
+                for variable in Flow.shared.section.allVariables where variable.group == Int(property.somethingId) {
                     property.properties.append(makePropertyToAddToSelection2(variable: variable))
                 }
             } else {
-                for variable in Flow.shared.section.variables where variable.selection === property {
+                for variable in Flow.shared.section.allVariables where variable.selection === property {
                     property.properties.append(makePropertyToAddToSelection2(variable: variable))
                 }
             }

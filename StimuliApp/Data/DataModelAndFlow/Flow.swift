@@ -146,10 +146,20 @@ class Flow {
                                          unitType: .activated,
                                          float: 0)
 
+
                 if let responseType = FixedResponse(rawValue: scene.responseType.string) {
                     if scene.responseType.fixedValues.count == 9 {
                         scene.responseType.fixedValues = FixedResponse.allCases.map { $0.name }
-                        if scene.responseType.selectedValue >= 4 {
+                        if scene.responseType.selectedValue >= 6 {
+                            scene.responseType.selectedValue += 3
+                        } else if scene.responseType.selectedValue >= 4 {
+                            scene.responseType.selectedValue += 2
+                        }
+                    } else if scene.responseType.fixedValues.count == 10 {
+                        scene.responseType.fixedValues = FixedResponse.allCases.map { $0.name }
+                        if scene.responseType.selectedValue >= 7 {
+                            scene.responseType.selectedValue += 2
+                        } else if scene.responseType.selectedValue >= 4 {
                             scene.responseType.selectedValue += 1
                         }
                     }
@@ -157,10 +167,16 @@ class Flow {
                     switch responseType {
                     case .none, .keyboard, .keys:
                         break
-                    case .leftRight, .topBottom, .touch, .path, .touchObject, .moveObject, .lift:
+                    case .leftRight, .topBottom, .touch, .path, .touchObject, .moveObject, .lift,
+                         .twoFingersTouch, .touchMultipleObjects:
                         if scene.responseType.properties[1].name != "endTime" {
                             scene.responseType.properties.insert(endTime, at: 1)
                             scene.responseType.properties.insert(wrongTiming, at: 2)
+                        }
+                        if responseType == .moveObject {
+                            if test.createdWithStimuliAppVersion ?? 0 < 1.8 {
+                                SceneData.addPropertiesToEndPathResponse(property: scene.responseType.properties[5])
+                            }
                         }
                     }
                 }
@@ -391,7 +407,7 @@ class Flow {
         let newObject = Object(name: name, stimulus: stimulus, scene: scene, order: order)
         scene.objects.append(newObject)
         if let response = FixedResponse(rawValue: scene.responseType.string) {
-            if response == .touchObject || response == .moveObject {
+            if response == .touchObject || response == .moveObject || response == .touchMultipleObjects {
                 let property = SceneData.makePropertyToAddToResponse(object: newObject)
                 scene.responseType.properties.append(property)
             }
@@ -407,7 +423,7 @@ class Flow {
         let object = Object(name: name, stimulus: stimulus, scene: scene, order: order)
         scene.objects.append(object)
         if let response = FixedResponse(rawValue: scene.responseType.string) {
-            if response == .touchObject || response == .moveObject {
+            if response == .touchObject || response == .moveObject || response == .touchMultipleObjects {
                 if scene.movableObjects.contains(where: { $0 === object }) {
                     let property = SceneData.makePropertyToAddToResponse(object: object)
                     scene.responseType.properties.append(property)
@@ -642,7 +658,7 @@ class Flow {
         var text = Texts.deleteList
         var strings: [String] = []
 
-        for variable in test.variables where variable.listOfValuesId == listOfValues.id {
+        for variable in test.allVariables where variable.listOfValuesId == listOfValues.id {
             strings.append(variable.name)
         }
 
@@ -653,7 +669,7 @@ class Flow {
     }
 
     func deleteListOfValues(_ listOfValues: ListOfValues) {
-        for variable in test.variables where variable.listOfValuesId == listOfValues.id {
+        for variable in test.allVariables where variable.listOfValuesId == listOfValues.id {
             variable.listOfValuesId = ""
             for section in Flow.shared.test.sections where section.trialValue.somethingId == variable.id {
                 section.trialValue.somethingId = ""
@@ -661,7 +677,7 @@ class Flow {
             }
         }
 
-        if let vari = test.variables.first(where: { $0.listOfValues?.dimensions == 8 }) {
+        if let vari = test.allVariables.first(where: { $0.listOfValues?.dimensions == 8 }) {
             for section in test.sections where section.trialValue.somethingId == vari.id {
                 if section.trialValue.properties.count > 0 {
                     section.trialValue.somethingId = ""
@@ -682,13 +698,13 @@ class Flow {
 
         var keys: [String] = []
 
-        if let vari = test.variables.first(where: { $0.listOfValues?.dimensions == 8 }) {
+        if let vari = test.allVariables.first(where: { $0.listOfValues?.dimensions == 8 }) {
             if let values = vari.listOfValues?.allValuesBlock {
                 keys = values.map({ $0.id })
             }
         }
 
-        for variable in test.variables where variable.listOfValuesId == listOfValues.id {
+        for variable in test.allVariables where variable.listOfValuesId == listOfValues.id {
             for section in test.sections where section.trialValue.somethingId == variable.id {
                 if section.trialValue.properties.count > 0 {
                     if let valueType = FixedValueType(rawValue: section.trialValue.properties[0].string) {
@@ -708,13 +724,13 @@ class Flow {
             }
         }
 
-        if let vari = test.variables.first(where: { $0.listOfValues?.dimensions == 8 }) {
+        if let vari = test.allVariables.first(where: { $0.listOfValues?.dimensions == 8 }) {
             for section in test.sections where section.trialValue.somethingId == vari.id {
                 SectionData.addPropertiesToValueTypeWithDict(property: section.trialValue.properties[0], oldKeys: keys)
             }
         }
 
-        for variable in test.variables where variable.listOfValuesId == Flow.shared.listOfValues.id {
+        for variable in test.allVariables where variable.listOfValuesId == Flow.shared.listOfValues.id {
             for section in test.sections where section.trialValue.somethingId == variable.id {
                 SectionData.changeValueNames(property: section.trialValue.properties[0],
                                              list: Flow.shared.listOfValues)
@@ -878,14 +894,14 @@ class Flow {
 
         var keys: [String] = []
 
-        if let vari = test.variables.first(where: { $0.listOfValues?.dimensions == 8 }) {
+        if let vari = test.allVariables.first(where: { $0.listOfValues?.dimensions == 8 }) {
             if let values = vari.listOfValues?.allValuesBlock {
                 keys = values.map({ $0.id })
             }
         }
 
         if listOfValues.dimensions <= 3 {
-            for variable in test.variables where variable.listOfValuesId == listOfValues.id {
+            for variable in test.allVariables where variable.listOfValuesId == listOfValues.id {
                 for section in Flow.shared.test.sections where section.trialValue.somethingId == variable.id {
 
                     moveValuesSection(first, to: second, section: section)
@@ -908,7 +924,7 @@ class Flow {
         }
         listOfValues.values = listOfValues.values.sorted(by: { $0.listOrder < $1.listOrder })
 
-        if let vari = test.variables.first(where: { $0.listOfValues?.dimensions == 8 }) {
+        if let vari = test.allVariables.first(where: { $0.listOfValues?.dimensions == 8 }) {
             for section in test.sections where section.trialValue.somethingId == vari.id {
                 SectionData.addPropertiesToValueTypeWithDict(property: section.trialValue.properties[0], oldKeys: keys)
             }
@@ -964,12 +980,12 @@ class Flow {
     }
 
     private func checkVariablesOrder() {
-        for variable in section.variables where variable.inGroup {
+        for variable in section.allVariables where variable.inGroup {
 
             if let select = FixedSelection(rawValue: variable.selection.string) {
                 if select == .fixed || select == .correct {
                     var i = 0
-                    for vari in section.variables {
+                    for vari in section.allVariables {
                         for (index, element) in variable.selection.properties.enumerated() {
                             if element.variable === vari {
                                 variable.selection.properties.remove(at: index)

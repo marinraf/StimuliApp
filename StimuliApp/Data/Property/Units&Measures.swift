@@ -133,6 +133,7 @@ enum UnitType: String, Codable, CaseIterable {
     case activated = "0 or 1"
 
     case valueFrom0to1 = "decimal value from 0 to 1"
+    case valueFrom2to10 = "integer value from 2 to 10"
     case valueFrom3to10 = "integer value from 3 to 10"
     case valueFrom0to255 = "integer value from 0 to 255"
 
@@ -169,6 +170,7 @@ enum UnitType: String, Codable, CaseIterable {
 
         case .valueFrom0to1: return [.none]
         case .valueFrom3to10: return [.none]
+        case .valueFrom2to10: return [.none]
         case .valueFrom0to255: return [.none]
 
         case .size: return [.pixel, .cm, .inch, .visualAngleDegree, .screenWidthUnits, .screenHeightUnits]
@@ -215,6 +217,14 @@ enum UnitType: String, Codable, CaseIterable {
         case .valueFrom3to10:
             if float < 3 {
                 return 3
+            } else if float > 10 {
+                return 10
+            } else {
+                return roundf(float)
+            }
+        case .valueFrom2to10:
+            if float < 2 {
+                return 2
             } else if float > 10 {
                 return 10
             } else {
@@ -299,6 +309,7 @@ enum PropertyType: String, Codable, CaseIterable {
     case sceneDuration
     case objectResponse
     case keyResponse
+    case endPathResponse
     case distance
     case randomness
     case gamma
@@ -312,6 +323,7 @@ enum PropertyType: String, Codable, CaseIterable {
     case originResponse
     case position2d
     case positionResponse
+    case distanceResponse
     case value
     case valueType
     case correct
@@ -357,6 +369,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .sceneDuration: return [.alwaysConstant]
         case .objectResponse: return [.alwaysConstant]
         case .keyResponse: return [.alwaysConstant]
+        case .endPathResponse: return [.alwaysConstant]
         case .distance: return [.alwaysConstant]
         case .randomness: return [.alwaysConstant]
         case .gamma: return [.alwaysConstant]
@@ -368,6 +381,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .originResponse: return [.alwaysConstant]
         case .position2d: return [.alwaysConstant]
         case .positionResponse: return [.alwaysConstant]
+        case .distanceResponse: return [.alwaysConstant]
         case .value: return [.alwaysConstant]
         case .valueType: return [.alwaysConstant]
         case .correct: return [.alwaysConstant]
@@ -409,6 +423,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .sceneDuration: return false
         case .objectResponse: return false
         case .keyResponse: return false
+        case .endPathResponse: return false
         case .distance: return false
         case .randomness: return false
         case .gamma: return false
@@ -420,6 +435,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .originResponse: return false
         case .position2d: return false
         case .positionResponse: return false
+        case .distanceResponse: return false
         case .value: return false
         case .valueType: return false
         case .correct: return false
@@ -461,6 +477,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .sceneDuration: return FixedDuration.allCases.map({ $0.name })
         case .objectResponse: return FixedObjectResponse.allCases.map({ $0.name })
         case .keyResponse: return FixedKeyResponse.allCases.map( { $0.name })
+        case .endPathResponse: return FixedEndPath.allCases.map( { $0.name })
         case .distance: return FixedDistance.allCases.map({ $0.name })
         case .randomness: return FixedRandomness.allCases.map({ $0.name })
         case .listOrder: return FixedListOrder.allCases.map { $0.name }
@@ -471,6 +488,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .originResponse: return FixedOrigin2d.allCases.map({ $0.name })
         case .position2d: return FixedPosition2d.allCases.map({ $0.name })
         case .positionResponse: return FixedPositionResponse.allCases.map({ $0.name })
+        case .distanceResponse: return FixedPositionResponse.allCases.map({ $0.name })
         case .size2d: return FixedSize2d.allCases.map({ $0.name })
         case .color: return FixedColor.allCases.map({ $0.name })
         case .behaviour: return FixedBehaviour.allCases.map({ $0.name })
@@ -513,6 +531,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .sceneDuration: return FixedDuration.allCases.map({ $0.description })
         case .objectResponse: return FixedObjectResponse.allCases.map({ $0.description })
         case .keyResponse: return FixedKeyResponse.allCases.map({ $0.description })
+        case .endPathResponse: return FixedEndPath.allCases.map({ $0.description })
         case .distance: return FixedDistance.allCases.map({ $0.description })
         case .randomness: return FixedRandomness.allCases.map({ $0.description })
         case .listOrder: return FixedListOrder.allCases.map({ $0.description })
@@ -523,6 +542,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .originResponse: return FixedOrigin2d.allCases.map({ $0.description })
         case .position2d: return FixedPosition2d.allCases.map({ $0.description })
         case .positionResponse: return FixedPositionResponse.allCases.map({ $0.description })
+        case .distanceResponse: return FixedPositionResponse.allCases.map({ $0.description })
         case .size2d: return FixedSize2d.allCases.map({ $0.description })
         case .color: return FixedColor.allCases.map({ $0.description })
         case .behaviour: return FixedBehaviour.allCases.map({ $0.description })

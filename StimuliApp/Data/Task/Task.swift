@@ -57,6 +57,14 @@ struct UserResponse {
     var angleTouches: [Float] = []
     var clocks: [Double] = []
 
+    var multipleInts: [Int] = []
+    var multipleFloats: [Float] = []
+
+    var xTouch2: Float?
+    var yTouch2: Float?
+    var radiusTouch2: Float?
+    var angleTouch2: Float?
+
     var liftClock: Double?
 
     var delay: Double = 0
@@ -272,7 +280,7 @@ class Task {
                                                 maximumFrameRate: Double(Flow.shared.settings.maximumFrameRate),
                                                 delayAudio: Double(delayAudio))
 
-        for variable in test.variables {
+        for variable in test.allVariables {
             guard let listOfValues = variable.listOfValues  else {
                 return """
                 ERROR: variable: \(variable.name) has no list assigned.
@@ -352,6 +360,78 @@ class Task {
         computeNumber = sceneTask.computeNumber
         numberOfLayers = sceneTask.numberOfLayers
     }
+ 
+    func updateDependentVariableTrial() {
+
+        guard let variable = sectionTask.allVariables.last(where: { $0.realName == "__trialValue" }) else { return }
+        guard let goodValues = variable.listOfValues?.goodValues else { return }
+        guard let selection = FixedSelection(rawValue: variable.selection.string) else { return }
+
+        let trial = sectionTask.currentTrial
+
+        guard trial != 0 else { return }
+
+        if selection == .correct {
+            if let selection2 = FixedCorrectType(rawValue: variable.selection.properties[0].string) {
+
+                switch selection2 {
+                case .zero:
+                    if sectionTask.last == 0 {
+                        sectionTask.dependentValue = 1
+                    } else if sectionTask.last == 1 {
+                        sectionTask.dependentValue = 0
+                    }
+                case .one:
+                    if sectionTask.last == 0 && sectionTask.dependentValue < goodValues.count - 1 {
+                        sectionTask.dependentValue += 1
+                    } else if sectionTask.last == 1 && sectionTask.dependentValue > 0 {
+                        sectionTask.dependentValue -= 1
+                    }
+                case .two:
+                    if sectionTask.last == 0 {
+                        sectionTask.previousDependentSum = 0
+                        sectionTask.starting = false
+                        if sectionTask.dependentValue < goodValues.count - 1 {
+                            sectionTask.dependentValue += 1
+                        }
+                    } else if sectionTask.last == 1 {
+                        if sectionTask.previousDependentSum == 1 || sectionTask.starting {
+                            sectionTask.previousDependentSum = 0
+                            if sectionTask.dependentValue > 0 {
+                                sectionTask.dependentValue -= 1
+                            }
+                        } else {
+                            sectionTask.previousDependentSum += 1
+                        }
+                    }
+                case .three:
+                    if sectionTask.last == 0 {
+                        sectionTask.starting = false
+                        sectionTask.previousDependentSum = 0
+                        if sectionTask.dependentValue < goodValues.count - 1 {
+                            sectionTask.dependentValue += 1
+                        }
+                    } else if sectionTask.last == 1 {
+                        if sectionTask.previousDependentSum == 2 || sectionTask.starting {
+                            sectionTask.previousDependentSum = 0
+                            if sectionTask.dependentValue > 0 {
+                                sectionTask.dependentValue -= 1
+                            }
+                        } else {
+                            sectionTask.previousDependentSum += 1
+                        }
+                    }
+                }
+
+                if let variableTask = Task.shared.sectionTask.variableTasks.first(where: { $0.name == "trialValue" }) {
+                    variableTask.values[trial] = variableTask.list.values[sectionTask.dependentValue]
+                    calculateSectionValue(trial: trial, variableValue: variableTask)
+                }
+
+            }
+        }
+    }
+
 
     private func updateDependentVariables(trial: Int) {
 

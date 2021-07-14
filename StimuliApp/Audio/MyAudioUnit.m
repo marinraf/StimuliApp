@@ -133,7 +133,7 @@ void repairOutputBufferList(AudioBufferList *outBufferList,
 }
 
 // generate random number between 0 and 1 (both included)
-double r2()
+double r2( void )
 {
     return (double)rand() * 2.0 / (double)RAND_MAX - 1.0;
 }

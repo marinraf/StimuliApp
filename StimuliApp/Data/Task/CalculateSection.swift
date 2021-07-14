@@ -89,7 +89,7 @@ extension Task {
 
         guard section.error == "" else { return section.error }
 
-        sectionTask.allVariables = section.variables
+        sectionTask.allVariables = section.allVariables
 
         var seedToUse = UInt64.random(in: 0 ... 10000000)
 
@@ -311,7 +311,7 @@ extension Task {
         for variable in sectionTask.allVariables where variable.group != -1 {
             guard let selection = FixedSelection(rawValue: variable.selection.string) else { return "ERROR" }
             guard let listOfValues = variable.listOfValues else { return "ERROR" }
-            guard let object = variable.object else { return "ERROR" }
+            guard variable.object != nil || variable.realName == "__trialValue" else { return "ERROR" }
             guard let property = variable.property else { return "ERROR" }
             guard let list = newLists.first(where: {
                 ($0.groupOrId == String(variable.group) && variable.group != 0)
@@ -371,7 +371,7 @@ extension Task {
 
             let vari = VariableTask(name: variable.name,
                                     id: variable.id,
-                                    object: object,
+                                    object: variable.object,
                                     property: property,
                                     list: listOfValues,
                                     numbers: numbers,
@@ -387,7 +387,7 @@ extension Task {
 
         if let variable = sectionTask.allVariables.first(where: { $0.group == -1 }) {
 
-            guard let object = variable.object else { return "ERROR" }
+            guard variable.object != nil || variable.realName == "__trialValue" else { return "ERROR" }
             guard let property = variable.property else { return "ERROR" }
             guard let listOfValues = variable.listOfValues else { return "ERROR" }
             guard let differentBlocks = Int(listOfValues.typesOfBlocks.string) else { return "ERROR" }
@@ -500,7 +500,7 @@ extension Task {
 
             let vari = VariableTask(name: variable.name,
                                     id: variable.id,
-                                    object: object,
+                                    object: variable.object,
                                     property: property,
                                     list: listOfValues,
                                     numbers: numbers,
@@ -548,8 +548,9 @@ extension Task {
 
         sectionTask.variableTasks = varis
 
-        if let variable = section.trialValue.variable, let property = variable.property, let object = variable.object,
-            let variableTask = varis.first(where: { $0.property === property && $0.object === object }) {
+        if let variable = section.trialValue.variable,
+           let property = variable.property,
+           let variableTask = varis.first(where: { $0.property === property && $0.object === variable.object }) {
 
             guard let valueType = FixedValueType(rawValue: section.trialValue.properties[0].string) else {
                 return "ERROR"
@@ -558,7 +559,7 @@ extension Task {
             if valueType == .same {
                 let value = VariableTask(name: "trialValue",
                                          id: NSUUID().uuidString,
-                                         object: object,
+                                         object: variable.object,
                                          property: property,
                                          list: variableTask.list,
                                          numbers: variableTask.numbers,
@@ -582,7 +583,7 @@ extension Task {
 
                     let value = VariableTask(name: "trialValue",
                                              id: NSUUID().uuidString,
-                                             object: object,
+                                             object: variable.object,
                                              property: property,
                                              list: variableTask.list,
                                              numbers: variableTask.numbers,
@@ -607,7 +608,7 @@ extension Task {
 
                     let value = VariableTask(name: "trialValue",
                                              id: NSUUID().uuidString,
-                                             object: object,
+                                             object: variable.object,
                                              property: property,
                                              list: newList,
                                              numbers: variableTask.numbers,
@@ -622,50 +623,83 @@ extension Task {
                 }
             }
 
-            var dimensionsTrial = sectionTask.variableTasks.first(where: {
-                $0.name == "trialValue" })?.list.dimensions ?? 0
-
-            if dimensionsTrial > 3 {
-                dimensionsTrial = 1 //we take the numeric value for images, texts...
-            }
-            var dimensionsResponse = 0
-
-            if section.responseValue.properties.isEmpty {
-                dimensionsResponse = 0
-            } else if let fixedCorrect = FixedCorrect(rawValue: section.responseValue.string) {
-                if dimensionsTrial != 0 {
-                    switch fixedCorrect {
-                    case .positionX, .positionY, .positionRadius, .positionAngle, .value:
-                        dimensionsResponse = 1
-                    case .positionVector:
-                        dimensionsResponse = 2
-                    }
-                }
-            }
-
-            guard dimensionsTrial == dimensionsResponse || dimensionsResponse == 0 else {
-
-                func dimToString(dimensions: Int) -> String {
-                    if dimensions == 1 {
-                        return "is a numeric value"
-                    } else if dimensions == 2 {
-                        return "is a 2d vector"
-                    } else if dimensions == 3 {
-                        return "is a color (3d vector)"
-                    } else {
-                        return "does not exist"
-                    }
-                }
-
-                let trialString = dimToString(dimensions: dimensionsTrial)
-                let responseString = dimToString(dimensions: dimensionsResponse)
-
-                return """
-                ERROR: trialValue \(trialString) and responseValue \(responseString)
-                """
-            }
-
         }
+
+        var dimensionsTrial = sectionTask.variableTasks.first(where: {
+            $0.name == "trialValue" })?.list.dimensions ?? 1
+
+        if dimensionsTrial > 3 {
+            dimensionsTrial = 1 //we take the numeric value for images, texts...
+        }
+        var dimensionsResponse = 0
+
+        for property in section.responseValue.properties where property.name == "orderIsImportant" {
+            if let scene = section.responseValue.scene {
+                for property in scene.responseType.properties {
+                    if property.name == "numberOfObjects" {
+                        section.responseValueDimension = property.float.toInt
+                    }
+                }
+            }
+
+            let dim = section.responseValueDimension ?? 2
+
+            if property.float == 1 {
+                if dim == 2 {
+                    section.responseValueVector = .vector2Sorted
+                } else if Flow.shared.section.responseValueDimension == 3 {
+                    section.responseValueVector = .vector3Sorted
+                }
+            } else {
+                if dim == 2 {
+                    section.responseValueVector = .vector2
+                } else if Flow.shared.section.responseValueDimension == 3 {
+                    section.responseValueVector = .vector3
+                }
+            }
+        }
+
+        if section.responseValue.properties.isEmpty {
+            dimensionsResponse = 0
+        } else if let fixedCorrect = FixedCorrect(rawValue: section.responseValue.string) {
+            switch fixedCorrect {
+            case .positionX, .positionY, .positionRadius, .positionAngle, .value, .distanceModule, .distanceX,
+                 .distanceY, .distanceRadius, .distanceAngle:
+                dimensionsResponse = 1
+            case .positionVector:
+                dimensionsResponse = 2
+            case .values:
+                if let dimension = section.responseValueDimension {
+                    dimensionsResponse = dimension
+                }
+            }
+        }
+
+        guard dimensionsTrial == dimensionsResponse || dimensionsResponse == 0 else {
+
+            func dimToString(dimensions: Int) -> String {
+                if dimensions == 1 {
+                    return "is a numeric value"
+                } else if dimensions == 2 {
+                    return "is a 2d vector"
+                } else if dimensions == 3 {
+                    return "is a 3d vector or color"
+                } else if dimensions > 3 {
+                    return "is a \(dimensions)d vector"
+                } else {
+                    return "does not exist"
+                }
+            }
+
+            let trialString = dimToString(dimensions: dimensionsTrial)
+            let responseString = dimToString(dimensions: dimensionsResponse)
+
+            return """
+            ERROR: trialValue \(trialString) and responseValue \(responseString)
+            """
+        }
+
+
 
         for scene in section.scenes {
             let errorScene = calculateScene(from: scene)
@@ -770,7 +804,12 @@ extension Task {
 
     private func calculateSectionValue(from section: Section) {
 
-        sectionTask.sectionValueType = FixedResponseValue(rawValue: section.responseValue.string)
+        sectionTask.sectionValueType = FixedCorrect(rawValue: section.responseValue.string)
+
+        sectionTask.sectionValueType2 = section.responseValueVector
+
+//        sectionTask.multipleDimensions = section.responseValueDimension ?? 0
+
         sectionTask.defaultValueNoResponse = nil
         if section.trialValue.properties.count > 0 {
             sectionTask.sectionSame = FixedValueType(rawValue: section.trialValue.properties[0].string) ?? .same
@@ -787,6 +826,7 @@ extension Task {
             }
         }
 
+        sectionTask.variableTasks = sectionTask.variableTasks.filter({ !$0.name.hasPrefix("_list") })
         guard let variableValue = sectionTask.variableTasks.first(where: { $0.name == "trialValue" }) else { return }
 
         if sectionTask.sectionSame == .same {
@@ -797,10 +837,10 @@ extension Task {
                     let x = variableValue.values.map({ $0.float / $0.unit.factor })
                     let y = variableValue.values.map({ $0.float1 / $0.unit.factor })
                     switch valueType {
-                    case .position, .xPosition, .yPosition:
+                    case .positionVector, .positionX, .positionY, .values:
                         sectionTask.sectionValues = x
                         sectionTask.sectionValues1 = y
-                    case .radiusPosition, .anglePosition:
+                    case .positionRadius, .positionAngle:
                         var radius: [Float] = []
                         var angles: [Float] = []
                         for i in 0 ..< x.count {
@@ -810,10 +850,25 @@ extension Task {
                         }
                         sectionTask.sectionValues = radius
                         sectionTask.sectionValues1 = angles
-                    case .value:
+                    case .value, .distanceModule, .distanceX, .distanceY, .distanceRadius, .distanceAngle:
                         break
                     }
                 }
+            } else if variableValue.list.dimensions == 3 {
+                if let valueType = sectionTask.sectionValueType {
+                    switch valueType {
+                    case .positionVector, .positionX, .positionY, .positionRadius, .positionAngle,
+                         .value, .distanceModule, .distanceX, .distanceY, .distanceRadius, .distanceAngle:
+                        break
+                    case .values:
+                        sectionTask.sectionValues = variableValue.values.map({ $0.float })
+                        sectionTask.sectionValues1 = variableValue.values.map({ $0.float1 })
+                        sectionTask.sectionValues2 = variableValue.values.map({ $0.float2 })
+                    }
+                }
+
+
+                
             }
         } else {
             sectionTask.sectionValues = variableValue.values.map({ $0.float / $0.unit.factor })
@@ -832,15 +887,21 @@ extension Task {
                     let x = value.float / value.unit.factor
                     let y = value.float1 / value.unit.factor
                     switch valueType {
-                    case .position, .xPosition, .yPosition:
+                    case .positionVector, .positionX, .positionY:
                         sectionTask.sectionValues[trial] = x
                         sectionTask.sectionValues1[trial] = y
-                    case .radiusPosition, .anglePosition:
+                    case .positionRadius, .positionAngle:
                         let polar = AppUtility.cartesianToPolar(xPos: x, yPos: y)
                         sectionTask.sectionValues[trial] = polar.0
                         sectionTask.sectionValues1[trial] = polar.1
                     case .value:
                         break
+                    case .distanceModule, .distanceX, .distanceY, .distanceRadius, .distanceAngle:
+                        break
+                    case .values:
+                        sectionTask.sectionValues[trial] = value.float
+                        sectionTask.sectionValues1[trial] = value.float1
+                        sectionTask.sectionValues2[trial] = value.float2
                     }
                 }
             }

@@ -74,7 +74,7 @@ class EditSectionMenu: Menu {
         sections.append(section)
 
         var groups: [Int] = []
-        for variable in Flow.shared.section.variables where !groups.contains(variable.group) {
+        for variable in Flow.shared.section.allVariables where !groups.contains(variable.group) {
             makeVariable(from: variable, sectionNumber: sectionNumber)
             if variable.group != 0 {
                 groups.append(variable.group)
@@ -210,13 +210,21 @@ class EditSectionMenu: Menu {
         }
         option.infoMessage = Texts.variablesInSection
         option.style = .onlySelect
-        guard let object = variable.object, let scene = variable.scene else { return }
-        option.nextScreen = {
-            Flow.shared.variable = variable
-            Flow.shared.object = object
-            Flow.shared.scene = scene
-            Flow.shared.group = variable.group
-            return EditVariableMenu(title: "Variable")
+
+        if let object = variable.object, let scene = variable.scene  {
+            option.nextScreen = {
+                Flow.shared.variable = variable
+                Flow.shared.object = object
+                Flow.shared.scene = scene
+                Flow.shared.group = variable.group
+                return EditVariableMenu(title: "Variable")
+            }
+        } else {
+            option.nextScreen = {
+                Flow.shared.variable = variable
+                Flow.shared.group = variable.group
+                return EditVariableMenu(title: "Variable")
+            }
         }
         sections[sectionNumber].options.append(option)
     }
@@ -265,7 +273,12 @@ class EditSectionMenu: Menu {
     }
 
     private func makeValue(from value: Property, sectionNumber: Int) {
-        let name = value.variable?.name ?? "fixed value = 0"
+        var name = value.variable?.name ?? "fixed value = 0"
+        if name == "__trialValue" {
+            if let listName = value.variable?.listOfValues?.name.string {
+                name = listName
+            }
+        }
         var option = Option(name: "trialValueVariable:")
         option.style = .standard
         option.detail = name
@@ -283,7 +296,7 @@ class EditSectionMenu: Menu {
     private func makeResponseValue(from correct: Property, sectionNumber: Int) {
         var name = "none"
         for scene in Flow.shared.test.scenes where scene.id == correct.somethingId {
-            let name2 = FixedResponseValue.allCases[correct.selectedValue].name
+            let name2 = FixedCorrect.allCases[correct.selectedValue].name
             name = scene.name.string + "_" + name2
         }
         var option = Option(name: "responseValueParameter:")

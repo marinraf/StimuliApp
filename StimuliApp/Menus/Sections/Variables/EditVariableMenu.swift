@@ -7,7 +7,7 @@ class EditVariableMenu: Menu {
 
     // MARK: - Setting
     override func setting() {
-        guard Flow.shared.variable.property?.timeDependency == .variable else {
+        guard Flow.shared.variable.property?.timeDependency == .variable || Flow.shared.variable.realName == "__trialValue" else {
             sections = []
             title2 = "This variable no longer exists"
             backButton = "< Section: \(Flow.shared.section.name.string)"
@@ -88,7 +88,7 @@ class EditVariableMenu: Menu {
         } else {
            option.style = .optionalInfo
             option.infoMessage = """
-            This variable share the same selection methos as the first variable.
+            This variable shares the same selection method as the first variable.
 
             Select the list of values from which this variable gets its values.
 
@@ -108,9 +108,14 @@ class EditVariableMenu: Menu {
         } else {
             option.detail = "no values"
         }
-        option.nextScreen = {
-            Flow.shared.variable = variable
-            return SelectListOfValuesMenu(title: "", style: .select)
+
+        if variable.realName == "__trialValue"  {
+            option.nextScreen = { nil }
+        } else {
+            option.nextScreen = {
+                Flow.shared.variable = variable
+                return SelectListOfValuesMenu(title: "", style: .select)
+            }
         }
 
         option.delete = { [weak self] in
@@ -172,7 +177,7 @@ class EditVariableMenu: Menu {
         option.segments = [segment1, segment2]
 
         var isAlternated = 0
-        if let variable = Flow.shared.test.variables.first(where: { $0.id == Flow.shared.section.alternate }) {
+        if let variable = Flow.shared.test.allVariables.first(where: { $0.id == Flow.shared.section.alternate }) {
             if variable === Flow.shared.variable {
                 isAlternated = 1
             }

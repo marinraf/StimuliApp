@@ -48,11 +48,7 @@ struct TouchInView {
         self.location = touch.location(in: view)
         self.screenSize = view.bounds.size
 
-        if Flow.shared.settings.device.type == .mac {
-            self.screenRetina = 1
-        } else {
-            self.screenRetina = UIScreen.main.scale
-        }
+        self.screenRetina = UIScreen.main.scale
 
         self.realX = Float((location.x - screenSize.width / 2) * screenRetina)
         self.realY = Float((-location.y + screenSize.height / 2) * screenRetina)
@@ -103,6 +99,26 @@ extension DisplayRender {
             touchPath(touchInView: touchInView)
         case .touchObject:
             touchObjectTouch(touchInView: touchInView)
+        case .twoFingersTouch:
+            var twoTouches: [TouchInView] = []
+            if let eventTouches = event?.allTouches {
+                for t in eventTouches {
+                    twoTouches.append(TouchInView(touch: t,
+                                                  time: time,
+                                                  view: view,
+                                                  originX: Task.shared.sceneTask.responseOrigin.x,
+                                                  originY: Task.shared.sceneTask.responseOrigin.y,
+                                                  coordinates: Task.shared.sceneTask.responseCoordinates,
+                                                  unit: Task.shared.sceneTask.responseFirstUnit,
+                                                  unit1: Task.shared.sceneTask.responseSecondUnit))
+                    if twoTouches.count == 2 {
+                        twoFingersTouch(touchInView1: twoTouches[0], touchInView2: twoTouches[1])
+                        break
+                    }
+                }
+            }
+        case .touchMultipleObjects:
+            multipleObjectsTouch(touchInView: touchInView)
         case .moveObject, .keyboard, .keys, .none, .lift:
             break
         }
@@ -178,6 +194,7 @@ extension DisplayRender {
 
             Task.shared.userResponse.liftClock = touch.timestamp - Flow.shared.frameControl.initSceneTime
             displayRenderDelegate?.stopAudio()
+            Task.shared.userResponse.string = "path"
             responded = true
         default:
             return
@@ -186,15 +203,12 @@ extension DisplayRender {
 
     func leftRightTouch(touchInView: TouchInView) {
         if touchInView.location.x < touchInView.screenSize.width / 3 {
-
-            if let float = Task.shared.userResponse.float {
-                Task.shared.userResponse.string = String(float)
-            }
             Task.shared.userResponse.float = Task.shared.sceneTask.responseObject[0]
             if let float = Task.shared.userResponse.float {
                 Task.shared.userResponse.string = String(float)
             }
-
+            Task.shared.userResponse.xTouches.append(touchInView.x)
+            Task.shared.userResponse.yTouches.append(touchInView.y)
             Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
@@ -203,6 +217,8 @@ extension DisplayRender {
             if let float = Task.shared.userResponse.float {
                 Task.shared.userResponse.string = String(float)
             }
+            Task.shared.userResponse.xTouches.append(touchInView.x)
+            Task.shared.userResponse.yTouches.append(touchInView.y)
             Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
@@ -215,6 +231,8 @@ extension DisplayRender {
             if let float = Task.shared.userResponse.float {
                 Task.shared.userResponse.string = String(float)
             }
+            Task.shared.userResponse.xTouches.append(touchInView.x)
+            Task.shared.userResponse.yTouches.append(touchInView.y)
             Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
@@ -223,6 +241,8 @@ extension DisplayRender {
             if let float = Task.shared.userResponse.float {
                 Task.shared.userResponse.string = String(float)
             }
+            Task.shared.userResponse.xTouches.append(touchInView.x)
+            Task.shared.userResponse.yTouches.append(touchInView.y)
             Task.shared.userResponse.clocks.append(touchInView.time)
             displayRenderDelegate?.stopAudio()
             responded = true
@@ -237,6 +257,26 @@ extension DisplayRender {
         Task.shared.userResponse.angleTouches.append(polar.angle)
         Task.shared.userResponse.clocks.append(touchInView.time)
         displayRenderDelegate?.stopAudio()
+        Task.shared.userResponse.string = "touch"
+        responded = true
+    }
+
+    func twoFingersTouch(touchInView1: TouchInView, touchInView2: TouchInView) {
+        Task.shared.userResponse.xTouches.append(touchInView1.x)
+        Task.shared.userResponse.yTouches.append(touchInView1.y)
+        let polar = touchInView1.polar
+        Task.shared.userResponse.radiusTouches.append(polar.radius)
+        Task.shared.userResponse.angleTouches.append(polar.angle)
+        Task.shared.userResponse.clocks.append(touchInView1.time)
+
+        Task.shared.userResponse.xTouch2 = touchInView2.x
+        Task.shared.userResponse.yTouch2 = touchInView2.y
+        let polar2 = touchInView2.polar
+        Task.shared.userResponse.radiusTouch2 = polar2.radius
+        Task.shared.userResponse.angleTouch2 = polar2.angle
+
+        displayRenderDelegate?.stopAudio()
+        Task.shared.userResponse.string = "two fingers touch"
         responded = true
     }
 
@@ -300,6 +340,8 @@ extension DisplayRender {
                     if let float = Task.shared.userResponse.float {
                         Task.shared.userResponse.string = String(float)
                     }
+                    Task.shared.userResponse.xTouches.append(touchInView.x)
+                    Task.shared.userResponse.yTouches.append(touchInView.y)
                     Task.shared.userResponse.clocks.append(touchInView.time)
                     displayRenderDelegate?.stopAudio()
                     responded = true
@@ -313,11 +355,60 @@ extension DisplayRender {
                 if let float = Task.shared.userResponse.float {
                     Task.shared.userResponse.string = String(float)
                 }
+                Task.shared.userResponse.xTouches.append(touchInView.x)
+                Task.shared.userResponse.yTouches.append(touchInView.y)
                 Task.shared.userResponse.clocks.append(touchInView.time)
                 displayRenderDelegate?.stopAudio()
                 responded = true
             }
         }
+    }
+
+    func multipleObjectsTouch(touchInView: TouchInView) {
+
+        let multipleTouches = Task.shared.sceneTask.responseDimensions
+        let trial = Task.shared.sectionTask.currentTrial
+        let numberOfObjects = DataTask.metalValues.count
+        var allowBackground = true
+
+        for object in (0 ..< numberOfObjects).reversed() where
+            !Task.shared.userResponse.multipleInts.contains(object) {
+            if isTouched(object: object, trial: trial, touchInView: touchInView) {
+
+                allowBackground = false
+                if let objectValue = Task.shared.sceneTask.responseObject[object] {
+                    
+                    Task.shared.sceneTask.metalFloats[trial][object][MetalValues.contrastValue] = 0.5
+
+                    Task.shared.userResponse.float = objectValue
+                    Task.shared.userResponse.multipleInts.append(object)
+                    Task.shared.userResponse.multipleFloats.append(objectValue)
+                    if Task.shared.userResponse.multipleInts.count == 1 {
+                        Task.shared.userResponse.string = "\(objectValue)"
+                    } else if Task.shared.userResponse.multipleInts.count >= multipleTouches {
+                        Task.shared.userResponse.string! += ";\(objectValue)"
+                        Task.shared.userResponse.clocks.append(touchInView.time)
+                        displayRenderDelegate?.stopAudio()
+                        responded = true
+                        return
+                    } else {
+                        Task.shared.userResponse.string! += ";\(objectValue)"
+                    }
+                }
+            }
+        }
+        if allowBackground {
+            if Task.shared.sceneTask.responseBackground != nil {
+                Task.shared.userResponse.float = nil
+                Task.shared.userResponse.multipleInts = []
+                Task.shared.userResponse.multipleFloats = []
+                Task.shared.userResponse.string = "NaN"
+                Task.shared.userResponse.clocks.append(touchInView.time)
+                displayRenderDelegate?.stopAudio()
+                responded = true
+            }
+        }
+
     }
 
     func pathTouches(touches: Set<UITouch>, event: UIEvent?, view: UIView) {
@@ -358,12 +449,6 @@ extension DisplayRender {
                                               unit: Task.shared.sceneTask.responseFirstUnit,
                                               unit1: Task.shared.sceneTask.responseSecondUnit)
 
-                Task.shared.userResponse.xTouches.append(touchInView.x)
-                Task.shared.userResponse.yTouches.append(touchInView.y)
-                let polar = touchInView.polar
-                Task.shared.userResponse.radiusTouches.append(polar.radius)
-                Task.shared.userResponse.angleTouches.append(polar.angle)
-                Task.shared.userResponse.clocks.append(time)
 
                 let trial = Task.shared.sectionTask.currentTrial
                 let numberOfObjects = DataTask.metalValues.count
@@ -372,6 +457,13 @@ extension DisplayRender {
                     for object in (0 ..< numberOfObjects).reversed() {
                         if let objectValue = Task.shared.sceneTask.responseObject[object] {
                             if isTouched(object: object, trial: trial, touchInView: touchInView) {
+
+                                Task.shared.userResponse.xTouches.append(touchInView.x)
+                                Task.shared.userResponse.yTouches.append(touchInView.y)
+                                let polar = touchInView.polar
+                                Task.shared.userResponse.radiusTouches.append(polar.radius)
+                                Task.shared.userResponse.angleTouches.append(polar.angle)
+                                Task.shared.userResponse.clocks.append(time)
 
                                 Task.shared.sceneTask.xCenter0[trial][object] = touchInView.realX
                                 Task.shared.sceneTask.yCenter0[trial][object] = touchInView.realY
@@ -386,6 +478,13 @@ extension DisplayRender {
                         }
                     }
                 } else if let object = Task.shared.responseMovingObject {
+
+                    Task.shared.userResponse.xTouches.append(touchInView.x)
+                    Task.shared.userResponse.yTouches.append(touchInView.y)
+                    let polar = touchInView.polar
+                    Task.shared.userResponse.radiusTouches.append(polar.radius)
+                    Task.shared.userResponse.angleTouches.append(polar.angle)
+                    Task.shared.userResponse.clocks.append(time)
 
                     Task.shared.sceneTask.xCenter0[trial][object] = touchInView.realX
                     Task.shared.sceneTask.yCenter0[trial][object] = touchInView.realY
@@ -404,9 +503,11 @@ extension DisplayRender {
         let numberOfObjects = DataTask.metalValues.count
 
         var objectsTouchedTemp = 0
+        var stopObject: Int? = nil
         for object in (0 ..< numberOfObjects).reversed() where Task.shared.responseMovingObject != object {
             if isTouched(object: object, trial: trial, touchInView: touchInView) {
                 objectsTouchedTemp += 1
+                stopObject = object
             }
         }
         if objectsTouched == nil {
@@ -414,8 +515,22 @@ extension DisplayRender {
         }
         if objectsTouched != objectsTouchedTemp {
             Task.shared.userResponse.float = userResponseTemp
+            var float2: Float? = nil
+            if let stopObject = stopObject {
+                float2 = Task.shared.sceneTask.responseObject[stopObject]
+            }
+
             if let float = Task.shared.userResponse.float {
-                Task.shared.userResponse.string = String(float)
+                if let float2 = float2 {
+                    Task.shared.userResponse.multipleFloats = [float, float2]
+                    Task.shared.userResponse.string = "\(float);\(float2)"
+                } else {
+                    Task.shared.userResponse.multipleFloats = [float]
+                    Task.shared.userResponse.string = "\(float);NaN"
+                }
+            } else {
+                Task.shared.userResponse.multipleFloats = []
+                Task.shared.userResponse.string = "NaN"
             }
             displayRenderDelegate?.stopAudio()
             responded = true

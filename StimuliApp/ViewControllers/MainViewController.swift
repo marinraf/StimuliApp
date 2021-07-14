@@ -13,6 +13,13 @@ class MainViewController: UIViewController {
         present(svc, animated: true, completion: nil)
     }
 
+    @IBAction func brainButtonPressed(_ sender: Any) {
+        guard let url = URL(string: "https://braincircuitsbehavior.org") else { return }
+
+        let svc = SFSafariViewController(url: url)
+        present(svc, animated: true, completion: nil)
+    }
+
     var main: Main
     var button = UIButton()
 

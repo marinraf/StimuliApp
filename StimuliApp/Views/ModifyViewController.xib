@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -90,7 +90,7 @@
                                     <rect key="frame" x="0.0" y="20" width="375" height="60"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="value type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mn4-x8-u7R">
-                                            <rect key="frame" x="145" y="5" width="85" height="21"/>
+                                            <rect key="frame" x="145.5" y="5" width="84" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="E5Y-8i-dz0"/>
                                             </constraints>
@@ -168,6 +168,7 @@
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                     </subviews>
+                                    <viewLayoutGuide key="safeArea" id="QFL-pN-Wkx"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="310" id="1DH-ce-s7x"/>
@@ -182,7 +183,6 @@
                                         <constraint firstItem="tc0-Ve-w1T" firstAttribute="top" secondItem="ZP2-dz-k0g" secondAttribute="top" constant="5" id="qCi-0W-shK"/>
                                         <constraint firstItem="kgm-s6-68M" firstAttribute="leading" secondItem="QFL-pN-Wkx" secondAttribute="leading" constant="16" id="uhH-vw-OpV"/>
                                     </constraints>
-                                    <viewLayoutGuide key="safeArea" id="QFL-pN-Wkx"/>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g9i-0I-pOz">
                                     <rect key="frame" x="0.0" y="399" width="375" height="60"/>
@@ -380,6 +380,7 @@
                     </connections>
                 </button>
             </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="CJ0-mF-rwm" secondAttribute="trailing" id="BEe-Fz-jCP"/>
@@ -395,7 +396,6 @@
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="-685.60000000000002" y="367.01649175412297"/>
         </view>
     </objects>

@@ -76,7 +76,7 @@ class EditListOfValuesMenu: Menu {
     // MARK: - Options
     private func getSections() -> [Section] {
         var result: [Section] = []
-        for variable in Flow.shared.test.variables where variable.listOfValuesId == Flow.shared.listOfValues.id {
+        for variable in Flow.shared.test.allVariables where variable.listOfValuesId == Flow.shared.listOfValues.id {
             for section in Flow.shared.test.sections where section.trialValue.somethingId == variable.id {
                 result.append(section)
             }
@@ -93,7 +93,7 @@ class EditListOfValuesMenu: Menu {
 
             var keys: [String] = []
 
-            if let vari = Flow.shared.test.variables.first(where: { $0.listOfValues?.dimensions == 8 }) {
+            if let vari = Flow.shared.test.allVariables.first(where: { $0.listOfValues?.dimensions == 8 }) {
                 if let values = vari.listOfValues?.allValuesBlock {
                     keys = values.map({ $0.id })
                 }
@@ -146,7 +146,7 @@ class EditListOfValuesMenu: Menu {
                     element.listOrder = index
                 }
 
-                if let vari = Flow.shared.test.variables.first(where: { $0.listOfValues?.dimensions == 8 }) {
+                if let vari = Flow.shared.test.allVariables.first(where: { $0.listOfValues?.dimensions == 8 }) {
                     for section in Flow.shared.test.sections where section.trialValue.somethingId == vari.id {
                         SectionData.addPropertiesToValueTypeWithDict(property: section.trialValue.properties[0],
                                                                      oldKeys: keys)
@@ -200,7 +200,7 @@ class EditListOfValuesMenu: Menu {
         option.nextScreen = {
             var keys: [String] = []
 
-            if let vari = Flow.shared.test.variables.first(where: { $0.listOfValues?.dimensions == 8 }) {
+            if let vari = Flow.shared.test.allVariables.first(where: { $0.listOfValues?.dimensions == 8 }) {
                 if let values = vari.listOfValues?.allValuesBlock {
                     keys = values.map({ $0.id })
                 }
@@ -255,7 +255,7 @@ class EditListOfValuesMenu: Menu {
                     element.listOrder = index
                 }
 
-                if let vari = Flow.shared.test.variables.first(where: { $0.listOfValues?.dimensions == 8 }) {
+                if let vari = Flow.shared.test.allVariables.first(where: { $0.listOfValues?.dimensions == 8 }) {
                     for section in Flow.shared.test.sections where section.trialValue.somethingId == vari.id {
                         SectionData.addPropertiesToValueTypeWithDict(property: section.trialValue.properties[0],
                                                                      oldKeys: keys)

@@ -30,7 +30,7 @@ class SelectTableViewCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
 }
 
-protocol MenuTableViewCellDelegate: class {
+protocol MenuTableViewCellDelegate: AnyObject {
     func didTapButton(_ sender: UIButton)
     func didSelectSegment(_ sender: UISegmentedControl, index: Int)
 }

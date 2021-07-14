@@ -6,7 +6,7 @@ import Foundation
 class VariableTask: Codable {
     var name: String
     var id: String
-    var object: Object
+    var object: Object?
     var property: Property
     var list: ListOfValues
     var numbers: [Int]
@@ -20,7 +20,7 @@ class VariableTask: Codable {
 
     init(name: String,
          id: String,
-         object: Object,
+         object: Object?,
          property: Property,
          list: ListOfValues,
          numbers: [Int],

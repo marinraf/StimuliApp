@@ -5,7 +5,7 @@ import UIKit
 import GameKit
 
 struct Constants {
-    static let version: Double = 1.6
+    static let version: Double = 1.8
     static let epsilon: Float = 0.00001
     static let minimumResolutionMac: Float = 800
     static let cmsInInch: Float = 2.54
@@ -436,6 +436,30 @@ struct AppUtility {
         let newVector = (vector1.0 - vector2.0, vector1.1 - vector2.1)
 
         return sqrtf(newVector.0 * newVector.0 + newVector.1 * newVector.1)
+    }
+
+    static func calculateDistancePolar(_ vector1: (Float, Float), _ vector2: (Float, Float)) -> Float {
+
+        let vector1C = polarToCartesian(radius: vector1.0, angle: vector1.1)
+        let vector2C = polarToCartesian(radius: vector2.0, angle: vector2.1)
+
+        let newVector = (vector1C.0 - vector2C.0, vector1C.1 - vector2C.1)
+
+        return sqrtf(newVector.0 * newVector.0 + newVector.1 * newVector.1)
+    }
+
+    static func calculateDistanceAngle(_ angle1: Float, _ angle2: Float) -> Float {
+
+        let dist = abs(angle1 - angle2)
+
+        return min(dist, 360 - dist)
+    }
+
+    static func calculateDistance3d(_ vector1: (Float, Float, Float), _ vector2: (Float, Float, Float)) -> Float {
+
+        let newVector = (vector1.0 - vector2.0, vector1.1 - vector2.1, vector1.2 - vector2.2)
+
+        return sqrtf(newVector.0 * newVector.0 + newVector.1 * newVector.1 + newVector.2 * newVector.2)
     }
 
     static func createTexture(from image: UIImage?, device: MTLDevice) -> MTLTexture {

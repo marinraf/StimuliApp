@@ -42,6 +42,14 @@ extension UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
 
+    func showAlertFirstMessageMac(resume: @escaping (UIAlertAction) -> Void, end: @escaping (UIAlertAction) -> Void) {
+        let alert = UIAlertController(title: "Running test",
+                                      message: "",
+                                      preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: resume))
+        self.present(alert, animated: true, completion: nil)
+    }
+
     func showAlertNeedToSync(resume: @escaping (UIAlertAction) -> Void, end: @escaping (UIAlertAction) -> Void) {
         let alert = UIAlertController(title: "Re-sync",
                                       message: Texts.needToSync,

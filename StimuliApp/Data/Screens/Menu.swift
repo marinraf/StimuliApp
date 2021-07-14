@@ -171,9 +171,9 @@ class Menu: Screen {
             case .key:
                 makeOptionKey(from: property, sectionNumber: sectionNumber,
                               badNames: badNames, position: position, defaultSettings: defaultSettings)
-            case .select, .size2d, .origin2d, .originResponse, .position2d, .positionResponse, .color,
-                 .behaviour, .direction, .soundType, .shape, .border, .noise, .contrast, .modulator, .sceneDuration,
-                 .objectResponse, .keyResponse, .gamma, .randomness, .listOrder, .selection,
+            case .select, .size2d, .origin2d, .originResponse, .position2d, .positionResponse, .color, .behaviour,
+                 .direction, .soundType, .shape, .border, .noise, .contrast, .modulator, .sceneDuration, .selection,
+                 .objectResponse, .keyResponse, .endPathResponse, .gamma, .randomness, .listOrder, .distanceResponse,
                  .selectionDifferent, .selectionOrder, .valueType, .correctType, .distance, .correct2:
                 makeOptionSelect(from: property, sectionNumber: sectionNumber, position: position)
                 for element in property.properties {
@@ -301,6 +301,10 @@ class Menu: Screen {
                                 info: property.info,
                                 property: property)
             modify.saveFunctionFloats = { response in
+                if property.name == "numberOfObjects" {
+                    Flow.shared.section.responseValue = SectionData.makeResponseValueProperty(selected: 0)
+                }
+
                 let oldValue = property.float
                 property.changeValue(new: response)
                 if property.unitType == .externalSize {
@@ -312,7 +316,7 @@ class Menu: Screen {
                     UserDefaults.standard.set(true, forKey: property.nameToShow + "Saved")
                     Flow.shared.settings.updateProperties()
                 } else if let newVariable = property.variable {
-                    for newSelection in Flow.shared.section.variables.map({ $0.selection }) {
+                    for newSelection in Flow.shared.section.allVariables.map({ $0.selection }) {
                         for newProperty in newSelection.properties {
                             if newProperty.variable === newVariable {
                                 newProperty.changeValue(new: response)
@@ -355,6 +359,10 @@ class Menu: Screen {
             var segment = Segment(title: element)
             segment.action = {
                 property.changeSelectedValue(new: index, propertyType: property.propertyType)
+
+                if property.name == "endPath" || property.name == "endPathResponseValue" {
+                    Flow.shared.section.responseValue = SectionData.makeResponseValueProperty(selected: 0)
+                }
                 Flow.shared.saveTest(Flow.shared.test)
             }
             option.segments.append(segment)

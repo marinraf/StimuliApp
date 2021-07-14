@@ -53,7 +53,7 @@ class SelectListOfValuesMenu: Menu {
         option.nextScreen = {
 
             if listOfValues.dimensions == 8 {
-                if let vari = Flow.shared.test.variables.first(where: { $0.group == -1 }) {
+                if let vari = Flow.shared.test.allVariables.first(where: { $0.group == -1 }) {
                     vari.group = 0
                     vari.listOfValuesId = ""
                 }

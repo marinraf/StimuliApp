@@ -677,7 +677,10 @@ numberOfDifferentTrials * repetitions.
 
     static let trialValueVariable = """
 It is possible to associate a different value for each trial in the section.
-To do this, it is necessary to select the variable that will be used to calculate the value of each trial.
+To do this, you can select one variable from one of the objects in the section, \
+the value of the trial will be the value of that variable.
+You can also create a new variable just to use its values as the trial values. You just need to select \
+one list of values (or a list of vectors 2d or 3d).
 If no variable is selected, the value of each trial will always be considered zero.
 """
 

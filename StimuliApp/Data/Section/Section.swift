@@ -14,6 +14,9 @@ class Section: Codable {
     var trialValue: Property
     var trialValueVariable: Variable?
     var responseValue: Property
+    var responseValueVector: FixedCorrect3?
+    var responseValueDimension: Int?
+
     var next: Property
 
     var scenes: [Scene]
@@ -92,6 +95,14 @@ class Section: Codable {
         return objects.flatMap({ $0.variables })
     }
 
+    var allVariables: [Variable] {
+        if let trialValueVariable = trialValueVariable {
+            return variables + [trialValueVariable]
+        } else {
+            return variables
+        }
+    }
+
     var isShuffled: Bool {
         for variable in variables {
             if let selection = FixedSelection(rawValue: variable.selection.string) {
@@ -112,14 +123,14 @@ class Section: Codable {
         var number = 1
         var groups: [Int] = []
 
-        for variable in self.variables {
+        for variable in self.allVariables {
             if variable.group == -1 {
                 guard let listOfValues = variable.listOfValues else { return 0 }
                 return listOfValues.numberOfTrialsIfBlock
             }
         }
 
-        for variable in self.variables {
+        for variable in self.allVariables {
             guard let selection = FixedSelection(rawValue: variable.selection.string) else { return 0 }
             guard let listOfValues = variable.listOfValues else { return 0 }
             if variable.group == 0 || !groups.contains(variable.group) {
@@ -154,7 +165,7 @@ class Section: Codable {
         var number = 1
         var groups: [Int] = []
 
-        for variable in self.variables {
+        for variable in self.allVariables {
             guard let selection = FixedSelection(rawValue: variable.selection.string) else {
                 return """
                 ERROR: in variable: \(variable.name).
@@ -195,7 +206,7 @@ class Section: Codable {
                         let number = varProperty.float.toInt
                         if number > listOfValues.values.count {
                             return """
-                            ERROR: variable: \(element.name) has a fixed value assigned: \(number) that is greater \
+                            ERROR: variable: \(element.name) has a fixed value assigned: \(number) that is larger \
                             than its possible values: \(listOfValues.values.count).
                             """
                         }
@@ -208,7 +219,7 @@ class Section: Codable {
                             if number > listOfValues.values.count {
                                 return """
                                 ERROR: variable: \(element.name) has an initial value assigned: \(number) that is \
-                                greater than its possible values: \(listOfValues.values.count).
+                                larger than its possible values: \(listOfValues.values.count).
                                 """
                             }
                         } else {

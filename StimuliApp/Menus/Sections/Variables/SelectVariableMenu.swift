@@ -17,7 +17,7 @@ class SelectVariableMenu: Menu {
         let section = MenuSection(title: "Select variable")
         sections.append(section)
         var otherVars = 0
-        for variable in Flow.shared.section.variables where variable !== Flow.shared.variable {
+        for variable in Flow.shared.section.allVariables where variable !== Flow.shared.variable {
             otherVars += 1
             if variable.group == 0 {
                 makeVariable(from: variable, sectionNumber: sectionNumber)

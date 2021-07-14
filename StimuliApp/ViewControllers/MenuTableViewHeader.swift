@@ -3,7 +3,7 @@
 
 import UIKit
 
-protocol MenuTableViewHeaderDelegate: class {
+protocol MenuTableViewHeaderDelegate: AnyObject {
     func toggleSection(_ header: MenuTableViewHeader, section: Int)
 }
 

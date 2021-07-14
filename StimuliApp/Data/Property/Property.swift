@@ -196,7 +196,7 @@ class Property: Codable {
             } else {
                 return object.name.string
             }
-        } else if let variable = Flow.shared.test.variables.first(where: { $0.id == somethingId }) {
+        } else if let variable = Flow.shared.test.allVariables.first(where: { $0.id == somethingId }) {
             return variable.name + name
         } else {
             return name
@@ -293,7 +293,7 @@ class Property: Codable {
     }
 
     var variable: Variable? {
-        return Flow.shared.test.variables.first(where: { $0.id == somethingId })
+        return Flow.shared.test.allVariables.first(where: { $0.id == somethingId })
     }
 
     var scene: Scene? {
@@ -325,10 +325,10 @@ class Property: Codable {
 
         switch propertyType {
         case .string, .key, .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .sceneDuration,
-             .position2d, .size2d, .positionResponse, .origin2d, .originResponse, .value, .valueType,
+             .position2d, .size2d, .positionResponse, .origin2d, .originResponse, .value, .valueType, .distanceResponse,
              .correct, .correct2, .color, .objectResponse, .keyResponse, .randomness, .listOrder, .selection,
              .selectionDifferent, .distance, .selectionOrder, .correctType, .image, .text, .video, .audio, .font,
-             .gamma, .behaviour, .direction, .soundType:
+             .gamma, .behaviour, .direction, .soundType, .endPathResponse:
             return ""
         case .dobleSize, .doblePosition, .triple, .sequence:
             switch self.timeDependency {
@@ -376,10 +376,11 @@ class Property: Codable {
             }
         case .string, .key, .font:
             return text
-        case .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .size2d,
+        case .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .size2d, .distanceResponse,
              .position2d, .positionResponse, .origin2d, .originResponse, .value, .valueType, .correct, .correct2,
              .correctType, .sceneDuration, .color, .objectResponse, .keyResponse, .randomness, .listOrder,
-             .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction, .soundType, .distance:
+             .endPathResponse, .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction,
+             .soundType, .distance:
             return fixedValues[selectedValue]
         case .dobleSize:
             switch self.timeDependency {
@@ -423,9 +424,10 @@ class Property: Codable {
         case .string, .key, .font:
             return [text, "", ""]
         case .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .sceneDuration,
-             .position2d, .positionResponse, .origin2d, .originResponse, .size2d, .value, .valueType,
+             .position2d, .positionResponse, .origin2d, .originResponse, .size2d, .value, .valueType, .distanceResponse,
              .correct, .correct2, .correctType, .color, .objectResponse, .keyResponse, .randomness, .listOrder,
-             .selection, .distance, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction, .soundType:
+             .selection, .distance, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction,
+             .soundType, .endPathResponse:
             return [fixedValues[selectedValue], "", ""]
         case .dobleSize, .doblePosition:
             return [values[0], values[1], ""]
@@ -465,10 +467,11 @@ class Property: Codable {
             return [String(float.toInt), "", ""]
         case .string, .key, .font:
             return [text]
-        case .select, .type, .shape, .border, .contrast, .modulator, .response, .sceneDuration,
+        case .select, .type, .shape, .border, .contrast, .modulator, .response, .sceneDuration, .distanceResponse,
              .correctType, .correct, .correct2, .position2d, .size2d, .positionResponse, .origin2d, .originResponse,
              .value, .valueType, .noise, .color, .objectResponse, .keyResponse, .randomness, .listOrder,
-             .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction, .soundType, .distance:
+             .endPathResponse, .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour,
+             .direction, .soundType, .distance:
             return [fixedValues[selectedValue]]
         case .dobleSize, .doblePosition:
             let value = numberFormatter.string(from: newNewFloat as NSNumber) ?? ""
@@ -607,7 +610,7 @@ class Property: Codable {
         default:
             if FixedSelection(rawValue: self.string) != nil {
                 if let group = Int(self.somethingId) {
-                    let variables = Flow.shared.section.variables.filter({ $0.group == group && group != 0 })
+                    let variables = Flow.shared.section.allVariables.filter({ $0.group == group && group != 0 })
                     for variable in variables {
                         variable.selection.selectedValue = selectedValue
                         variable.selection.addProperties()
@@ -638,19 +641,25 @@ class Property: Codable {
                     })
                 }
             } else if FixedSelectionDifferent(rawValue: self.string) != nil {
-                for variable in Flow.shared.section.variables where variable.group == Flow.shared.group
+                for variable in Flow.shared.section.allVariables where variable.group == Flow.shared.group
                     && variable.group != 0 {
                         variable.selection.properties[0].selectedValue = selectedValue
                 }
             } else if FixedSelectionPriority(rawValue: self.string) != nil {
-                for variable in Flow.shared.section.variables where variable.group == Flow.shared.group
+                for variable in Flow.shared.section.allVariables where variable.group == Flow.shared.group
                     && variable.group != 0 {
                         variable.selection.properties[0].selectedValue = selectedValue
                 }
             } else if FixedResponse(rawValue: self.string) != nil {
                 Flow.shared.section.responseValue = SectionData.makeResponseValueProperty(selected: 0)
+            } else if FixedCartesianDistances(rawValue: self.string) != nil {
+                Flow.shared.section.responseValue = SectionData.makeResponseValueProperty(selected: 0)
+            } else if FixedPolarDistances(rawValue: self.string) != nil {
+                Flow.shared.section.responseValue = SectionData.makeResponseValueProperty(selected: 0)
+            } else if FixedPositionResponse(rawValue: self.string) != nil {
+                Flow.shared.section.responseValue = SectionData.makeResponseValueProperty(selected: 0)
             } else if let correct = FixedCorrectType(rawValue: self.string) {
-                for variable in Flow.shared.section.variables where variable.selection.properties.count > 0 {
+                for variable in Flow.shared.section.allVariables where variable.selection.properties.count > 0 {
                     if variable.selection.properties[0] === self {
                         let vars = variable.allVariablesInSameGroup(section: Flow.shared.section)
                         for item in vars {
@@ -821,6 +830,10 @@ class Property: Codable {
             SceneData.addPropertiesToSceneDuration(property: self)
         case .positionResponse:
             SceneData.addPropertiesToPositionResponse(property: self)
+        case .distanceResponse:
+            SceneData.addPropertiesToDistanceResponse(property: self)
+        case .endPathResponse:
+            SceneData.addPropertiesToEndPathResponse(property: self)
         case .originResponse:
             SceneData.addPropertiesToOriginResponse(property: self)
         case .objectResponse:

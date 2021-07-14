@@ -86,6 +86,10 @@ class Test: NSObject, Codable {
         return self.objects.flatMap({ $0.variables })
     }
 
+    var allVariables: [Variable] {
+        return self.sections.flatMap({ $0.allVariables })
+    }
+
     var stimuliProperties: [Property] {
         return self.stimuli.flatMap({ $0.allProperties })
     }

@@ -256,6 +256,17 @@ enum Device {
     ///
     /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP815/ipad-pro-12-2020.jpeg)
     case iPadPro12Inch4
+    /// Device is an [iPad Pro 11-inch (3rd generation)](https://support.apple.com/kb/TODO)
+    ///
+    /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/TODO)
+    case iPadPro11Inch3
+    /// Device is an [iPad Pro 12.9-inch (5th generation)](https://support.apple.com/kb/TODO)
+    ///
+    /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/TODO)
+    case iPadPro12Inch5
+    /// Device is a [HomePod](https://support.apple.com/kb/SP773)
+    ///
+    /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP773/homepod_space_gray_large_2x.jpg)
     /// Device is unknown
     case unknown(String)
     //// Device is running macOS
@@ -335,6 +346,8 @@ enum Device {
         case "iPad8,5", "iPad8,6", "iPad8,7", "iPad8,8": return iPadPro12Inch3
         case "iPad8,9", "iPad8,10": return iPadPro11Inch2
         case "iPad8,11", "iPad8,12": return iPadPro12Inch4
+        case "iPad13,4", "iPad13,5", "iPad13,6", "iPad13,7": return iPadPro11Inch3
+        case "iPad13,8", "iPad13,9", "iPad13,10", "iPad13,11": return iPadPro12Inch5
         default: return unknown(identifier)
         }
         #else
@@ -397,6 +410,8 @@ enum Device {
         case .iPadPro12Inch3: return "iPad Pro (12.9-inch) (3rd generation)"
         case .iPadPro11Inch2: return "iPad Pro (11-inch) (2nd generation)"
         case .iPadPro12Inch4: return "iPad Pro (12.9-inch) (4th generation)"
+        case .iPadPro11Inch3: return "iPad Pro (11-inch) (3rd generation)"
+        case .iPadPro12Inch5: return "iPad Pro (12.9-inch) (5th generation)"
         case .unknown(let identifier): return "unknown: \(identifier)"
         case .macOS: return "macos"
         }
@@ -458,6 +473,8 @@ enum Device {
         case .iPadPro12Inch3: return 264
         case .iPadPro11Inch2: return 264
         case .iPadPro12Inch4: return 264
+        case .iPadPro11Inch3: return 264
+        case .iPadPro12Inch5: return 264
         case .unknown: return nil
         case .macOS: return nil
         }
@@ -518,6 +535,8 @@ enum Device {
         case .iPadPro12Inch3: return 600
         case .iPadPro11Inch2: return 600
         case .iPadPro12Inch4: return 600
+        case .iPadPro11Inch3: return 600
+        case .iPadPro12Inch5: return 600
         case .unknown: return nil
         case .macOS: return nil
         }
@@ -579,6 +598,8 @@ enum Device {
         case .iPadPro12Inch3: return .ipad
         case .iPadPro11Inch2: return .ipad
         case .iPadPro12Inch4: return .ipad
+        case .iPadPro11Inch3: return .ipad
+        case .iPadPro12Inch5: return .ipad
         case .unknown: return .iphone
         case .macOS: return .mac
         }

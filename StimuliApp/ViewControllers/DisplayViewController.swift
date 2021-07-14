@@ -137,7 +137,11 @@ extension DisplayViewController: DisplayRenderDelegate {
         Flow.shared.frameControl.measure = false
         player?.pause()
         audioSystem.pauseAudio()
-        showAlertFirstMessageTest(resume: { _ in self.resumeFromPauseFirst() }, end: { _ in self.end() })
+        if Flow.shared.settings.device.type == .mac {
+            showAlertFirstMessageMac(resume: { _ in self.resumeFromPauseFirst() }, end: { _ in self.end() })
+        } else {
+            showAlertFirstMessageTest(resume: { _ in self.resumeFromPauseFirst() }, end: { _ in self.end() })
+        }
     }
 
     func addBackButton(position: FixedXButton) {
@@ -306,6 +310,10 @@ extension DisplayViewController: DisplayRenderDelegate {
     }
 
     func resumeFromPauseFirst() {
+        if Flow.shared.settings.device.type == .mac {
+            view.frame = CGRect(x: x, y:y, width: screenSize.width, height: screenSize.height)
+            metalView.frame = CGRect(x: 0, y:0, width: screenSize.width, height: screenSize.height)
+        }
         displayRender?.inactive = false
         player?.play()
         audioSystem.resumeAudio()

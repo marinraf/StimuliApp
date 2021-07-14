@@ -68,7 +68,7 @@ class EditListOfValuesVideo: Menu {
     // MARK: - Options
     private func getSections() -> [Section] {
         var result: [Section] = []
-        for variable in Flow.shared.test.variables where variable.listOfValuesId == Flow.shared.listOfValues.id {
+        for variable in Flow.shared.test.allVariables where variable.listOfValuesId == Flow.shared.listOfValues.id {
             for section in Flow.shared.test.sections where section.trialValue.somethingId == variable.id {
                 result.append(section)
             }
@@ -94,7 +94,7 @@ class EditListOfValuesVideo: Menu {
                 property.text = detail
                 property.somethingId = id
 
-                for variable in Flow.shared.test.variables
+                for variable in Flow.shared.test.allVariables
                     where variable.listOfValuesId == Flow.shared.listOfValues.id {
                         for section in Flow.shared.test.sections where section.trialValue.somethingId == variable.id {
                             SectionData.changeValueNames(property: section.trialValue.properties[0],
