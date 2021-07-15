@@ -24,6 +24,7 @@ class Flow {
     var group: Int
     var settings: Settings
     var frameControl: FrameControl
+    var animated: Bool
     private var dataModel: DataModel
     var macApp: NSObjectProtocol?
 
@@ -44,6 +45,7 @@ class Flow {
         self.group = 0
         self.settings = Settings(device: Device())
         self.frameControl = FrameControl(frameRate: 60, maximumFrameRate: 60, delayAudio: 0)
+        self.animated = true
         let fetchedTests = dataModel.fetchAllTests()
         let fetchedResults = dataModel.fetchAllResults()
         tests = fetchedTests.sorted(by: { $0.order < $1.order })
@@ -52,6 +54,7 @@ class Flow {
         #if targetEnvironment(macCatalyst)
         Bundle(path: Bundle.main.builtInPlugInsPath?.appending("/MacBundle.bundle") ?? "")?.load()
         self.macApp = NSClassFromString("MacApp") as AnyObject as? NSObjectProtocol
+        self.animated = false
         #endif
     }
 
@@ -219,25 +222,25 @@ class Flow {
             break
         case .menu:
             let newViewController = MenuViewController()
-            navigationController.pushViewController(newViewController, animated: true)
+            navigationController.pushViewController(newViewController, animated: self.animated)
         case .modify:
             let newViewController = ModifyViewController()
-            navigationController.pushViewController(newViewController, animated: true)
+            navigationController.pushViewController(newViewController, animated: self.animated)
         case .infoExport:
             let newViewController = InfoExportViewController()
-            navigationController.pushViewController(newViewController, animated: true)
+            navigationController.pushViewController(newViewController, animated: self.animated)
         case .content:
             let newViewController = ContentViewController()
-            navigationController.pushViewController(newViewController, animated: true)
+            navigationController.pushViewController(newViewController, animated: self.animated)
         case .display:
             let newViewController = DisplayViewController()
-            navigationController.pushViewController(newViewController, animated: true)
+            navigationController.pushViewController(newViewController, animated: self.animated)
         case .displayPreview:
             let newViewController = DisplayPreviewViewController()
-            navigationController.pushViewController(newViewController, animated: true)
+            navigationController.pushViewController(newViewController, animated: self.animated)
         case .select:
             let newViewController = SelectViewController()
-            navigationController.pushViewController(newViewController, animated: true)
+            navigationController.pushViewController(newViewController, animated: self.animated)
         }
         deletePreviousToLastViewControllerIfIsSelectViewControllerOrSeed()
     }
@@ -251,7 +254,7 @@ class Flow {
         }
 
         navigationController.setNavigationBarHidden(false, animated: false)
-        navigationController.popViewController(animated: true)
+        navigationController.popViewController(animated: self.animated)
     }
 
     private func deletePreviousToLastViewControllerIfIsSelectViewControllerOrSeed() {
