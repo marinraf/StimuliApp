@@ -160,6 +160,22 @@ enum Device {
     ///
     /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP832/iphone12promax-ios14_2x.png)
     case iPhone12ProMax
+    /// Device is an [iPhone 13](https://support.apple.com/kb/SP851)
+    ///
+    /// ![Image](https://km.support.apple.com/resources/sites/APPLE/content/live/IMAGES/1000/IM1092/en_US/iphone-13-240.png)
+    case iPhone13
+    /// Device is an [iPhone 13 mini](https://support.apple.com/kb/SP847)
+    ///
+    /// ![Image](https://km.support.apple.com/resources/sites/APPLE/content/live/IMAGES/1000/IM1091/en_US/iphone-13mini-240.png)
+    case iPhone13Mini
+    /// Device is an [iPhone 13 Pro](https://support.apple.com/kb/SP852)
+    ///
+    /// ![Image](https://km.support.apple.com/resources/sites/APPLE/content/live/IMAGES/1000/IM1093/en_US/iphone-13pro-240.png)
+    case iPhone13Pro
+    /// Device is an [iPhone 13 Pro Max](https://support.apple.com/kb/SP848)
+    ///
+    /// ![Image](https://km.support.apple.com/resources/sites/APPLE/content/live/IMAGES/1000/IM1095/en_US/iphone-13promax-240.png)
+    case iPhone13ProMax
     /// Device is an [iPad 2](https://support.apple.com/kb/SP622)
     ///
     /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP622/SP622_01-ipad2-mul.png)
@@ -200,6 +216,10 @@ enum Device {
     ///
     /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP822/sp822-ipad-8gen_2x.png)
     case iPad8
+    /// Device is an [iPad (9th generation)](https://support.apple.com/kb/SP849)
+    ///
+    /// ![Image](https://km.support.apple.com/resources/sites/APPLE/content/live/IMAGES/1000/IM1096/en_US/ipad-9gen-240.png)
+    case iPad9
     /// Device is an [iPad Air (4th generation)](https://support.apple.com/kb/SP828)
     ///
     /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP828/sp828ipad-air-ipados14-960_2x.png)
@@ -224,6 +244,10 @@ enum Device {
     ///
     /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP788/ipad-mini-2019.jpg)
     case iPadMini5
+    /// Device is an [iPad Mini (6th generation)](https://support.apple.com/kb/SP850)
+    ///
+    /// ![Image](https://km.support.apple.com/resources/sites/APPLE/content/live/IMAGES/1000/IM1097/en_US/ipad-mini-6gen-240.png)
+    case iPadMini6
     /// Device is an [iPad Pro 9.7-inch](https://support.apple.com/kb/SP739)
     ///
     /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP739/SP739.png)
@@ -256,17 +280,14 @@ enum Device {
     ///
     /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP815/ipad-pro-12-2020.jpeg)
     case iPadPro12Inch4
-    /// Device is an [iPad Pro 11-inch (3rd generation)](https://support.apple.com/kb/TODO)
+    /// Device is an [iPad Pro 11-inch (3rd generation)](https://support.apple.com/kb/SP843)
     ///
-    /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/TODO)
+    /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP843/ipad-pro-11_2x.png)
     case iPadPro11Inch3
-    /// Device is an [iPad Pro 12.9-inch (5th generation)](https://support.apple.com/kb/TODO)
+    /// Device is an [iPad Pro 12.9-inch (5th generation)](https://support.apple.com/kb/SP844)
     ///
-    /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/TODO)
-    case iPadPro12Inch5
-    /// Device is a [HomePod](https://support.apple.com/kb/SP773)
-    ///
-    /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP773/homepod_space_gray_large_2x.jpg)
+    /// ![Image](https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP844/ipad-pro-12-9_2x.png)
+        case iPadPro12Inch5
     /// Device is unknown
     case unknown(String)
     //// Device is running macOS
@@ -322,6 +343,10 @@ enum Device {
         case "iPhone13,1": return iPhone12Mini
         case "iPhone13,3": return iPhone12Pro
         case "iPhone13,4": return iPhone12ProMax
+        case "iPhone14,5": return iPhone13
+        case "iPhone14,4": return iPhone13Mini
+        case "iPhone14,2": return iPhone13Pro
+        case "iPhone14,3": return iPhone13ProMax
         case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4": return iPad2
         case "iPad3,1", "iPad3,2", "iPad3,3": return iPad3
         case "iPad3,4", "iPad3,5", "iPad3,6": return iPad4
@@ -332,12 +357,14 @@ enum Device {
         case "iPad11,3", "iPad11,4": return iPadAir3
         case "iPad7,11", "iPad7,12": return iPad7
         case "iPad11,6", "iPad11,7": return iPad8
+        case "iPad12,1", "iPad12,2": return iPad9
         case "iPad13,1", "iPad13,2": return iPadAir4
         case "iPad2,5", "iPad2,6", "iPad2,7": return iPadMini
         case "iPad4,4", "iPad4,5", "iPad4,6": return iPadMini2
         case "iPad4,7", "iPad4,8", "iPad4,9": return iPadMini3
         case "iPad5,1", "iPad5,2": return iPadMini4
         case "iPad11,1", "iPad11,2": return iPadMini5
+        case "iPad14,1", "iPad14,2": return iPadMini6
         case "iPad6,3", "iPad6,4": return iPadPro9Inch
         case "iPad6,7", "iPad6,8": return iPadPro12Inch
         case "iPad7,1", "iPad7,2": return iPadPro12Inch2
@@ -386,6 +413,10 @@ enum Device {
         case .iPhone12Mini: return "iPhone 12 mini"
         case .iPhone12Pro: return "iPhone 12 Pro"
         case .iPhone12ProMax: return "iPhone 12 Pro Max"
+        case .iPhone13: return "iPhone 13"
+        case .iPhone13Mini: return "iPhone 13 mini"
+        case .iPhone13Pro: return "iPhone 13 Pro"
+        case .iPhone13ProMax: return "iPhone 13 Pro Max"
         case .iPad2: return "iPad 2"
         case .iPad3: return "iPad (3rd generation)"
         case .iPad4: return "iPad (4th generation)"
@@ -396,12 +427,14 @@ enum Device {
         case .iPadAir3: return "iPad Air (3rd generation)"
         case .iPad7: return "iPad (7th generation)"
         case .iPad8: return "iPad (8th generation)"
+        case .iPad9: return "iPad (9th generation)"
         case .iPadAir4: return "iPad Air (4th generation)"
         case .iPadMini: return "iPad Mini"
         case .iPadMini2: return "iPad Mini 2"
         case .iPadMini3: return "iPad Mini 3"
         case .iPadMini4: return "iPad Mini 4"
         case .iPadMini5: return "iPad Mini (5th generation)"
+        case .iPadMini6: return "iPad Mini (6th generation)"
         case .iPadPro9Inch: return "iPad Pro (9.7-inch)"
         case .iPadPro12Inch: return "iPad Pro (12.9-inch)"
         case .iPadPro12Inch2: return "iPad Pro (12.9-inch) (2nd generation)"
@@ -449,6 +482,10 @@ enum Device {
         case .iPhone12Mini: return 476
         case .iPhone12Pro: return 460
         case .iPhone12ProMax: return 458
+        case .iPhone13: return 460
+        case .iPhone13Mini: return 476
+        case .iPhone13Pro: return 460
+        case .iPhone13ProMax: return 458
         case .iPad2: return 132
         case .iPad3: return 264
         case .iPad4: return 264
@@ -459,12 +496,14 @@ enum Device {
         case .iPadAir3: return 264
         case .iPad7: return 264
         case .iPad8: return 264
+        case .iPad9: return 264
         case .iPadAir4: return 264
         case .iPadMini: return 163
         case .iPadMini2: return 326
         case .iPadMini3: return 326
         case .iPadMini4: return 326
         case .iPadMini5: return 326
+        case .iPadMini6: return 326
         case .iPadPro9Inch: return 264
         case .iPadPro12Inch: return 264
         case .iPadPro12Inch2: return 264
@@ -511,6 +550,10 @@ enum Device {
         case .iPhone12Mini: return 625
         case .iPhone12Pro: return 800
         case .iPhone12ProMax: return 800
+        case .iPhone13: return 800
+        case .iPhone13Mini: return 800
+        case .iPhone13Pro: return 1000
+        case .iPhone13ProMax: return 1000
         case .iPad2: return 500
         case .iPad3: return 500
         case .iPad4: return 500
@@ -521,12 +564,14 @@ enum Device {
         case .iPadAir3: return 500
         case .iPad7: return 500
         case .iPad8: return 500
+        case .iPad9: return 500
         case .iPadAir4: return 500
         case .iPadMini: return 500
         case .iPadMini2: return 500
         case .iPadMini3: return 500
         case .iPadMini4: return 500
         case .iPadMini5: return 500
+        case .iPadMini6: return 500
         case .iPadPro9Inch: return 500
         case .iPadPro12Inch: return 600
         case .iPadPro12Inch2: return 600
@@ -574,6 +619,10 @@ enum Device {
         case .iPhone12Mini: return .iphone
         case .iPhone12Pro: return .iphone
         case .iPhone12ProMax: return .iphone
+        case .iPhone13: return .iphone
+        case .iPhone13Mini: return .iphone
+        case .iPhone13Pro: return .iphone
+        case .iPhone13ProMax: return .iphone
         case .iPad2: return .ipad
         case .iPad3: return .ipad
         case .iPad4: return .ipad
@@ -584,12 +633,14 @@ enum Device {
         case .iPadAir3: return .ipad
         case .iPad7: return .ipad
         case .iPad8: return .ipad
+        case .iPad9: return .ipad
         case .iPadAir4: return .ipad
         case .iPadMini: return .ipad
         case .iPadMini2: return .ipad
         case .iPadMini3: return .ipad
         case .iPadMini4: return .ipad
         case .iPadMini5: return .ipad
+        case .iPadMini6: return .ipad
         case .iPadPro9Inch: return .ipad
         case .iPadPro12Inch: return .ipad
         case .iPadPro12Inch2: return .ipad
@@ -608,20 +659,21 @@ enum Device {
 
     var screenInfo: String {
         switch self {
-        case .iPhone6: return "http://www.displaymate.com/iPhone6_ShootOut.htm"
-        case .iPhone6Plus: return "http://www.displaymate.com/iPhone6_ShootOut.htm"
-        case .iPhone7: return "http://www.displaymate.com/iPhone7_ShootOut_1.htm"
-        case .iPhoneX: return "http://www.displaymate.com/iPhoneX_ShootOut_1a.htm"
-        case .iPhoneXSMax: return "http://www.displaymate.com/iPhoneXS_ShootOut_1s.htm"
-        case .iPhone11ProMax: return "http://www.displaymate.com/iPhone_11Pro_ShootOut_1P.htm"
-        case .iPadAir: return "http://www.displaymate.com/iPad6_ShootOut.htm"
-        case .iPadAir2: return "http://www.displaymate.com/iPad_Pro9_ShootOut_1.htm"
-        case .iPadMini3: return "http://www.displaymate.com/iPad6_ShootOut.htm"
-        case .iPadMini4: return "http://www.displaymate.com/iPad_2015_ShootOut_1.htm"
-        case .iPadPro9Inch: return "http://www.displaymate.com/iPad_Pro9_ShootOut_1.htm"
-        case .iPadPro12Inch: return "http://www.displaymate.com/iPad_2015_ShootOut_1.htm"
+        case .iPhone6: return "https://www.displaymate.com/iPhone6_ShootOut.htm"
+        case .iPhone6Plus: return "https://www.displaymate.com/iPhone6_ShootOut.htm"
+        case .iPhone7: return "https://www.displaymate.com/iPhone7_ShootOut_1.htm"
+        case .iPhoneX: return "https://www.displaymate.com/iPhoneX_ShootOut_1a.htm"
+        case .iPhoneXSMax: return "https://www.displaymate.com/iPhoneXS_ShootOut_1s.htm"
+        case .iPhone11ProMax: return "https://www.displaymate.com/iPhone_11Pro_ShootOut_1P.htm"
+        case .iPhone13ProMax: return "https://www.displaymate.com/iPhone_13Pro_ShootOut_1M.htm"
+        case .iPadAir: return "https://www.displaymate.com/iPad6_ShootOut.htm"
+        case .iPadAir2: return "https://www.displaymate.com/iPad_Pro9_ShootOut_1.htm"
+        case .iPadMini3: return "https://www.displaymate.com/iPad6_ShootOut.htm"
+        case .iPadMini4: return "https://www.displaymate.com/iPad_2015_ShootOut_1.htm"
+        case .iPadPro9Inch: return "https://www.displaymate.com/iPad_Pro9_ShootOut_1.htm"
+        case .iPadPro12Inch: return "https://www.displaymate.com/iPad_2015_ShootOut_1.htm"
         case .macOS: return ""
-        default: return "you may found some info in: http://www.displaymate.com/mobile.html"
+        default: return "you may found some info in: https://www.displaymate.com/mobile.html"
         }
 
     }
@@ -675,3 +727,4 @@ enum Device {
         }
     }
 }
+
