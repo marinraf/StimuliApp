@@ -41,9 +41,10 @@ float myAUAmplitude[10];
 float myAUChannel[10];
 float myAUPhase[10];
 int myAUSong[10];
-float *myValues[20];
-long int myLengths[20];
-AVAudioPCMBuffer *myAudios[20];
+float *myValuesLeft[100];
+float *myValuesRight[100];
+long int myLengths[100];
+AVAudioPCMBuffer *myAudios[100];
 
 @interface MyAudioUnit ()
 @property AUAudioUnitBusArray *outputBusArray;
@@ -81,15 +82,18 @@ AVAudioPCMBuffer *myAudios[20];
 
     self.maximumFramesToRender =  512;
 
-    for (int i = 0; i < 20; ++i) {
-        free(myValues[i]);
+    for (int i = 0; i < 100; ++i) {
+        free(myValuesLeft[i]);
+        free(myValuesRight[i]);
     }
 
-    for (int i = 0; i < 20; ++i) {
+    for (int i = 0; i < 100; ++i) {
         myLengths[i] = myAudios[i].frameLength;
         if (myLengths[i] > 0) {
-            myValues[i] = malloc(myAudios[i].frameLength * sizeof(float)); // remember to free eventually
-            memcpy(myValues[i], myAudios[i].floatChannelData[0], myAudios[i].frameLength * sizeof(float));
+            myValuesLeft[i] = malloc(myAudios[i].frameLength * sizeof(float)); // remember to free eventually
+            memcpy(myValuesLeft[i], myAudios[i].floatChannelData[0], myAudios[i].frameLength * sizeof(float));
+            myValuesRight[i] = malloc(myAudios[i].frameLength * sizeof(float)); // remember to free eventually
+            memcpy(myValuesRight[i], myAudios[i].floatChannelData[1], myAudios[i].frameLength * sizeof(float));
         }
     }
     return self;
@@ -197,6 +201,7 @@ double r2( void )
                         }
 
                         float x = myAUAmplitude[j] * v1 * stop;
+                        float x_right = x;
 
                         if (myAUFrequency[j] > 0.1) {
                             float dp = 2.0 * M_PI * myAUFrequency[j] / myAUSampleRateHz; // calculate phase increment
@@ -207,16 +212,21 @@ double r2( void )
                             if (myAUPhase[j] > M_PI) {
                                 myAUPhase[j] -= 2.0 * M_PI;
                             }
+
+                            left += x * (1 - myAUChannel[j]);
+                            right += x * myAUChannel[j];
+
                         } else if (myAUFrequency[j] < -0.1) {
                             int number = myAUSong[j];
                             long position = myAUStart[j] - myAUToneCounter;
 
                             bool done = false;
 
-                            for (int i = 0; i < 20; ++i) {
+                            for (int i = 0; i < 100; ++i) {
                                 if (number == i) {
                                     if (myLengths[i] > position) {
-                                        x *= myValues[i][position];
+                                        x *= myValuesLeft[i][position];
+                                        x_right *= myValuesRight[i][position];
                                         done = true;
                                     }
                                     break;
@@ -224,12 +234,16 @@ double r2( void )
                             }
                             if (!done) {
                                 x = 0;
+                                x_right = 0;
                             }
+
+                            left += x * (1 - myAUChannel[j]);
+                            right += x_right * myAUChannel[j];
                         } else {
                             x *= r2();
+                            left += x * (1 - myAUChannel[j]);
+                            right += x * myAUChannel[j];
                         }
-                        left += x * (1 - myAUChannel[j]);
-                        right += x * myAUChannel[j];
                     }
                 }
                 myAUToneCounter --;

@@ -163,9 +163,14 @@ extension ContentViewController: MPMediaPickerControllerDelegate {
         if let audioURL = mediaItemCollection.items[0].value(forProperty: MPMediaItemPropertyAssetURL) as? URL {
             let name = FilesAndPermission.saveAudio(audioURL: audioURL, test: Flow.shared.test)
             let asset = AVAsset(url: audioURL)
+            var fileName = "unknown"
+            if let file = mediaItemCollection.items[0].title {
+                let ext = audioURL.pathExtension
+                fileName = "\(file).\(ext)"
+            }
             let duration = asset.duration
             let durationTime = Float(CMTimeGetSeconds(duration))
-            let durationString = "\(durationTime) seconds"
+            let durationString = "\(fileName) : \(durationTime) seconds"
 
             FilesAndPermission.deleteFile(fileName: Flow.shared.property.somethingId, test: Flow.shared.test)
 

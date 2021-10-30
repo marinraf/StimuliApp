@@ -37,6 +37,8 @@ class SectionTask {
     var defaultValueNoResponse: Float? = nil
     var sectionSame: FixedValueType = .same
 
+    var blocks: [String] = []
+
     var sceneNumber: Int = 0
     var currentTrial: Int = 0
     var numberOfCorrects: Int = 0
@@ -65,7 +67,11 @@ class SectionTask {
 
     var infoAllVariablesWithValues: String {
         let title = "VALUES OF EACH VARIABLE IN ORDER: "
-        let value = variableTasks.map({ $0.info }).joined(separator: "\n\n")
+        var value = variableTasks.map({ $0.info }).joined(separator: "\n\n")
+
+        if !blocks.isEmpty {
+            value += "\n\n" + "block:" + "\n" + blocks.joined(separator: ",")
+        }
         return title + "\n\n" + value
     }
 
@@ -78,7 +84,13 @@ class SectionTask {
     }
 
     var infoAllTrialsTitleVariables: [String] {
-        return variableTasks.map({ $0.name })
+        var value = variableTasks.map({ $0.name })
+
+        if !blocks.isEmpty {
+            value += ["block"]
+        }
+
+        return value
     }
 
     var infoAllTrialsValues: [[String]] {
@@ -95,6 +107,10 @@ class SectionTask {
                 }
             }
         }
+
+        for (index, value) in blocks.enumerated() {
+            values[index].append(value)
+        }
         return values
     }
 
@@ -106,6 +122,11 @@ class SectionTask {
                 values[index].append(position.stringWithoutUnit)
             }
         }
+
+        for (index, value) in blocks.enumerated() {
+            values[index].append(value)
+        }
+        
         return values
     }
 

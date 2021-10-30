@@ -18,7 +18,7 @@ extern float myAUChannel[10];
 extern float myAUPhase[10];
 extern int myAUSong[10];
 
-extern AVAudioPCMBuffer *myAudios[20];
+extern AVAudioPCMBuffer *myAudios[100];
 
 
 @interface MyAudioUnit : AUAudioUnit {

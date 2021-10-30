@@ -220,6 +220,166 @@ class AudioSystem {
                 myAudios.18 = outputBuffer
             } else if i == 19 {
                 myAudios.19 = outputBuffer
+            } else if i == 20 {
+                myAudios.20 = outputBuffer
+            } else if i == 21 {
+                myAudios.21 = outputBuffer
+            } else if i == 22 {
+                myAudios.22 = outputBuffer
+            } else if i == 23 {
+                myAudios.23 = outputBuffer
+            } else if i == 24 {
+                myAudios.24 = outputBuffer
+            } else if i == 25 {
+                myAudios.25 = outputBuffer
+            } else if i == 26 {
+                myAudios.26 = outputBuffer
+            } else if i == 27 {
+                myAudios.27 = outputBuffer
+            } else if i == 28 {
+                myAudios.28 = outputBuffer
+            } else if i == 29 {
+                myAudios.29 = outputBuffer
+            } else if i == 30 {
+                myAudios.30 = outputBuffer
+            } else if i == 31 {
+                myAudios.31 = outputBuffer
+            } else if i == 32 {
+                myAudios.32 = outputBuffer
+            } else if i == 33 {
+                myAudios.33 = outputBuffer
+            } else if i == 34 {
+                myAudios.34 = outputBuffer
+            } else if i == 35 {
+                myAudios.35 = outputBuffer
+            } else if i == 36 {
+                myAudios.36 = outputBuffer
+            } else if i == 37 {
+                myAudios.37 = outputBuffer
+            } else if i == 38 {
+                myAudios.38 = outputBuffer
+            } else if i == 39 {
+                myAudios.39 = outputBuffer
+            } else if i == 40 {
+                myAudios.40 = outputBuffer
+            } else if i == 41 {
+                myAudios.41 = outputBuffer
+            } else if i == 42 {
+                myAudios.42 = outputBuffer
+            } else if i == 43 {
+                myAudios.43 = outputBuffer
+            } else if i == 44 {
+                myAudios.44 = outputBuffer
+            } else if i == 45 {
+                myAudios.45 = outputBuffer
+            } else if i == 46 {
+                myAudios.46 = outputBuffer
+            } else if i == 47 {
+                myAudios.47 = outputBuffer
+            } else if i == 48 {
+                myAudios.48 = outputBuffer
+            } else if i == 49 {
+                myAudios.49 = outputBuffer
+            } else if i == 50 {
+                myAudios.50 = outputBuffer
+            } else if i == 51 {
+                myAudios.51 = outputBuffer
+            } else if i == 52 {
+                myAudios.52 = outputBuffer
+            } else if i == 53 {
+                myAudios.53 = outputBuffer
+            } else if i == 54 {
+                myAudios.54 = outputBuffer
+            } else if i == 55 {
+                myAudios.55 = outputBuffer
+            } else if i == 56 {
+                myAudios.56 = outputBuffer
+            } else if i == 57 {
+                myAudios.57 = outputBuffer
+            } else if i == 58 {
+                myAudios.58 = outputBuffer
+            } else if i == 59 {
+                myAudios.59 = outputBuffer
+            } else if i == 60 {
+                myAudios.60 = outputBuffer
+            } else if i == 61 {
+                myAudios.61 = outputBuffer
+            } else if i == 62 {
+                myAudios.62 = outputBuffer
+            } else if i == 63 {
+                myAudios.63 = outputBuffer
+            } else if i == 64 {
+                myAudios.64 = outputBuffer
+            } else if i == 65 {
+                myAudios.65 = outputBuffer
+            } else if i == 66 {
+                myAudios.66 = outputBuffer
+            } else if i == 67 {
+                myAudios.67 = outputBuffer
+            } else if i == 68 {
+                myAudios.68 = outputBuffer
+            } else if i == 69 {
+                myAudios.69 = outputBuffer
+            } else if i == 70 {
+                myAudios.70 = outputBuffer
+            } else if i == 71 {
+                myAudios.71 = outputBuffer
+            } else if i == 72 {
+                myAudios.72 = outputBuffer
+            } else if i == 73 {
+                myAudios.73 = outputBuffer
+            } else if i == 74 {
+                myAudios.74 = outputBuffer
+            } else if i == 75 {
+                myAudios.75 = outputBuffer
+            } else if i == 76 {
+                myAudios.76 = outputBuffer
+            } else if i == 77 {
+                myAudios.77 = outputBuffer
+            } else if i == 78 {
+                myAudios.78 = outputBuffer
+            } else if i == 79 {
+                myAudios.79 = outputBuffer
+            } else if i == 80 {
+                myAudios.80 = outputBuffer
+            } else if i == 81 {
+                myAudios.81 = outputBuffer
+            } else if i == 82 {
+                myAudios.82 = outputBuffer
+            } else if i == 83 {
+                myAudios.83 = outputBuffer
+            } else if i == 84 {
+                myAudios.84 = outputBuffer
+            } else if i == 85 {
+                myAudios.85 = outputBuffer
+            } else if i == 86 {
+                myAudios.86 = outputBuffer
+            } else if i == 87 {
+                myAudios.87 = outputBuffer
+            } else if i == 88 {
+                myAudios.88 = outputBuffer
+            } else if i == 89 {
+                myAudios.89 = outputBuffer
+            } else if i == 90 {
+                myAudios.90 = outputBuffer
+            } else if i == 91 {
+                myAudios.91 = outputBuffer
+            } else if i == 92 {
+                myAudios.92 = outputBuffer
+            } else if i == 93 {
+                myAudios.93 = outputBuffer
+            } else if i == 94 {
+                myAudios.94 = outputBuffer
+            } else if i == 95 {
+                myAudios.95 = outputBuffer
+            } else if i == 96 {
+                myAudios.96 = outputBuffer
+            } else if i == 97 {
+                myAudios.97 = outputBuffer
+            } else if i == 98 {
+                myAudios.98 = outputBuffer
+            } else if i == 99 {
+                myAudios.99 = outputBuffer
             }
         }
     }

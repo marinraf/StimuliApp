@@ -308,6 +308,7 @@ enum PropertyType: String, Codable, CaseIterable {
     case response
     case sceneDuration
     case objectResponse
+    case objectResponse2
     case keyResponse
     case endPathResponse
     case distance
@@ -368,6 +369,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .response: return [.alwaysConstant]
         case .sceneDuration: return [.alwaysConstant]
         case .objectResponse: return [.alwaysConstant]
+        case .objectResponse2: return [.alwaysConstant]
         case .keyResponse: return [.alwaysConstant]
         case .endPathResponse: return [.alwaysConstant]
         case .distance: return [.alwaysConstant]
@@ -422,6 +424,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .response: return false
         case .sceneDuration: return false
         case .objectResponse: return false
+        case .objectResponse2: return false
         case .keyResponse: return false
         case .endPathResponse: return false
         case .distance: return false
@@ -476,6 +479,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .response: return FixedResponse.allCases.map({ $0.name })
         case .sceneDuration: return FixedDuration.allCases.map({ $0.name })
         case .objectResponse: return FixedObjectResponse.allCases.map({ $0.name })
+        case .objectResponse2: return FixedObjectResponse.allCases.map({ $0.name })
         case .keyResponse: return FixedKeyResponse.allCases.map( { $0.name })
         case .endPathResponse: return FixedEndPath.allCases.map( { $0.name })
         case .distance: return FixedDistance.allCases.map({ $0.name })
@@ -530,6 +534,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .response: return FixedResponse.allCases.map({ $0.description })
         case .sceneDuration: return FixedDuration.allCases.map({ $0.description })
         case .objectResponse: return FixedObjectResponse.allCases.map({ $0.description })
+        case .objectResponse2: return FixedObjectResponse.allCases.map({ $0.description })
         case .keyResponse: return FixedKeyResponse.allCases.map({ $0.description })
         case .endPathResponse: return FixedEndPath.allCases.map({ $0.description })
         case .distance: return FixedDistance.allCases.map({ $0.description })

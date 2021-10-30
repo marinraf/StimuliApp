@@ -851,7 +851,7 @@ extension Task {
             if audios.count > Constants.maxNumberOfAudios {
                 return """
                 There are \(audios.count) audio files in this test.
-                A test can contain a maximum of \(Constants.maxNumberOfAudios) tests.
+                A test can contain a maximum number of \(Constants.maxNumberOfAudios) different audio files.
                 """
             }
 
@@ -1122,6 +1122,7 @@ extension Task {
                 .none
             sceneTask.endPath = FixedEndPath(rawValue: scene.responseType.properties[5].string) ?? .lift
             sceneTask.responseObject = Array(repeating: nil, count: sceneTask.numberOfMetals)
+            sceneTask.responseObjectInteractive = Array(repeating: false, count: sceneTask.numberOfMetals)
 
             if sceneTask.endPath == .touch {
                 let text = scene.responseType.properties[5].properties[0].string
@@ -1130,10 +1131,13 @@ extension Task {
 
             for property in scene.responseType.properties {
                 if let objectNumber = scene.movableObjects.firstIndex(where: { $0.id == property.somethingId }) {
-                    let interactive = FixedObjectResponse(rawValue: property.string) ?? .no
-                    if interactive == .yes {
+                    if property.properties.count > 0 {
                         let objectValue = property.properties[0].float
                         sceneTask.responseObject[objectNumber] = objectValue
+                    }
+                    let interactive = FixedObjectResponse(rawValue: property.string) ?? .no
+                    if interactive == .yes {
+                        sceneTask.responseObjectInteractive[objectNumber] = true
                     }
                 }
             }

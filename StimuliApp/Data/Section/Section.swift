@@ -172,8 +172,11 @@ class Section: Codable {
                 """
             }
             guard let listOfValues = variable.listOfValues  else {
+                let sceneName = variable.scene?.name.string ?? "unknown"
+                let sectionName = variable.section?.name.string ?? "unknown"
                 return """
-                ERROR: variable: \(variable.name) has no list assigned.
+                ERROR: variable: \(variable.name) in scene: \(sceneName) and section: \(sectionName)
+                has no list assigned.
                 """
             }
             
@@ -182,8 +185,11 @@ class Section: Codable {
                 if selection == .inOrder || selection == .shuffled {
                     for element in variable.otherVariablesInSameGroup(section: self) {
                         guard let list = element.listOfValues else {
+                            let sceneName = variable.scene?.name.string ?? "unknown"
+                            let sectionName = variable.section?.name.string ?? "unknown"
                             return """
-                            ERROR: variable: \(element.name) has no list assigned.
+                            ERROR: variable: \(variable.name) in scene: \(sceneName) and section: \(sectionName)
+                            has no list assigned.
                             """
                         }
                         if list.values.count != listOfValues.values.count {

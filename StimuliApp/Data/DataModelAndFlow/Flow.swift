@@ -410,8 +410,11 @@ class Flow {
         let newObject = Object(name: name, stimulus: stimulus, scene: scene, order: order)
         scene.objects.append(newObject)
         if let response = FixedResponse(rawValue: scene.responseType.string) {
-            if response == .touchObject || response == .moveObject || response == .touchMultipleObjects {
+            if response == .touchObject || response == .touchMultipleObjects {
                 let property = SceneData.makePropertyToAddToResponse(object: newObject)
+                scene.responseType.properties.append(property)
+            } else if response == .moveObject {
+                let property = SceneData.makePropertyToAddToResponse2(object: newObject)
                 scene.responseType.properties.append(property)
             }
         }

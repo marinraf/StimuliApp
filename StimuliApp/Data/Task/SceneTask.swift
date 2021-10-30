@@ -203,6 +203,7 @@ class SceneTask {
     var responseOutWindow: Bool = false
     var responseOrigin: (x: Float, y: Float) = (0, 0)
     var responseObject: [Float?] = [] //object or left right or up bottom or one value for lift
+    var responseObjectInteractive: [Bool] = []
     var responseKeyboard: FixedKeyboard = .normal
     var responseInTitle: Bool = false
     var responseBackground: Float?

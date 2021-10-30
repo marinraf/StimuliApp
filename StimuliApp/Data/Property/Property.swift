@@ -326,9 +326,9 @@ class Property: Codable {
         switch propertyType {
         case .string, .key, .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .sceneDuration,
              .position2d, .size2d, .positionResponse, .origin2d, .originResponse, .value, .valueType, .distanceResponse,
-             .correct, .correct2, .color, .objectResponse, .keyResponse, .randomness, .listOrder, .selection,
-             .selectionDifferent, .distance, .selectionOrder, .correctType, .image, .text, .video, .audio, .font,
-             .gamma, .behaviour, .direction, .soundType, .endPathResponse:
+             .correct, .correct2, .color, .objectResponse, .objectResponse2, .keyResponse, .randomness, .listOrder,
+             .selection, .selectionDifferent, .distance, .selectionOrder, .correctType, .image, .text, .video, .audio,
+             .font, .gamma, .behaviour, .direction, .soundType, .endPathResponse:
             return ""
         case .dobleSize, .doblePosition, .triple, .sequence:
             switch self.timeDependency {
@@ -378,9 +378,9 @@ class Property: Codable {
             return text
         case .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .size2d, .distanceResponse,
              .position2d, .positionResponse, .origin2d, .originResponse, .value, .valueType, .correct, .correct2,
-             .correctType, .sceneDuration, .color, .objectResponse, .keyResponse, .randomness, .listOrder,
-             .endPathResponse, .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction,
-             .soundType, .distance:
+             .correctType, .sceneDuration, .color, .objectResponse, .objectResponse2, .keyResponse, .randomness,
+             .listOrder, .endPathResponse, .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour,
+             .direction, .soundType, .distance:
             return fixedValues[selectedValue]
         case .dobleSize:
             switch self.timeDependency {
@@ -425,8 +425,8 @@ class Property: Codable {
             return [text, "", ""]
         case .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .sceneDuration,
              .position2d, .positionResponse, .origin2d, .originResponse, .size2d, .value, .valueType, .distanceResponse,
-             .correct, .correct2, .correctType, .color, .objectResponse, .keyResponse, .randomness, .listOrder,
-             .selection, .distance, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction,
+             .correct, .correct2, .correctType, .color, .objectResponse, .objectResponse2, .keyResponse, .randomness,
+             .listOrder, .selection, .distance, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction,
              .soundType, .endPathResponse:
             return [fixedValues[selectedValue], "", ""]
         case .dobleSize, .doblePosition:
@@ -469,8 +469,8 @@ class Property: Codable {
             return [text]
         case .select, .type, .shape, .border, .contrast, .modulator, .response, .sceneDuration, .distanceResponse,
              .correctType, .correct, .correct2, .position2d, .size2d, .positionResponse, .origin2d, .originResponse,
-             .value, .valueType, .noise, .color, .objectResponse, .keyResponse, .randomness, .listOrder,
-             .endPathResponse, .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour,
+             .value, .valueType, .noise, .color, .objectResponse, .objectResponse2, .keyResponse, .randomness,
+             .listOrder, .endPathResponse, .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour,
              .direction, .soundType, .distance:
             return [fixedValues[selectedValue]]
         case .dobleSize, .doblePosition:
@@ -838,6 +838,8 @@ class Property: Codable {
             SceneData.addPropertiesToOriginResponse(property: self)
         case .objectResponse:
             SceneData.addPropertiesToObjectResponse(property: self)
+        case .objectResponse2:
+            SceneData.addPropertiesToObjectResponse2(property: self)
         case .keyResponse:
             SceneData.addPropertiesToKeyResponse(property: self)
         case .distance:

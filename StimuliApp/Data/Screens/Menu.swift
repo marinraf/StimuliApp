@@ -173,8 +173,9 @@ class Menu: Screen {
                               badNames: badNames, position: position, defaultSettings: defaultSettings)
             case .select, .size2d, .origin2d, .originResponse, .position2d, .positionResponse, .color, .behaviour,
                  .direction, .soundType, .shape, .border, .noise, .contrast, .modulator, .sceneDuration, .selection,
-                 .objectResponse, .keyResponse, .endPathResponse, .gamma, .randomness, .listOrder, .distanceResponse,
-                 .selectionDifferent, .selectionOrder, .valueType, .correctType, .distance, .correct2:
+                 .objectResponse, .objectResponse2, .keyResponse, .endPathResponse, .gamma, .randomness, .listOrder,
+                 .distanceResponse, .selectionDifferent, .selectionOrder, .valueType, .correctType,
+                 .distance, .correct2:
                 makeOptionSelect(from: property, sectionNumber: sectionNumber, position: position)
                 for element in property.properties {
                     makeOption(from: element, sectionNumber: sectionNumber,

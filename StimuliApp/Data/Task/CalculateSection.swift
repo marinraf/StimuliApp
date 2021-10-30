@@ -402,47 +402,38 @@ extension Task {
             let seed7 = seedToUse2 * 163 // starting block
             let seed8 = seedToUse2 * 229  // starting list1
             let seed9 = seedToUse2 * 347  // starting list2
-            let seed10 = seedToUse2 * 409  // blocks in order
-            let seed11 = seedToUse2 * 503  // starting list
-            let seed12 = seedToUse2 * 701  // lists in order
-            let seed13 = seedToUse2 * 811  // actual random
+            let seed10 = seedToUse2 * 409  // actual random
+            let seed11 = seedToUse2 * 503  // current block
+            let seed12 = seedToUse2 * 701  // current list
+            let seed13 = seedToUse2 * 811  // starting list when changing block
 
             let numberOfBlocks = listOfValues.numberOfBlocks.float.toInt
             let lengthOfBlocks = listOfValues.lengthOfBlocks.float.toInt
 
+            let totalTrials = numberOfBlocks * lengthOfBlocks
+
             var numbers: [Int] = []
 
             var positions: [Property] = []
-            var blocksInOrder: [Int] = []
             var startingLists: [Int] = []
             var probChangeLists: [Float] = []
+            var probChangeBlock: Float = 0
+            var startingBlock = 0
             guard let lists = listOfValues.blockList else {
                 return "ERROR: you need to assign values to all the lists inside the list of blocks "
             }
 
             if differentBlocks == 1 {
-
                 for item in lists[0] {
                     let error = checkErrors(list: item, variable: variable)
                     if error != "" {
                         return error
                     }
                 }
-
-                blocksInOrder = Array(repeating: 0, count: numberOfBlocks)
-                startingLists = [calculateFirstFrom(starting: listOfValues.startingList.selectedValue,
-                                                        seed: seed8)]
+                startingBlock = 0
+                startingLists = [calculateFirstFrom(starting: listOfValues.startingList.selectedValue, seed: seed8)]
                 probChangeLists = [listOfValues.probChangeList.float]
-
             } else {
-
-                let startingBlock = calculateFirstFrom(starting: listOfValues.startingBlock.selectedValue,
-                                                       seed: seed7)
-                blocksInOrder = calculateOrder(first: startingBlock,
-                                               length: numberOfBlocks,
-                                               probChange: listOfValues.probChangeBlock.float,
-                                               seed: seed10)
-
                 for lists2 in lists {
                     for item in lists2 {
                         let error = checkErrors(list: item, variable: variable)
@@ -451,52 +442,68 @@ extension Task {
                         }
                     }
                 }
-
+                probChangeBlock = listOfValues.probChangeBlock.float
+                startingBlock = calculateFirstFrom(starting: listOfValues.startingBlock.selectedValue, seed: seed7)
                 let startingList1 = calculateFirstFrom(starting: listOfValues.firstBlockStartingList.selectedValue,
                                                        seed: seed8)
                 let startingList2 = calculateFirstFrom(starting: listOfValues.secondBlockStartingList.selectedValue,
                                                        seed: seed9)
-
                 startingLists = [startingList1, startingList2]
-
                 let probChangeList1 = listOfValues.firstBlockProbChangeList.float
                 let probChangeList2 = listOfValues.secondBlockProbChangeList.float
-
                 probChangeLists = [probChangeList1, probChangeList2]
-
             }
 
-            for i in 0 ..< numberOfBlocks {
+            var currentBlock = startingBlock
+            var currentList = startingLists[currentBlock]
 
-                var startingList = startingLists[blocksInOrder[i]]
+            for i in 0 ..< totalTrials {
 
-                if i != 0 {
-                    startingList = calculateFirstFrom(starting: 0, seed: seed11 + UInt64(i))
+                let actualList = lists[currentBlock][currentList]
+
+                let actualRandom = Int.random(seed: seed10 + UInt64(i),
+                                              minimum: 0,
+                                              maximum: actualList.values.count - 1)
+
+                let actualValue = actualList.values[actualRandom]
+                positions.append(actualValue)
+
+
+                if let index = superList.firstIndex(where: { $0.id == actualValue.id }) {
+                    numbers.append(index)
+                } else {
+                    return "ERROR"
                 }
 
-                let probChangeList = probChangeLists[blocksInOrder[i]]
+                var newBlock = currentBlock
 
-                let listsInOrder = calculateOrder(first: startingList,
-                                                  length: lengthOfBlocks,
-                                                  probChange: probChangeList,
-                                                  seed: seed12 + UInt64(i))
+                if differentBlocks == 2 {
+                    sectionTask.blocks.append(String(currentBlock + 1))
 
-                for j in 0 ..< listsInOrder.count {
-                    let number = i * lengthOfBlocks + j
-                    let actualList = lists[blocksInOrder[i]][listsInOrder[j]]
-                    let actualRandom = Int.random(seed: seed13 + UInt64(number),
-                                                  minimum: 0,
-                                                  maximum: actualList.values.count - 1)
-                    let actualValue = actualList.values[actualRandom]
-                    positions.append(actualValue)
-
-                    if let index = superList.firstIndex(where: { $0.id == actualValue.id }) {
-                        numbers.append(index)
-                    } else {
-                        return "ERROR"
+                    if (i + 1) % lengthOfBlocks == 0 {
+                        newBlock = calculateNext(first: currentBlock, probChange: probChangeBlock,
+                                                 seed: seed11 + UInt64(i))
                     }
+
                 }
+
+                if newBlock == currentBlock {
+                    let probChangeList = probChangeLists[currentBlock]
+                    currentList = calculateNext(first: currentList, probChange: probChangeList,
+                                                seed: seed12 + UInt64(i))
+                } else {
+                    if currentList == 0 {
+                        currentList = calculateFirstFrom(starting: listOfValues.firstBlockStartingList.selectedValue,
+                                                         seed: seed13 + UInt64(i))
+                    } else {
+                        currentList = calculateFirstFrom(starting: listOfValues.secondBlockStartingList.selectedValue,
+                                                         seed: seed13 + UInt64(i))
+                    }
+
+                }
+                currentBlock = newBlock
             }
+
 
             let vari = VariableTask(name: variable.name,
                                     id: variable.id,
@@ -749,23 +756,20 @@ extension Task {
         return ""
     }
 
-    private func calculateOrder(first: Int, length: Int, probChange: Float, seed: UInt64) -> [Int] {
 
-        var myList: [Int] = Array(repeating: first, count: length)
+    private func calculateNext(first: Int, probChange: Float, seed: UInt64) -> Int {
 
-        for i in 1 ..< length {
-            let random = Float.random(seed: seed + UInt64(i), minimum: 0, maximum: 1)
-            if random < probChange {
-                if myList[i - 1] == 0 {
-                    myList[i] = 1
-                } else {
-                    myList[i] = 0
-                }
+        var next = first
+        let random = Float.random(seed: seed, minimum: 0, maximum: 1)
+
+        if random < probChange {
+            if first == 0 {
+                next = 1
             } else {
-                myList[i] = myList[i - 1]
+                next = 0
             }
         }
-        return myList
+        return next
     }
 
     private func calculateFirstFrom(starting: Int, seed: UInt64) -> Int {
@@ -807,8 +811,6 @@ extension Task {
         sectionTask.sectionValueType = FixedCorrect(rawValue: section.responseValue.string)
 
         sectionTask.sectionValueType2 = section.responseValueVector
-
-//        sectionTask.multipleDimensions = section.responseValueDimension ?? 0
 
         sectionTask.defaultValueNoResponse = nil
         if section.trialValue.properties.count > 0 {

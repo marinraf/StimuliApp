@@ -281,9 +281,12 @@ class Task {
                                                 delayAudio: Double(delayAudio))
 
         for variable in test.allVariables {
-            guard let listOfValues = variable.listOfValues  else {
+            guard let listOfValues = variable.listOfValues else {
+                let sceneName = variable.scene?.name.string ?? "unknown"
+                let sectionName = variable.section?.name.string ?? "unknown"
                 return """
-                ERROR: variable: \(variable.name) has no list assigned.
+                ERROR: variable: \(variable.name) in scene: \(sceneName) and section: \(sectionName)
+                has no list assigned.
                 """
             }
             let listError = listOfValues.calculateGoodValues()

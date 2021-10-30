@@ -23,7 +23,7 @@ struct Constants {
     static let maxNumberOfDotObjects: Int = 2
     static let maxNumberOfVideoObjects: Int = 1
     static let maxNumberOfAudioObjects: Int = 10 //number of audio objects in a scene
-    static let maxNumberOfAudios: Int = 20 // number of audios in the list
+    static let maxNumberOfAudios: Int = 100 // number of audios in the list
     static let maxLengthSequence: Int = 10000
     static let maxNumberOfTrials: Int = 5000
     static let numberOfMetalFloats: Int = 55

@@ -496,7 +496,7 @@ struct SceneData {
             property.properties.append(position)
             property.properties.append(endPath)
             for object in Flow.shared.scene.movableObjects {
-                let newProperty = makePropertyToAddToResponse(object: object)
+                let newProperty = makePropertyToAddToResponse2(object: object)
                 property.properties.append(newProperty)
             }
         case .keyboard:
@@ -535,6 +535,19 @@ struct SceneData {
         return newProperty
     }
 
+    static func makePropertyToAddToResponse2(object: Object) -> Property {
+        let newProperty = Property(name: object.id,
+                                   info: "To establish whether the object is interactive or not.",
+                                   propertyType: .objectResponse2,
+                                   unitType: .decimal,
+                                   fixedValues: FixedObjectResponse.allCases.map({ $0.name }),
+                                   selectedValue: 0)
+
+        newProperty.somethingId = object.id
+
+        return newProperty
+    }
+
     static func addPropertiesToSceneDuration(property: Property) {
 
         property.properties = []
@@ -565,7 +578,7 @@ struct SceneData {
                                       propertyType: .simpleFloat,
                                       unitType: .decimal,
                                       float: 0)
-        objectResponse.somethingId = property.somethingId
+        objectResponse.somethingId = property.name
 
         guard let selected = FixedObjectResponse(rawValue: property.string) else { return }
         switch selected {
@@ -574,6 +587,22 @@ struct SceneData {
         case .no:
             break
         }
+    }
+
+    static func addPropertiesToObjectResponse2(property: Property) {
+
+        property.properties = []
+
+        let name = "Value"
+
+        let objectResponse = Property(name: name,
+                                      info: "The value associated with this object.",
+                                      propertyType: .simpleFloat,
+                                      unitType: .decimal,
+                                      float: 0)
+        objectResponse.somethingId = property.name
+
+        property.properties.append(objectResponse)
     }
 
     static func addPropertiesToKeyResponse(property: Property) {

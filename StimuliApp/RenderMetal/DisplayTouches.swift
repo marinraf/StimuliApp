@@ -125,7 +125,8 @@ extension DisplayRender {
     }
 
     func touchesMoved(_ view: UIView, touches: Set<UITouch>, with event: UIEvent?) {
-        guard touching else { return }
+
+        touching = true
         switch Task.shared.sceneTask.responseType {
         case .path:
             pathTouches(touches: touches, event:event, view: view)
@@ -172,6 +173,16 @@ extension DisplayRender {
             guard let uitouch = touches.first else { return }
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             guard let touch = coalescedTouches.first else { return }
+
+            let time = touch.timestamp - Flow.shared.frameControl.initSceneTime
+
+            guard time > 0 else { return }
+
+            Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
+                || time > Task.shared.sceneTask.responseEnd
+
+            guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
+
             touching = false
             Task.shared.responseMovingObject = nil
 
@@ -189,6 +200,16 @@ extension DisplayRender {
             guard let uitouch = touches.first else { return }
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             guard let touch = coalescedTouches.first else { return }
+
+            let time = touch.timestamp - Flow.shared.frameControl.initSceneTime
+
+            guard time > 0 else { return }
+
+            Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
+                || time > Task.shared.sceneTask.responseEnd
+
+            guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
+
             touching = false
             Task.shared.responseMovingObject = nil
 
@@ -416,6 +437,14 @@ extension DisplayRender {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             for touch in coalescedTouches {
                 let time = touch.timestamp - Flow.shared.frameControl.initSceneTime
+
+                guard time > 0 else { return }
+
+                Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
+                    || time > Task.shared.sceneTask.responseEnd
+
+                guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
+
                 let touchInView = TouchInView(touch: touch,
                                               time: time,
                                               view: view,
@@ -440,6 +469,14 @@ extension DisplayRender {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             for touch in coalescedTouches {
                 let time = touch.timestamp - Flow.shared.frameControl.initSceneTime
+
+                guard time > 0 else { return }
+
+                Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
+                    || time > Task.shared.sceneTask.responseEnd
+
+                guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
+
                 let touchInView = TouchInView(touch: touch,
                                               time: time,
                                               view: view,
@@ -455,25 +492,27 @@ extension DisplayRender {
 
                 if Task.shared.responseMovingObject == nil {
                     for object in (0 ..< numberOfObjects).reversed() {
-                        if let objectValue = Task.shared.sceneTask.responseObject[object] {
-                            if isTouched(object: object, trial: trial, touchInView: touchInView) {
+                        if Task.shared.sceneTask.responseObjectInteractive[object] {
+                            if let objectValue = Task.shared.sceneTask.responseObject[object] {
+                                if isTouched(object: object, trial: trial, touchInView: touchInView) {
 
-                                Task.shared.userResponse.xTouches.append(touchInView.x)
-                                Task.shared.userResponse.yTouches.append(touchInView.y)
-                                let polar = touchInView.polar
-                                Task.shared.userResponse.radiusTouches.append(polar.radius)
-                                Task.shared.userResponse.angleTouches.append(polar.angle)
-                                Task.shared.userResponse.clocks.append(time)
+                                    Task.shared.userResponse.xTouches.append(touchInView.x)
+                                    Task.shared.userResponse.yTouches.append(touchInView.y)
+                                    let polar = touchInView.polar
+                                    Task.shared.userResponse.radiusTouches.append(polar.radius)
+                                    Task.shared.userResponse.angleTouches.append(polar.angle)
+                                    Task.shared.userResponse.clocks.append(time)
 
-                                Task.shared.sceneTask.xCenter0[trial][object] = touchInView.realX
-                                Task.shared.sceneTask.yCenter0[trial][object] = touchInView.realY
+                                    Task.shared.sceneTask.xCenter0[trial][object] = touchInView.realX
+                                    Task.shared.sceneTask.yCenter0[trial][object] = touchInView.realY
 
-                                Task.shared.responseMovingObject = object
-                                userResponseTemp = objectValue
-                                if Task.shared.sceneTask.endPath == .touch {
-                                    touchObjectTouches(touchInView: touchInView)
+                                    Task.shared.responseMovingObject = object
+                                    userResponseTemp = objectValue
+                                    if Task.shared.sceneTask.endPath == .touch {
+                                        touchObjectTouches(touchInView: touchInView)
+                                    }
+                                    return
                                 }
-                                return
                             }
                         }
                     }
