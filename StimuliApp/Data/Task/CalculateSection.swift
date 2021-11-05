@@ -787,12 +787,13 @@ extension Task {
 
             if let conditionType = FixedCondition(rawValue: property.info) {
                 let n = Int(round(property.float))
+                let a = property.float1
                 var sectionNumber = -1
 
                 if property.somethingId != "" {
                     sectionNumber = Flow.shared.test.sections.firstIndex(where: { $0.id == property.somethingId}) ?? -1
                 }
-                let condition = Condition(type: conditionType, n: n, sectionNumber: sectionNumber)
+                let condition = Condition(type: conditionType, n: n, a: a, sectionNumber: sectionNumber)
                 sectionTask.conditions.append(condition)
             }
         }
@@ -802,7 +803,7 @@ extension Task {
             sectionNumber = Flow.shared.test.sections.firstIndex(where: { $0.id == section.next.somethingId}) ?? -1
         }
 
-        let condition = Condition(type: nil, n: 0, sectionNumber: sectionNumber)
+        let condition = Condition(type: nil, n: 0, a: 0, sectionNumber: sectionNumber)
         sectionTask.conditions.append(condition)
     }
 

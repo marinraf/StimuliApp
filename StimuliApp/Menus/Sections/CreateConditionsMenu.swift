@@ -26,10 +26,10 @@ class CreateConditionsMenu: Menu {
         var option = Option(name: condition.name)
         option.style = .onlySelect
         option.nextScreen = {
-            let newProperty = Property(name: condition.name(n: 1),
+            let newProperty = Property(name: condition.name(n: 1, a: 0),
                                        info: condition.name,
                                        propertyType: .simpleFloat,
-                                       unitType: .positiveIntegerOrZero,
+                                       unitType: .positiveIntegerWithoutZero,
                                        fixedValues: FixedCondition.allCases.map({ $0.name }),
                                        selectedValue: position)
             newProperty.text = "End the test"
@@ -50,12 +50,47 @@ class CreateConditionsMenu: Menu {
                                     property: newProperty)
                 modify.saveFunctionFloats = { response in
                     if response.count > 0 {
-                        let n = Int(response[0])
-                        if n > 0 {
-                            newProperty.changeValue(new: response)
-                            newProperty.name = condition.name(n: n)
-                            Flow.shared.saveTest(Flow.shared.test)
-                        }
+                        newProperty.changeValue(new: response)
+                        let n = Int(newProperty.float)
+                        newProperty.name = condition.name(n: n, a: 0)
+                        Flow.shared.saveTest(Flow.shared.test)
+                    }
+                    return .saved
+                }
+                return modify
+
+
+            case .biggerAccuracy, .smallerAccuracy:
+
+                newProperty.propertyType = .trialAccuracy
+                newProperty.unitType = .twoValues
+
+                let modify = Modify(title: "number of trials and accuracy",
+                                    info: """
+                                          Number of trials (n) & accuracy (a).
+
+                                          When the number of trials performed is a multiple of n, \
+                                          the accuracy of the last n trials is compared with the value a.
+
+                                          The accuracy of the last n trials is calculated as:
+                                          number of correct trials in the last n trials / n.
+
+                                          For example if n is set to 20 and a is set to 0.6, we will compare:
+
+                                          accuracy of the task in trials  1...20 vs 0.6 when trial = 20
+                                          accuracy of the task in trials 21...40 vs 0.6 when trial = 40
+                                          accuracy of the task in trials 41...60 vs 0.6 when trial = 60
+
+                                          etc
+                                          """,
+                                    property: newProperty)
+                modify.saveFunctionFloats = { response in
+                    if response.count > 0 {
+                        newProperty.changeValue(new: response)
+                        let n = Int(newProperty.float)
+                        let a = newProperty.float1
+                        newProperty.name = condition.name(n: n, a: a)
+                        Flow.shared.saveTest(Flow.shared.test)
                     }
                     return .saved
                 }

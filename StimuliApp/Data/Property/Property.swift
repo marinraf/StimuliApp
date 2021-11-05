@@ -263,7 +263,7 @@ class Property: Codable {
     }
 
     var dimensions: Int {
-        if propertyType == .dobleSize || propertyType == .doblePosition {
+        if propertyType == .dobleSize || propertyType == .doblePosition || propertyType == .trialAccuracy {
             return 2
         } else if propertyType == .triple {
             return 3
@@ -328,7 +328,7 @@ class Property: Codable {
              .position2d, .size2d, .positionResponse, .origin2d, .originResponse, .value, .valueType, .distanceResponse,
              .correct, .correct2, .color, .objectResponse, .objectResponse2, .keyResponse, .randomness, .listOrder,
              .selection, .selectionDifferent, .distance, .selectionOrder, .correctType, .image, .text, .video, .audio,
-             .font, .gamma, .behaviour, .direction, .soundType, .endPathResponse:
+             .font, .gamma, .behaviour, .direction, .soundType, .endPathResponse, .trialAccuracy:
             return ""
         case .dobleSize, .doblePosition, .triple, .sequence:
             switch self.timeDependency {
@@ -389,7 +389,7 @@ class Property: Codable {
             default:
                 return values[0] + "x" + values[1]
             }
-        case .doblePosition:
+        case .doblePosition, .trialAccuracy:
             switch self.timeDependency {
             case .variable:
                 return "variable"
@@ -429,7 +429,7 @@ class Property: Codable {
              .listOrder, .selection, .distance, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction,
              .soundType, .endPathResponse:
             return [fixedValues[selectedValue], "", ""]
-        case .dobleSize, .doblePosition:
+        case .dobleSize, .doblePosition, .trialAccuracy:
             return [values[0], values[1], ""]
         case .triple, .sequence:
             return [values[0], values[1], values[2]]
@@ -473,7 +473,7 @@ class Property: Codable {
              .listOrder, .endPathResponse, .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour,
              .direction, .soundType, .distance:
             return [fixedValues[selectedValue]]
-        case .dobleSize, .doblePosition:
+        case .dobleSize, .doblePosition, .trialAccuracy:
             let value = numberFormatter.string(from: newNewFloat as NSNumber) ?? ""
             let value2 = numberFormatter.string(from: newNewFloat1 as NSNumber) ?? ""
             return [value, value2]
@@ -545,15 +545,19 @@ class Property: Codable {
                                           newUnit: unitType.referenceUnit,
                                           timeUnit: timeUnit,
                                           newTimeUnit: .second)
+        var second = false
+        if unitType == .twoValues {
+            second = true
+        }
 
         if newFloats.count > 0 {
-            self.float = unitType.delimit(float: newFloats[0])
+            self.float = unitType.delimit(float: newFloats[0], second: false)
         }
         if newFloats.count > 1 {
-            self.float1 = unitType.delimit(float: newFloats[1])
+            self.float1 = unitType.delimit(float: newFloats[1], second: second)
         }
         if newFloats.count > 2 {
-            self.float2 = unitType.delimit(float: newFloats[2])
+            self.float2 = unitType.delimit(float: newFloats[2], second: false)
         }
     }
 
@@ -566,7 +570,7 @@ class Property: Codable {
                                           newTimeUnit: .second)
 
         if newFloats.count > 0 {
-            self.float = unitType.delimit(float: newFloats[0])
+            self.float = unitType.delimit(float: newFloats[0], second: false)
         }
     }
 
@@ -861,7 +865,7 @@ class Property: Codable {
 
         case .simpleFloat, .simpleFloatText, .string, .key, .select, .dobleSize, .doblePosition, .triple, .sequence,
              .finalFloat, .listOrder, .selectionDifferent, .selectionOrder, .correctType,
-             .image, .text, .video, .audio, .font, .behaviour:
+             .image, .text, .video, .audio, .font, .behaviour, .trialAccuracy:
             break
         }
     }

@@ -7,6 +7,7 @@ struct Condition {
 
     var type: FixedCondition?
     var n: Int
+    var a: Float
     var sectionNumber: Int
 }
 

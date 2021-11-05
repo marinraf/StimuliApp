@@ -152,6 +152,8 @@ enum UnitType: String, Codable, CaseIterable {
     case diagonalSize = "diagonal size"
     case frequency = "frequency"
 
+    case twoValues = "positive non-zero integer value & decimal value from 0 to 1"
+
     var name: String {
         return self.rawValue
     }
@@ -187,6 +189,8 @@ enum UnitType: String, Codable, CaseIterable {
         case .pixelSize: return [.pixel]
         case .diagonalSize: return [.cm, .inch]
         case .frequency: return [.hz]
+
+        case .twoValues: return [.none]
         }
     }
 
@@ -194,7 +198,7 @@ enum UnitType: String, Codable, CaseIterable {
         return possibleUnits[0]
     }
 
-    func delimit(float: Float) -> Float {
+    func delimit(float: Float, second: Bool) -> Float {
         switch self {
         case .decimal, .size, .variableUnit, .responseUnit, .delayTime:
             return float
@@ -272,6 +276,18 @@ enum UnitType: String, Codable, CaseIterable {
             } else {
                 return float.truncatingRemainder(dividingBy: 2 * Float.pi) + 2 * Float.pi
             }
+        case .twoValues:
+            if second {
+                if float < 0 {
+                    return 0
+                } else if float > 1 {
+                    return 1
+                } else {
+                    return float
+                }
+            } else {
+                return max(1, abs(roundf(float)))
+            }
         }
     }
 }
@@ -344,6 +360,8 @@ enum PropertyType: String, Codable, CaseIterable {
     case triple
     case sequence
 
+    case trialAccuracy
+
     case image
     case text
     case video
@@ -399,6 +417,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .doblePosition: return [.constant, .variable]
         case .triple: return [.constant, .variable]
         case .sequence: return [.alwaysConstant]
+        case .trialAccuracy: return [.alwaysConstant]
         case .image: return [.constant, .variable]
         case .text: return [.constant, .variable]
         case .video: return [.constant, .variable]
@@ -454,6 +473,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .doblePosition: return true
         case .triple: return true
         case .sequence: return true
+        case .trialAccuracy: return true
         case .image: return true
         case .text: return true
         case .video: return true
@@ -506,6 +526,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .doblePosition: return []
         case .triple: return []
         case .sequence: return []
+        case .trialAccuracy: return []
         case .image: return []
         case .text: return []
         case .video: return []
@@ -561,6 +582,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .doblePosition: return []
         case .triple: return []
         case .sequence: return []
+        case .trialAccuracy: return []
         case .image: return []
         case .text: return []
         case .video: return []

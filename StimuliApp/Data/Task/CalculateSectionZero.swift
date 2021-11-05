@@ -43,12 +43,12 @@ extension Task {
         sectionZeroTask.sceneTasks = [sceneZeroTask]
 
         if preview == .previewStimulus || preview == .previewScene {
-            let condition = Condition(type: nil, n: 0, sectionNumber: 0)
+            let condition = Condition(type: nil, n: 0, a: 0, sectionNumber: 0)
             sectionZeroTask.conditions = [condition]
         } else {
             let firstSection = test.sections.firstIndex(where: { $0.id == test.firstSection.somethingId })
             if let firstSection = firstSection {
-                let condition = Condition(type: nil, n: 0, sectionNumber: firstSection)
+                let condition = Condition(type: nil, n: 0, a: 0, sectionNumber: firstSection)
                 sectionZeroTask.conditions = [condition]
             }
         }

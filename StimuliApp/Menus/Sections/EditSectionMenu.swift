@@ -207,6 +207,19 @@ class EditSectionMenu: Menu {
         if variable.inGroup {
             option.detail = variable.otherVariablesInSameGroup(section: Flow.shared.section).map({
                 $0.name }).joined(separator: ",")
+        } else {
+            option.detail = variable.listOfValues?.valuesString ?? ""
+            if let list = variable.listOfValues {
+                let name = list.name.string
+                let detail = list.detail
+                if list.dimensions == 8 {
+                    option.detail = detail
+                } else {
+                    option.detail = detail + " from: " + name
+                }
+            } else {
+                option.detail = "no values"
+            }
         }
         option.infoMessage = Texts.variablesInSection
         option.style = .onlySelect

@@ -247,6 +247,8 @@ enum FixedCondition: String, Codable, CaseIterable {
     case lastNotResponded = "when the last trial was not responded in time"
     case lastCorrect = "when the last trial was correct"
     case lastIncorrect = "when the last trial was incorrect"
+    case biggerAccuracy = "when trials = multiple of n and accuracy >= a"
+    case smallerAccuracy = "when trials = multiple of n and accuracy < a"
 
     var description: String {
        return self.rawValue
@@ -256,11 +258,16 @@ enum FixedCondition: String, Codable, CaseIterable {
         return self.rawValue
     }
 
-    func name(n: Int) -> String {
-        if name.last == "n" {
+    func name(n: Int, a: Float) -> String {
+        switch self {
+        case .numberOfTrials, .numberOfResponses, .numberOfNotResponses, .numberCorrects, .numberIncorrects:
             return String(name.dropLast()) + String(n)
-        } else {
+        case .lastResponded, .lastNotResponded, .lastCorrect, .lastIncorrect:
             return name
+        case .biggerAccuracy:
+            return "when trials = multiple of " + String(n) + " and accuracy >= " + String(format: "%.2f", a)
+        case . smallerAccuracy:
+            return "when trials = multiple of " + String(n) + " and accuracy < " + String(format: "%.2f", a)
         }
     }
 }

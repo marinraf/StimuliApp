@@ -180,7 +180,7 @@ class ModifyViewController: UIViewController {
         textFieldTriple3.textColor = Color.darkText.toUIColor
 
         switch modify.propertyType {
-        case .doblePosition, .dobleSize:
+        case .doblePosition, .dobleSize, .trialAccuracy:
             textFieldSimple.isHidden = true
             textFieldDoble1.isHidden = false
             textFieldDoble2.isHidden = false

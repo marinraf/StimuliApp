@@ -66,7 +66,6 @@ class ValueFromVariableMenu: Menu {
         let variable = Variable()
         variable.listOfValuesId = list.id
         variable.selection = VariableData.makeSelectionProperty(selected: 0)
-//        variable.objectId = Flow.shared.section.objects[0].id
         variable.propertyId = Flow.shared.section.trialValue.id
 
 

@@ -337,6 +337,26 @@ class DisplayRender {
                         changeToSection(sectionNumber: condition.sectionNumber)
                         exitLoop = true
                     }
+                case .biggerAccuracy:
+                    let totalTrials = Task.shared.sectionTask.currentTrial + 1
+                    let n = condition.n
+                    if totalTrials % n == 0 {
+                        let accuracy = Float(Task.shared.sectionTask.correctValue.suffix(n).reduce(0, +)) / Float(n)
+                        if accuracy + Constants.epsilon >= condition.a {
+                            changeToSection(sectionNumber: condition.sectionNumber)
+                            exitLoop = true
+                        }
+                    }
+                case .smallerAccuracy:
+                    let totalTrials = Task.shared.sectionTask.currentTrial + 1
+                    let n = condition.n
+                    if totalTrials % n == 0 {
+                        let accuracy = Float(Task.shared.sectionTask.correctValue.suffix(n).reduce(0, +)) / Float(n)
+                        if accuracy < condition.a {
+                            changeToSection(sectionNumber: condition.sectionNumber)
+                            exitLoop = true
+                        }
+                    }
                 }
             }
         }

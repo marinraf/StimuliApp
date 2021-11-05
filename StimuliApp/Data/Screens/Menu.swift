@@ -196,7 +196,7 @@ class Menu: Screen {
                                position: position + 1)
                 }
             case .simpleFloat, .simpleFloatText, .doblePosition, .dobleSize, .triple, .sequence, .finalFloat,
-                 .image, .text, .video, .audio:
+                 .image, .text, .video, .audio, .trialAccuracy:
                 makeOptionFloat(from: property, sectionNumber: sectionNumber,
                                 position: position, defaultSettings: defaultSettings)
             }
