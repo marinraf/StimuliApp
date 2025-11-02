@@ -49,6 +49,24 @@ struct SceneData {
                         fixedValues: FixedContinuousResolution.allCases.map { $0.name },
                         selectedValue: selected)
     }
+    
+    static func makeSceneFixationProperty(selected: Int) -> Property {
+        return Property(name: "gazeFixation",
+                        info: Texts.gazeFixation,
+                        propertyType: .sceneGazeFixation,
+                        unitType: .decimal,
+                        fixedValues: FixedSceneGazeFixation.allCases.map { $0.name },
+                        selectedValue: selected)
+    }
+    
+    static func makeSceneDistanceMeasureProperty(selected: Int) -> Property {
+        return Property(name: "distanceFixation",
+                        info: Texts.distanceFixation,
+                        propertyType: .sceneDistanceFixation,
+                        unitType: .decimal,
+                        fixedValues: FixedSceneDistanceFixation.allCases.map { $0.name },
+                        selectedValue: selected)
+    }
 
     static func makeResponseProperty(selected: Int) -> Property {
         return Property(name: "response",
@@ -566,6 +584,44 @@ struct SceneData {
             break
         }
     }
+    
+    static func addPropertiesToSceneDistanceFixation(property: Property) {
+        
+        property.properties = []
+        
+        let distance = Property(name: "distanceError",
+                                info: Texts.distanceError,
+                                propertyType: .simpleFloat,
+                                unitType: .externalSize,
+                                float: 10)
+        
+        guard let selected = FixedSceneDistanceFixation(rawValue: property.string) else { return }
+        switch selected {
+        case .on:
+            property.properties.append(distance)
+        case .off:
+            break
+        }
+    }
+    
+    static func addPropertiesToSceneGazeFixation(property: Property) {
+        
+        property.properties = []
+        
+        let distance = Property(name: "gazeError",
+                                info: Texts.gazeError,
+                                propertyType: .simpleFloat,
+                                unitType: .size,
+                                float: 300)
+        
+        guard let selected = FixedSceneGazeFixation(rawValue: property.string) else { return }
+        switch selected {
+        case .on:
+            property.properties.append(distance)
+        case .off:
+            break
+        }
+    }
 
     static func addPropertiesToObjectResponse(property: Property) {
 
@@ -667,9 +723,10 @@ enum FixedResponse: String, Codable, CaseIterable {
             Any touch on the screen is considered a response and the position (x, y) or (radius, angle) is saved.
             """
         case .twoFingersTouch: return """
-            Touching the screen with 2 fingers is considered a response. The positions of both fingers are saved in \
-            cartesian or polar coordinates. Also, the distance between the fingers is saved in the desired coordinate \
-            (x, y, radius, angle) or just the real distance between the touches.
+            Touching the screen with two fingers is considered a response. The positions of both fingers are recorded in \
+            either cartesian or polar coordinates. In addition, the distance between the two touches is stored — either \
+            as part of the selected coordinate system (x, y, radius, angle) or simply as the actual distance between \
+            the fingers.
             """
         case .lift: return """
             The response is triggered when the user lifts their finger from the screen.
@@ -792,6 +849,44 @@ enum FixedContinuousResolution: String, Codable, CaseIterable {
             return "8 bits per channel (red, green, blue). 256 different values for each channel."
         case .yes:
             return "Adding noise to increase the depth of color."
+        }
+    }
+
+    var name: String {
+        return self.rawValue
+    }
+}
+
+enum FixedSceneGazeFixation: String, Codable, CaseIterable {
+
+    case off
+    case on
+
+    var description: String {
+        switch self {
+        case .off:
+            return "No warning message appears in this scene"
+        case .on:
+            return "A warning message appears if the subject is not looking at the center of the screen in this scene."
+        }
+    }
+
+    var name: String {
+        return self.rawValue
+    }
+}
+
+enum FixedSceneDistanceFixation: String, Codable, CaseIterable {
+
+    case off
+    case on
+
+    var description: String {
+        switch self {
+        case .off:
+            return "No warning message appears in this scene"
+        case .on:
+            return "A warning message appears if the subject is not at a certain distance from the screen in this scene"
         }
     }
 

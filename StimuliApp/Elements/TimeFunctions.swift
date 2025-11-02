@@ -335,34 +335,43 @@ enum TimeFunctions: String, Codable, CaseIterable {
                 return c[2] + c[3] * sin(2 * Float.pi * c[4] * t + c[5])
 
             case .rectangleWave:
-                let value = t.truncatingRemainder(dividingBy: (c[4] + c[5]))
-                return value <= c[4] ? c[2] : c[3]
+                let d1 = max(c[4], Float.leastNonzeroMagnitude)
+                let d2 = max(c[5], Float.leastNonzeroMagnitude)
+                let period = d1 + d2
+                let value = t.truncatingRemainder(dividingBy: period)
+                return value <= d1 ? c[2] : c[3]
 
             case .triangleWave:
-                let value = t.truncatingRemainder(dividingBy: (c[4] + c[5]))
-                if value <= c[4] {
-                    return c[2] + value / c[4] * (c[3] - c[2])
+                let d1 = max(c[4], Float.leastNonzeroMagnitude)
+                let d2 = max(c[5], Float.leastNonzeroMagnitude)
+                let period = d1 + d2
+                let value = t.truncatingRemainder(dividingBy: period)
+                if value <= d1 {
+                    return c[2] + value / d1 * (c[3] - c[2])
                 } else {
-                    return c[3] - (value - c[4]) / c[5] * (c[3] - c[2])
+                    return c[3] - (value - d1) / d2 * (c[3] - c[2])
                 }
 
             case .pulse:
-                if t <= c[4] {
-                    return t * c[2] / c[4]
-                } else if t <= c[4] + c[3] {
+                let ramp = max(c[4], Float.leastNonzeroMagnitude)
+                if t <= ramp {
+                    return t * c[2] / ramp
+                } else if t <= ramp + c[3] {
                     return c[2]
-                } else if t <= 2 * c[4] + c[3] {
-                    return c[2] - (t - (c[4] + c[3])) * c[2] / c[4]
+                } else if t <= 2 * ramp + c[3] {
+                    return c[2] - (t - (ramp + c[3])) * c[2] / ramp
                 } else {
                     return 0
                 }
 
             case .gaussian:
-                return c[2] * exp(-powf((t - c[3]), 2) / 2 / powf(c[4], 2))
+                let sigma = max(c[4], Float.leastNonzeroMagnitude)
+                return c[2] * exp(-powf((t - c[3]), 2) / (2 * powf(sigma, 2)))
 
             case .gaussianEnergy:
-                let const = 1 / c[4] / sqrt(2 * Float.pi)
-                return c[2] * const * exp(-powf((t - c[3]), 2) / 2 / powf(c[4], 2))
+                let sigma = max(c[4], Float.leastNonzeroMagnitude)
+                let const = 1 / sigma / sqrt(2 * Float.pi)
+                return c[2] * const * exp(-powf((t - c[3]), 2) / (2 * powf(sigma, 2)))
 
             case .random:
                 let minimTime = max(Flow.shared.settings.delta, c[4])
@@ -376,3 +385,4 @@ enum TimeFunctions: String, Codable, CaseIterable {
         }
     }
 }
+

@@ -24,6 +24,22 @@ extension Task {
         sceneTask.numberOfTrials = sectionTask.numberOfTrials
         sceneTask.numberOfLayers = scene.numberOfLayers.selectedValue + 1
         sceneTask.continuousResolution = scene.continuousResolution.selectedValue == 0 ? false : true
+        
+        sceneTask.gazeFixation = scene.gazeFixation?.selectedValue == 1 ? true : false
+        sceneTask.distanceFixation = scene.distanceFixation?.selectedValue == 1 ? true : false
+
+        if let gazeFixation = scene.gazeFixation {
+            if gazeFixation.properties.count > 0 {
+                sceneTask.maxGazeErrorInPixels = gazeFixation.properties[0].float
+            }
+        }
+        
+        if let distanceFixation = scene.distanceFixation {
+            if distanceFixation.properties.count > 0 {
+                sceneTask.maxDistanceErrorInCm = startingDistanceInCm + distanceFixation.properties[0].float
+                sceneTask.minDistanceErrorInCm = startingDistanceInCm - distanceFixation.properties[0].float
+            }
+        }
 
         createDots()
         for _ in 0 ..< sceneTask.numberOfTrials {
@@ -199,7 +215,8 @@ extension Task {
         let end = zip(start, duration).map(+)
 
         // type and type properties
-        let typeValues = Array(repeating: Float(stimulus.typeProperty.selectedValue), count: trials) //0
+        let realValue = StimuliType.allCases.firstIndex(where: { $0.name == stimulus.typeProperty.string }) ?? 0
+        let typeValues = Array(repeating: Float(realValue), count: trials) //0
         var typePropValues = Array(repeating: zeroArray, count: 20) //1...20
         index = 0
         for property in stimulus.typeProperty.properties {
@@ -487,25 +504,27 @@ extension Task {
     }
 
     private func modifyPureTonesDuration(trial: Int, maxTime: Int) {
-        let maxTimeFloat = Float(maxTime) / Float(Flow.shared.settings.frameRate)
-        for i in 0 ..< sceneTask.audioObjects[trial].count {
-
-            let old = sceneTask.audioObjects[trial][i]
-            let end = min(sceneTask.audioObjects[trial][i].end, maxTime)
-            let endFloat = min(sceneTask.audioObjects[trial][i].endFloat, maxTimeFloat)
-
-            let new = AudioObject(activated: old.activated,
-                                     dependCorrection: old.dependCorrection,
-                                     start: old.start,
-                                     end: end,
-                                     startFloat: old.startFloat,
-                                     endFloat: endFloat,
-                                     amplitude: old.amplitude,
-                                     frequency: old.frequency,
-                                     channel: old.channel,
-                                     url: old.url)
-
-            sceneTask.audioObjects[trial][i] = new
+        if !Task.shared.testUsesLongAudios {
+            let maxTimeFloat = Float(maxTime) / Float(Flow.shared.settings.frameRate)
+            for i in 0 ..< sceneTask.audioObjects[trial].count {
+                
+                let old = sceneTask.audioObjects[trial][i]
+                let end = min(sceneTask.audioObjects[trial][i].end, maxTime)
+                let endFloat = min(sceneTask.audioObjects[trial][i].endFloat, maxTimeFloat)
+                
+                let new = AudioObject(activated: old.activated,
+                                      dependCorrection: old.dependCorrection,
+                                      start: old.start,
+                                      end: end,
+                                      startFloat: old.startFloat,
+                                      endFloat: endFloat,
+                                      amplitude: old.amplitude,
+                                      frequency: old.frequency,
+                                      channel: old.channel,
+                                      url: old.url)
+                
+                sceneTask.audioObjects[trial][i] = new
+            }
         }
     }
 
@@ -1167,3 +1186,4 @@ extension Task {
         return ""
     }
 }
+

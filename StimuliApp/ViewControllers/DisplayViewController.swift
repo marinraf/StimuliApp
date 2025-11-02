@@ -7,6 +7,8 @@ import UIKit
 import AVKit
 import AVFoundation
 import SafariServices
+import ARKit
+import SceneKit
 
 class DisplayViewController: UIViewController {
 
@@ -27,6 +29,10 @@ class DisplayViewController: UIViewController {
     var y: CGFloat = 0
 
     let button = UIButton(type: .custom)
+    
+    
+//    var session: ARSession!
+    
 
     @IBOutlet weak var metalView: MTKView!
     @IBOutlet weak var controlView: UIView!
@@ -40,8 +46,35 @@ class DisplayViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    
+    //    override func viewDidAppear(_ animated: Bool) {
+    //        super.viewDidAppear(animated)
+    //        UIApplication.shared.isIdleTimerDisabled = true
+    //
+    //        let configuration = ARFaceTrackingConfiguration()
+    //        if #available(iOS 13.0, *) {
+    //            configuration.maximumNumberOfTrackedFaces = 1
+    //            configuration.worldAlignment = .camera
+    //        }
+    //        session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+    //    }
+    //
+    //    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+    //        if let currentFrame = session.currentFrame {
+    //            for anchor in currentFrame.anchors {
+    //                guard let faceAnchor = anchor as? ARFaceAnchor else { continue }
+    //                print(faceAnchor.transform[3][2])
+    //            }
+    //        }
+    //    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        session = ARSession()
+//        session.delegate = self
+        
+        self.hidesBottomBarWhenPushed = true
 
         Flow.shared.enterFullScreen()
 
@@ -54,6 +87,9 @@ class DisplayViewController: UIViewController {
         let brightness = pow(Flow.shared.settings.brightness, (1.0 / Constants.gammaPerBrightness))
         UIScreen.main.brightness = CGFloat(brightness - 0.01)
         UIScreen.main.brightness = CGFloat(brightness)
+        
+        //tracker
+        Flow.shared.eyeTracker?.eyeTrackerDelegate = self
 
         //metal device
         metalView.device = MTLCreateSystemDefaultDevice()
@@ -95,14 +131,27 @@ class DisplayViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         self.tabBarController?.tabBar.isHidden = true
 
-        var size = view.bounds.size
         view.frame = CGRect(x: x, y:y, width: screenSize.width, height: screenSize.height)
-        size = view.bounds.size
 
-        if size.width >= size.height {
-            AppUtility.lockOrientation(.landscape)
-        } else {
+        switch UIApplication.shared.windows.first?.windowScene?.interfaceOrientation ?? .unknown {
+        case .unknown:
             AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
+        case .portrait:
+            AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
+        case .portraitUpsideDown:
+            AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
+        case .landscapeLeft:
+            AppUtility.lockOrientation(.landscapeLeft)
+            Flow.shared.orientation = .landscapeLeft
+        case .landscapeRight:
+            AppUtility.lockOrientation(.landscapeRight)
+            Flow.shared.orientation = .landscapeRight
+        @unknown default:
+            AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
         }
     }
 
@@ -130,6 +179,25 @@ extension DisplayViewController: DisplayRenderDelegate {
         player?.pause()
         audioSystem.pauseAudio()
         showAlertNeedToSync(resume: { _ in self.resumeFromPause() }, end: { _ in self.end() })
+    }
+    
+    func pauseToWarn(error: ErrorTracker) {
+        displayRender?.inactive = true
+        Flow.shared.frameControl.measure = false
+        player?.pause()
+        audioSystem.pauseAudio()
+        switch error {
+        case .no:
+            break
+        case .eyeTracker:
+            showAlertFixationBroken(resume: { _ in self.resumeFromWarning() })
+        case .distanceMin:
+            showAlertDistanceBrokenClose(resume: { _ in self.resumeFromWarning() })
+        case .distanceMax:
+            showAlertDistanceBrokenFar(resume: { _ in self.resumeFromWarning() })
+        case .distanceNan:
+            showAlertDistanceBrokenNan(resume: { _ in self.resumeFromWarning() })
+        }
     }
 
     func showFirstMessageTest() {
@@ -195,12 +263,15 @@ extension DisplayViewController: DisplayRenderDelegate {
     }
 
     func end() {
+        Task.shared.previousSceneTask.saveSceneTime(time: CACurrentMediaTime())
         Task.shared.previousSceneTask = Task.shared.sceneTask
         Flow.shared.frameControl.initScene = true
+
+        Flow.shared.eyeTracker?.stopTracking()
+        Flow.shared.eyeTracker?.end()
         
         stopVideo()
-
-        Flow.shared.frameControl.printFrameControl()
+        stopAudio(forceStop: true)
 
         switch Task.shared.preview {
 
@@ -288,6 +359,7 @@ extension DisplayViewController: DisplayRenderDelegate {
     }
 
     func showKeyboard(type: FixedKeyboard, inTitle: Bool) {
+        
         self.inTitle = inTitle
         player?.pause()
         audioSystem.pauseAudio()
@@ -307,6 +379,26 @@ extension DisplayViewController: DisplayRenderDelegate {
         Flow.shared.frameControl.measure = true
         player?.play()
         audioSystem.resumeAudio()
+    }
+    
+    func resumeFromWarning() {
+        if Task.shared.sceneTask.trackerResponses.count > Task.shared.sectionTask.currentTrial {
+            Task.shared.sceneTask.trackerResponses[Task.shared.sectionTask.currentTrial].errors = []
+        }
+        if Task.shared.sceneTask.distanceResponses.count > Task.shared.sectionTask.currentTrial {
+            Task.shared.sceneTask.distanceResponses[Task.shared.sectionTask.currentTrial].errorMaxs = []
+            Task.shared.sceneTask.distanceResponses[Task.shared.sectionTask.currentTrial].errorMins = []
+            Task.shared.sceneTask.distanceResponses[Task.shared.sectionTask.currentTrial].errorNans = []
+        }
+        if Flow.shared.settings.device.type == .mac {
+            view.frame = CGRect(x: x, y:y, width: screenSize.width, height: screenSize.height)
+        }
+        displayRender?.inactive = false
+        Flow.shared.frameControl.measure = true
+        player?.play()
+        audioSystem.resumeAudio()
+        Task.shared.warningTracker = true
+        Task.shared.warningTrackerPause = .no
     }
 
     func resumeFromPauseFirst() {
@@ -372,7 +464,7 @@ extension DisplayViewController: DisplayRenderDelegate {
         if audio[AudioValues.numberOfAudios] > 0.5 {
             audioSystem.playAudios(audio: audio)
         } else {
-            audioSystem.stopAudio()
+            audioSystem.stopAudio(forceStop: false)
         }
     }
 
@@ -384,8 +476,8 @@ extension DisplayViewController: DisplayRenderDelegate {
 
     func stopOneAudio() {}
 
-    func stopAudio() {
-        audioSystem.stopAudio()
+    func stopAudio(forceStop: Bool) {
+        audioSystem.stopAudio(forceStop: forceStop)
     }
 
     func settingTimeLabel() {}
@@ -432,8 +524,8 @@ extension DisplayViewController: UITextFieldDelegate {
             }
             displayRender?.inactive = false
             Flow.shared.frameControl.measure = true
-            Task.shared.userResponse.clocks.append(CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime)
-            stopAudio()
+            Task.shared.userResponse.clocks.append(CACurrentMediaTime())
+            stopAudio(forceStop: false)
             displayRender?.responded = true
             textField.isHidden = true
             button.isHidden = false
@@ -486,121 +578,262 @@ extension DisplayViewController {
 
     @objc func responseAction0() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[0].1
-        let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
-        guard time > 0 else { return }
-        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
-            || time > Task.shared.sceneTask.responseEnd
+        let time = CACurrentMediaTime()
+        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
+        guard time0 > 0 else { return }
+        Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
+            || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
-        stopAudio()
+        stopAudio(forceStop: false)
         displayRender?.responded = true
     }
 
     @objc func responseAction1() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[1].1
-        let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
-        guard time > 0 else { return }
-        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
-            || time > Task.shared.sceneTask.responseEnd
+        let time = CACurrentMediaTime()
+        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
+        guard time0 > 0 else { return }
+        Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
+            || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
-        stopAudio()
+        stopAudio(forceStop: false)
         displayRender?.responded = true
     }
 
     @objc func responseAction2() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[2].1
-        let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
-        guard time > 0 else { return }
-        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
-            || time > Task.shared.sceneTask.responseEnd
+        let time = CACurrentMediaTime()
+        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
+        guard time0 > 0 else { return }
+        Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
+            || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
-        stopAudio()
+        stopAudio(forceStop: false)
         displayRender?.responded = true
     }
 
     @objc func responseAction3() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[3].1
-        let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
-        guard time > 0 else { return }
-        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
-            || time > Task.shared.sceneTask.responseEnd
+        let time = CACurrentMediaTime()
+        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
+        guard time0 > 0 else { return }
+        Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
+            || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
-        stopAudio()
+        stopAudio(forceStop: false)
         displayRender?.responded = true
     }
 
     @objc func responseAction4() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[4].1
-        let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
-        guard time > 0 else { return }
-        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
-            || time > Task.shared.sceneTask.responseEnd
+        let time = CACurrentMediaTime()
+        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
+        guard time0 > 0 else { return }
+        Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
+            || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
-        stopAudio()
+        stopAudio(forceStop: false)
         displayRender?.responded = true
     }
 
     @objc func responseAction5() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[5].1
-        let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
-        guard time > 0 else { return }
-        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
-            || time > Task.shared.sceneTask.responseEnd
+        let time = CACurrentMediaTime()
+        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
+        guard time0 > 0 else { return }
+        Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
+            || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
-        stopAudio()
+        stopAudio(forceStop: false)
         displayRender?.responded = true
     }
 
     @objc func responseAction6() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[6].1
-        let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
-        guard time > 0 else { return }
-        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
-            || time > Task.shared.sceneTask.responseEnd
+        let time = CACurrentMediaTime()
+        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
+        guard time0 > 0 else { return }
+        Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
+            || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
-        stopAudio()
+        stopAudio(forceStop: false)
         displayRender?.responded = true
     }
 
     @objc func responseAction7() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[7].1
-        let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
-        guard time > 0 else { return }
-        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
-            || time > Task.shared.sceneTask.responseEnd
+        let time = CACurrentMediaTime()
+        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
+        guard time0 > 0 else { return }
+        Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
+            || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
-        stopAudio()
+        stopAudio(forceStop: false)
         displayRender?.responded = true
     }
 
     @objc func responseAction8() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[8].1
-        let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
-        guard time > 0 else { return }
-        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
-            || time > Task.shared.sceneTask.responseEnd
+        let time = CACurrentMediaTime()
+        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
+        guard time0 > 0 else { return }
+        Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
+            || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
-        stopAudio()
+        stopAudio(forceStop: false)
         displayRender?.responded = true
     }
 
     @objc func responseAction9() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[9].1
-        let time = CACurrentMediaTime() - Flow.shared.frameControl.initSceneTime
-        guard time > 0 else { return }
-        Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
-            || time > Task.shared.sceneTask.responseEnd
+        let time = CACurrentMediaTime()
+        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
+        guard time0 > 0 else { return }
+        Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
+            || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
         Task.shared.userResponse.clocks.append(time)
-        stopAudio()
+        stopAudio(forceStop: false)
         displayRender?.responded = true
     }
+}
+
+
+extension DisplayViewController : TrackerOnViewDelegate {
+    
+    func onInitialized(error: Bool) {}
+    func onCalibrationProgress(progress: Double) {}
+    func onCalibrationNextPoint(x: Double, y: Double) {}
+    func onCalibrationFinished(calibrationData : [Double]) {}
+    
+    func onGaze(gazeX: Double, gazeY: Double,
+                clock: Double, isTracking: Bool) {
+
+        if (Task.shared.testUsesTrackerSeeSo || Task.shared.testUsesTrackerARKit) && Task.shared.warningTrackerPause == .no {
+
+            let trial = Task.shared.sectionTask.currentTrial
+
+            guard trial > 0 || Task.shared.sceneTask.trackerResponses.count < 2 else { return }
+
+            if (!Task.shared.sceneTask.trackerResponses.isEmpty) {
+                if (Task.shared.sceneTask.trackerResponses.count < trial + 1) {
+                    Task.shared.sceneTask.trackerResponses.append(TrackerResponse())
+                }
+
+                let coordinate = Task.shared.trackerCoordinates
+                let unit1 = Task.shared.trackerFirstUnit
+                let unit2 = Task.shared.trackerSecondUnit
+                
+                let x = Float(gazeX - screenSize.width / 2) * Flow.shared.settings.retina
+                let y = Float(-gazeY + screenSize.height / 2) * Flow.shared.settings.retina
+
+                let polarVars = AppUtility.cartesianToPolar(xPos: x, yPos: y)
+                let radius = polarVars.0
+                let angle = polarVars.1
+
+                switch coordinate {
+                case .cartesian:
+                    let xUnit = x / unit1.factor
+                    let yUnit = y / unit2.factor
+
+                    Task.shared.sceneTask.trackerResponses[trial].xGazes.append(xUnit)
+                    Task.shared.sceneTask.trackerResponses[trial].yGazes.append(yUnit)
+                    Task.shared.sceneTask.trackerResponses[trial].clocks.append(clock)
+
+                case .polar:
+                    let radiusUnit = radius / unit1.factor
+                    let angleUnit = angle / unit2.factor
+
+                    Task.shared.sceneTask.trackerResponses[trial].radiusGazes.append(radiusUnit)
+                    Task.shared.sceneTask.trackerResponses[trial].angleGazes.append(angleUnit)
+                    Task.shared.sceneTask.trackerResponses[trial].clocks.append(clock)
+                }
+                
+                if Task.shared.sceneTask.gazeFixation {
+                    
+                    print(radius)
+                    
+                    if radius > Task.shared.sceneTask.maxGazeErrorInPixels || radius.isNaN {
+                        Task.shared.sceneTask.trackerResponses[trial].errors.append(1)
+                    } else {
+                        Task.shared.sceneTask.trackerResponses[trial].errors.append(0)
+                    }
+
+                    if Task.shared.sceneTask.trackerResponses[trial].errors.reduce(0, +) >= Constants.numberOfTrackingErrors {
+                        Task.shared.warningTrackerPause = .eyeTracker
+                        Task.shared.sceneTask.trackerResponses[trial].errors = []
+                    }
+                }
+            }
+        }
+    }
+    
+    func onFace(z: Float, clock: Double) {
+        
+        if (Task.shared.testUsesTrackerSeeSo || Task.shared.testUsesTrackerARKit) && Task.shared.warningTrackerPause == .no {
+            
+            let trial = Task.shared.sectionTask.currentTrial
+
+            guard trial > 0 || Task.shared.sceneTask.distanceResponses.count < 2 else { return }
+
+            if (!Task.shared.sceneTask.distanceResponses.isEmpty) {
+                if (Task.shared.sceneTask.distanceResponses.count < trial + 1) {
+                    Task.shared.sceneTask.distanceResponses.append(DistanceResponse())
+                }
+
+                let unit = Task.shared.distanceUnit
+
+                var zUnit = z
+                if unit == .inch {
+                    zUnit = z / Constants.cmsInInch
+                }
+
+                Task.shared.sceneTask.distanceResponses[trial].zDistances.append(zUnit)
+                Task.shared.sceneTask.distanceResponses[trial].clocks.append(clock)
+
+
+                if Task.shared.sceneTask.distanceFixation {
+                    if z > Task.shared.sceneTask.maxDistanceErrorInCm {
+                        Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(1)
+                        Task.shared.sceneTask.distanceResponses[trial].errorMins.append(0)
+                        Task.shared.sceneTask.distanceResponses[trial].errorNans.append(0)
+                    } else if z < Task.shared.sceneTask.minDistanceErrorInCm {
+                        Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(0)
+                        Task.shared.sceneTask.distanceResponses[trial].errorMins.append(1)
+                        Task.shared.sceneTask.distanceResponses[trial].errorNans.append(0)
+                    } else if z.isNaN {
+                        Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(0)
+                        Task.shared.sceneTask.distanceResponses[trial].errorMins.append(0)
+                        Task.shared.sceneTask.distanceResponses[trial].errorNans.append(1)
+                    } else {
+                        Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(0)
+                        Task.shared.sceneTask.distanceResponses[trial].errorMins.append(0)
+                        Task.shared.sceneTask.distanceResponses[trial].errorNans.append(0)
+                    }
+
+                    if Task.shared.sceneTask.distanceResponses[trial].errorMaxs.reduce(0, +) >= Constants.numberOfTrackingErrors {
+                        Task.shared.warningTrackerPause = .distanceMax
+                        Task.shared.sceneTask.distanceResponses[trial].errorMaxs = []
+                    } else if Task.shared.sceneTask.distanceResponses[trial].errorMins.reduce(0, +) >= Constants.numberOfTrackingErrors {
+                        Task.shared.warningTrackerPause = .distanceMin
+                        Task.shared.sceneTask.distanceResponses[trial].errorMins = []
+                    } else if Task.shared.sceneTask.distanceResponses[trial].errorNans.reduce(0, +) >= Constants.numberOfTrackingErrors {
+                        Task.shared.warningTrackerPause = .distanceNan
+                        Task.shared.sceneTask.distanceResponses[trial].errorNans = []
+                    }
+                }
+            }
+        }
+    }
+
+    func saveCalibrationData() {}
 }

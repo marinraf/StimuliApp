@@ -54,9 +54,9 @@ float4 getColor(int position,
 
     float2 newId = float2(id.x - objectPos.x[position], id.y - objectPos.y[position]);
 
-    if (newId.x < 0 || newId.y < 0) {
-        return color0;
-    }
+    if (newId.x < 0 || newId.y < 0 || newId.x >= input.get_width() || newId.y >= input.get_height()) {
+            return color0;
+        }
 
     float4 color1 = input.read(ushort2(newId));
 
@@ -279,3 +279,4 @@ kernel void compute3LayersContinuous(texture2d<float, access::write> output [[te
 
     output.write(float4(newColor, 1), id);
 }
+

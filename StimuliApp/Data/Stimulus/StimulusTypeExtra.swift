@@ -5,75 +5,20 @@ import Foundation
 
 extension StimuliType {
 
-    var description: String {
-
-        switch self {
-        case .patch:
-            return patchName
-        case .gradient:
-            return gradientName
-        case .grating:
-            return gratingName
-        case .checkerboard:
-            return checkerboardName
-        case .radialCheckerboard:
-            return radialCheckerboardName
-        case .dots:
-            return """
-            Random dots.
-            """
-        case .image:
-            return """
-            Image.
-            """
-        case .text:
-            return """
-            Text.
-            """
-        case .video:
-            return """
-            Play video from a source.
-            """
-        case .audio:
-            return """
-            Play audio from a source.
-            """
-        case .pureTone:
-            return """
-            Play auto-generated white noise audio or pure tone audio.
-            """
-        }
-    }
-
-    var typeProperties: [Property] {
-        switch self {
-        case .patch:
-            return createPatch()
-        case .gradient:
-            return createGradient()
-        case .grating:
-            return createGrating()
-        case .checkerboard:
-            return createCheckerboard()
-        case .radialCheckerboard:
-            return createRadialCheckerboard()
-        case .dots:
-            return createDotsProperties()
-        case .image:
-            return createImageProperties()
-        case .text:
-            return createTextProperties()
-        case .video:
-            return createVideoProperties()
-        case .audio:
-            return createAudioProperties()
-        case .pureTone:
-            return createPureToneProperties()
-        }
-    }
-
     var name: String {
         return self.rawValue
+    }
+    
+    var style: StimuliStyle {
+        switch self {
+        case .dots: return .dots
+        case .image: return .image
+        case .text: return .nonMetal
+        case .video: return .nonMetal
+        case .audio: return .nonMetal
+        case .pureTone: return .nonMetal
+        default: return .metalRegular
+        }
     }
 
     var metal: Bool {
@@ -154,7 +99,7 @@ extension StimuliType {
         return [density, coherence, dotsLife1, diameter1, direction1, color1, dotsLife2, diameter2, direction2, color2]
     }
 
-    private func createTextProperties() -> [Property] {
+    func createTextProperties() -> [Property] {
 
         let text = Property(name: "textNumber",
                             info: "The number of the text selected from the list of texts.",
@@ -196,7 +141,7 @@ extension StimuliType {
         return [text, font, textSize, positionX, positionY, color]
     }
 
-    private func createImageProperties() -> [Property] {
+    func createImageProperties() -> [Property] {
 
         let image = Property(name: "imageNumber",
                              info: "The number of the image selected from the lists of images.",
@@ -223,7 +168,7 @@ extension StimuliType {
         return [image, imageCenter, imageRotation]
     }
 
-    private func createVideoProperties() -> [Property] {
+    func createVideoProperties() -> [Property] {
 
         let video = Property(name: "videoNumber",
                              info: "The number of the video selected from the lists of videos.",
@@ -234,7 +179,7 @@ extension StimuliType {
         return [video]
     }
 
-    private func createAudioProperties() -> [Property] {
+    func createAudioProperties() -> [Property] {
 
         let audio = Property(name: "audioNumber",
                              info: "The number of the audio selected from the lists of audios.",
@@ -255,7 +200,7 @@ extension StimuliType {
         return [audio, amplitude]
     }
 
-    private func createPureToneProperties() -> [Property] {
+    func createPureToneProperties() -> [Property] {
 
         let soundType = Property(name: "soundType",
                                   info: "Sound type.",

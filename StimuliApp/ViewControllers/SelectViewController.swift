@@ -25,6 +25,7 @@ class SelectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = Color.background.toUIColor
+        self.hidesBottomBarWhenPushed = true
         settingCell()
     }
 

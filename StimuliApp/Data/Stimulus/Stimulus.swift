@@ -83,7 +83,7 @@ class Stimulus: Codable {
     }
 
     var type: StimuliType {
-        return StimuliType.allCases[typeProperty.selectedValue]
+        return StimuliType(rawValue: typeProperty.string) ?? .patch
     }
 
     var shape: StimulusShape {

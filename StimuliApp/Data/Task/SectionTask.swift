@@ -17,6 +17,10 @@ struct SectionResult {
     var csv0Name: String
     var csv1: String
     var csv1Name: String
+    var csv2: String
+    var csv2Name: String
+    var csv3: String
+    var csv3Name: String
 }
 
 class SectionTask {
@@ -163,16 +167,20 @@ class SectionTask {
         var values: [[String]] = []
         var titlesPath: [String] = []
         var valuesPath: [[String]] = []
+        var titlesTracker: [String] = []
+        var valuesTracker: [[String]] = []
+        var titlesDistance: [String] = []
+        var valuesDistance: [[String]] = []
 
         var includeRespondedInTime = false
         var includeCorrect = false
 
         //titles & titlesUnit
         for sceneTask in sceneTasks {
+            titles.append("\(sceneTask.name)_startTime")
+            titlesUnit.append("\(sceneTask.name)_startTime (s)")
             titles.append("\(sceneTask.name)_duration")
             titlesUnit.append("\(sceneTask.name)_duration (s)")
-            titles.append("\(sceneTask.name)_delayDisplay")
-            titlesUnit.append("\(sceneTask.name)_delayDisplay (s)")
         }
 
         titles += infoAllTrialsTitleVariables
@@ -279,7 +287,7 @@ class SectionTask {
                     titles.append("\(sceneTask.name)_finalPositionX")
                     titles.append("\(sceneTask.name)_finalPositionY")
                     titlesUnit.append("\(sceneTask.name)_finalPositionX (\(unit1.name))")
-                    titlesUnit.append("\(sceneTask.name)_finalPositionX (\(unit2.name))")
+                    titlesUnit.append("\(sceneTask.name)_finalPositionY (\(unit2.name))")
                 case .polar:
                     titles.append("\(sceneTask.name)_finalPositionRadius")
                     titles.append("\(sceneTask.name)_finalPositionAngle")
@@ -310,9 +318,9 @@ class SectionTask {
 
         for sceneTask in sceneTasks {
             for i in 0 ..< respondedTrials {
-                let newValue = String(format: "%.4f", sceneTask.realEndTime[i] - sceneTask.realStartTime[i])
+                let newValue = (sceneTask.realStartTime[i] - Task.shared.startTimeFirstSceneOfTest).toString
                 values[i].append(newValue)
-                let newValue2 = String(format: "%.4f", sceneTask.delayTime[i])
+                let newValue2 = (sceneTask.realEndTime[i] - sceneTask.realStartTime[i]).toString
                 values[i].append(newValue2)
             }
         }
@@ -335,9 +343,9 @@ class SectionTask {
                     var newValue = "NaN"
 
                     if let clock2 = sceneTask.userResponses[i].liftClock {
-                        newValue = String(format: "%.4f", clock2)
+                        newValue = (clock2 - Task.shared.startTimeFirstSceneOfTest).toString
                     } else if let clock = sceneTask.userResponses[i].clocks.last {
-                        newValue = String(format: "%.4f", clock)
+                        newValue = (clock - Task.shared.startTimeFirstSceneOfTest).toString
                     }
                     values[i].append(newValue)
 
@@ -367,9 +375,9 @@ class SectionTask {
                     var newValue = "NaN"
 
                     if let clock2 = sceneTask.userResponses[i].liftClock {
-                        newValue = String(format: "%.4f", clock2)
+                        newValue = (clock2 - Task.shared.startTimeFirstSceneOfTest).toString
                     } else if let clock = sceneTask.userResponses[i].clocks.last {
-                        newValue = String(format: "%.4f", clock)
+                        newValue = (clock - Task.shared.startTimeFirstSceneOfTest).toString
                     }
                     values[i].append(newValue)
 
@@ -391,9 +399,9 @@ class SectionTask {
                     var newValue = "NaN"
 
                     if let clock2 = sceneTask.userResponses[i].liftClock {
-                        newValue = String(format: "%.4f", clock2)
+                        newValue = (clock2 - Task.shared.startTimeFirstSceneOfTest).toString
                     } else if let clock = sceneTask.userResponses[i].clocks.last {
-                        newValue = String(format: "%.4f", clock)
+                        newValue = (clock - Task.shared.startTimeFirstSceneOfTest).toString
                     }
                     values[i].append(newValue)
 
@@ -438,9 +446,9 @@ class SectionTask {
                     var newValue = "NaN"
 
                     if let clock2 = sceneTask.userResponses[i].liftClock {
-                        newValue = String(format: "%.4f", clock2)
+                        newValue = (clock2 - Task.shared.startTimeFirstSceneOfTest).toString
                     } else if let clock = sceneTask.userResponses[i].clocks.last {
-                        newValue = String(format: "%.4f", clock)
+                        newValue = (clock - Task.shared.startTimeFirstSceneOfTest).toString
                     }
                     values[i].append(newValue)
 
@@ -505,68 +513,196 @@ class SectionTask {
 
         //titlesPath & titlesUnit
         for sceneTask in sceneTasks
-            where sceneTask.responseType == .path || sceneTask.responseType == .moveObject {
-
-                if titlesPath.isEmpty {
-                    titlesPath.append("trial")
+        where sceneTask.responseType == .path || sceneTask.responseType == .moveObject {
+            
+            if titlesPath.isEmpty {
+                titlesPath.append("trial")
+            }
+            
+            let coordinate = sceneTask.responseCoordinates
+            let unit1 = sceneTask.responseFirstUnit
+            let unit2 = sceneTask.responseSecondUnit
+            
+            switch coordinate {
+            case .cartesian:
+                titlesPath.append("\(sceneTask.name)_positionsX")
+                titlesPath.append("\(sceneTask.name)_positionsY")
+                titlesPath.append("\(sceneTask.name)_times")
+                
+                titlesUnit.append("\(sceneTask.name)_positionsX (\(unit1.name))")
+                titlesUnit.append("\(sceneTask.name)_positionsY (\(unit2.name))")
+                titlesUnit.append("\(sceneTask.name)_times (s)")
+                
+            case .polar:
+                titlesPath.append("\(sceneTask.name)_positionsRadius")
+                titlesPath.append("\(sceneTask.name)_positionsAngle")
+                titlesPath.append("\(sceneTask.name)_times")
+                
+                titlesUnit.append("\(sceneTask.name)_positionsRadius (\(unit1.name))")
+                titlesUnit.append("\(sceneTask.name)_positionsAngle (\(unit2.name))")
+                titlesUnit.append("\(sceneTask.name)_times (s)")
+            }
+        }
+        
+        //titlesTracker
+        if Task.shared.testUsesTrackerSeeSo {
+            for sceneTask in sceneTasks {
+                
+                if titlesTracker.isEmpty {
+                    titlesTracker.append("trial")
                 }
-
-                let coordinate = sceneTask.responseCoordinates
-                let unit1 = sceneTask.responseFirstUnit
-                let unit2 = sceneTask.responseSecondUnit
+                
+                let coordinate = Task.shared.trackerCoordinates
+                let unit1 = Task.shared.trackerFirstUnit
+                let unit2 = Task.shared.trackerSecondUnit
 
                 switch coordinate {
                 case .cartesian:
-                    titlesPath.append("\(sceneTask.name)_positionsX")
-                    titlesPath.append("\(sceneTask.name)_positionsY")
-                    titlesPath.append("\(sceneTask.name)_times")
+                    titlesTracker.append("\(sceneTask.name)_gazePositionsX")
+                    titlesTracker.append("\(sceneTask.name)_gazePositionsY")
+                    titlesTracker.append("\(sceneTask.name)_gazeTimes")
 
-                    titlesUnit.append("\(sceneTask.name)_PositionsX (\(unit1.name))")
-                    titlesUnit.append("\(sceneTask.name)_PositionsY (\(unit2.name))")
-                    titlesUnit.append("\(sceneTask.name)_times (s)")
+                    titlesUnit.append("\(sceneTask.name)_gazePositionsX (\(unit1.name))")
+                    titlesUnit.append("\(sceneTask.name)_gazePositionsY (\(unit2.name))")
+                    titlesUnit.append("\(sceneTask.name)_gazeTimes (s)")
 
                 case .polar:
-                    titlesPath.append("\(sceneTask.name)_positionsRadius")
-                    titlesPath.append("\(sceneTask.name)_positionsAngle")
-                    titlesPath.append("\(sceneTask.name)_times")
+                    titlesTracker.append("\(sceneTask.name)_gazePositionsRadius")
+                    titlesTracker.append("\(sceneTask.name)_gazePositionsAngle")
+                    titlesTracker.append("\(sceneTask.name)_gazeTimes")
 
                     titlesUnit.append("\(sceneTask.name)_positionsRadius (\(unit1.name))")
                     titlesUnit.append("\(sceneTask.name)_positionsAngle (\(unit2.name))")
-                    titlesUnit.append("\(sceneTask.name)_times (s)")
+                    titlesUnit.append("\(sceneTask.name)_gazeTimes (s)")
                 }
+            }
+        }
+
+        //titlesDistance
+        if Task.shared.testUsesTrackerSeeSo || Task.shared.testUsesTrackerARKit {
+            for sceneTask in sceneTasks {
+
+                if titlesDistance.isEmpty {
+                    titlesDistance.append("trial")
+                }
+
+                let unit = Task.shared.distanceUnit
+
+                titlesDistance.append("\(sceneTask.name)_userDeviceDistance")
+                titlesDistance.append("\(sceneTask.name)_userDeviceDistanceTimes")
+
+                titlesUnit.append("\(sceneTask.name)_userDeviceDistance (\(unit.name))")
+                titlesUnit.append("\(sceneTask.name)_userDeviceDistanceTimes (s)")
+
+            }
         }
 
         //valuesPath
         for sceneTask in sceneTasks
-            where sceneTask.responseType == .path || sceneTask.responseType == .moveObject {
+        where sceneTask.responseType == .path || sceneTask.responseType == .moveObject {
+            
+            if !titlesPath.isEmpty && valuesPath.isEmpty {
+                for i in 0 ..< respondedTrials {
+                    let trial = String((i % numberOfTrials) + 1)
+                    valuesPath.append([trial])
+                }
+            }
+            
+            let coordinate = sceneTask.responseCoordinates
+            
+            switch coordinate {
+            case .cartesian:
+                for i in 0 ..< respondedTrials {
+                    let x = sceneTask.userResponses[i].xTouches.map({ String($0) }).joined(separator: ";")
+                    let y = sceneTask.userResponses[i].yTouches.map({ String($0) }).joined(separator: ";")
+                    let time = sceneTask.userResponses[i].clocks.map({
+                        ($0 - Task.shared.startTimeFirstSceneOfTest).toString }).joined(separator: ";")
+                    valuesPath[i] += [x, y, time]
+                }
+            case .polar:
+                for i in 0 ..< respondedTrials {
+                    let radius = sceneTask.userResponses[i].radiusTouches.map({ String($0) }).joined(separator: ";")
+                    let angle = sceneTask.userResponses[i].angleTouches.map({ String($0) }).joined(separator: ";")
+                    let time = sceneTask.userResponses[i].clocks.map({
+                        ($0 - Task.shared.startTimeFirstSceneOfTest).toString }).joined(separator: ";")
+                    valuesPath[i] += [radius, angle, time]
+                }
+            }
+            
+        }
 
-                if !titlesPath.isEmpty {
+        //valuesTracker
+        if Task.shared.testUsesTrackerSeeSo {
+            for sceneTask in sceneTasks {
+                if !titlesTracker.isEmpty && valuesTracker.isEmpty {
                     for i in 0 ..< respondedTrials {
                         let trial = String((i % numberOfTrials) + 1)
-                        valuesPath.append([trial])
+                        valuesTracker.append([trial])
                     }
                 }
-
-                let coordinate = sceneTask.responseCoordinates
-
+                
+                let coordinate = Task.shared.trackerCoordinates
+                
                 switch coordinate {
                 case .cartesian:
                     for i in 0 ..< respondedTrials {
-                        let x = sceneTask.userResponses[i].xTouches.map({ String($0) }).joined(separator: ";")
-                        let y = sceneTask.userResponses[i].yTouches.map({ String($0) }).joined(separator: ";")
-                        let time = sceneTask.userResponses[i].clocks.map({
-                            String(format: "%.4f", $0) }).joined(separator: ";")
-                        valuesPath[i] += [x, y, time]
+                        let x = sceneTask.trackerResponses[i].xGazes.map({ $0.toString }).joined(separator: ";")
+                        let y = sceneTask.trackerResponses[i].yGazes.map({ $0.toString }).joined(separator: ";")
+                        let time = sceneTask.trackerResponses[i].clocks.map({
+                            ($0 - Task.shared.startTimeFirstSceneOfTestInUTC).toString }).joined(separator: ";")
+                        valuesTracker[i] += [x, y, time]
                     }
                 case .polar:
                     for i in 0 ..< respondedTrials {
-                        let radius = sceneTask.userResponses[i].radiusTouches.map({ String($0) }).joined(separator: ";")
-                        let angle = sceneTask.userResponses[i].angleTouches.map({ String($0) }).joined(separator: ";")
-                        let time = sceneTask.userResponses[i].clocks.map({
-                            String(format: "%.4f", $0) }).joined(separator: ";")
-                        valuesPath[i] += [radius, angle, time]
+                        let radius = sceneTask.trackerResponses[i].radiusGazes.map({ $0.toString }).joined(separator: ";")
+                        let angle = sceneTask.trackerResponses[i].angleGazes.map({ $0.toString }).joined(separator: ";")
+                        let time = sceneTask.trackerResponses[i].clocks.map({
+                            ($0 - Task.shared.startTimeFirstSceneOfTestInUTC).toString }).joined(separator: ";")
+                        valuesTracker[i] += [radius, angle, time]
                     }
                 }
+
+            }
+        }
+
+        //valuesDistanceSeeSo
+        if Task.shared.testUsesTrackerSeeSo {
+            for sceneTask in sceneTasks {
+                if !titlesDistance.isEmpty && valuesDistance.isEmpty {
+                    for i in 0 ..< respondedTrials {
+                        let trial = String((i % numberOfTrials) + 1)
+                        valuesDistance.append([trial])
+                    }
+                }
+
+                for i in 0 ..< respondedTrials {
+                    let dist = sceneTask.distanceResponses[i].zDistances.map({ String($0) }).joined(separator: ";")
+                    let time = sceneTask.distanceResponses[i].clocks.map({
+                        ($0 - Task.shared.startTimeFirstSceneOfTestInUTC).toString }).joined(separator: ";")
+                    
+                    valuesDistance[i] += [dist, time]
+                }
+            }
+        }
+        
+        //valuesDistanceARKit
+        if Task.shared.testUsesTrackerARKit {
+            for sceneTask in sceneTasks {
+                if !titlesDistance.isEmpty && valuesDistance.isEmpty {
+                    for i in 0 ..< respondedTrials {
+                        let trial = String((i % numberOfTrials) + 1)
+                        valuesDistance.append([trial])
+                    }
+                }
+
+                for i in 0 ..< respondedTrials {
+                    let dist = sceneTask.distanceResponses[i].zDistances.map({ String($0) }).joined(separator: ";")
+                    let time = sceneTask.distanceResponses[i].clocks.map({
+                        ($0 - Task.shared.startTimeFirstSceneOfTest).toString }).joined(separator: ";")
+                    
+                    valuesDistance[i] += [dist, time]
+                }
+            }
         }
 
         let titlesString = titles.joined(separator: ",")
@@ -590,6 +726,8 @@ class SectionTask {
         let start = infoName + "\n\n" + titlesUnitString
         let csv0 = titlesString + "\n" + valuesString
         var csv1 = ""
+        var csv2 = ""
+        var csv3 = ""
 
         var result = start + "\n\n" + csv0
 
@@ -598,10 +736,51 @@ class SectionTask {
             result += "\n\n" + csv1
         }
 
+        if Task.shared.testUsesTrackerSeeSo {
+            let titlesTrackerString = titlesTracker.joined(separator: ",")
+            var valuesTrackerFlat: [String] = []
+            for i in 0 ..< valuesTracker.count {
+                valuesTrackerFlat.append(valuesTracker[i].joined(separator: ","))
+            }
+            let valuesTrackerString = valuesTrackerFlat.joined(separator: "\n")
+            if titlesTracker.count != 0 {
+                csv2 = titlesTrackerString + "\n" + valuesTrackerString
+                result += "\n\n" + csv2
+            }
+
+            let titlesDistanceString = titlesDistance.joined(separator: ",")
+            var valuesDistanceFlat: [String] = []
+            for i in 0 ..< valuesDistance.count {
+                valuesDistanceFlat.append(valuesDistance[i].joined(separator: ","))
+            }
+            let valuesDistanceString = valuesDistanceFlat.joined(separator: "\n")
+            if titlesDistance.count != 0 {
+                csv3 = titlesDistanceString + "\n" + valuesDistanceString
+                result += "\n\n" + csv3
+            }
+        } else if Task.shared.testUsesTrackerARKit {
+            let titlesDistanceString = titlesDistance.joined(separator: ",")
+            var valuesDistanceFlat: [String] = []
+            for i in 0 ..< valuesDistance.count {
+                valuesDistanceFlat.append(valuesDistance[i].joined(separator: ","))
+            }
+            let valuesDistanceString = valuesDistanceFlat.joined(separator: "\n")
+            if titlesDistance.count != 0 {
+                csv3 = titlesDistanceString + "\n" + valuesDistanceString
+                result += "\n\n" + csv3
+            }
+        }
+
+
         return SectionResult(result: result,
                              csv0: csv0,
                              csv0Name: name,
                              csv1: csv1,
-                             csv1Name: name + "-trajectories")
+                             csv1Name: name + "_trajectories",
+                             csv2: csv2,
+                             csv2Name: name + "_eyeTracking",
+                             csv3: csv3,
+                             csv3Name: name + "_userDeviceDistances")
     }
 }
+

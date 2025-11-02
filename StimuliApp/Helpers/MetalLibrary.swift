@@ -12,5 +12,5 @@ struct MetalLibrary {
                           "compute2LayersContinuous",
                           "compute3LayersContinuous"]
 
-    static let stimuli = StimuliType.allCases.filter({ $0.metal }).map { $0.rawValue }
+    static let stimuli = StimuliType.allCases.filter({ $0.metal }).map({ $0.name })
 }

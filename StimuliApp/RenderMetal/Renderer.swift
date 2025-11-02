@@ -20,7 +20,6 @@ class Renderer: NSObject {
     var objectThreadsPerGroupX: [Int] = Array(repeating: 1, count: Constants.numberOfObjectKernels + 1)
     var objectThreadsPerGroupY: [Int] = Array(repeating: 1, count: Constants.numberOfObjectKernels + 1)
 
-//    var previousPresentedTime: CFTimeInterval = 0.0
 
 
     // MARK: - Init
@@ -32,10 +31,8 @@ class Renderer: NSObject {
 
         let library = device.makeDefaultLibrary()
 
-        for stimulus in StimuliType.allCases where stimulus.style != .nonMetal {
-            objectPipelineStates.append(buildPipelineState(device: device,
-                                                           library: library,
-                                                           functionName: stimulus.name))
+        for name in MetalLibrary.stimuli {
+            objectPipelineStates.append(buildPipelineState(device: device, library: library, functionName: name))
         }
 
         objectPipelineStates.append(buildPipelineState(device: device, library: library, functionName: "clean"))
@@ -165,7 +162,7 @@ extension Renderer: MTKViewDelegate {
 
     func draw(in view: MTKView) {
 
-        Flow.shared.frameControl.updateDrawTime(displayRender: displayRender)
+        Flow.shared.frameControl.updateDrawTime()
 
         let positionsBufferProvider = positionsBufferProviders[Task.shared.computeNumber]
         _ = positionsBufferProvider.semaphore.wait(timeout: .distantFuture)
@@ -174,31 +171,16 @@ extension Renderer: MTKViewDelegate {
             let commandBuffer = commandQueue.makeCommandBuffer(),
             let commandEncoder = commandBuffer.makeComputeCommandEncoder()
             else { return }
-
+        
         commandBuffer.addCompletedHandler { (_) in
             positionsBufferProvider.semaphore.signal()
         }
 
-//        #if targetEnvironment(macCatalyst)
-//        if #available(macCatalyst 13.4, *) {
-//            drawable.addPresentedHandler({ [weak self] drawable in
-//                guard let strongSelf = self else {
-//                    return
-//                }
-//                let presentationDuration = drawable.presentedTime - strongSelf.previousPresentedTime
-//                print(CACurrentMediaTime(), presentationDuration)
-//                strongSelf.previousPresentedTime = drawable.presentedTime
-//            })
-//        } else {
-//            // Fallback on earlier versions
-//        }
-//        #endif
-
         Flow.shared.frameControl.updateTextureTime(displayRender: displayRender)
 
         _ = displayRender?.update()
-
-        updateObjectTextures()
+        
+        updateObjectTextures()  
 
         var dotPosition = 0
 
@@ -239,8 +221,6 @@ extension Renderer: MTKViewDelegate {
             }
         }
 
-        Flow.shared.frameControl.updateEncodeTime()
-
         commandEncodeCompute(commandBuffer: commandBuffer,
                              commandEncoder: commandEncoder,
                              positionsBufferProvider: positionsBufferProvider,
@@ -257,8 +237,26 @@ extension Renderer: MTKViewDelegate {
             commandBuffer.present(drawable, afterMinimumDuration: Double(Flow.shared.settings.delta) - 0.001)
         }
         #endif
-
-        Flow.shared.frameControl.updateCommitTime(drawable: drawable)
+        
+        if let displayRender = self.displayRender {
+            let timeInFrames = displayRender.timeInFrames
+            let register = !displayRender.inactive && !displayRender.responded
+            let initScene = Flow.shared.frameControl.initScene
+            let sceneId = Task.shared.sceneTask.id
+            let previousSceneId = Task.shared.previousSceneTask.id
+            
+//            print(timeInFrames, " commit time: ", CACurrentMediaTime())
+            
+            drawable.addPresentedHandler { presentedDrawable in
+                Flow.shared.frameControl.updatePresentedTime(timeInFrames: timeInFrames,
+                                                             register: register,
+                                                             initSceneTime: initScene,
+                                                             presentedTime: presentedDrawable.presentedTime,
+                                                             sceneId: sceneId,
+                                                             previousSceneId: previousSceneId)
+            }
+            Flow.shared.frameControl.initScene = false
+        }
 
         commandBuffer.commit()
     }
@@ -463,3 +461,4 @@ extension Renderer: MTKViewDelegate {
         commandEncoder.dispatchThreadgroups(threadgroupsPerGrid, threadsPerThreadgroup: threadsPerThreadgroup)
     }
 }
+

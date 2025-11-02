@@ -7,6 +7,8 @@ class EditSceneMenu: Menu {
 
     var deleting = false
 
+    var extraSection = 0
+
     // MARK: - Setting
     override func setting() {
         title2 = Flow.shared.scene.name.string
@@ -14,12 +16,15 @@ class EditSceneMenu: Menu {
         buttonImage = "preview scene"
 
         sections = []
+        extraSection = 0
         makeSection0()
         makeSection1()
         makeSection2()
         makeSection3()
         makeSection4()
         makeSection5()
+        makeSection6()
+
     }
 
     override func moveFunction(_ first: Int, to second: Int) {
@@ -69,6 +74,38 @@ class EditSceneMenu: Menu {
 
     private func makeSection4() {
         let sectionNumber = 4
+        var sectionTitle = ""
+        
+        if (Flow.shared.isAvailableSeeSo && Flow.shared.test.eyeTracker?.string == "using SeeSo") ||
+            (Flow.shared.isAvailableARKit && Flow.shared.test.eyeTracker?.string == "using ARKit") {
+    
+            extraSection = 1
+            sectionTitle = sectionTitle + "EyeTracker control"
+            let section = MenuSection(title: sectionTitle)
+            section.dependency = Flow.shared.scene.id
+            section.collapsed = Flow.shared.test.saveSection(section)
+            sections.append(section)
+
+            if Flow.shared.isAvailableSeeSo && Flow.shared.test.eyeTracker?.string == "using SeeSo" {
+                if Flow.shared.scene.gazeFixation == nil {
+                    Flow.shared.scene.gazeFixation = SceneData.makeSceneFixationProperty(selected: 0)
+                }
+                if let fix = Flow.shared.scene.gazeFixation {
+                    makeOption(from: fix, sectionNumber: sectionNumber)
+                }
+            }
+            
+            if Flow.shared.scene.distanceFixation == nil {
+                Flow.shared.scene.distanceFixation = SceneData.makeSceneDistanceMeasureProperty(selected: 0)
+            }
+            if let dis = Flow.shared.scene.distanceFixation {
+                makeOption(from: dis, sectionNumber: sectionNumber)
+            }
+        }
+    }
+
+    private func makeSection5() {
+        let sectionNumber = 4 + extraSection
         let section = MenuSection(title: "Objects")
         section.dependency = Flow.shared.scene.id
         section.collapsed = Flow.shared.test.saveSection(section)
@@ -83,8 +120,8 @@ class EditSceneMenu: Menu {
         }
     }
 
-    private func makeSection5() {
-        let sectionNumber = 5
+    private func makeSection6() {
+        let sectionNumber = 5 + extraSection
         let section = MenuSection(title: "")
         section.collapsed = sections[sectionNumber - 1].collapsed
         sections.append(section)

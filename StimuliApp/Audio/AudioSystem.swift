@@ -126,19 +126,25 @@ class AudioSystem {
         self.originalCounter = myAUToneCounter
     }
 
-    func stopAudio() {
-        if myAUToneCounter > 10 {
-            myAUToneCounterStop = Int(myAUChangingTones)
+    func stopAudio(forceStop: Bool) {
+        if !Task.shared.testUsesLongAudios || forceStop {
+            if myAUToneCounter > 10 {
+                myAUToneCounterStop = Int(myAUChangingTones)
+            }
         }
     }
 
     func pauseAudio() {
-        originalCounter = myAUToneCounter
-        myAUToneCounter = 0
+        if !Task.shared.testUsesLongAudios {
+            originalCounter = myAUToneCounter
+            myAUToneCounter = 0
+        }
     }
 
     func resumeAudio() {
-        myAUToneCounter = originalCounter
+        if !Task.shared.testUsesLongAudios {
+            myAUToneCounter = originalCounter
+        }
     }
 
     func loadAudios(songs: [URL?]) {

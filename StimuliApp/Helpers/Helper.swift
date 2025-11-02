@@ -33,10 +33,11 @@ struct Constants {
     static let sceneZeroDurationShort: Int = 2 //in seconds
     static let sceneSimpleDuration: Int = 1000 //in seconds
     static let bufferAudio: Double = 0.002 //in seconds (the value will be something similar not this exact value)
-    static let delayAudio60: Double = 0.050 //in seconds (to sync audio and video, corrected in settings)
-    static let delayAudio120: Double = 0.020 //in seconds (to sync audio and video, corrected in settings)
-    static let delayResponse: Double = 0.025 // in seconds (from initScene to first presentation of drawable)
-    // delayResponse is only used in macos to better measure reaction times
+    static let delayAudio60: Double = 0.03333 //in seconds (to sync audio and video, corrected in settings)
+    static let delayAudio120: Double = 0.01666 //in seconds (to sync audio and video, corrected in settings)
+
+    static let eyeTrackerSamplingFrequency: Int = 20 // seeso can sample up to 30 Hz
+    static let numberOfTrackingErrors: Int = 10 // more than that number of errors in a certain scene in certain trial triggers error
 
     static let separator = "\n\n\n******************************\n\n\n"
 
@@ -117,35 +118,19 @@ enum Color {
     case navigationTab
     case darkText
     case textField
-
+    
     var toUIColor: UIColor {
-        if #available(iOS 13.0, *) {
-            switch self {
-            case .separatorArrow: return UIColor.systemGray
-            case .lightText: return UIColor.systemGray2
-            case .background: return UIColor.systemGray3
-            case .navigation: return UIColor.systemGray3
-            case .defaultCell: return UIColor.systemGray4
-            case .highlightCell: return UIColor.systemGray4
-            case .navigationTab: return UIColor.systemGray6
-            case .textField: return UIColor.systemGray6
-            case .selection: return UIColor.systemBlue
-            case .darkText: return UIColor.label
-
-            }
-        } else {
-            switch self {
-            case .background: return UIColor(red: 0.75, green: 0.75, blue: 0.75, alpha: 1) //medium gray
-            case .separatorArrow: return UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1) //dark gray
-            case .defaultCell: return UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1) //light gray
-            case .highlightCell: return UIColor(red: 0.85, green: 0.85, blue: 0.85, alpha: 1) //almost white
-            case .selection: return UIColor(red: 0, green: 0.2, blue: 1, alpha: 1) //blue
-            case .lightText: return UIColor(red: 0.65, green: 0.65, blue: 0.65, alpha: 1) //medium dark gray
-            case .navigation: return UIColor(red: 0.75, green: 0.75, blue: 0.75, alpha: 1) //medium gray
-            case .navigationTab: return UIColor(red: 1, green: 1, blue: 1, alpha: 1) //white
-            case .darkText: return UIColor.black //black
-            case .textField: return UIColor.white //white
-            }
+        switch self {
+        case .separatorArrow: return UIColor.systemGray
+        case .lightText: return UIColor.systemGray2
+        case .background: return UIColor.systemGray3
+        case .navigation: return UIColor.systemGray3
+        case .defaultCell: return UIColor.systemGray4
+        case .highlightCell: return UIColor.systemGray4
+        case .navigationTab: return UIColor.systemGray6
+        case .textField: return UIColor.systemGray6
+        case .selection: return UIColor.systemBlue
+        case .darkText: return UIColor.label
         }
     }
 }
@@ -284,7 +269,25 @@ extension Float {
         let value = Int(ceilf(self))
         return value % 2 == 0 ? value : value + 1
     }
+    
+    var toString: String {
+        if self.isNaN {
+            return "NaN"
+        } else {
+            return String(format: "%.4f", self)
+        }
+    }
 }
+
+extension Double {
+    
+    var toString: String {
+        return String(format: "%.4f", self)
+    }
+    
+}
+
+
 
 // MARK: - Resize label text
 extension UIView {
@@ -321,7 +324,7 @@ extension UITextView {
     func updateTextFont(expectFont: UIFont) {
 
         guard !self.text.isEmpty && !self.bounds.size.equalTo(CGSize.zero) else { return }
-
+        self.font = expectFont
         let textViewSize = self.frame.size
         let fixedWidth = textViewSize.width
         let expectSize = self.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat(MAXFLOAT)))
@@ -488,6 +491,194 @@ struct AppUtility {
         let texture = device.makeTexture(descriptor: textureDescriptor)
 
         return texture!
+    }
+    
+    
+    static func transpose(matrix: [[Double]]) -> [[Double]] {
+        let rowCount = matrix.count
+        let colCount = matrix[0].count
+        var transposed : [[Double]] = Array(repeating: Array(repeating: 0.0, count: rowCount), count: colCount)
+        for rowPos in 0..<matrix.count {
+            for colPos in 0..<matrix[0].count {
+                transposed[colPos][rowPos] = matrix[rowPos][colPos]
+            }
+        }
+        return transposed
+    }
+     
+    static func multiply(firstMatrix A: [[Double]], secondMatrix B: [[Double]]) -> [[Double]] {
+        let rowCount = A.count
+        let colCount = B[0].count
+        var product : [[Double]] = Array(repeating: Array(repeating: 0.0, count: colCount), count: rowCount)
+        for rowPos in 0..<rowCount {
+            for colPos in 0..<colCount {
+                for i in 0..<B.count {
+                    product[rowPos][colPos] += A[rowPos][i] * B[i][colPos]
+                }
+            }
+        }
+        return product
+    }
+     
+    // gauss jordan inversion
+    static func inverse(matrix: [[Double]]) -> [[Double]] {
+        // augment matrix
+        var matrix = matrix
+        var idrow = Array(repeating: 0.0, count: matrix.count)
+        idrow[0] = 1.0
+        for row in 0..<matrix.count {
+            matrix[row] += idrow
+            idrow.insert(0.0, at:0)
+            idrow.removeLast()
+        }
+        
+        // partial pivot
+        for row1 in 0..<matrix.count {
+            for row2 in row1..<matrix.count {
+                if abs(matrix[row1][row1]) < abs(matrix[row2][row2]) {
+                    (matrix[row1],matrix[row2]) = (matrix[row2],matrix[row1])
+                }
+            }
+        }
+        
+        // forward elimination
+        for pivot in 0..<matrix.count {
+            // multiply
+            let arg = 1.0 / matrix[pivot][pivot]
+            for col in pivot..<matrix[pivot].count {
+                matrix[pivot][col] *= arg
+            }
+            
+            // multiply-add
+            for row in (pivot+1)..<matrix.count {
+                let arg = matrix[row][pivot] / matrix[pivot][pivot]
+                for col in pivot..<matrix[row].count {
+                    matrix[row][col] -= arg * matrix[pivot][col]
+                }
+            }
+        }
+        
+        // backward elimination
+        for pivot in (0..<matrix.count).reversed() {
+            // multiply-add
+            for row in 0..<pivot {
+                let arg = matrix[row][pivot] / matrix[pivot][pivot]
+                for col in pivot..<matrix[row].count {
+                    matrix[row][col] -= arg * matrix[pivot][col]
+                }
+            }
+        }
+        
+        // remove identity
+        for row in 0..<matrix.count {
+            for _ in 0..<matrix.count {
+                matrix[row].remove(at:0)
+            }
+        }
+        
+        return matrix
+    }
+
+
+    static func leastSquares(matrix m: [[Double]], y: [[Double]]) -> [Double] {
+
+        let t = transpose(matrix: m)
+        let v1 = multiply(firstMatrix: t, secondMatrix: m)
+        let v2 = inverse(matrix: v1)
+        let v3 = multiply(firstMatrix: v2, secondMatrix: t)
+        let v4 = multiply(firstMatrix: v3, secondMatrix: y)
+        
+        return transpose(matrix: v4)[0]
+    }
+    
+    static func module(_ v: (Float, Float, Float)) -> Float {
+        let x2 = v.0 * v.0
+        let y2 = v.1 * v.1
+        let z2 = v.2 * v.2
+        
+        let module = sqrt(x2 + y2 + z2)
+        
+        return module
+    }
+    
+    static func extractPositionFromMatrix(matrix: simd_float4x4) -> (Float, Float, Float) {
+        let x = matrix[3, 0]
+        let y = matrix[3, 1]
+        let z = matrix[3, 2]
+        
+        return(x, y, z)
+    }
+    
+    static func extractOrientationFromMatrix(matrix: simd_float4x4) -> (Float, Float) {
+        let (_, _, z0) = extractPositionFromMatrix(matrix: matrix)
+        let (Ax, Ay, Az) = extractVectorPointingZFromMatrix(matrix: matrix)
+        
+        let x: Float = -z0 * Ax / Az
+        let y: Float = -z0 * Ay / Az
+        
+        return (x, y)
+    }
+    
+    static func extractOrientationFromMatrixAndZdistance(matrix: simd_float4x4, zDistance: Float) -> (Float, Float) {
+        let (Ax, Ay, Az) = extractVectorPointingZFromMatrix(matrix: matrix)
+        
+        let x: Float = -zDistance * Ax / Az
+        let y: Float = -zDistance * Ay / Az
+        
+        return (x, y)
+    }
+    
+    static func extractOrientationFromVectorAndZdistance(vector: simd_float3, zDistance: Float) -> (Float, Float) {
+        let (Ax, Ay, Az) = (vector.x, vector.y, vector.z)
+        
+        let x: Float = -zDistance * Ax / Az
+        let y: Float = -zDistance * Ay / Az
+        
+        return (x, y)
+    }
+    
+    static func extractVectorPointingZFromMatrix(matrix: simd_float4x4) -> (Float, Float, Float) {
+        let mat_col1: simd_float3 = SIMD3(matrix[0, 0], matrix[0, 1], matrix[0, 2])
+        let mat_col2: simd_float3 = SIMD3(matrix[1, 0], matrix[1, 1], matrix[1, 2])
+        let mat_col3: simd_float3 = SIMD3(matrix[2, 0], matrix[2, 1], matrix[2, 2])
+        let upperLeftMatrix: simd_float3x3 = simd_float3x3(mat_col1, mat_col2, mat_col3)
+        let direction: simd_float3 = simd_float3(0, 0, 1)
+        let transformedDirection: simd_float3 = upperLeftMatrix * direction
+        let Ax = transformedDirection.x
+        let Ay = transformedDirection.y
+        let Az = transformedDirection.z
+        
+        return(Ax, Ay, Az)
+    }
+    
+    static func project4x4MatrixToZequalZero(matrix: simd_float4x4) -> (Float, Float) {
+        
+        let (x0, y0, z0) = extractPositionFromMatrix(matrix: matrix)
+        let (Ax, Ay, Az) = extractVectorPointingZFromMatrix(matrix: matrix)
+        
+        let x: Float = x0 - z0 * Ax / Az
+        let y: Float = y0 - z0 * Ay / Az
+        
+        return (x, y)
+    }
+    
+    static func intersecion2VectorsComponentsXZ(matrix1: simd_float4x4, matrix2: simd_float4x4) -> (Float, Float, Float, Float) {
+        
+        let (x0, y0, z0) = extractPositionFromMatrix(matrix: matrix1)
+        let (x1, y1, z1) = extractPositionFromMatrix(matrix: matrix2)
+        
+        let (A0, B0, C0) = extractVectorPointingZFromMatrix(matrix: matrix1)
+        let (A1, B1, C1) = extractVectorPointingZFromMatrix(matrix: matrix2)
+        
+        let s: Float = ((z1 - z0) * A0 - (x1 - x0) * C0) / (C0 * A1 - A0 * C1)
+        
+        let x: Float = x1 + A1 * s
+        let z: Float = z1 + C1 * s
+        
+        let y_2: Float = y1 + B1 * s
+        let y_1: Float = y0 + (B0 / A0) * (x1 - x0 + A1 * s)
+        
+        return (x, y_2, z, y_1)
     }
 }
 
@@ -727,6 +918,6 @@ extension Bool {
     }
 
     var int: Int {
-        return self ? 0: 1
+        return self ? 1 : 0
     }
 }

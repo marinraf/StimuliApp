@@ -42,11 +42,27 @@ class EditTestMenu: Menu {
         if Flow.shared.settings.device.type != .mac {
             makeOption(from: Flow.shared.test.brightness, sectionNumber: sectionNumber)
         }
-        
-        makeOption(from: Flow.shared.test.distance, sectionNumber: sectionNumber)
+        makeOption(from: Flow.shared.test.gamma, sectionNumber: sectionNumber)
         makeOption(from: Flow.shared.test.cancelButtonPosition, sectionNumber: sectionNumber)
         makeOption(from: Flow.shared.test.randomness, sectionNumber: sectionNumber)
-        makeOption(from: Flow.shared.test.gamma, sectionNumber: sectionNumber)
+        
+        makeOption(from: Flow.shared.test.distance, sectionNumber: sectionNumber)
+        
+        if Flow.shared.test.eyeTracker == nil {
+            Flow.shared.test.eyeTracker = TestData.makeEyeTrackerProperty(selected: 0)
+        }
+        
+        if let tracker = Flow.shared.test.eyeTracker {
+            makeOption(from: tracker, sectionNumber: sectionNumber)
+        }
+        
+        if Flow.shared.test.longAudios == nil {
+            Flow.shared.test.longAudios = TestData.makeLongAudiosProperty(selected: 0)
+        }
+        
+        if let longAudios = Flow.shared.test.longAudios {
+            makeOption(from: longAudios, sectionNumber: sectionNumber)
+        }
     }
 
     private func makeSection2() {

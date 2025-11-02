@@ -603,7 +603,7 @@ kernel void image(texture2d<float, access::write> output [[texture(0)]],
 
     float4 color = float4(0);
 
-    if (point2.x >= 0 && point2.y >= 0 && point.x <= imageSize.x && point.y <= imageSize.y) {
+    if (point2.x >= 0 && point2.y >= 0 && point2.x < imageSize.x && point2.y < imageSize.y) {
         float4 color0 = input.read(ushort2(point2));
         color = finalColor(object, data, color0, point);
     }
@@ -798,8 +798,9 @@ kernel void dots(texture2d<float, access::write> output [[texture(0)]],
     pos2 = float2(pos2.x + 0.5, pos2.y + 0.5);
     pos2 = float2(pos2.x * screenMaxSize - displacementX, pos2.y * screenMaxSize - displacementY);
 
-    for(int i = -radius; i <= radius; i++) {
-        for(int j = -radius; j <= radius; j++) {
+    int radiusInt = int(radius + 0.5);
+    for (int i = -radiusInt; i <= radiusInt; i++) {
+        for (int j = -radiusInt; j <= radiusInt; j++) {
             int2 newPos = int2(i, j);
             int2 point = int2(pos2) + newPos;
 
@@ -812,12 +813,14 @@ kernel void dots(texture2d<float, access::write> output [[texture(0)]],
                 int shape = int(object.shape + 0.5);
                 ushort inside = getInside(object, point, shape);
                 //color
-                if (inside > 0.5) {
-                    float4 color = float4(0);
-                    output.write(color, id);
-                } else {
-                    float4 color = finalColor(object, data, color0, point);
-                    output.write(color, id);
+                if (id.x >= 0 && id.y >= 0 && id.x < maxSize.x && id.y < maxSize.y) {
+                    if (inside > 0.5) {
+                        float4 color = float4(0);
+                        output.write(color, id);
+                    } else {
+                        float4 color = finalColor(object, data, color0, point);
+                        output.write(color, id);
+                    }
                 }
             }
         }

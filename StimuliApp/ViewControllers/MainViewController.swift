@@ -41,7 +41,7 @@ class MainViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
-        self.navigationController?.navigationBar.barTintColor = Color.background.toUIColor
+        self.navigationController?.navigationBar.backgroundColor = Color.navigation.toUIColor
         self.tabBarController?.tabBar.isHidden = false
 
         if !Flow.shared.tabBarIsMenu {

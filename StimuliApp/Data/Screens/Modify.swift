@@ -35,7 +35,7 @@ class Modify: Screen {
     var float0: Float = 0
     var float1: Float = 0
     var float2: Float = 0
-    var selectedValue: Int = 0
+    var string: String = ""
     var saveFunctionString: (String) -> (ResponseStyle) = { response in return ResponseStyle.saved }
     var saveFunctionFloats: ([Float]) -> (ResponseStyle) = { response in return ResponseStyle.saved }
     var saveFunctionSelect: () -> (ResponseStyle) = { return ResponseStyle.saved }
@@ -62,8 +62,7 @@ class Modify: Screen {
         self.float0 = property.float
         self.float1 = property.float1
         self.float2 = property.float2
-        self.selectedValue = property.selectedValue
-
+        self.string = property.string
         settingInfo()
     }
 
@@ -75,10 +74,12 @@ class Modify: Screen {
             extraInfo = timeFunction.description
         } else if propertyType == .type {
             info = ""
-            extraInfo = StimuliType.allCases[selectedValue].description
+            let newType = StimuliType(rawValue: self.string) ?? .patch
+            extraInfo = newType.description
         } else if propertyType == .response {
             info = ""
-            extraInfo = FixedResponse.allCases[selectedValue].description
+            let newResponse = FixedResponse(rawValue: self.string) ?? .none
+            extraInfo = newResponse.description
         } else {
             extraInfo = ""
         }
@@ -114,10 +115,14 @@ class Modify: Screen {
             property.changeTimeUnit(new: timeUnit)
         }
 
-        if property.propertyType == .type || property.propertyType == .response {
+        if property.propertyType == .type {
+            let selectedValue = StimuliType.allCases.firstIndex(where: { $0.name == self.string }) ?? 0
+            property.changeSelectedValue(new: selectedValue, propertyType: property.propertyType)
+        } else if property.propertyType == .response {
+            let selectedValue = FixedResponse.allCases.firstIndex(where: { $0.name == self.string }) ?? 0
             property.changeSelectedValue(new: selectedValue, propertyType: property.propertyType)
         }
-
+        
         if property.timeDependency != timeDependency || property.timeFunction != timeFunction {
             if timeDependency == .constant {
                 timeFunction = .linear

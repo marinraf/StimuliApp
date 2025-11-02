@@ -7,7 +7,7 @@ struct SettingsData {
 
     static func makeUserProperty(text: String) -> Property {
 
-        return Property(name: "name",
+        return Property(name: "user",
                         info: Texts.name,
                         text: text)
     }
@@ -158,4 +158,35 @@ struct SettingsData {
         property.onlyInfo = onlyInfo
         return property
     }
+    
+    static func makeLanguageProperty(selected: Int) -> Property {
+                
+        return Property(name: "language",
+                        info: Texts.language,
+                        propertyType: .language,
+                        unitType: .decimal,
+                        fixedValues: FixedLanguage.allCases.map({ $0.name }),
+                        selectedValue: 0)
+    }
+
 }
+
+enum FixedLanguage: String, Codable, CaseIterable {
+
+    case english
+    case spanish
+
+    var description: String {
+        switch self {
+        case .english:
+            return "English."
+        case .spanish:
+            return "Spanish."
+        }
+    }
+
+    var name: String {
+        return self.rawValue
+    }
+}
+

@@ -22,6 +22,8 @@ class Test: NSObject, Codable {
     var files: [String]
     var screenWidth: Float?
     var screenHeight: Float?
+    var eyeTracker: Property?
+    var longAudios: Property?
 
     var createdWithStimuliAppVersion: Double?
 
@@ -32,6 +34,7 @@ class Test: NSObject, Codable {
         frameRate = Property()
         brightness = Property()
         gamma = Property()
+        eyeTracker = Property()
         distance = Property()
         cancelButtonPosition = Property()
         randomness = Property()
@@ -54,9 +57,11 @@ class Test: NSObject, Codable {
 
         self.name = TestData.makeNameProperty(text: name)
         self.frameRate = TestData.makeFrameRateProperty(frameRate: Flow.shared.settings.maximumFrameRate,
-                                                        selectedValue: 0)
+                                                        selected: 0)
         self.brightness = TestData.makeBrightnessProperty(float: 0.7)
         self.gamma = TestData.makeGammaProperty(selected: 0)
+        self.eyeTracker = TestData.makeEyeTrackerProperty(selected: 0)
+        self.longAudios = TestData.makeLongAudiosProperty(selected: 0)
         self.distance = TestData.makeDistanceProperty(selected: 0)
         self.cancelButtonPosition = TestData.makeCancelProperty(selected: 0)
         self.randomness = TestData.makeRandomnessProperty(selected: 0)

@@ -48,7 +48,15 @@ class RunMenu: Menu {
             } else {
                 Task.shared.error = Task.shared.createTask(test: Flow.shared.test, preview: .no)
                 if Task.shared.error == "" {
-                    return Display()
+                    if Task.shared.testUsesTrackerSeeSo {
+                        Flow.shared.eyeTracker = SeeSoTracker()
+                        return Calibration()
+                    } else if Task.shared.testUsesTrackerARKit {
+                        Flow.shared.eyeTracker = ARKitTracker()
+                        return Calibration()
+                    } else {
+                        return Display()
+                    }
                 } else {
                     return InfoExport(type: .previewErrorStimulusOrTest)
                 }

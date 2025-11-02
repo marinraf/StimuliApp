@@ -12,14 +12,14 @@ struct TestData {
                         text: text)
     }
 
-    static func makeFrameRateProperty(frameRate: Int, selectedValue: Int) -> Property {
+    static func makeFrameRateProperty(frameRate: Int, selected: Int) -> Property {
         if frameRate > 100 {
             return  Property(name: "frameRate",
                              info: Texts.frameRate,
                              propertyType: .select,
                              unitType: .decimal,
                              fixedValues: ["60 Hz", "120 Hz"],
-                             selectedValue: selectedValue)
+                             selectedValue: selected)
         } else {
             let frameProperty = Property(name: "frameRate",
                                     info: Texts.frameRate2,
@@ -47,6 +47,26 @@ struct TestData {
                         unitType: .decimal,
                         fixedValues: FixedGamma.allCases.map({ $0.name }),
                         selectedValue: selected)
+    }
+
+    static func makeEyeTrackerProperty(selected: Int) -> Property {
+                
+        return Property(name: "distance&EyeTracker",
+                        info: Texts.eyeTracker,
+                        propertyType: .testEyeTracker,
+                        unitType: .decimal,
+                        fixedValues: Flow.shared.possibleEyeTrackers,
+                        selectedValue: 0)
+    }
+    
+    static func makeLongAudiosProperty(selected: Int) -> Property {
+                
+        return Property(name: "longAudios",
+                        info: Texts.longAudios,
+                        propertyType: .select,
+                        unitType: .decimal,
+                        fixedValues: ["off", "on"],
+                        selectedValue: 0)
     }
 
     static func makeDistanceProperty(selected: Int) -> Property {
@@ -151,7 +171,69 @@ struct TestData {
 
         property.properties.append(newProperty)
     }
+
+    static func addPropertiesToPositionEyeTracker(property: Property) {
+
+        property.properties = []
+
+        guard let selected = FixedPositionEyeTracker(rawValue: property.string) else { return }
+        switch selected {
+        case .cartesian:
+            let propertyX = Property(name: property.name + "X",
+                                     info: "Horizontal position.",
+                                     propertyType: .select,
+                                     unitType: .decimal,
+                                     fixedValues: UnitType.size.possibleUnits.map({ $0.name }),
+                                     selectedValue: 0)
+            let propertyY = Property(name: property.name + "Y",
+                                     info: "Vertical position.",
+                                     propertyType: .select,
+                                     unitType: .decimal,
+                                     fixedValues: UnitType.size.possibleUnits.map({ $0.name }),
+                                     selectedValue: 0)
+            property.properties.append(propertyX)
+            property.properties.append(propertyY)
+        case .polar:
+            let propertyRadius = Property(name: property.name + "Radius",
+                                          info: "Radius position.",
+                                          propertyType: .select,
+                                          unitType: .decimal,
+                                          fixedValues: UnitType.size.possibleUnits.map({ $0.name }),
+                                          selectedValue: 0)
+            let propertyAngle = Property(name: property.name + "Angle",
+                                         info: "Angle position.",
+                                         propertyType: .select,
+                                         unitType: .decimal,
+                                         fixedValues: UnitType.angle.possibleUnits.map({ $0.name }),
+                                         selectedValue: 0)
+            property.properties.append(propertyRadius)
+            property.properties.append(propertyAngle)
+        }
+    }
+
+
+    static func addPropertiesToEyeTracker(property: Property) {
+        
+        property.properties = []
+        
+        let selected = property.string
+        
+        if selected == "using SeeSo" {
+            let position = Property(name: "position",
+                                    info: """
+                                    The response position, measured in cartesian or polar variables.
+                                    """,
+                                    propertyType: .positionEyeTracker,
+                                    unitType: .decimal,
+                                    fixedValues: FixedPositionEyeTracker.allCases.map({ $0.name }),
+                                    selectedValue: 0)
+            
+            property.properties.append(position)
+        }
+    }
 }
+
+
 
 enum FixedGamma: String, Codable, CaseIterable {
 
@@ -218,6 +300,27 @@ enum FixedRandomness: String, Codable, CaseIterable {
             return Texts.automaticRandomness
         case .withSeedsRandomness:
             return Texts.withSeedsRandomness
+        }
+    }
+
+    var name: String {
+        return self.rawValue
+    }
+
+}
+
+
+enum FixedPositionEyeTracker: String, Codable, CaseIterable {
+
+    case cartesian = "cartesian vars"
+    case polar = "polar vars"
+
+    var description: String {
+        switch self {
+        case .cartesian:
+            return "Two independent cartesian variables."
+        case .polar:
+            return "Two independent polar variables."
         }
     }
 

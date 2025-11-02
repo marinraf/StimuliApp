@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CalibrationViewController" customModule="StimuliApp" customModuleProvider="target">
+            <connections>
+                <outlet property="calibrationButton" destination="AMY-mP-qgc" id="EBD-TD-WQN"/>
+                <outlet property="continueButton" destination="axX-Mm-2Nr" id="7z7-SH-LLO"/>
+                <outlet property="view" destination="iN0-l3-epB" id="XkI-cg-EqL"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="grid" translatesAutoresizingMaskIntoConstraints="NO" id="fi9-NL-1cl" userLabel="grid">
+                    <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                </imageView>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="29" translatesAutoresizingMaskIntoConstraints="NO" id="ySt-4L-V77">
+                    <rect key="frame" x="62" y="721" width="269" height="37"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AMY-mP-qgc">
+                            <rect key="frame" x="0.0" y="0.0" width="120" height="37"/>
+                            <color key="backgroundColor" name="background"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="120" id="AUD-09-IuZ"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="37" id="Mdx-3e-ret"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="VnS-ms-u7D"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="37" id="WKa-gM-vG8"/>
+                                <constraint firstAttribute="width" constant="120" id="Xcq-dP-HST"/>
+                                <constraint firstAttribute="height" constant="37" id="vtz-WP-3vb"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="REPEAT">
+                                <color key="titleColor" systemColor="systemPinkColor"/>
+                            </state>
+                            <connections>
+                                <action selector="calibrationButtonPressed:" destination="-1" eventType="touchUpInside" id="UOU-kN-5m9"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="axX-Mm-2Nr">
+                            <rect key="frame" x="149" y="0.0" width="120" height="37"/>
+                            <color key="backgroundColor" name="background"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="37" id="2dc-MF-84z"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="Go2-1A-tm5"/>
+                                <constraint firstAttribute="width" constant="120" id="S0V-WH-WlY"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="37" id="U0T-I8-rmx"/>
+                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="120" id="kbu-I2-67I"/>
+                                <constraint firstAttribute="height" constant="37" id="nMm-vT-SLE"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
+                            <state key="normal" image="continue">
+                                <color key="titleColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="continueButtonPressed:" destination="-1" eventType="touchUpInside" id="yWg-IF-ZAO"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="fi9-NL-1cl" secondAttribute="bottom" id="812-Jj-Mp4"/>
+                <constraint firstItem="fi9-NL-1cl" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ATm-AE-Zrh"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="ySt-4L-V77" secondAttribute="bottom" constant="60" id="MiH-eh-wVa"/>
+                <constraint firstItem="fi9-NL-1cl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="SVZ-xK-Qwi"/>
+                <constraint firstAttribute="trailing" secondItem="fi9-NL-1cl" secondAttribute="trailing" id="VE9-Au-vW8"/>
+                <constraint firstItem="ySt-4L-V77" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="h48-OM-xy1"/>
+            </constraints>
+            <point key="canvasLocation" x="130.53435114503816" y="-11.267605633802818"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="continue" width="127" height="32"/>
+        <image name="grid" width="3600" height="3600"/>
+        <namedColor name="background">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

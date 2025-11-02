@@ -20,4 +20,5 @@ enum ScreenStyle {
     case display
     case displayPreview
     case select
+    case calibration
 }

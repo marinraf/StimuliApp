@@ -46,7 +46,7 @@ class MenuViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: animated)
         self.navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
-        self.navigationController?.navigationBar.barTintColor = Color.navigation.toUIColor
+        self.navigationController?.navigationBar.backgroundColor = Color.navigation.toUIColor
         groupTitleView.backgroundColor = Color.navigation.toUIColor
         separatorTitleView.backgroundColor = Color.separatorArrow.toUIColor
         self.tableView.contentInset.bottom = 150

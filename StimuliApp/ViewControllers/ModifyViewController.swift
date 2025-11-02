@@ -88,6 +88,7 @@ class ModifyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = Color.background.toUIColor
+        self.hidesBottomBarWhenPushed = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -282,7 +283,8 @@ class ModifyViewController: UIViewController {
                 extraView.isHidden = false
                 extraViewHeightConstraint.constant = 310
                 image.isHidden = false
-                image.image = UIImage(named: StimuliType.allCases[modify.selectedValue].name)
+                let value = StimuliType(rawValue: modify.property.string) ?? .patch
+                image.image = UIImage(named: value.name)
                 configureStimuliTypeSegControl()
                 modify.settingInfo()
                 extraInfo.text = modify.extraInfo
@@ -293,7 +295,8 @@ class ModifyViewController: UIViewController {
                 extraView.isHidden = false
                 extraViewHeightConstraint.constant = 310
                 image.isHidden = false
-                image.image = UIImage(named: FixedResponse.allCases[modify.selectedValue].name)
+                let value = FixedResponse.allCases.first(where: { $0.name == modify.string }) ?? .none
+                image.image = UIImage(named: value.name)
                 configureSceneResponseSegControl()
                 modify.settingInfo()
                 extraInfo.text = modify.extraInfo
@@ -431,8 +434,9 @@ class ModifyViewController: UIViewController {
                                                  at: index,
                                                  animated: false)
         }
-        if extraSegControl.numberOfSegments > modify.selectedValue {
-            extraSegControl.selectedSegmentIndex = modify.selectedValue
+        let selectedValue = StimuliType.allCases.firstIndex(where: { $0.name == modify.string })  ?? 0
+        if extraSegControl.numberOfSegments > selectedValue {
+            extraSegControl.selectedSegmentIndex = selectedValue
         }
         extraSegControl.setWidthToSegmentControl()
     }
@@ -445,8 +449,9 @@ class ModifyViewController: UIViewController {
                                           at: index,
                                           animated: false)
         }
-        if extraSegControl.numberOfSegments > modify.selectedValue {
-            extraSegControl.selectedSegmentIndex = modify.selectedValue
+        let selectedValue = FixedResponse.allCases.firstIndex(where: { $0.name == modify.string })  ?? 0
+        if extraSegControl.numberOfSegments > selectedValue {
+            extraSegControl.selectedSegmentIndex = selectedValue
         }
         extraSegControl.setWidthToSegmentControl()
     }
@@ -479,21 +484,21 @@ class ModifyViewController: UIViewController {
     }
 
     private func stimulusTypeSegControlSelect(index: Int) {
-        modify.selectedValue = index
+        modify.string = StimuliType.allCases[index].name
         modify.settingInfo()
         extraInfo.text = modify.extraInfo
         extraInfo.updateTextFont(expectFont: UIFont.systemFont(ofSize: 17))
         propertyAndUnitInfo.text = modify.info
-        image.image = UIImage(named: StimuliType.allCases[modify.selectedValue].name)
+        image.image = UIImage(named: modify.string)
     }
 
     private func sceneResponseSegControlSelect(index: Int) {
-        modify.selectedValue = index
+        modify.string = FixedResponse.allCases[index].name
         modify.settingInfo()
         extraInfo.text = modify.extraInfo
         extraInfo.updateTextFont(expectFont: UIFont.systemFont(ofSize: 17))
         propertyAndUnitInfo.text = modify.info
-        image.image = UIImage(named: FixedResponse.allCases[modify.selectedValue].name)
+        image.image = UIImage(named: modify.string)
     }
 
     private func timeFunctionSegControlSelect(index: Int) {
@@ -572,7 +577,15 @@ extension ModifyViewController: UITextFieldDelegate {
             textFieldSimple.becomeFirstResponder()
         case .seed:
             if Task.shared.error == "" {
-                Flow.shared.navigate(to: Display())
+                if Task.shared.testUsesTrackerSeeSo {
+                    Flow.shared.eyeTracker = SeeSoTracker()
+                    Flow.shared.navigate(to: Calibration())
+                } else if Task.shared.testUsesTrackerARKit {
+                    Flow.shared.eyeTracker = ARKitTracker()
+                    Flow.shared.navigate(to: Calibration())
+                } else {
+                    Flow.shared.navigate(to: Display())
+                }
             } else {
                 Flow.shared.navigate(to: InfoExport(type: .previewErrorStimulusOrTest))
             }

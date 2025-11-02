@@ -325,10 +325,11 @@ class Property: Codable {
 
         switch propertyType {
         case .string, .key, .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .sceneDuration,
-             .position2d, .size2d, .positionResponse, .origin2d, .originResponse, .value, .valueType, .distanceResponse,
-             .correct, .correct2, .color, .objectResponse, .objectResponse2, .keyResponse, .randomness, .listOrder,
-             .selection, .selectionDifferent, .distance, .selectionOrder, .correctType, .image, .text, .video, .audio,
-             .font, .gamma, .behaviour, .direction, .soundType, .endPathResponse, .trialAccuracy:
+                .position2d, .size2d, .positionResponse, .sceneGazeFixation, .sceneDistanceFixation, .origin2d, .originResponse,
+                .value, .valueType, .distanceResponse, .correct, .correct2, .color, .objectResponse, .objectResponse2,
+                .keyResponse, .randomness, .listOrder, .selection, .selectionDifferent, .distance, .selectionOrder,
+                .correctType, .image, .text, .video, .audio, .font, .gamma, .behaviour, .direction, .soundType,
+                .endPathResponse, .trialAccuracy, .testEyeTracker, .originEyeTracker, .positionEyeTracker, .language:
             return ""
         case .dobleSize, .doblePosition, .triple, .sequence:
             switch self.timeDependency {
@@ -377,10 +378,11 @@ class Property: Codable {
         case .string, .key, .font:
             return text
         case .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .size2d, .distanceResponse,
-             .position2d, .positionResponse, .origin2d, .originResponse, .value, .valueType, .correct, .correct2,
-             .correctType, .sceneDuration, .color, .objectResponse, .objectResponse2, .keyResponse, .randomness,
-             .listOrder, .endPathResponse, .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour,
-             .direction, .soundType, .distance:
+                .position2d, .positionResponse, .sceneGazeFixation, .sceneDistanceFixation, .origin2d, .originResponse,
+                .value, .valueType, .correct, .correct2, .correctType, .sceneDuration, .color, .objectResponse,
+                .objectResponse2, .keyResponse, .randomness, .listOrder, .endPathResponse, .selection, .selectionDifferent,
+                .selectionOrder, .gamma, .behaviour, .direction, .soundType, .distance,
+                .testEyeTracker, .originEyeTracker, .positionEyeTracker, .language:
             return fixedValues[selectedValue]
         case .dobleSize:
             switch self.timeDependency {
@@ -424,10 +426,11 @@ class Property: Codable {
         case .string, .key, .font:
             return [text, "", ""]
         case .select, .type, .shape, .border, .contrast, .noise, .modulator, .response, .sceneDuration,
-             .position2d, .positionResponse, .origin2d, .originResponse, .size2d, .value, .valueType, .distanceResponse,
-             .correct, .correct2, .correctType, .color, .objectResponse, .objectResponse2, .keyResponse, .randomness,
-             .listOrder, .selection, .distance, .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction,
-             .soundType, .endPathResponse:
+             .position2d, .positionResponse, .sceneGazeFixation, .sceneDistanceFixation, .origin2d, .originResponse,
+             .size2d, .value, .valueType, .distanceResponse, .correct, .correct2, .correctType, .color,
+             .objectResponse, .objectResponse2, .keyResponse, .randomness, .listOrder, .selection, .distance,
+             .selectionDifferent, .selectionOrder, .gamma, .behaviour, .direction, .soundType, .endPathResponse,
+             .testEyeTracker, .originEyeTracker, .positionEyeTracker, .language:
             return [fixedValues[selectedValue], "", ""]
         case .dobleSize, .doblePosition, .trialAccuracy:
             return [values[0], values[1], ""]
@@ -468,10 +471,10 @@ class Property: Codable {
         case .string, .key, .font:
             return [text]
         case .select, .type, .shape, .border, .contrast, .modulator, .response, .sceneDuration, .distanceResponse,
-             .correctType, .correct, .correct2, .position2d, .size2d, .positionResponse, .origin2d, .originResponse,
-             .value, .valueType, .noise, .color, .objectResponse, .objectResponse2, .keyResponse, .randomness,
-             .listOrder, .endPathResponse, .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour,
-             .direction, .soundType, .distance:
+             .correctType, .correct, .correct2, .position2d, .size2d, .positionResponse, .sceneGazeFixation, .sceneDistanceFixation,
+             .origin2d, .originResponse, .value, .valueType, .noise, .color, .objectResponse, .objectResponse2, .keyResponse,
+             .randomness, .listOrder, .endPathResponse, .selection, .selectionDifferent, .selectionOrder, .gamma, .behaviour,
+             .direction, .soundType, .distance, .testEyeTracker, .originEyeTracker, .positionEyeTracker, .language:
             return [fixedValues[selectedValue]]
         case .dobleSize, .doblePosition, .trialAccuracy:
             let value = numberFormatter.string(from: newNewFloat as NSNumber) ?? ""
@@ -591,9 +594,13 @@ class Property: Codable {
         switch propertyType {
         case .type:
             if let stimulusType = StimuliType(rawValue: self.string) {
+                
+                Flow.shared.stimulus.typeProperty.fixedValues = StimuliType.allCases.map({ $0.name })
+                
                 if stimulusType == .text || stimulusType == .video ||
                     stimulusType == .audio || stimulusType == .pureTone {
-
+                    
+                    
                     Flow.shared.stimulus.shapeProperty = StimulusData.makeShapeProperty(shape: .rectangle)
                     Flow.shared.stimulus.originProperty = StimulusData.makeOriginProperty(selected: 0)
                     Flow.shared.stimulus.positionProperty = StimulusData.makePositionProperty(selected: 0)
@@ -790,6 +797,10 @@ class Property: Codable {
     }
 
     func addProperties() {
+        
+        if propertyType == .language {
+            return
+        }
 
         for object in Flow.shared.test.objects where object.stimulus === Flow.shared.stimulus {
             let properties = self.properties
@@ -862,11 +873,19 @@ class Property: Codable {
             SectionData.addPropertiesToCorrect2(property: self)
         case .gamma:
             TestData.addPropertiesToGamma(property: self)
-
+        case .sceneGazeFixation:
+            SceneData.addPropertiesToSceneGazeFixation(property: self)
+        case .sceneDistanceFixation:
+            SceneData.addPropertiesToSceneDistanceFixation(property: self)
+        case .testEyeTracker:
+            TestData.addPropertiesToEyeTracker(property: self)
+        case .positionEyeTracker:
+            TestData.addPropertiesToPositionEyeTracker(property: self)
         case .simpleFloat, .simpleFloatText, .string, .key, .select, .dobleSize, .doblePosition, .triple, .sequence,
              .finalFloat, .listOrder, .selectionDifferent, .selectionOrder, .correctType,
-             .image, .text, .video, .audio, .font, .behaviour, .trialAccuracy:
+             .image, .text, .video, .audio, .font, .behaviour, .trialAccuracy, .originEyeTracker, .language:
             break
         }
     }
 }
+

@@ -3,6 +3,7 @@
 
 import Foundation
 import AVFoundation
+import UIKit
 
 class Settings {
 
@@ -54,6 +55,9 @@ class Settings {
 
     var delayAudio60Property: Property
     var delayAudio120Property: Property
+    
+    var retina: Float
+    var languageProperty: Property
 
     init(device: Device) {
         self.device = device
@@ -65,6 +69,8 @@ class Settings {
 
         self.distance = Constants.defaultDistanceCm
         self.brightness = Constants.defaultBrightness
+        
+        self.retina = Float(UIScreen.main.scale)
 
         if let maximumBrightnessApple = device.brightness {
             self.maximumBrightnessApple = maximumBrightnessApple
@@ -128,6 +134,8 @@ class Settings {
         let systemString = "\(device.systemName), version: \(device.systemVersion)"
         let userString = UserDefaults.standard.string(forKey: "user") ?? "user"
         let emailString = UserDefaults.standard.string(forKey: "email") ?? "user@email.com"
+        let languageString = UserDefaults.standard.string(forKey: "language") ?? "english"
+        let languageValue: Int = FixedLanguage(rawValue: languageString) == .spanish ? 1 : 0
 
         self.userProperty = SettingsData.makeUserProperty(text: userString)
         self.emailProperty = SettingsData.makeEmailProperty(text: emailString)
@@ -149,17 +157,19 @@ class Settings {
 
         self.positionXProperty = SettingsData.makePositionXProperty(float: positionX)
         self.positionYProperty = SettingsData.makePositionYProperty(float: positionY)
+        
+        self.languageProperty = SettingsData.makeLanguageProperty(selected: languageValue)
 
         self.userProperties = [userProperty, emailProperty]
 
         #if targetEnvironment(macCatalyst)
         self.deviceProperties = [versionProperty, descriptionProperty, systemProperty, audioRateProperty,
                                  maximumFrameRateProperty,resolutionProperty, positionXProperty, positionYProperty,
-                                 ppiProperty, maximumBrightnessProperty, rampTimeProperty, delayAudio60Property]
+                                 ppiProperty, maximumBrightnessProperty, rampTimeProperty, delayAudio60Property, languageProperty]
         #else
         self.deviceProperties = [versionProperty, descriptionProperty, systemProperty, audioRateProperty,
                                  maximumFrameRateProperty, resolutionProperty, ppiProperty, maximumBrightnessProperty,
-                                 rampTimeProperty, delayAudio60Property]
+                                 rampTimeProperty, delayAudio60Property, languageProperty]
         #endif
 
         if self.maximumFrameRate == 120 {
@@ -245,3 +255,4 @@ class Settings {
         """
     }
 }
+

@@ -176,9 +176,9 @@ kernel void gradient(texture2d<float, access::write> output [[texture(0)]],
     float2 position = changePosition(point, displacement, gradientRotation);
     
     float3 color0;
-    if (point.x < -gradientSize / 2) {
+    if (position.x < -gradientSize / 2) {
         color0 = color1;
-    } else if (point.x > gradientSize / 2) {
+    } else if (position.x > gradientSize / 2) {
         color0 = color2;
     } else {
         color0 = color1 * (0.5 - position.x / gradientSize) + color2 * (0.5 + position.x / gradientSize);
@@ -294,7 +294,7 @@ kernel void checkerboard(texture2d<float, access::write> output [[texture(0)]],
     float2 displacement = float2(boxPositionX, boxPositionY);
     float2 position = changePosition(point, displacement, checkerboardRotation);
     
-    bool condition1 = (position.x < 0 && position.y > 0 )|| (position.x > 0 && position.y < 0);
+    bool condition1 = (position.x < 0 && position.y > 0 ) || (position.x > 0 && position.y < 0);
     
     bool condition2 = (int(position.x / boxSizeX) % 2 + int(position.y / boxSizeY) % 2) % 2 == 0;
     
@@ -371,6 +371,60 @@ kernel void radialCheckerboard(texture2d<float, access::write> output [[texture(
     bool condition = condition1 == condition2;
     
     float3 color0 = condition ? color1 : color2;
+    float4 color = finalColor(object, data, color0, point);
+    output.write(color, id);
+}
+
+
+
+// CIRCULAR GRATING
+kernel void circularGrating(texture2d<float, access::write> output [[texture(0)]],
+                            constant Data &data [[buffer(0)]],
+                            constant Object &object [[buffer(1)]],
+                            ushort2 id [[thread_position_in_grid]])
+{
+    //GENERAL
+    //position
+    float2 maxSize = float2(output.get_width(), output.get_height());
+    if (id.x >= maxSize.x || id.y >= maxSize.y) {
+        return;
+    }
+    float2 center = float2(object.xCenter, object.yCenter);
+    float rotation = float(object.rotation);
+    float2 point = calculatePosition(id, center, rotation, maxSize);
+    //shape
+    int shape = int(object.shape + 0.5);
+    ushort inside = getInside(object, point, shape);
+    //color
+    if (inside == 2) {
+        float4 color = float4(0);
+        output.write(color, id);
+        return;
+    } else if (inside == 1 && object.borderType > 1.5) {
+        float3 color0 = float3(object.borderColorRed, object.borderColorGreen, object.borderColorBlue);
+        float4 color = float4(moreColors(data, color0, point), 1);
+        output.write(color, id);
+        return;
+    } else if (inside == 1) {
+        float4 color0 = float4(object.borderColorRed, object.borderColorGreen, object.borderColorBlue, 1);
+        float4 color = finalColor(object, data, color0, point);
+        output.write(color, id);
+        return;
+    }
+    
+    //SPECIFIC
+    float period = object.variable0;
+    float3 color1 = float3(object.variable1, object.variable2, object.variable3);
+    float3 color2 = float3(object.variable4, object.variable5, object.variable6);
+    float phase = object.variable7;
+    
+    float radius = length(point);
+    
+    float sinusoidal = sin((2 * M_PI_F / period * radius) - phase);
+    
+    float3 colorCentral = (color1 + color2) / 2;
+    float3 colorVariation = (color2 - color1) / 2;
+    float3 color0 = colorCentral + colorVariation * sinusoidal;
     float4 color = finalColor(object, data, color0, point);
     output.write(color, id);
 }

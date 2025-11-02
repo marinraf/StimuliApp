@@ -29,6 +29,7 @@ class InfoExportViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = Color.background.toUIColor
+        self.hidesBottomBarWhenPushed = true
     }
 
     override func viewWillAppear(_ animated: Bool) {

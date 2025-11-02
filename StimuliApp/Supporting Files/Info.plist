@@ -63,6 +63,8 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Access to the media</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Use of the camera for eye tracking and for calculating the distance from the user to the device</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access to the photo library</string>
 	<key>UIFileSharingEnabled</key>
@@ -79,6 +81,8 @@
 	<true/>
 	<key>UIStatusBarHidden~ipad</key>
 	<true/>
+	<key>UIStatusBarStyle</key>
+	<string></string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -135,5 +139,26 @@
 			<string></string>
 		</dict>
 	</array>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneStoryboardFile</key>
+					<string>LaunchScreen</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 </dict>
 </plist>

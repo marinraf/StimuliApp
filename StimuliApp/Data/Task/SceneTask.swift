@@ -173,6 +173,11 @@ class SceneTask {
 
     var numberOfLayers: Int = 1
     var continuousResolution = false
+    var gazeFixation = false
+    var distanceFixation = false
+    var maxGazeErrorInPixels: Float = 0
+    var maxDistanceErrorInCm: Float = 0
+    var minDistanceErrorInCm: Float = 0
 
     var backgroundFloats: [[Float]] = [] //trial * variable
     var metalFloats: [[[Float]]] = [] //trial * object * variable
@@ -216,9 +221,10 @@ class SceneTask {
     var isRealResponse: Bool = false
 
     var userResponses: [UserResponse] = [] //trial
+    var trackerResponses: [TrackerResponse] = [] //trial
+    var distanceResponses: [DistanceResponse] = [] //trial
     var realStartTime: [Double] = [] // trial
     var realEndTime: [Double] = [] // trial
-    var delayTime: [Double] = [] // trial
 
     var dotsBorder: Bool = false
 
@@ -228,19 +234,27 @@ class SceneTask {
     }
 
     func saveSceneTime(time: Double) {
+
         let count = realEndTime.count
         if count > 0 {
             realEndTime[count - 1] = time
         }
     }
 
-    func saveSceneData(startTime: Double, startTimeReal: Double, trial: Int) {
+    func saveSceneData(startTimeReal: Double, trial: Int) {
 
         userResponses.append(Task.shared.userResponse)
+        
+        if Task.shared.startTimeFirstSceneOfTest == 0 && Task.shared.sceneTask.name != "sceneZero0o" {
 
-        realStartTime.append(startTime)
-        realEndTime.append(startTime)
-        delayTime.append(max((startTimeReal - startTime), 0))
+            let scaleTime = NSDate.init().timeIntervalSince1970 - CACurrentMediaTime()
+            Task.shared.startTimeFirstSceneOfTest = startTimeReal
+            Task.shared.startTimeFirstSceneOfTestInUTC = startTimeReal + scaleTime
+
+        }
+        
+        realStartTime.append(startTimeReal)
+        realEndTime.append(startTimeReal)
 
         if isNotRealResponse || isRealResponse {
 
@@ -500,3 +514,4 @@ class SceneTask {
         }
     }
 }
+

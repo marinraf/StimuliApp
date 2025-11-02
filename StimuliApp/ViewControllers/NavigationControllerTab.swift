@@ -6,9 +6,14 @@ import UIKit
 class NavigationControllerTab: UITabBarController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
+        if #available(iOS 18.0, *) {
+            traitOverrides.horizontalSizeClass = .compact
+        }
+        
         super.viewDidLoad()
 
         self.tabBar.barTintColor = Color.navigationTab.toUIColor
+        self.tabBar.backgroundColor = Color.navigationTab.toUIColor
         delegate = self
 
         settingViewControllersMenu()

@@ -72,12 +72,41 @@ struct UserResponse {
     init() {}
 }
 
+struct TrackerResponse {
+    var xGazes: [Float] = []
+    var yGazes: [Float] = []
+    var radiusGazes: [Float] = []
+    var angleGazes: [Float] = []
+    var clocks: [Double] = []
+    var errors: [Int] = []
+
+    init() {}
+}
+
+struct DistanceResponse {
+    var zDistances: [Float] = []
+    var clocks: [Double] = []
+    var errorMaxs: [Int] = []
+    var errorMins: [Int] = []
+    var errorNans: [Int] = []
+
+    init() {}
+}
+
 enum Preview {
     case no
     case previewTest
     case previewScene
     case previewStimulus
     case variablesSection
+}
+
+enum ErrorTracker {
+    case no
+    case eyeTracker
+    case distanceMin
+    case distanceMax
+    case distanceNan
 }
 
 struct PolarPosition: Hashable {
@@ -129,10 +158,76 @@ class Task {
 
     var responseKeyboard: String = ""
 
+    var startTimeFirstSceneOfTest: Double = 0
+    var startTimeFirstSceneOfTestInUTC: Double = 0
+    var warningTrackerPause: ErrorTracker = .no
+    var warningTracker: Bool = false
+    var testUsesTrackerSeeSo: Bool = false
+    var testUsesTrackerARKit: Bool = false
+    var testUsesLongAudios: Bool = false
+    
+    var trackerCoordinates: FixedPositionEyeTracker = .cartesian
+    var trackerFirstUnit: Unit = .none
+    var trackerSecondUnit: Unit = .none
+    var distanceUnit: Unit = .none
+    var startingDistanceInCm: Float = 0
+    
     // create methods
     func createTask(test: Test, preview: Preview) -> String {
+        self.startTimeFirstSceneOfTest = 0
         self.preview = preview
         self.name = test.name.string
+        self.startingDistanceInCm = test.distance.properties[0].float
+        
+        Flow.shared.frameControl.realInitTimes = [:]
+        Flow.shared.frameControl.realEndTimes = [:]
+
+        if let tracker = test.eyeTracker {
+            
+            let value = tracker.string
+            
+            if value == "using SeeSo" && Flow.shared.isAvailableSeeSo {
+                self.testUsesTrackerSeeSo = true
+            } else if value == "using ARKit" && Flow.shared.isAvailableARKit {
+                self.testUsesTrackerARKit = true
+            }
+            if tracker.properties.count > 0 {
+                self.trackerCoordinates = FixedPositionEyeTracker(rawValue: tracker.properties[0].string) ?? .cartesian
+                if tracker.properties[0].properties.count > 1 {
+                    self.trackerFirstUnit = UnitType.size.possibleUnits[tracker.properties[0].properties[0].selectedValue]
+                    
+                    if self.trackerCoordinates == .cartesian {
+                        self.trackerSecondUnit = UnitType.size.possibleUnits[tracker.properties[0].properties[1].selectedValue]
+                    } else {
+                        self.trackerSecondUnit = UnitType.angle.possibleUnits[tracker.properties[0].properties[1].selectedValue]
+                    }
+                }
+            }
+        }
+
+        if test.distance.properties.count > 0 {
+            self.distanceUnit = test.distance.properties[0].unit
+        }
+
+        if self.testUsesTrackerSeeSo || self.testUsesTrackerARKit {
+            
+            let authorized = Flow.shared.requestCameraAccess()
+            
+            guard authorized else {
+                return """
+                ERROR: The test uses the camera for eye tracking, but permission to use the camera is not granted.
+                Disable eyeTracker in the Test properties or allow StimuliApp to use the camera in \
+                your device Settings -> Privacy.
+                """
+            }
+        }
+        
+        if let longAudios = test.longAudios {
+            if longAudios.string == "on" {
+                self.testUsesLongAudios = true
+            }
+        }
+        
         Flow.shared.test = test
         if preview != .no {
             createRandomSeeds(from: test)
@@ -167,6 +262,10 @@ class Task {
     }
 
     func createTask(section: Section, scene: Scene, test: Test) -> String {
+        Flow.shared.frameControl.realInitTimes = [:]
+        Flow.shared.frameControl.realEndTimes = [:]
+        
+        self.startTimeFirstSceneOfTest = 0
         preview = .previewScene
         let sceneNumber = section.scenes.firstIndex(where: { $0 === scene }) ?? 0
 
@@ -192,6 +291,10 @@ class Task {
     }
 
     func createTask(stimulus: Stimulus) -> String {
+        Flow.shared.frameControl.realInitTimes = [:]
+        Flow.shared.frameControl.realEndTimes = [:]
+        
+        self.startTimeFirstSceneOfTest = 0
         preview = .previewStimulus
         let test = createTest(stimulus: stimulus, test: Flow.shared.test)
         createRandomSeeds(from: test)
@@ -254,6 +357,19 @@ class Task {
         xButtonPosition = .topLeft
         responseMovingObject = nil
         responseKeyboard = ""
+        
+        startTimeFirstSceneOfTest = 0
+        startTimeFirstSceneOfTestInUTC = 0
+        warningTrackerPause = .no
+        warningTracker = false
+        testUsesTrackerSeeSo = false
+        testUsesTrackerARKit = false
+        
+        trackerCoordinates = .cartesian
+        trackerFirstUnit = .none
+        trackerSecondUnit = .none
+        distanceUnit = .none
+        startingDistanceInCm = 0
     }
 
     private func importSettings(from test: Test) -> String {
@@ -277,7 +393,6 @@ class Task {
             delayAudio = Flow.shared.settings.delayAudio120
         }
         Flow.shared.frameControl = FrameControl(frameRate: Flow.shared.settings.frameRate,
-                                                maximumFrameRate: Double(Flow.shared.settings.maximumFrameRate),
                                                 delayAudio: Double(delayAudio))
 
         for variable in test.allVariables {
@@ -789,6 +904,26 @@ class Task {
 
         result.data = Constants.separator + testSettings + Constants.separator + settings +
             Constants.separator + testOptionsString + Constants.separator
+        
+        
+        print("aqui lo hago")
+        
+        for sectionTask in sectionTasks {
+            for sceneTask in sectionTask.sceneTasks {
+                print(sceneTask.name)
+                print(sceneTask.id)
+                print(sceneTask.realStartTime)
+                print(sceneTask.realEndTime)
+            }
+        }
+        
+        print("que pasa")
+        
+        for (key, value) in Flow.shared.frameControl.realInitTimes {
+            print("key: \(key), value: \(value)")
+        }
+        
+        print("vale")
 
         for sectionTask in sectionTasks {
             let sectionResult = sectionTask.calculateResultInfo()
@@ -799,6 +934,14 @@ class Task {
             if sectionResult.csv1 != "" {
                 result.csvs.append(sectionResult.csv1)
                 result.csvNames.append(sectionResult.csv1Name)
+            }
+            if sectionResult.csv2 != "" {
+                result.csvs.append(sectionResult.csv2)
+                result.csvNames.append(sectionResult.csv2Name)
+            }
+            if sectionResult.csv3 != "" {
+                result.csvs.append(sectionResult.csv3)
+                result.csvNames.append(sectionResult.csv3Name)
             }
         }
 

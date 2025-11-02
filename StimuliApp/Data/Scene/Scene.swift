@@ -16,6 +16,8 @@ class Scene: Codable {
     var continuousResolution: Property
     var responseType: Property
     var durationType: Property
+    var gazeFixation: Property?
+    var distanceFixation: Property?
     var objects: [Object]
 
     //empty
@@ -29,6 +31,8 @@ class Scene: Codable {
         self.color = Property()
         self.numberOfLayers = Property()
         self.continuousResolution = Property()
+        self.gazeFixation = Property()
+        self.distanceFixation = Property()
         self.responseType = Property()
         self.durationType = Property()
         self.objects = []
@@ -50,6 +54,8 @@ class Scene: Codable {
 
         self.numberOfLayers = SceneData.makeNumberOfLayersProperty(selected: 0)
         self.continuousResolution = SceneData.makeContinuousResolutionProperty(selected: 0)
+        self.gazeFixation = SceneData.makeSceneFixationProperty(selected: 0)
+        self.distanceFixation = SceneData.makeSceneDistanceMeasureProperty(selected: 0)
         self.responseType = SceneData.makeResponseProperty(selected: 0)
         self.durationType = SceneData.makeDurationProperty(selected: 0)
         self.objects = [SceneData.makeBackground(id: self.id)]
@@ -67,6 +73,16 @@ class Scene: Codable {
         self.color.somethingId = self.id
         self.numberOfLayers = Property(from: oldScene.numberOfLayers)
         self.continuousResolution = Property(from: oldScene.continuousResolution)
+        if let fix = oldScene.gazeFixation {
+            self.gazeFixation = Property(from: fix)
+        } else {
+            self.gazeFixation = SceneData.makeSceneFixationProperty(selected: 0)
+        }
+        if let dis = oldScene.distanceFixation {
+            self.distanceFixation = Property(from: dis)
+        } else {
+            self.distanceFixation = SceneData.makeSceneDistanceMeasureProperty(selected: 0)
+        }
         self.responseType = Property(from: oldScene.responseType)
         self.durationType = Property(from: oldScene.durationType)
         self.objects = []

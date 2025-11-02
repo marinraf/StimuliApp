@@ -2,6 +2,8 @@
 //  Copyright © 2020 Rafael Marín. All rights reserved.
 
 import UIKit
+import ARKit
+
 
 class Flow {
 
@@ -27,6 +29,17 @@ class Flow {
     var animated: Bool
     private var dataModel: DataModel
     var macApp: NSObjectProtocol?
+    var eyeTracker: TrackerDelegate?
+    var isAvailableSeeSo = false
+    var isAvailableARKit = false
+    var possibleEyeTrackers = ["off"]
+    var orientation: UIInterfaceOrientation = .portrait
+    var cameraXPosition: Double = 0
+    var cameraYPosition: Double = 0
+    var angle00: Double = 0
+    var angle01: Double = 0
+    var angle10: Double = 0
+    var angle11: Double = 0
 
     init() {
         self.screen = EmptyScreen()
@@ -44,8 +57,17 @@ class Flow {
         self.property = Property()
         self.group = 0
         self.settings = Settings(device: Device())
-        self.frameControl = FrameControl(frameRate: 60, maximumFrameRate: 60, delayAudio: 0)
+        self.frameControl = FrameControl(frameRate: 60, delayAudio: 0)
         self.animated = true
+        self.isAvailableSeeSo = importedSeeSo
+        self.isAvailableARKit = ARFaceTrackingConfiguration.isSupported
+        if isAvailableSeeSo {
+            self.possibleEyeTrackers += ["using SeeSo"]
+        }
+        if isAvailableARKit {
+            self.possibleEyeTrackers += ["using ARKit"]
+        }
+        
         let fetchedTests = dataModel.fetchAllTests()
         let fetchedResults = dataModel.fetchAllResults()
         tests = fetchedTests.sorted(by: { $0.order < $1.order })
@@ -62,6 +84,36 @@ class Flow {
         return tabBarController.navigationController ??
             tabBarController.selectedViewController as? UINavigationController
     }
+
+    func requestCameraAccess() -> Bool {
+        let status = AVCaptureDevice.authorizationStatus(for: .video)
+        if status == .authorized {
+            return true
+        } else {
+            var isGranted = false
+            let semaphore = DispatchSemaphore(value: 0)
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                isGranted = granted
+                semaphore.signal()
+            }
+            semaphore.wait()
+            return isGranted
+        }
+    }
+    
+    // MARK: - Camera access
+    
+    func cameraAuthorization() async -> Bool {
+        let mediaType = AVMediaType.audio
+        let mediaAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: mediaType)
+        switch mediaAuthorizationStatus {
+        case .denied, .restricted: return false
+        case .authorized: return true
+        case .notDetermined: return await AVCaptureDevice.requestAccess(for: .audio)
+        @unknown default: return false
+        }
+    }
+    
 
     // MARK: - Changes in properties (for legacy properties and to control screensize)
     func applyChangesInProperties() {
@@ -241,6 +293,9 @@ class Flow {
         case .select:
             let newViewController = SelectViewController()
             navigationController.pushViewController(newViewController, animated: self.animated)
+        case .calibration:
+            let newViewController = CalibrationViewController()
+            navigationController.pushViewController(newViewController, animated: self.animated)
         }
         deletePreviousToLastViewControllerIfIsSelectViewControllerOrSeed()
     }
@@ -354,9 +409,13 @@ class Flow {
         if let test = Encode.jsonDataToTest(jsonData: data) {
             let name = firstAvailableTestName2(from: test.name.string)
             test.name = TestData.makeNameProperty(text: name)
-            let selectedValue = test.frameRate.selectedValue
+            let selectedFrameRate = test.frameRate.selectedValue
+            
             test.frameRate = TestData.makeFrameRateProperty(frameRate: Flow.shared.settings.maximumFrameRate,
-                                                            selectedValue: selectedValue)
+                                                            selected: selectedFrameRate)
+            test.eyeTracker = TestData.makeEyeTrackerProperty(selected: 0)
+            
+
             test.id = UUID().uuidString
             test.order = tests.count
             if dataModel.saveNewTest(test) {
@@ -1133,3 +1192,4 @@ class Flow {
         }
     }
 }
+

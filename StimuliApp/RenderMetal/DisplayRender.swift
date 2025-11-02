@@ -22,13 +22,14 @@ protocol DisplayRenderDelegate: AnyObject {
     func stopVideo()
     func playAudios(audio: [Float])
     func playAudio()
-    func stopAudio()
+    func stopAudio(forceStop: Bool)
     func stopOneAudio()
     func showKeyboard(type: FixedKeyboard, inTitle: Bool)
     func settingTimeLabel()
     func settingKeyResponses()
     func showFirstMessageTest()
     func pauseToSync()
+    func pauseToWarn(error: ErrorTracker)
 }
 
 // MARK: - DisplayRender
@@ -127,6 +128,17 @@ class DisplayRender {
         let trial = Task.shared.sectionTask.currentTrial
 
         Task.shared.sceneTask = Task.shared.sectionTask.sceneTasks[Task.shared.sectionTask.sceneNumber]
+        
+        if Task.shared.testUsesTrackerSeeSo {
+            if (trial == 0) {
+                Task.shared.sceneTask.trackerResponses.append(TrackerResponse())
+                Task.shared.sceneTask.distanceResponses.append(DistanceResponse())
+            }
+        } else if Task.shared.testUsesTrackerARKit {
+            if (trial == 0) {
+                Task.shared.sceneTask.distanceResponses.append(DistanceResponse())
+            }
+        }
 
         Task.shared.responseMovingObject = nil
         
@@ -144,7 +156,7 @@ class DisplayRender {
         displayRenderDelegate?.settingKeyResponses()
 
         displayRenderDelegate?.settingTimeLabel()
-
+        
         displayRenderDelegate?.playAudios(audio: Task.shared.sceneTask.audioFloats[trial])
     }
 
@@ -163,6 +175,18 @@ class DisplayRender {
             changeDisplay(realTimeInFrames: timeInFrames)
         }
         
+        if (Task.shared.testUsesTrackerSeeSo || Task.shared.testUsesTrackerARKit) && Task.shared.warningTrackerPause != .no {
+            displayRenderDelegate?.pauseToWarn(error: Task.shared.warningTrackerPause)
+        }
+        
+        if Task.shared.testUsesTrackerSeeSo || Task.shared.testUsesTrackerARKit {
+            if Task.shared.warningTracker {
+                Task.shared.sectionTask.respondedInTime = false
+                changeDisplay(realTimeInFrames: timeInFrames)
+                Task.shared.warningTracker = false
+            }
+        }
+        
         updateLabel()
 
         let currentTrial = Task.shared.sectionTask.currentTrial
@@ -173,7 +197,9 @@ class DisplayRender {
             let objectNumber = Task.shared.sceneTask.checkPoints[currentTrial][counter].objectNumber
 
             if startStop(action: action, objectNumber: objectNumber) {
-                timeInFrames += 1
+                if status != .stopped {
+                    timeInFrames += 1
+                }
                 return true
             } else {
                 counter += 1
@@ -277,7 +303,7 @@ class DisplayRender {
             return
         }
         inactive = true
-        if Task.shared.sectionTask.sceneNumber < Task.shared.sectionTask.sceneTasks.count - 1 {
+        if Task.shared.sectionTask.sceneNumber < Task.shared.sectionTask.sceneTasks.count - 1 && !Task.shared.warningTracker {
             changeToNextSceneInSection()
         } else {
             var exitLoop = false
@@ -363,19 +389,63 @@ class DisplayRender {
     }
 
     func changeToNextSceneInSection() {
+//        print(self.timeInFrames, " change scene time: ", CACurrentMediaTime())
+//        print(timeInFrames, " init scene 2 time: ", Flow.shared.frameControl.initSceneTimeReal)
+                
+        print(CACurrentMediaTime(), "- escena:", Task.shared.previousSceneTask.name, "end_time:", Flow.shared.frameControl.initSceneTimeReal, "timeInFrame:", timeInFrames)
+        print(CACurrentMediaTime(), "- escena:", Task.shared.sceneTask.name, "init_time:", Flow.shared.frameControl.initSceneTimeReal, "timeInFrame:", timeInFrames)
+        
+        Task.shared.previousSceneTask.saveSceneTime(time: Flow.shared.frameControl.initSceneTimeReal)
         Task.shared.previousSceneTask = Task.shared.sceneTask
-        Task.shared.sceneTask.saveSceneData(startTime: Flow.shared.frameControl.initSceneTime,
-                                            startTimeReal: Flow.shared.frameControl.initSceneTimeReal,
+        Task.shared.sceneTask.saveSceneData(startTimeReal: Flow.shared.frameControl.initSceneTimeReal,
                                             trial: Task.shared.sectionTask.currentTrial)
         Task.shared.sectionTask.sceneNumber += 1
         initScene()
     }
 
     func lastSceneOfSection() {
+        //        print(self.timeInFrames, " change scene time: ", CACurrentMediaTime())
+        //        print(timeInFrames, " init scene 2 time: ", Flow.shared.frameControl.initSceneTimeReal)
+                        
+        print(CACurrentMediaTime(), "- escena:", Task.shared.previousSceneTask.name, "end_time:", Flow.shared.frameControl.initSceneTimeReal, "timeInFrame:", timeInFrames)
+        print(CACurrentMediaTime(), "- escena:", Task.shared.sceneTask.name, "init_time:", Flow.shared.frameControl.initSceneTimeReal, "timeInFrame:", timeInFrames)
+        
+        Task.shared.previousSceneTask.saveSceneTime(time: Flow.shared.frameControl.initSceneTimeReal)
         Task.shared.previousSceneTask = Task.shared.sceneTask
-        Task.shared.sceneTask.saveSceneData(startTime: Flow.shared.frameControl.initSceneTime,
-                                            startTimeReal: Flow.shared.frameControl.initSceneTimeReal,
+        Task.shared.sceneTask.saveSceneData(startTimeReal: Flow.shared.frameControl.initSceneTimeReal,
                                             trial: Task.shared.sectionTask.currentTrial)
+        
+        let numberOfTrials = Task.shared.sectionTask.sceneTasks[0].realStartTime.count
+        
+        for sceneTask in Task.shared.sectionTask.sceneTasks {
+            while sceneTask.realStartTime.count < numberOfTrials {
+                sceneTask.realStartTime.append(Double.nan)
+                sceneTask.realEndTime.append(Double.nan)
+            }
+        }
+        if Task.shared.testUsesTrackerSeeSo {
+            for sceneTask in Task.shared.sectionTask.sceneTasks {
+                while sceneTask.trackerResponses.count < numberOfTrials {
+                    sceneTask.trackerResponses.append(TrackerResponse())
+                }
+                while sceneTask.distanceResponses.count < numberOfTrials {
+                    sceneTask.distanceResponses.append(DistanceResponse())
+                }
+                while sceneTask.userResponses.count < numberOfTrials {
+                    sceneTask.userResponses.append(UserResponse())
+                }
+            }
+        } else if Task.shared.testUsesTrackerARKit {
+            for sceneTask in Task.shared.sectionTask.sceneTasks {
+                while sceneTask.distanceResponses.count < numberOfTrials {
+                    sceneTask.distanceResponses.append(DistanceResponse())
+                }
+                while sceneTask.userResponses.count < numberOfTrials {
+                    sceneTask.userResponses.append(UserResponse())
+                }
+            }
+        }
+        
         Task.shared.sectionTask.sceneNumber = 0
 
         if Task.shared.sectionTask.respondedInTime {

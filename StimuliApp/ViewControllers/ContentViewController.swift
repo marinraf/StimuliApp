@@ -36,6 +36,7 @@ class ContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = Color.background.toUIColor
+        self.hidesBottomBarWhenPushed = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -192,6 +193,7 @@ extension ContentViewController: UINavigationControllerDelegate, UIImagePickerCo
             picker.allowsEditing = false
             picker.delegate = self
             picker.modalPresentationStyle = .overCurrentContext
+            picker.navigationBar.backgroundColor = Color.navigation.toUIColor
             picker.navigationBar.barTintColor = Color.navigation.toUIColor
             picker.navigationBar.tintColor = Color.selection.toUIColor
             present(picker, animated: true)
@@ -205,6 +207,7 @@ extension ContentViewController: UINavigationControllerDelegate, UIImagePickerCo
             picker.mediaTypes = [kUTTypeMovie as String]
             picker.delegate = self
             picker.modalPresentationStyle = .overCurrentContext
+            picker.navigationBar.backgroundColor = Color.navigation.toUIColor
             picker.navigationBar.barTintColor = Color.navigation.toUIColor
             picker.navigationBar.tintColor = Color.selection.toUIColor
             present(picker, animated: true)

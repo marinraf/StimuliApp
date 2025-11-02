@@ -175,7 +175,8 @@ class Menu: Screen {
                  .direction, .soundType, .shape, .border, .noise, .contrast, .modulator, .sceneDuration, .selection,
                  .objectResponse, .objectResponse2, .keyResponse, .endPathResponse, .gamma, .randomness, .listOrder,
                  .distanceResponse, .selectionDifferent, .selectionOrder, .valueType, .correctType,
-                 .distance, .correct2:
+                 .distance, .correct2, .sceneGazeFixation, .sceneDistanceFixation,
+                 .testEyeTracker, .originEyeTracker, .positionEyeTracker, .language:
                 makeOptionSelect(from: property, sectionNumber: sectionNumber, position: position)
                 for element in property.properties {
                     makeOption(from: element, sectionNumber: sectionNumber,
@@ -373,3 +374,4 @@ class Menu: Screen {
         sections[sectionNumber].options.append(option)
     }
 }
+

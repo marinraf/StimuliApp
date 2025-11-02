@@ -46,7 +46,7 @@ class DisplayPreviewViewController: UIViewController {
 
     @IBAction func frameMinusPressed(_ sender: Any) {
         guard let timeInFrames = displayRender?.timeInFrames else { return }
-        if timeInFrames > 1 {
+        if timeInFrames > 0 {
             displayRender?.timeInFrames -= 1
             displayRender?.status = .minusButton
             displayRender?.reverse()
@@ -109,6 +109,8 @@ class DisplayPreviewViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.hidesBottomBarWhenPushed = true
 
         Flow.shared.enterFullScreen()
 
@@ -154,14 +156,27 @@ class DisplayPreviewViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         self.tabBarController?.tabBar.isHidden = true
 
-        var size = view.bounds.size
         view.frame = CGRect(x: x, y: y, width: screenSize.width, height: screenSize.height)
-        size = view.bounds.size
 
-        if size.width >= size.height {
-            AppUtility.lockOrientation(.landscape)
-        } else {
+        switch UIApplication.shared.windows.first?.windowScene?.interfaceOrientation ?? .unknown {
+        case .unknown:
             AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
+        case .portrait:
+            AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
+        case .portraitUpsideDown:
+            AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
+        case .landscapeLeft:
+            AppUtility.lockOrientation(.landscapeLeft)
+            Flow.shared.orientation = .landscapeLeft
+        case .landscapeRight:
+            AppUtility.lockOrientation(.landscapeRight)
+            Flow.shared.orientation = .landscapeRight
+        @unknown default:
+            AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
         }
         settingPlayingLabel()
         settingHide()
@@ -231,14 +246,14 @@ extension DisplayPreviewViewController: DisplayRenderDelegate {
 
     func settingTimeLabel() {
         var frame = displayRender?.timeInFrames ?? 0
-        frame = max(frame, 1)
-        let time = Float(frame) * Flow.shared.settings.delta
+        frame = max(frame, 0)
+        let time = (Float(frame) * Flow.shared.settings.delta).toString
         let trial = Task.shared.sectionTask.currentTrial + 1
         let totalTrials = Task.shared.sectionTask.numberOfTrials
 
         timeText.text = """
         trial: \(trial) of \(totalTrials)
-        frame: \(frame)
+        frame: \(frame + 1)
         time: \(time)
         """
     }
@@ -332,7 +347,7 @@ extension DisplayPreviewViewController: DisplayRenderDelegate {
         settingPlayingLabel()
     }
 
-    func stopAudio() {}
+    func stopAudio(forceStop: Bool) {}
 
     func stopOneAudio() {
         numberOfAudios -= 1
@@ -352,4 +367,7 @@ extension DisplayPreviewViewController: DisplayRenderDelegate {
     }
 
     func settingKeyResponses() {}
+    
+    func pauseToWarn(error: ErrorTracker) {}
 }
+

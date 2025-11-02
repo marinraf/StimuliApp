@@ -208,8 +208,10 @@ enum UnitType: String, Codable, CaseIterable {
             return max(1, abs(float))
         case .pixelSize:
             return max(Constants.minimumResolutionMac, abs(float))
-        case .positiveDecimalOrZero, .time, .rampTime:
+        case .positiveDecimalOrZero, .rampTime:
             return abs(float)
+        case .time:
+            return roundf(float / Flow.shared.settings.delta) * Flow.shared.settings.delta
         case .valueFrom0to1:
             if float < 0 {
                 return 0
@@ -336,6 +338,13 @@ enum PropertyType: String, Codable, CaseIterable {
     case selectionOrder
     case correctType
 
+    case language
+    case testEyeTracker
+    case sceneGazeFixation
+    case sceneDistanceFixation
+    case originEyeTracker
+    case positionEyeTracker
+
     case origin2d
     case originResponse
     case position2d
@@ -397,6 +406,12 @@ enum PropertyType: String, Codable, CaseIterable {
         case .selection: return [.alwaysConstant]
         case .selectionDifferent: return [.alwaysConstant]
         case .selectionOrder: return [.alwaysConstant]
+        case .sceneGazeFixation: return [.alwaysConstant]
+        case .sceneDistanceFixation: return [.alwaysConstant]
+        case .testEyeTracker: return [.alwaysConstant]
+        case .originEyeTracker: return [.alwaysConstant]
+        case .positionEyeTracker: return [.alwaysConstant]
+        case .language: return [.alwaysConstant]
         case .origin2d: return [.alwaysConstant]
         case .originResponse: return [.alwaysConstant]
         case .position2d: return [.alwaysConstant]
@@ -453,6 +468,12 @@ enum PropertyType: String, Codable, CaseIterable {
         case .selection: return false
         case .selectionDifferent: return false
         case .selectionOrder: return false
+        case .sceneGazeFixation: return false
+        case .sceneDistanceFixation: return false
+        case .testEyeTracker: return false
+        case .originEyeTracker: return false
+        case .positionEyeTracker: return false
+        case .language: return false
         case .origin2d: return false
         case .originResponse: return false
         case .position2d: return false
@@ -508,6 +529,12 @@ enum PropertyType: String, Codable, CaseIterable {
         case .selection: return FixedSelection.allCases.map { $0.name }
         case .selectionDifferent: return FixedSelectionDifferent.allCases.map { $0.name }
         case .selectionOrder: return FixedSelectionPriority.allCases.map { $0.name }
+        case .sceneGazeFixation: return FixedSceneGazeFixation.allCases.map { $0.name }
+        case .sceneDistanceFixation: return FixedSceneDistanceFixation.allCases.map { $0.name }
+        case .testEyeTracker: return Flow.shared.possibleEyeTrackers
+        case .originEyeTracker: return FixedOrigin2d.allCases.map { $0.name }
+        case .positionEyeTracker: return FixedPositionEyeTracker.allCases.map { $0.name }
+        case .language: return FixedLanguage.allCases.map { $0.name }
         case .origin2d: return FixedOrigin2d.allCases.map({ $0.name })
         case .originResponse: return FixedOrigin2d.allCases.map({ $0.name })
         case .position2d: return FixedPosition2d.allCases.map({ $0.name })
@@ -564,6 +591,12 @@ enum PropertyType: String, Codable, CaseIterable {
         case .selection: return FixedSelection.allCases.map { $0.description }
         case .selectionDifferent: return FixedSelectionDifferent.allCases.map { $0.description }
         case .selectionOrder: return FixedSelectionPriority.allCases.map { $0.description }
+        case .sceneGazeFixation: return FixedSceneGazeFixation.allCases.map({ $0.description })
+        case .sceneDistanceFixation: return FixedSceneDistanceFixation.allCases.map({ $0.description })
+        case .testEyeTracker: return Flow.shared.possibleEyeTrackers
+        case .originEyeTracker: return FixedOrigin2d.allCases.map { $0.description }
+        case .positionEyeTracker: return FixedPositionEyeTracker.allCases.map { $0.description }
+        case .language: return FixedLanguage.allCases.map { $0.description }
         case .origin2d: return FixedOrigin2d.allCases.map({ $0.description })
         case .originResponse: return FixedOrigin2d.allCases.map({ $0.description })
         case .position2d: return FixedPosition2d.allCases.map({ $0.description })
@@ -650,3 +683,4 @@ enum Measure {
         }
     }
 }
+

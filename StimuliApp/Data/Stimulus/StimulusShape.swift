@@ -39,7 +39,7 @@ extension StimulusData {
     static func addPropertiesToType(property: Property) {
 
         property.properties = []
-        let type = StimuliType.allCases[property.selectedValue]
+        let type = StimuliType(rawValue: property.string) ?? .patch
         property.properties += type.typeProperties
     }
 
