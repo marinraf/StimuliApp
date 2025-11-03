@@ -61,7 +61,6 @@ class DisplayRender {
     var sectionNumber: Int = 0
     var randomSeed: Int = 1
     var responded: Bool = false
-//    var badTiming: Bool = false
     var inactive: Bool = false
     var status: Status = .playing
 
@@ -113,7 +112,7 @@ class DisplayRender {
 
     func initScene() {
 
-        Flow.shared.frameControl.initScene = true
+        Flow.shared.initScene = true
 
         displayRenderDelegate?.clear()
 
@@ -151,7 +150,6 @@ class DisplayRender {
         responseInTitle = Task.shared.sceneTask.responseInTitle
 
         inactive = false
-        Flow.shared.frameControl.measure = true
 
         displayRenderDelegate?.settingKeyResponses()
 
@@ -250,7 +248,6 @@ class DisplayRender {
         case .endScene:
             if keyboard {
                 inactive = true
-                Flow.shared.frameControl.measure = false
                 displayRenderDelegate?.showKeyboard(type: keyboardType, inTitle: responseInTitle)
             } else {
                 changeDisplay(realTimeInFrames: timeInFrames)
@@ -389,31 +386,15 @@ class DisplayRender {
     }
 
     func changeToNextSceneInSection() {
-//        print(self.timeInFrames, " change scene time: ", CACurrentMediaTime())
-//        print(timeInFrames, " init scene 2 time: ", Flow.shared.frameControl.initSceneTimeReal)
-                
-        print(CACurrentMediaTime(), "- escena:", Task.shared.previousSceneTask.name, "end_time:", Flow.shared.frameControl.initSceneTimeReal, "timeInFrame:", timeInFrames)
-        print(CACurrentMediaTime(), "- escena:", Task.shared.sceneTask.name, "init_time:", Flow.shared.frameControl.initSceneTimeReal, "timeInFrame:", timeInFrames)
-        
-        Task.shared.previousSceneTask.saveSceneTime(time: Flow.shared.frameControl.initSceneTimeReal)
         Task.shared.previousSceneTask = Task.shared.sceneTask
-        Task.shared.sceneTask.saveSceneData(startTimeReal: Flow.shared.frameControl.initSceneTimeReal,
-                                            trial: Task.shared.sectionTask.currentTrial)
+        Task.shared.sceneTask.saveSceneData(trial: Task.shared.sectionTask.currentTrial)
         Task.shared.sectionTask.sceneNumber += 1
         initScene()
     }
 
     func lastSceneOfSection() {
-        //        print(self.timeInFrames, " change scene time: ", CACurrentMediaTime())
-        //        print(timeInFrames, " init scene 2 time: ", Flow.shared.frameControl.initSceneTimeReal)
-                        
-        print(CACurrentMediaTime(), "- escena:", Task.shared.previousSceneTask.name, "end_time:", Flow.shared.frameControl.initSceneTimeReal, "timeInFrame:", timeInFrames)
-        print(CACurrentMediaTime(), "- escena:", Task.shared.sceneTask.name, "init_time:", Flow.shared.frameControl.initSceneTimeReal, "timeInFrame:", timeInFrames)
-        
-        Task.shared.previousSceneTask.saveSceneTime(time: Flow.shared.frameControl.initSceneTimeReal)
         Task.shared.previousSceneTask = Task.shared.sceneTask
-        Task.shared.sceneTask.saveSceneData(startTimeReal: Flow.shared.frameControl.initSceneTimeReal,
-                                            trial: Task.shared.sectionTask.currentTrial)
+        Task.shared.sceneTask.saveSceneData(trial: Task.shared.sectionTask.currentTrial)
         
         let numberOfTrials = Task.shared.sectionTask.sceneTasks[0].realStartTime.count
         

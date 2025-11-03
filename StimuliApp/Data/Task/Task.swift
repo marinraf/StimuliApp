@@ -158,13 +158,15 @@ class Task {
 
     var responseKeyboard: String = ""
 
-    var startTimeFirstSceneOfTest: Double = 0
-    var startTimeFirstSceneOfTestInUTC: Double = 0
+    var scaleTime: Double = 0
     var warningTrackerPause: ErrorTracker = .no
     var warningTracker: Bool = false
     var testUsesTrackerSeeSo: Bool = false
     var testUsesTrackerARKit: Bool = false
     var testUsesLongAudios: Bool = false
+    var neonSync: Bool = false
+    var neonIP: String = ""
+    var neonMarkers: Bool = false
     
     var trackerCoordinates: FixedPositionEyeTracker = .cartesian
     var trackerFirstUnit: Unit = .none
@@ -174,13 +176,10 @@ class Task {
     
     // create methods
     func createTask(test: Test, preview: Preview) -> String {
-        self.startTimeFirstSceneOfTest = 0
+        self.scaleTime = 0
         self.preview = preview
         self.name = test.name.string
         self.startingDistanceInCm = test.distance.properties[0].float
-        
-        Flow.shared.frameControl.realInitTimes = [:]
-        Flow.shared.frameControl.realEndTimes = [:]
 
         if let tracker = test.eyeTracker {
             
@@ -228,6 +227,22 @@ class Task {
             }
         }
         
+        if let neon = test.neon {
+            if neon.string == "on" {
+                self.neonSync = true
+                print(self.neonSync)
+                                
+                if neon.properties.count == 2 {
+                    self.neonIP = neon.properties[0].string
+                    print(self.neonIP)
+                    if neon.properties[1].string == "on" {
+                        self.neonMarkers = true
+                        print(self.neonMarkers)
+                    }
+                }
+            }
+        }
+    
         Flow.shared.test = test
         if preview != .no {
             createRandomSeeds(from: test)
@@ -262,10 +277,7 @@ class Task {
     }
 
     func createTask(section: Section, scene: Scene, test: Test) -> String {
-        Flow.shared.frameControl.realInitTimes = [:]
-        Flow.shared.frameControl.realEndTimes = [:]
-        
-        self.startTimeFirstSceneOfTest = 0
+        self.scaleTime = 0
         preview = .previewScene
         let sceneNumber = section.scenes.firstIndex(where: { $0 === scene }) ?? 0
 
@@ -291,10 +303,7 @@ class Task {
     }
 
     func createTask(stimulus: Stimulus) -> String {
-        Flow.shared.frameControl.realInitTimes = [:]
-        Flow.shared.frameControl.realEndTimes = [:]
-        
-        self.startTimeFirstSceneOfTest = 0
+        self.scaleTime = 0
         preview = .previewStimulus
         let test = createTest(stimulus: stimulus, test: Flow.shared.test)
         createRandomSeeds(from: test)
@@ -358,8 +367,7 @@ class Task {
         responseMovingObject = nil
         responseKeyboard = ""
         
-        startTimeFirstSceneOfTest = 0
-        startTimeFirstSceneOfTestInUTC = 0
+        scaleTime = 0
         warningTrackerPause = .no
         warningTracker = false
         testUsesTrackerSeeSo = false
@@ -904,26 +912,6 @@ class Task {
 
         result.data = Constants.separator + testSettings + Constants.separator + settings +
             Constants.separator + testOptionsString + Constants.separator
-        
-        
-        print("aqui lo hago")
-        
-        for sectionTask in sectionTasks {
-            for sceneTask in sectionTask.sceneTasks {
-                print(sceneTask.name)
-                print(sceneTask.id)
-                print(sceneTask.realStartTime)
-                print(sceneTask.realEndTime)
-            }
-        }
-        
-        print("que pasa")
-        
-        for (key, value) in Flow.shared.frameControl.realInitTimes {
-            print("key: \(key), value: \(value)")
-        }
-        
-        print("vale")
 
         for sectionTask in sectionTasks {
             let sectionResult = sectionTask.calculateResultInfo()

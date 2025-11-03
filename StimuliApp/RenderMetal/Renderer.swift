@@ -19,6 +19,10 @@ class Renderer: NSObject {
 
     var objectThreadsPerGroupX: [Int] = Array(repeating: 1, count: Constants.numberOfObjectKernels + 1)
     var objectThreadsPerGroupY: [Int] = Array(repeating: 1, count: Constants.numberOfObjectKernels + 1)
+    
+    var previousFrameSceneName: String = ""
+    var previousFrameTrial: Int = 0
+    var previousFrameTimeInFrames: Int = 0
 
 
 
@@ -239,23 +243,25 @@ extension Renderer: MTKViewDelegate {
         #endif
         
         if let displayRender = self.displayRender {
-            let timeInFrames = displayRender.timeInFrames
-            let register = !displayRender.inactive && !displayRender.responded
-            let initScene = Flow.shared.frameControl.initScene
-            let sceneId = Task.shared.sceneTask.id
-            let previousSceneId = Task.shared.previousSceneTask.id
-            
-//            print(timeInFrames, " commit time: ", CACurrentMediaTime())
-            
+            let register = !displayRender.inactive
+            let scene = Task.shared.sceneTask
+            let previousScene = Task.shared.previousSceneTask
+            let initScene = Flow.shared.initScene
+
             drawable.addPresentedHandler { presentedDrawable in
-                Flow.shared.frameControl.updatePresentedTime(timeInFrames: timeInFrames,
-                                                             register: register,
-                                                             initSceneTime: initScene,
+                Flow.shared.frameControl.updatePresentedTime(register: register,
+                                                             scene: scene,
+                                                             previousScene: previousScene,
+                                                             initScene: initScene,
                                                              presentedTime: presentedDrawable.presentedTime,
-                                                             sceneId: sceneId,
-                                                             previousSceneId: previousSceneId)
+                                                             previousFrameSceneName: self.previousFrameSceneName,
+                                                             previousFrameTrial: self.previousFrameTrial,
+                                                             previousFrameTimeInFrames: self.previousFrameTimeInFrames)
             }
-            Flow.shared.frameControl.initScene = false
+            Flow.shared.initScene = false
+            previousFrameSceneName = Task.shared.sceneTask.name
+            previousFrameTrial = Task.shared.sectionTask.currentTrial + 1
+            previousFrameTimeInFrames = displayRender.timeInFrames
         }
 
         commandBuffer.commit()

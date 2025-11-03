@@ -289,10 +289,9 @@ struct Texts {
     
     static let eyeTracker = """
     Only for devices that support ARKit.
-    We are working on the integration of an eye tracking system that does not require any external device, \
-    functioning simply with the device's front camera.
-    While this integration is not finished, \
-    the eye tracking system merely measures the distance of the participant to the device.
+    Using ARKit capabilities, the system can measure and record the participant’s distance from the device. 
+    Moreover, specific scenes can be configured so that if the distance falls outside a predefined range, a warning \
+    message is displayed and the trial is skipped.
     """
     
     static let longAudios = """
@@ -312,9 +311,19 @@ struct Texts {
     """
     
     static let viewingDistance = """
-    Viewing distance from the participant to the screen.
+    The viewing distance represents the expected distance between the participant and the screen — that is, the position at \
+    which the user is intended to be positioned.
     
-    This value is used to calculate the actual pixel size of any property that is measured in visual degrees.
+    This value is used to compute the actual pixel size of any property measured in visual degrees. For each test performed, \
+    the expected viewing distance is stored.
+    """
+    
+    static let neonEyeTracker = """
+    If your device and a Pupil Labs Neon eye tracker are connected to the same local network, automatic synchronization \
+    messages can be exchanged between them.
+    This ensures that all events are logged on your device using the same clock as the Neon eye tracker.
+    An estimated clock error, expressed in milliseconds, is also provided. This synchronization error typically remains \
+    very low, provided that the local network has sufficient bandwidth and stability.
     """
     
     static let distanceValue = """
@@ -817,8 +826,8 @@ struct Texts {
     """
     
     static let distanceError = """
-    If the difference between the user's actual distance to the screen and the set distance is greater than this value, \
-    the distance error is triggered.
+    If the difference between the user’s actual distance from the screen and the target distance exceeds this value, \
+    either below or above it, a warning message is displayed and the trial is skipped.
     """
     
     static let gazeError = """
@@ -868,8 +877,8 @@ struct Texts {
     """
     
     static let distanceFixation = """
-    The user must be with a certain distance from the screen. Otherwise, a warning message will appear and the trial \
-    will be skipped.
+    The user is required to maintain a specific distance from the screen. If this condition is not met, a warning \
+    message is displayed and the trial is skipped.
     """
     
     static let backgroundColor = """

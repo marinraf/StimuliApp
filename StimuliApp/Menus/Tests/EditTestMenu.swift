@@ -56,6 +56,14 @@ class EditTestMenu: Menu {
             makeOption(from: tracker, sectionNumber: sectionNumber)
         }
         
+        if Flow.shared.test.neon == nil {
+            Flow.shared.test.neon = TestData.makeNeonProperty(selected: 0)
+        }
+        
+        if let neon = Flow.shared.test.neon {
+            makeOption(from: neon, sectionNumber: sectionNumber)
+        }
+        
         if Flow.shared.test.longAudios == nil {
             Flow.shared.test.longAudios = TestData.makeLongAudiosProperty(selected: 0)
         }

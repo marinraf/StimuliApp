@@ -175,7 +175,6 @@ extension DisplayViewController: DisplayRenderDelegate {
 
     func pauseToSync() {
         displayRender?.inactive = true
-        Flow.shared.frameControl.measure = false
         player?.pause()
         audioSystem.pauseAudio()
         showAlertNeedToSync(resume: { _ in self.resumeFromPause() }, end: { _ in self.end() })
@@ -183,7 +182,6 @@ extension DisplayViewController: DisplayRenderDelegate {
     
     func pauseToWarn(error: ErrorTracker) {
         displayRender?.inactive = true
-        Flow.shared.frameControl.measure = false
         player?.pause()
         audioSystem.pauseAudio()
         switch error {
@@ -202,7 +200,6 @@ extension DisplayViewController: DisplayRenderDelegate {
 
     func showFirstMessageTest() {
         displayRender?.inactive = true
-        Flow.shared.frameControl.measure = false
         player?.pause()
         audioSystem.pauseAudio()
         if Flow.shared.settings.device.type == .mac {
@@ -258,14 +255,12 @@ extension DisplayViewController: DisplayRenderDelegate {
 
     @objc func buttonAction(sender: UIButton!) {
         displayRender?.inactive = true
-        Flow.shared.frameControl.measure = false
         pause()
     }
 
     func end() {
-        Task.shared.previousSceneTask.saveSceneTime(time: CACurrentMediaTime())
         Task.shared.previousSceneTask = Task.shared.sceneTask
-        Flow.shared.frameControl.initScene = true
+        Flow.shared.initScene = true
 
         Flow.shared.eyeTracker?.stopTracking()
         Flow.shared.eyeTracker?.end()
@@ -376,7 +371,6 @@ extension DisplayViewController: DisplayRenderDelegate {
             view.frame = CGRect(x: x, y:y, width: screenSize.width, height: screenSize.height)
         }
         displayRender?.inactive = false
-        Flow.shared.frameControl.measure = true
         player?.play()
         audioSystem.resumeAudio()
     }
@@ -394,7 +388,6 @@ extension DisplayViewController: DisplayRenderDelegate {
             view.frame = CGRect(x: x, y:y, width: screenSize.width, height: screenSize.height)
         }
         displayRender?.inactive = false
-        Flow.shared.frameControl.measure = true
         player?.play()
         audioSystem.resumeAudio()
         Task.shared.warningTracker = true
@@ -523,7 +516,6 @@ extension DisplayViewController: UITextFieldDelegate {
                 Task.shared.responseKeyboard = text
             }
             displayRender?.inactive = false
-            Flow.shared.frameControl.measure = true
             Task.shared.userResponse.clocks.append(CACurrentMediaTime())
             stopAudio(forceStop: false)
             displayRender?.responded = true
@@ -579,8 +571,12 @@ extension DisplayViewController {
     @objc func responseAction0() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[0].1
         let time = CACurrentMediaTime()
-        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
-        guard time0 > 0 else { return }
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        let time0 = time - array[trial]
+        
         Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
             || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
@@ -592,8 +588,12 @@ extension DisplayViewController {
     @objc func responseAction1() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[1].1
         let time = CACurrentMediaTime()
-        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
-        guard time0 > 0 else { return }
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        let time0 = time - array[trial]
+        
         Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
             || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
@@ -605,8 +605,12 @@ extension DisplayViewController {
     @objc func responseAction2() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[2].1
         let time = CACurrentMediaTime()
-        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
-        guard time0 > 0 else { return }
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        let time0 = time - array[trial]
+        
         Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
             || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
@@ -618,8 +622,12 @@ extension DisplayViewController {
     @objc func responseAction3() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[3].1
         let time = CACurrentMediaTime()
-        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
-        guard time0 > 0 else { return }
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        let time0 = time - array[trial]
+        
         Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
             || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
@@ -631,8 +639,12 @@ extension DisplayViewController {
     @objc func responseAction4() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[4].1
         let time = CACurrentMediaTime()
-        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
-        guard time0 > 0 else { return }
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        let time0 = time - array[trial]
+        
         Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
             || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
@@ -644,8 +656,12 @@ extension DisplayViewController {
     @objc func responseAction5() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[5].1
         let time = CACurrentMediaTime()
-        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
-        guard time0 > 0 else { return }
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        let time0 = time - array[trial]
+        
         Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
             || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
@@ -657,8 +673,12 @@ extension DisplayViewController {
     @objc func responseAction6() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[6].1
         let time = CACurrentMediaTime()
-        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
-        guard time0 > 0 else { return }
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        let time0 = time - array[trial]
+        
         Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
             || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
@@ -670,8 +690,12 @@ extension DisplayViewController {
     @objc func responseAction7() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[7].1
         let time = CACurrentMediaTime()
-        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
-        guard time0 > 0 else { return }
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        let time0 = time - array[trial]
+        
         Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
             || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
@@ -683,8 +707,12 @@ extension DisplayViewController {
     @objc func responseAction8() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[8].1
         let time = CACurrentMediaTime()
-        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
-        guard time0 > 0 else { return }
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        let time0 = time - array[trial]
+        
         Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
             || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }
@@ -696,8 +724,12 @@ extension DisplayViewController {
     @objc func responseAction9() {
         Task.shared.userResponse.string = Task.shared.sceneTask.responseKeys[9].1
         let time = CACurrentMediaTime()
-        let time0 = time - Flow.shared.frameControl.initSceneTimeReal
-        guard time0 > 0 else { return }
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        let time0 = time - array[trial]
+        
         Task.shared.sceneTask.badTiming = time0 < Task.shared.sceneTask.responseStart
             || time0 > Task.shared.sceneTask.responseEnd
         guard !Task.shared.sceneTask.badTiming || Task.shared.sceneTask.responseOutWindow else { return }

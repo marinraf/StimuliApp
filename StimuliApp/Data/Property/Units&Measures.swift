@@ -340,6 +340,7 @@ enum PropertyType: String, Codable, CaseIterable {
 
     case language
     case testEyeTracker
+    case neon
     case sceneGazeFixation
     case sceneDistanceFixation
     case originEyeTracker
@@ -409,6 +410,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .sceneGazeFixation: return [.alwaysConstant]
         case .sceneDistanceFixation: return [.alwaysConstant]
         case .testEyeTracker: return [.alwaysConstant]
+        case .neon: return [.alwaysConstant]
         case .originEyeTracker: return [.alwaysConstant]
         case .positionEyeTracker: return [.alwaysConstant]
         case .language: return [.alwaysConstant]
@@ -471,6 +473,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .sceneGazeFixation: return false
         case .sceneDistanceFixation: return false
         case .testEyeTracker: return false
+        case .neon: return false
         case .originEyeTracker: return false
         case .positionEyeTracker: return false
         case .language: return false
@@ -532,6 +535,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .sceneGazeFixation: return FixedSceneGazeFixation.allCases.map { $0.name }
         case .sceneDistanceFixation: return FixedSceneDistanceFixation.allCases.map { $0.name }
         case .testEyeTracker: return Flow.shared.possibleEyeTrackers
+        case .neon: return FixedNeon.allCases.map({ $0.name })
         case .originEyeTracker: return FixedOrigin2d.allCases.map { $0.name }
         case .positionEyeTracker: return FixedPositionEyeTracker.allCases.map { $0.name }
         case .language: return FixedLanguage.allCases.map { $0.name }
@@ -594,6 +598,7 @@ enum PropertyType: String, Codable, CaseIterable {
         case .sceneGazeFixation: return FixedSceneGazeFixation.allCases.map({ $0.description })
         case .sceneDistanceFixation: return FixedSceneDistanceFixation.allCases.map({ $0.description })
         case .testEyeTracker: return Flow.shared.possibleEyeTrackers
+        case .neon: return FixedNeon.allCases.map { $0.description }
         case .originEyeTracker: return FixedOrigin2d.allCases.map { $0.description }
         case .positionEyeTracker: return FixedPositionEyeTracker.allCases.map { $0.description }
         case .language: return FixedLanguage.allCases.map { $0.description }

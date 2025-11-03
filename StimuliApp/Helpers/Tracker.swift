@@ -252,152 +252,120 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
                 
                 // distance
                 let z0 = (leftEyeToOriginPosition.2 + rightEyeToOriginPosition.2) / 2
-
-                
-                // only orientations (from origin)
-                let faceToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: faceToOriginTransform)
-                let leftEyeToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: leftEyeToOriginTransform)
-                let rightEyeToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: rightEyeToOriginTransform)
-
-                               
-                let facePositionX: Double = max(-1, min(1, Double(faceToOriginPosition.0)))
-                let faceOrientationX: Double = max(-1, min(1, Double(faceToOriginOrientation.0)))
-                let leftX: Double = max(-1, min(1, Double(leftEyeToOriginOrientation.0))) - faceOrientationX
-                let rightX: Double = max(-1, min(1, Double(rightEyeToOriginOrientation.0))) - faceOrientationX
-                let lrX: Double = leftX + rightX
-                
-                let facePositionY: Double = max(-1, min(1, Double(faceToOriginPosition.1)))
-                let faceOrientationY: Double = max(-1, min(1, Double(faceToOriginOrientation.1)))
-                let leftY: Double = max(-1, min(1, Double(leftEyeToOriginOrientation.1))) - faceOrientationY
-                let rightY: Double = max(-1, min(1, Double(rightEyeToOriginOrientation.1))) - faceOrientationY
-                let lrY: Double = leftY + rightY
-                
-                let x = Double(points[pointCounter].x)
-                let y = Double(points[pointCounter].y)
-                let z = Double(z0)
-                
+//                // only orientations (from origin)
+//                let faceToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: faceToOriginTransform)
+//                let leftEyeToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: leftEyeToOriginTransform)
+//                let rightEyeToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: rightEyeToOriginTransform)
+//                let facePositionX: Double = max(-1, min(1, Double(faceToOriginPosition.0)))
+//                let faceOrientationX: Double = max(-1, min(1, Double(faceToOriginOrientation.0)))
+//                let leftX: Double = max(-1, min(1, Double(leftEyeToOriginOrientation.0))) - faceOrientationX
+//                let rightX: Double = max(-1, min(1, Double(rightEyeToOriginOrientation.0))) - faceOrientationX
+//                let lrX: Double = leftX + rightX
+//                let facePositionY: Double = max(-1, min(1, Double(faceToOriginPosition.1)))
+//                let faceOrientationY: Double = max(-1, min(1, Double(faceToOriginOrientation.1)))
+//                let leftY: Double = max(-1, min(1, Double(leftEyeToOriginOrientation.1))) - faceOrientationY
+//                let rightY: Double = max(-1, min(1, Double(rightEyeToOriginOrientation.1))) - faceOrientationY
+//                let lrY: Double = leftY + rightY
+//                let x = Double(points[pointCounter].x)
+//                let y = Double(points[pointCounter].y)
                 
                 if isCalibrating && saveSamples {
-                                    
-                    print(z, faceOrientationX, faceOrientationY)
-                    
-                    matrixX.append([z,
-                                    faceOrientationX,
-                                    faceOrientationY,
-                                    facePositionX,
-                                    facePositionY,
-                                    lrX,
-                                    lrY,
-                                    x,
-                                    y])
-                                        
+//                    print(z, faceOrientationX, faceOrientationY)
 //                    matrixX.append([z,
 //                                    faceOrientationX,
 //                                    faceOrientationY,
-//                                    Double(zGroup),
-//                                    Double(faceOrientationXGroup),
-//                                    Double(faceOrientationYGroup),
-//                                    facePointX,
+//                                    facePositionX,
+//                                    facePositionY,
 //                                    lrX,
+//                                    lrY,
 //                                    x,
 //                                    y])
-
-//                    matrixX.append([1,
-//                                    z,
-//                                    facePointX,
-//                                    facePointY,
-//                                    leftX,
-//                                    rightX,
-//                                    zlrX,
-//                                    faceOrientationXlrX,
-//                                    faceOrientationYlrX])
-//
-//                    matrixY.append([1,
-//                                    z,
-//                                    facePointX,
-//                                    facePointY,
-//                                    leftY,
-//                                    rightY,
-//                                    zlrY,
-//                                    faceOrientationXlrY,
-//                                    faceOrientationYlrY])
-
-                    realX.append([x])
-                    realY.append([y])
-                    
-                    progressCounter += 0.0033
-
-                    self.eyeTrackerDelegate?.onCalibrationProgress(progress: progressCounter)
-
-                    if realX.count % 4000 == 0 {
-
-                        pointCounter += 1
-                        
-                        if pointCounter == points.count {
-                            
-//                            let resultCalibrationX: [Double] = AppUtility.leastSquares(matrix: matrixX, y: realX)
-//                            let resultCalibrationY: [Double] = AppUtility.leastSquares(matrix: matrixY, y: realY)
-//
-//                            let resultCalibration: [Double] = resultCalibrationX + resultCalibrationY
-//
-//                            isTracking = true
-//                            isCalibrating = false
-//                            saveSamples = false
-//                            progressCounter = 0
+////                    matrixX.append([z,
+////                                    faceOrientationX,
+////                                    faceOrientationY,
+////                                    Double(zGroup),
+////                                    Double(faceOrientationXGroup),
+////                                    Double(faceOrientationYGroup),
+////                                    facePointX,
+////                                    lrX,
+////                                    x,
+////                                    y])
+////                    matrixX.append([1,
+////                                    z,
+////                                    facePointX,
+////                                    facePointY,
+////                                    leftX,
+////                                    rightX,
+////                                    zlrX,
+////                                    faceOrientationXlrX,
+////                                    faceOrientationYlrX])
+////
+////                    matrixY.append([1,
+////                                    z,
+////                                    facePointX,
+////                                    facePointY,
+////                                    leftY,
+////                                    rightY,
+////                                    zlrY,
+////                                    faceOrientationXlrY,
+////                                    faceOrientationYlrY])
+//                    realX.append([x])
+//                    realY.append([y])
+//                    progressCounter += 0.0033
+//                    self.eyeTrackerDelegate?.onCalibrationProgress(progress: progressCounter)
+//                    if realX.count % 4000 == 0 {
+//                        pointCounter += 1
+//                        if pointCounter == points.count {
+////                            let resultCalibrationX: [Double] = AppUtility.leastSquares(matrix: matrixX, y: realX)
+////                            let resultCalibrationY: [Double] = AppUtility.leastSquares(matrix: matrixY, y: realY)
+////
+////                            let resultCalibration: [Double] = resultCalibrationX + resultCalibrationY
+////
+////                            isTracking = true
+////                            isCalibrating = false
+////                            saveSamples = false
+////                            progressCounter = 0
+////                            pointCounter = 0
+////
+////                            let point = points[pointCounter]
+////
+////                            self.eyeTrackerDelegate?.onCalibrationProgress(progress: 0)
+////                            self.eyeTrackerDelegate?.onCalibrationNextPoint(x: Double(point.x),
+////                                                                            y: Double(point.y))
+////                            self.eyeTrackerDelegate?.onCalibrationFinished(calibrationData: resultCalibration)
+////                            self.setCalibrationData(calibrationData: resultCalibration)
 //                            pointCounter = 0
-//
+//                            matrixX = []
+//                            realX = []
+//                        } else {
 //                            let point = points[pointCounter]
-//
 //                            self.eyeTrackerDelegate?.onCalibrationProgress(progress: 0)
 //                            self.eyeTrackerDelegate?.onCalibrationNextPoint(x: Double(point.x),
 //                                                                            y: Double(point.y))
-//                            self.eyeTrackerDelegate?.onCalibrationFinished(calibrationData: resultCalibration)
-//                            self.setCalibrationData(calibrationData: resultCalibration)
-                            
-                            pointCounter = 0
-                            matrixX = []
-                            realX = []
-
-                        } else {
-
-                            let point = points[pointCounter]
-
-                            self.eyeTrackerDelegate?.onCalibrationProgress(progress: 0)
-                            self.eyeTrackerDelegate?.onCalibrationNextPoint(x: Double(point.x),
-                                                                            y: Double(point.y))
-
-                            progressCounter = 0
-                            saveSamples = false
-                        }
-                    }
-
+//                            progressCounter = 0
+//                            saveSamples = false
+//                        }
+//                    }
                 } else {
-
-                    var x0 = faceOrientationX + facePositionX + 0.65 * lrX
-                    var y0 = faceOrientationY + facePositionY + lrY
-                    
-                    x0 *= pointspermeter
-                    y0 *= pointspermeter
-                    
-                    xs.append(x0)
-                    ys.append(y0)
+//                    var x0 = faceOrientationX + facePositionX + 0.65 * lrX
+//                    var y0 = faceOrientationY + facePositionY + lrY
+//                    x0 *= pointspermeter
+//                    y0 *= pointspermeter
+//                    xs.append(x0)
+//                    ys.append(y0)
                     zs.append(z0)
                     
-                    if xs.count == 10 {
-                        let x1 = xs.reduce(0, +) / 10
-                        let y1 = ys.reduce(0, +) / 10
-                        let z1 = zs.reduce(0, +) / 10
- 
-
+                    if zs.count == 10 {
                         let clock = CACurrentMediaTime()
-                        self.eyeTrackerDelegate?.onGaze(gazeX: Double(x1), gazeY: Double(y1),
-                                                        clock: clock, isTracking: true)
-                        
+                        let z1 = zs.reduce(0, +) / 10
                         self.eyeTrackerDelegate?.onFace(z: z1 * 100, clock: clock)
-
-                        xs.removeFirst()
-                        ys.removeFirst()
                         zs.removeFirst()
+//                        let x1 = xs.reduce(0, +) / 10
+//                        let y1 = ys.reduce(0, +) / 10
+//                        self.eyeTrackerDelegate?.onGaze(gazeX: Double(x1), gazeY: Double(y1),
+//                                                        clock: clock, isTracking: true)
+//                        xs.removeFirst()
+//                        ys.removeFirst()
                     }
                 }
             }
@@ -484,5 +452,3 @@ protocol TrackerDelegate {
     func setCalibrationData(calibrationData: [Double])
     func end()
 }
-
-

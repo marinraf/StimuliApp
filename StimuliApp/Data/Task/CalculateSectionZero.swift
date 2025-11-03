@@ -38,7 +38,6 @@ extension Task {
         sceneZeroTask.seeds = [Seed(id: "")]
         sceneZeroTask.activatedBools = [[]]
         sceneZeroTask.name = "sceneZero0o"
-        sceneZeroTask.frameControl = false
 
         sectionZeroTask.sceneTasks = [sceneZeroTask]
 

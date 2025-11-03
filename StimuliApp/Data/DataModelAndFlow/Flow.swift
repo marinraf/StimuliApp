@@ -40,6 +40,7 @@ class Flow {
     var angle01: Double = 0
     var angle10: Double = 0
     var angle11: Double = 0
+    var initScene: Bool = false
 
     init() {
         self.screen = EmptyScreen()

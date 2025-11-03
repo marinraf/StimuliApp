@@ -26,10 +26,7 @@ class FrameControl {
     var frameRate: Int
     var delta: Double
     var longDuration: Double
-    var initScene: Bool
-    var initSceneTimeReal: Double
     var longFrames: [Frame]
-    var measure: Bool
     var numberOfFrames: Int
     var numberOfErrors: Int
 
@@ -39,17 +36,11 @@ class FrameControl {
     
     var delay: Double
     
-    var realInitTimes: [String: [Double]]
-    var realEndTimes: [String: [Double]]
-
     init(frameRate: Int, delayAudio: Double) {
         self.frameRate = frameRate
         self.delta = 1 / Double(frameRate)
         self.longDuration = 1.25 * delta
-        self.initScene = false
-        self.initSceneTimeReal = 0
         self.longFrames = []
-        self.measure = true
         self.numberOfFrames = 0
         self.numberOfErrors = 0
 
@@ -64,9 +55,6 @@ class FrameControl {
         } else {
             self.delay = Constants.delayAudio120 + delayAudio
         }
-        
-        self.realInitTimes = [:]
-        self.realEndTimes = [:]
     }
 
     var totalFrames: Int {
@@ -126,35 +114,38 @@ class FrameControl {
     }
 
     
-    func updatePresentedTime(timeInFrames: Int,
-                             register: Bool,
-                             initSceneTime: Bool,
+    func updatePresentedTime(register: Bool,
+                             scene: SceneTask,
+                             previousScene: SceneTask,
+                             initScene: Bool,
                              presentedTime: Double,
-                             sceneId: String,
-                             previousSceneId: String) {
+                             previousFrameSceneName: String,
+                             previousFrameTrial: Int,
+                             previousFrameTimeInFrames: Int) {
         
-        print(CACurrentMediaTime(), " me llega el update: ", presentedTime, " el time in frames es: ", timeInFrames)
-        
-        if initSceneTime {
-            print(CACurrentMediaTime(), "* asigno a init scene el valor: ", presentedTime, " el time en frames es: ", timeInFrames)
-            initSceneTimeReal = presentedTime
-
-            realInitTimes[sceneId] = (realInitTimes[sceneId] ?? []) + [presentedTime]
-            realEndTimes[previousSceneId] = (realEndTimes[previousSceneId] ?? []) + [presentedTime]
+        if initScene {
+            scene.realStartTime.append(presentedTime)
+            previousScene.realEndTime.append(presentedTime)
+            
+            if Task.shared.scaleTime == 0 && scene.name != "sceneZero0o" {
+                
+                let interval = NSDate.init().timeIntervalSince1970
+                let now = CACurrentMediaTime()
+                Task.shared.scaleTime = now - interval
+            }
         }
-        
+
         let duration = presentedTime - previousPresentedTime
 
-        if Task.shared.sceneTask.name != "sceneZero0o" {
+        if Task.shared.sceneTask.name != "sceneZero0o" && register {
 
             numberOfFrames += 1
-            
-            if duration > 1.25 * delta && measure && register
-                && Task.shared.sceneTask.frameControl {
+                        
+            if duration > 1.25 * delta {
 
-                let frame = Frame(scene: Task.shared.sceneTask.name,
-                                  trial: Task.shared.sectionTask.currentTrial + 1,
-                                  frameScene: timeInFrames - 1,
+                let frame = Frame(scene: previousFrameSceneName,
+                                  trial: previousFrameTrial,
+                                  frameScene: previousFrameTimeInFrames,
                                   duration: duration)
 
                 longFrames.append(frame)

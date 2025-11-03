@@ -156,7 +156,6 @@ class SceneTask {
 
     var id: String = ""
     var name: String = ""
-    var frameControl: Bool = true
     var seeds: [Seed] = [] //trial
 
     var activatedBools: [[Bool]] = [] //trial * object
@@ -233,29 +232,10 @@ class SceneTask {
         return continuousResolution ? numberOfLayers + 2 : numberOfLayers - 1
     }
 
-    func saveSceneTime(time: Double) {
-
-        let count = realEndTime.count
-        if count > 0 {
-            realEndTime[count - 1] = time
-        }
-    }
-
-    func saveSceneData(startTimeReal: Double, trial: Int) {
+    func saveSceneData(trial: Int) {
 
         userResponses.append(Task.shared.userResponse)
         
-        if Task.shared.startTimeFirstSceneOfTest == 0 && Task.shared.sceneTask.name != "sceneZero0o" {
-
-            let scaleTime = NSDate.init().timeIntervalSince1970 - CACurrentMediaTime()
-            Task.shared.startTimeFirstSceneOfTest = startTimeReal
-            Task.shared.startTimeFirstSceneOfTestInUTC = startTimeReal + scaleTime
-
-        }
-        
-        realStartTime.append(startTimeReal)
-        realEndTime.append(startTimeReal)
-
         if isNotRealResponse || isRealResponse {
 
             if Task.shared.sceneTask.badTiming || Task.shared.userResponse.string == nil {

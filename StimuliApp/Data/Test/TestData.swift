@@ -50,27 +50,34 @@ struct TestData {
     }
 
     static func makeEyeTrackerProperty(selected: Int) -> Property {
-                
-        return Property(name: "distance&EyeTracker",
+        return Property(name: "measureViewingDistance",
                         info: Texts.eyeTracker,
                         propertyType: .testEyeTracker,
                         unitType: .decimal,
                         fixedValues: Flow.shared.possibleEyeTrackers,
-                        selectedValue: 0)
+                        selectedValue: selected)
+    }
+    
+    static func makeNeonProperty(selected: Int) -> Property {
+        return Property(name: "neonEyeTrackerSync",
+                        info: Texts.neonEyeTracker,
+                        propertyType: .neon,
+                        unitType: .decimal,
+                        fixedValues: FixedNeon.allCases.map({ $0.name }),
+                        selectedValue: selected)
     }
     
     static func makeLongAudiosProperty(selected: Int) -> Property {
-                
         return Property(name: "longAudios",
                         info: Texts.longAudios,
                         propertyType: .select,
                         unitType: .decimal,
                         fixedValues: ["off", "on"],
-                        selectedValue: 0)
+                        selectedValue: selected)
     }
 
     static func makeDistanceProperty(selected: Int) -> Property {
-        let property = Property(name: "viewingDistance",
+        let property = Property(name: "expectedViewingDistance",
                                 info: Texts.viewingDistance,
                                 propertyType: .distance,
                                 unitType: .decimal,
@@ -231,6 +238,36 @@ struct TestData {
             property.properties.append(position)
         }
     }
+    
+    static func addPropertiesToNeon(property: Property) {
+        
+        property.properties = []
+        
+        let selected = property.string
+        
+        if selected == "on" {
+            
+            let ip = Property(name: "IP",
+                              info: """
+                                The IP address assigned to the Neon eye tracker within the local network.
+                                """,
+                              text: "192.168.1.1")
+            
+            let markers = Property(name: "useMarkers",
+                                   info: """
+                               Enables the display of reference markers (one at each corner of the screen) \
+                               during the test. These markers allow the Neon eye tracker to map the screen \
+                               position accurately within the environment.
+                               """,
+                                   propertyType: .select,
+                                   unitType: .decimal,
+                                   fixedValues: ["off", "on"],
+                                   selectedValue: 0)
+            
+            property.properties.append(ip)
+            property.properties.append(markers)
+        }
+    }
 }
 
 
@@ -307,6 +344,25 @@ enum FixedRandomness: String, Codable, CaseIterable {
         return self.rawValue
     }
 
+}
+
+enum FixedNeon: String, Codable, CaseIterable {
+    
+    case off = "off"
+    case on = "on"
+    
+    var description: String {
+        switch self {
+        case .off:
+            return "off"
+        case .on:
+            return "on"
+        }
+    }
+    
+    var name: String {
+        return self.rawValue
+    }
 }
 
 

@@ -80,7 +80,7 @@ class EditSceneMenu: Menu {
             (Flow.shared.isAvailableARKit && Flow.shared.test.eyeTracker?.string == "using ARKit") {
     
             extraSection = 1
-            sectionTitle = sectionTitle + "EyeTracker control"
+            sectionTitle = sectionTitle + "UserDistance control"
             let section = MenuSection(title: sectionTitle)
             section.dependency = Flow.shared.scene.id
             section.collapsed = Flow.shared.test.saveSection(section)

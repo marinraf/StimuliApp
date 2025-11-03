@@ -68,11 +68,13 @@ extension DisplayRender {
         guard let uitouch = touches.first else { return }
         guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
         guard let touch = coalescedTouches.first else { return }
-
-        let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
-
-        guard time > 0 else { return }
-
+        
+        let trial = Task.shared.sectionTask.currentTrial
+        let array = Task.shared.sceneTask.realStartTime
+        guard (0 <= trial && trial < array.count) else { return }
+        
+        let time = touch.timestamp - array[trial]
+        
         Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
             || time > Task.shared.sceneTask.responseEnd
 
@@ -147,9 +149,11 @@ extension DisplayRender {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             guard let touch = coalescedTouches.first else { return }
 
-            let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
-
-            guard time > 0 else { return }
+            let trial = Task.shared.sectionTask.currentTrial
+            let array = Task.shared.sceneTask.realStartTime
+            guard (0 <= trial && trial < array.count) else { return }
+            
+            let time = touch.timestamp - array[trial]
 
             Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
                 || time > Task.shared.sceneTask.responseEnd
@@ -175,9 +179,11 @@ extension DisplayRender {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             guard let touch = coalescedTouches.first else { return }
 
-            let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
-
-            guard time > 0 else { return }
+            let trial = Task.shared.sectionTask.currentTrial
+            let array = Task.shared.sceneTask.realStartTime
+            guard (0 <= trial && trial < array.count) else { return }
+            
+            let time = touch.timestamp - array[trial]
 
             Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
                 || time > Task.shared.sceneTask.responseEnd
@@ -202,9 +208,11 @@ extension DisplayRender {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             guard let touch = coalescedTouches.first else { return }
 
-            let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
-
-            guard time > 0 else { return }
+            let trial = Task.shared.sectionTask.currentTrial
+            let array = Task.shared.sceneTask.realStartTime
+            guard (0 <= trial && trial < array.count) else { return }
+            
+            let time = touch.timestamp - array[trial]
 
             Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
                 || time > Task.shared.sceneTask.responseEnd
@@ -440,9 +448,11 @@ extension DisplayRender {
         for uitouch in touches {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             for touch in coalescedTouches {
-                let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
-
-                guard time > 0 else { return }
+                let trial = Task.shared.sectionTask.currentTrial
+                let array = Task.shared.sceneTask.realStartTime
+                guard (0 <= trial && trial < array.count) else { return }
+                
+                let time = touch.timestamp - array[trial]
 
                 Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
                     || time > Task.shared.sceneTask.responseEnd
@@ -472,9 +482,11 @@ extension DisplayRender {
         for uitouch in touches {
             guard let coalescedTouches = event?.coalescedTouches(for: uitouch) else { return }
             for touch in coalescedTouches {
-                let time = touch.timestamp - Flow.shared.frameControl.initSceneTimeReal
-
-                guard time > 0 else { return }
+                let trial = Task.shared.sectionTask.currentTrial
+                let array = Task.shared.sceneTask.realStartTime
+                guard (0 <= trial && trial < array.count) else { return }
+                
+                let time = touch.timestamp - array[trial]
 
                 Task.shared.sceneTask.badTiming = time < Task.shared.sceneTask.responseStart
                     || time > Task.shared.sceneTask.responseEnd
@@ -491,7 +503,6 @@ extension DisplayRender {
                                               unit1: Task.shared.sceneTask.responseSecondUnit)
 
 
-                let trial = Task.shared.sectionTask.currentTrial
                 let numberOfObjects = DataTask.metalValues.count
 
                 if Task.shared.responseMovingObject == nil {

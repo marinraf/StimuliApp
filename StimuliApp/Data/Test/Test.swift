@@ -22,6 +22,7 @@ class Test: NSObject, Codable {
     var files: [String]
     var screenWidth: Float?
     var screenHeight: Float?
+    var neon: Property?
     var eyeTracker: Property?
     var longAudios: Property?
 
@@ -61,6 +62,7 @@ class Test: NSObject, Codable {
         self.brightness = TestData.makeBrightnessProperty(float: 0.7)
         self.gamma = TestData.makeGammaProperty(selected: 0)
         self.eyeTracker = TestData.makeEyeTrackerProperty(selected: 0)
+        self.neon = TestData.makeNeonProperty(selected: 0)
         self.longAudios = TestData.makeLongAudiosProperty(selected: 0)
         self.distance = TestData.makeDistanceProperty(selected: 0)
         self.cancelButtonPosition = TestData.makeCancelProperty(selected: 0)

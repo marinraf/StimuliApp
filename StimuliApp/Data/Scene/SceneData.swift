@@ -884,9 +884,9 @@ enum FixedSceneDistanceFixation: String, Codable, CaseIterable {
     var description: String {
         switch self {
         case .off:
-            return "No warning message appears in this scene"
+            return "Warning and skipping off"
         case .on:
-            return "A warning message appears if the subject is not at a certain distance from the screen in this scene"
+            return "Warning and skipping on"
         }
     }
 
