@@ -239,13 +239,13 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
                 let leftEyeToCameraTransform: simd_float4x4 = faceToCameraTransform * leftEyeToFaceTransform
                 let rightEyeToCameraTransform: simd_float4x4 = faceToCameraTransform * rightEyeToFaceTransform
                 
-                let faceToOriginTransform: simd_float4x4 = cameraToOriginTransform * faceToCameraTransform
+//                let faceToOriginTransform: simd_float4x4 = cameraToOriginTransform * faceToCameraTransform
                 let leftEyeToOriginTransform: simd_float4x4 = cameraToOriginTransform * leftEyeToCameraTransform
                 let rightEyeToOriginTransform: simd_float4x4 = cameraToOriginTransform * rightEyeToCameraTransform
 
                                 
                 // only positions (from origin)
-                let faceToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: faceToOriginTransform)
+//                let faceToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: faceToOriginTransform)
                 let leftEyeToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: leftEyeToOriginTransform)
                 let rightEyeToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: rightEyeToOriginTransform)
                 

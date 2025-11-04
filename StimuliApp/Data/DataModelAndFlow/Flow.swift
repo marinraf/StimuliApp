@@ -410,11 +410,13 @@ class Flow {
         if let test = Encode.jsonDataToTest(jsonData: data) {
             let name = firstAvailableTestName2(from: test.name.string)
             test.name = TestData.makeNameProperty(text: name)
-            let selectedFrameRate = test.frameRate.selectedValue
             
+            let selectedFrameRate = test.frameRate.selectedValue
             test.frameRate = TestData.makeFrameRateProperty(frameRate: Flow.shared.settings.maximumFrameRate,
                                                             selected: selectedFrameRate)
-            test.eyeTracker = TestData.makeEyeTrackerProperty(selected: 0)
+            
+            let eyeTrackerName = test.eyeTracker?.string ?? "off"
+            test.eyeTracker = TestData.makeEyeTrackerProperty(fixedValues: Flow.shared.possibleEyeTrackers, value: eyeTrackerName)
             
 
             test.id = UUID().uuidString

@@ -563,7 +563,7 @@ extension ModifyViewController: UITextFieldDelegate {
 
     func save() {
         let result = modify.save(responses: responses)
-
+        
         switch result {
         case .invalid, .saved:
             Flow.shared.navigateBack()
@@ -577,12 +577,18 @@ extension ModifyViewController: UITextFieldDelegate {
             textFieldSimple.becomeFirstResponder()
         case .seed:
             if Task.shared.error == "" {
+                if Task.shared.neonSync {
+                    Task.shared.neon = NeonTimeEchoClient()
+                    _Concurrency.Task {
+                        Task.shared.neon?.start(hostIP: Task.shared.neonIP, intervalSeconds: 10)
+                    }
+                }
                 if Task.shared.testUsesTrackerSeeSo {
                     Flow.shared.eyeTracker = SeeSoTracker()
                     Flow.shared.navigate(to: Calibration())
                 } else if Task.shared.testUsesTrackerARKit {
                     Flow.shared.eyeTracker = ARKitTracker()
-                    Flow.shared.navigate(to: Calibration())
+                    Flow.shared.navigate(to: Display())
                 } else {
                     Flow.shared.navigate(to: Display())
                 }

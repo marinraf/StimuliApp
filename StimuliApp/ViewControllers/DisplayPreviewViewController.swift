@@ -32,6 +32,9 @@ class DisplayPreviewViewController: UIViewController {
 
     let button = UIButton(type: .custom)
 
+    private let buttonMargin: CGFloat = 15
+    private let buttonSize: CGFloat = 55
+
     @IBOutlet weak var metalView: MTKView!
     @IBOutlet weak var controlView: UIView!
     @IBOutlet weak var playStopButton: UIButton!
@@ -260,13 +263,13 @@ extension DisplayPreviewViewController: DisplayRenderDelegate {
 
     func showKeyboard(type: FixedKeyboard, inTitle: Bool) {}
 
-    func addBackButton(position: FixedXButton) {
+    func addBackButton(position: FixedXButton, markers: Bool) {
         self.controlView.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.topAnchor.constraint(equalTo: controlView.topAnchor, constant: 30).isActive = true
-        button.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: 30).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 55).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 55).isActive = true
+        button.topAnchor.constraint(equalTo: controlView.topAnchor, constant: buttonMargin).isActive = true
+        button.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: buttonMargin).isActive = true
+        button.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
+        button.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
         button.setImage(UIImage(named: "cancel"), for: .normal)
         button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
     }

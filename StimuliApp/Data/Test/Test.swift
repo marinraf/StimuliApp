@@ -61,7 +61,7 @@ class Test: NSObject, Codable {
                                                         selected: 0)
         self.brightness = TestData.makeBrightnessProperty(float: 0.7)
         self.gamma = TestData.makeGammaProperty(selected: 0)
-        self.eyeTracker = TestData.makeEyeTrackerProperty(selected: 0)
+        self.eyeTracker = TestData.makeEyeTrackerProperty(fixedValues: Flow.shared.possibleEyeTrackers, value: "off")
         self.neon = TestData.makeNeonProperty(selected: 0)
         self.longAudios = TestData.makeLongAudiosProperty(selected: 0)
         self.distance = TestData.makeDistanceProperty(selected: 0)

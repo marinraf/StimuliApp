@@ -107,6 +107,7 @@
 		CC4F04E32EB4FE52006DFABD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC4F04E22EB4FE4C006DFABD /* SceneDelegate.swift */; };
 		CC5D18F022A6700B005F69F5 /* CreateFakeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D18EF22A6700B005F69F5 /* CreateFakeTest.swift */; };
 		CC62F8B62A04062000CD27C4 /* CalibrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC62F8B52A04062000CD27C4 /* CalibrationView.xib */; };
+		CC736A632EB9F7B300FE4C06 /* NeonSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC736A622EB9F7AD00FE4C06 /* NeonSync.swift */; };
 		CCB95029222544F7002E0516 /* Variable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB95028222544F7002E0516 /* Variable.swift */; };
 		CCB9502B2225519B002E0516 /* EditVariableMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB9502A2225519B002E0516 /* EditVariableMenu.swift */; };
 		CCC2AFF5228A984E008A9441 /* CreateConditionsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC2AFF4228A984E008A9441 /* CreateConditionsMenu.swift */; };
@@ -287,6 +288,7 @@
 		CC4F04E22EB4FE4C006DFABD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CC5D18EF22A6700B005F69F5 /* CreateFakeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFakeTest.swift; sourceTree = "<group>"; };
 		CC62F8B52A04062000CD27C4 /* CalibrationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalibrationView.xib; sourceTree = "<group>"; };
+		CC736A622EB9F7AD00FE4C06 /* NeonSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeonSync.swift; sourceTree = "<group>"; };
 		CCB265692EAA5EC300D4F0E6 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = ../MyPlayground.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		CCB95028222544F7002E0516 /* Variable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variable.swift; sourceTree = "<group>"; };
 		CCB9502A2225519B002E0516 /* EditVariableMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVariableMenu.swift; sourceTree = "<group>"; };
@@ -665,6 +667,7 @@
 				CCD311D92292ADA6004F44E5 /* LokiRandomNumbersInMetal */,
 				9696A6B321E3D63E00FE5C56 /* Helper.swift */,
 				CCDEFE4122A9266C00F01361 /* MetalLibrary.swift */,
+				CC736A622EB9F7AD00FE4C06 /* NeonSync.swift */,
 				CC26590029FF8AC70037949B /* Tracker.swift */,
 				4FFE54F82A444238008FB50F /* Texts.swift */,
 			);
@@ -970,6 +973,7 @@
 				9696A69021E3D4F700FE5C56 /* AppDelegate.swift in Sources */,
 				9601AC3B2223146B00178C62 /* ObjectFromStimulusMenu.swift in Sources */,
 				9606160D22074C1500D41661 /* ListsOfValuesMenu.swift in Sources */,
+				CC736A632EB9F7B300FE4C06 /* NeonSync.swift in Sources */,
 				CC460C9C21E4F83800475EC5 /* Test.swift in Sources */,
 				CC5D18F022A6700B005F69F5 /* CreateFakeTest.swift in Sources */,
 				962586D022B8B4850013EFF2 /* DisplayTouches.swift in Sources */,
@@ -1292,7 +1296,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
 				MARKETING_VERSION = 1.9;
 				MTL_ENABLE_MODULES = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.idibaps.Stimulios;
@@ -1329,7 +1333,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
 				MARKETING_VERSION = 1.9;
 				MTL_ENABLE_MODULES = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.idibaps.Stimulios;

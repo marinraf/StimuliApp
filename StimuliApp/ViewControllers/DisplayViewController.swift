@@ -28,7 +28,15 @@ class DisplayViewController: UIViewController {
     var x: CGFloat = 0
     var y: CGFloat = 0
 
-    let button = UIButton(type: .custom)
+    private let button = UIButton(type: .custom)
+    private let topLeftMarkerButton = UIButton(type: .custom)
+    private let topRightMarkerButton = UIButton(type: .custom)
+    private let bottomLeftMarkerButton = UIButton(type: .custom)
+    private let bottomRightMarkerButton = UIButton(type: .custom)
+    
+    private let buttonMargin: CGFloat = 12
+    private let buttonSize: CGFloat = 55
+    private let markerSize: CGFloat = 70
     
     
 //    var session: ARSession!
@@ -209,43 +217,84 @@ extension DisplayViewController: DisplayRenderDelegate {
         }
     }
 
-    func addBackButton(position: FixedXButton) {
+    func addBackButton(position: FixedXButton, markers: Bool) {
+        // If markers is true, add corner marker buttons only; if false, add main back button only
+        if markers {
+            // Configure common properties for all marker buttons
+            let markerButtons: [(UIButton, String)] = [
+                (topLeftMarkerButton, "marker1"),
+                (topRightMarkerButton, "marker2"),
+                (bottomLeftMarkerButton, "marker3"),
+                (bottomRightMarkerButton, "marker4")
+            ]
+            markerButtons.forEach { (btn, imageName) in
+                if btn.superview == nil { self.controlView.addSubview(btn) }
+                btn.translatesAutoresizingMaskIntoConstraints = false
+                btn.setImage(UIImage(named: imageName), for: .normal)
+                btn.imageView?.contentMode = .scaleAspectFit
+                btn.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+                btn.widthAnchor.constraint(equalToConstant: markerSize).isActive = true
+                btn.heightAnchor.constraint(equalToConstant: markerSize).isActive = true
+            }
+            // Top-left
+            NSLayoutConstraint.activate([
+                topLeftMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor, constant: buttonMargin),
+                topLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: buttonMargin)
+            ])
+            // Top-right
+            NSLayoutConstraint.activate([
+                topRightMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor, constant: buttonMargin),
+                topRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -buttonMargin)
+            ])
+            // Bottom-left
+            NSLayoutConstraint.activate([
+                bottomLeftMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -buttonMargin),
+                bottomLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: buttonMargin)
+            ])
+            // Bottom-right
+            NSLayoutConstraint.activate([
+                bottomRightMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -buttonMargin),
+                bottomRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -buttonMargin)
+            ])
+            return
+        }
 
+        // markers == false: add only the main back button in the requested position
         switch position {
         case .topLeft:
             self.controlView.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.topAnchor.constraint(equalTo: controlView.topAnchor, constant: 30).isActive = true
-            button.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: 30).isActive = true
-            button.widthAnchor.constraint(equalToConstant: 55).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 55).isActive = true
+            button.topAnchor.constraint(equalTo: controlView.topAnchor, constant: buttonMargin).isActive = true
+            button.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: buttonMargin).isActive = true
+            button.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
+            button.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
             button.setImage(UIImage(named: "cancel"), for: .normal)
             button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         case .topRight:
             self.controlView.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.topAnchor.constraint(equalTo: controlView.topAnchor, constant: 30).isActive = true
-            button.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -30).isActive = true
-            button.widthAnchor.constraint(equalToConstant: 55).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 55).isActive = true
+            button.topAnchor.constraint(equalTo: controlView.topAnchor, constant: buttonMargin).isActive = true
+            button.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -buttonMargin).isActive = true
+            button.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
+            button.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
             button.setImage(UIImage(named: "cancel"), for: .normal)
             button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         case .bottomLeft:
             self.controlView.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -30).isActive = true
-            button.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: 30).isActive = true
-            button.widthAnchor.constraint(equalToConstant: 55).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 55).isActive = true
+            button.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -buttonMargin).isActive = true
+            button.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: buttonMargin).isActive = true
+            button.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
+            button.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
             button.setImage(UIImage(named: "cancel"), for: .normal)
             button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         case .bottomRight:
             self.controlView.addSubview(button)
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -30).isActive = true
-            button.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -30).isActive = true
-            button.widthAnchor.constraint(equalToConstant: 55).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 55).isActive = true
+            button.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -buttonMargin).isActive = true
+            button.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -buttonMargin).isActive = true
+            button.widthAnchor.constraint(equalToConstant: buttonSize).isActive = true
+            button.heightAnchor.constraint(equalToConstant: buttonSize).isActive = true
             button.setImage(UIImage(named: "cancel"), for: .normal)
             button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         case .noButton:
@@ -272,7 +321,35 @@ extension DisplayViewController: DisplayRenderDelegate {
 
         case .no:
             showAlertTestIsFinished(action: { _ in
-                Task.shared.saveTestAsResult()
+                
+                _Concurrency.Task {
+                    let useNeon = Task.shared.neonSync
+                    var neonResult: NeonResult?
+                    
+                    if useNeon {
+                        neonResult = await Task.shared.neon?.stopAndAnalyze()
+                        if let neonResult = neonResult {
+                            Task.shared.saveTestAsResult(offset: neonResult.intercept,
+                                                         slope: neonResult.slope,
+                                                         rse: neonResult.rse,
+                                                         neonLinearModel: true,
+                                                         neonSyncError: false)
+                            
+                        } else {
+                            Task.shared.saveTestAsResult(offset: Task.shared.scaleTime,
+                                                         slope: 0,
+                                                         rse: 0,
+                                                         neonLinearModel: false,
+                                                         neonSyncError: true)
+                        }
+                    } else {
+                        Task.shared.saveTestAsResult(offset: Task.shared.scaleTime,
+                                                     slope: 0,
+                                                     rse: 0,
+                                                     neonLinearModel: false,
+                                                     neonSyncError: false)
+                    }
+                }
                 Flow.shared.initTabControllerMenu()
             })
         case .previewTest:
@@ -869,3 +946,4 @@ extension DisplayViewController : TrackerOnViewDelegate {
 
     func saveCalibrationData() {}
 }
+

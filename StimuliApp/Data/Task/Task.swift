@@ -167,6 +167,8 @@ class Task {
     var neonSync: Bool = false
     var neonIP: String = ""
     var neonMarkers: Bool = false
+    var neon: NeonTimeEchoClient?
+    var neonResult: String = ""
     
     var trackerCoordinates: FixedPositionEyeTracker = .cartesian
     var trackerFirstUnit: Unit = .none
@@ -230,14 +232,10 @@ class Task {
         if let neon = test.neon {
             if neon.string == "on" {
                 self.neonSync = true
-                print(self.neonSync)
-                                
                 if neon.properties.count == 2 {
                     self.neonIP = neon.properties[0].string
-                    print(self.neonIP)
                     if neon.properties[1].string == "on" {
                         self.neonMarkers = true
-                        print(self.neonMarkers)
                     }
                 }
             }
@@ -877,13 +875,26 @@ class Task {
         }
     }
 
-    func saveTestAsResult() {
-
+    func saveTestAsResult(offset: Double,
+                          slope: Double,
+                          rse: Double,
+                          neonLinearModel: Bool,
+                          neonSyncError: Bool) {
+        
         let result = Result(name: name, order: Flow.shared.results.count)
 
         result.responseKeyboard = responseKeyboard
-
-        let testSettings = """
+        
+        var testSettings = ""
+        
+        if neonSyncError {
+            testSettings += """
+        WARNING: Unable to synchronize the clocks between the device and the Neon eye tracker.
+        """
+            testSettings += Constants.separator
+        }
+        
+        testSettings += """
         TEST: \(result.name.string)
         USER: \(Flow.shared.settings.userProperty.string)
         DATE: \(result.dateString)
@@ -914,7 +925,7 @@ class Task {
             Constants.separator + testOptionsString + Constants.separator
 
         for sectionTask in sectionTasks {
-            let sectionResult = sectionTask.calculateResultInfo()
+            let sectionResult = sectionTask.calculateResultInfo(offset: offset, slope: slope)
             result.data += sectionResult.result
             result.data += Constants.separator
             result.csvs.append(sectionResult.csv0)
@@ -968,6 +979,10 @@ class Task {
         let stimuliString = stimuli.joined(separator: "\n")
 
         result.data += "VALUES OF THE CONSTANT PROPERTIES:" + "\n\n" + stimuliString + Constants.separator
+        
+        if neonLinearModel {
+            result.data += "NEON CLOCK SYNC RSE (Residual Standard Error): " + rse.toString + "ms" + Constants.separator
+        }
 
         result.data += "FRAME RATE:" + "\n\n" + Flow.shared.frameControl.longFramesString + Constants.separator
 

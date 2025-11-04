@@ -131,7 +131,7 @@ class FrameControl {
                 
                 let interval = NSDate.init().timeIntervalSince1970
                 let now = CACurrentMediaTime()
-                Task.shared.scaleTime = now - interval
+                Task.shared.scaleTime = interval - now
             }
         }
 

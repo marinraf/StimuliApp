@@ -8,14 +8,14 @@ import UIKit
 
 extension UINavigationController {
 
-    static private var coordinatorHelperKey = "UINavigationController.TransitionCoordinatorHelper"
+    private static var coordinatorHelperKey: UInt8 = 0
 
     var transitionCoordinatorHelper: TransitionCoordinator? {
-        return objc_getAssociatedObject(self, &UINavigationController.coordinatorHelperKey) as? TransitionCoordinator
+        return objc_getAssociatedObject(self, UnsafeRawPointer(&UINavigationController.coordinatorHelperKey)) as? TransitionCoordinator
     }
 
     func addCustomTransitioning() {
-        var object = objc_getAssociatedObject(self, &UINavigationController.coordinatorHelperKey)
+        var object = objc_getAssociatedObject(self, UnsafeRawPointer(&UINavigationController.coordinatorHelperKey))
 
         guard object == nil else {
             return
@@ -23,7 +23,7 @@ extension UINavigationController {
 
         object = TransitionCoordinator()
         let nonatomic = objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-        objc_setAssociatedObject(self, &UINavigationController.coordinatorHelperKey, object, nonatomic)
+        objc_setAssociatedObject(self, UnsafeRawPointer(&UINavigationController.coordinatorHelperKey), object, nonatomic)
 
         delegate = object as? TransitionCoordinator
 

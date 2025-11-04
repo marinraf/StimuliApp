@@ -158,7 +158,7 @@ class SectionTask {
         }
     }
 
-    func calculateResultInfo() -> SectionResult {
+    func calculateResultInfo(offset: Double, slope: Double) -> SectionResult {
 
         let respondedTrials = correctValue.count
 
@@ -318,7 +318,7 @@ class SectionTask {
 
         for sceneTask in sceneTasks {
             for i in 0 ..< respondedTrials {
-                let newValue = (sceneTask.realStartTime[i] - Task.shared.scaleTime).toString
+                let newValue = (offset + (1 + slope) * sceneTask.realStartTime[i]).toString
                 values[i].append(newValue)
                 let newValue2 = (sceneTask.realEndTime[i] - sceneTask.realStartTime[i]).toString
                 values[i].append(newValue2)
@@ -343,9 +343,9 @@ class SectionTask {
                     var newValue = "NaN"
 
                     if let clock2 = sceneTask.userResponses[i].liftClock {
-                        newValue = (clock2 - Task.shared.scaleTime).toString
+                        newValue = (offset + (1 + slope) * clock2).toString
                     } else if let clock = sceneTask.userResponses[i].clocks.last {
-                        newValue = (clock - Task.shared.scaleTime).toString
+                        newValue = (offset + (1 + slope) * clock).toString
                     }
                     values[i].append(newValue)
 
@@ -375,9 +375,9 @@ class SectionTask {
                     var newValue = "NaN"
 
                     if let clock2 = sceneTask.userResponses[i].liftClock {
-                        newValue = (clock2 - Task.shared.scaleTime).toString
+                        newValue = (offset + (1 + slope) * clock2).toString
                     } else if let clock = sceneTask.userResponses[i].clocks.last {
-                        newValue = (clock - Task.shared.scaleTime).toString
+                        newValue = (offset + (1 + slope) * clock).toString
                     }
                     values[i].append(newValue)
 
@@ -399,9 +399,9 @@ class SectionTask {
                     var newValue = "NaN"
 
                     if let clock2 = sceneTask.userResponses[i].liftClock {
-                        newValue = (clock2 - Task.shared.scaleTime).toString
+                        newValue = (offset + (1 + slope) * clock2).toString
                     } else if let clock = sceneTask.userResponses[i].clocks.last {
-                        newValue = (clock - Task.shared.scaleTime).toString
+                        newValue = (offset + (1 + slope) * clock).toString
                     }
                     values[i].append(newValue)
 
@@ -446,9 +446,9 @@ class SectionTask {
                     var newValue = "NaN"
 
                     if let clock2 = sceneTask.userResponses[i].liftClock {
-                        newValue = (clock2 - Task.shared.scaleTime).toString
+                        newValue = (offset + (1 + slope) * clock2).toString
                     } else if let clock = sceneTask.userResponses[i].clocks.last {
-                        newValue = (clock - Task.shared.scaleTime).toString
+                        newValue = (offset + (1 + slope) * clock).toString
                     }
                     values[i].append(newValue)
 
@@ -616,7 +616,7 @@ class SectionTask {
                     let x = sceneTask.userResponses[i].xTouches.map({ String($0) }).joined(separator: ";")
                     let y = sceneTask.userResponses[i].yTouches.map({ String($0) }).joined(separator: ";")
                     let time = sceneTask.userResponses[i].clocks.map({
-                        ($0 - Task.shared.scaleTime).toString }).joined(separator: ";")
+                        (offset + (1 + slope) * $0).toString }).joined(separator: ";")
                     valuesPath[i] += [x, y, time]
                 }
             case .polar:
@@ -624,7 +624,7 @@ class SectionTask {
                     let radius = sceneTask.userResponses[i].radiusTouches.map({ String($0) }).joined(separator: ";")
                     let angle = sceneTask.userResponses[i].angleTouches.map({ String($0) }).joined(separator: ";")
                     let time = sceneTask.userResponses[i].clocks.map({
-                        ($0 - Task.shared.scaleTime).toString }).joined(separator: ";")
+                        (offset + (1 + slope) * $0).toString }).joined(separator: ";")
                     valuesPath[i] += [radius, angle, time]
                 }
             }
@@ -649,7 +649,7 @@ class SectionTask {
                         let x = sceneTask.trackerResponses[i].xGazes.map({ $0.toString }).joined(separator: ";")
                         let y = sceneTask.trackerResponses[i].yGazes.map({ $0.toString }).joined(separator: ";")
                         let time = sceneTask.trackerResponses[i].clocks.map({
-                            ($0 - Task.shared.scaleTime).toString }).joined(separator: ";")
+                            (offset + (1 + slope) * $0).toString }).joined(separator: ";")
                         valuesTracker[i] += [x, y, time]
                     }
                 case .polar:
@@ -657,7 +657,7 @@ class SectionTask {
                         let radius = sceneTask.trackerResponses[i].radiusGazes.map({ $0.toString }).joined(separator: ";")
                         let angle = sceneTask.trackerResponses[i].angleGazes.map({ $0.toString }).joined(separator: ";")
                         let time = sceneTask.trackerResponses[i].clocks.map({
-                            ($0 - Task.shared.scaleTime).toString }).joined(separator: ";")
+                            (offset + (1 + slope) * $0).toString }).joined(separator: ";")
                         valuesTracker[i] += [radius, angle, time]
                     }
                 }
@@ -678,7 +678,7 @@ class SectionTask {
                 for i in 0 ..< respondedTrials {
                     let dist = sceneTask.distanceResponses[i].zDistances.map({ String($0) }).joined(separator: ";")
                     let time = sceneTask.distanceResponses[i].clocks.map({
-                        ($0 - Task.shared.scaleTime).toString }).joined(separator: ";")
+                        (offset + (1 + slope) * $0).toString }).joined(separator: ";")
                     
                     valuesDistance[i] += [dist, time]
                 }
@@ -698,7 +698,7 @@ class SectionTask {
                 for i in 0 ..< respondedTrials {
                     let dist = sceneTask.distanceResponses[i].zDistances.map({ String($0) }).joined(separator: ";")
                     let time = sceneTask.distanceResponses[i].clocks.map({
-                        ($0 - Task.shared.scaleTime).toString }).joined(separator: ";")
+                        (offset + (1 + slope) * $0).toString }).joined(separator: ";")
                     
                     valuesDistance[i] += [dist, time]
                 }

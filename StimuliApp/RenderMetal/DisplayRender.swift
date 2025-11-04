@@ -11,7 +11,7 @@ var elapsed: Double = 0
 // MARK: - Protocol
 protocol DisplayRenderDelegate: AnyObject {
 
-    func addBackButton(position: FixedXButton)
+    func addBackButton(position: FixedXButton, markers: Bool)
 
     func end()
     func clear()
@@ -91,7 +91,7 @@ class DisplayRender {
 
         // in the first scene we give time to initialize the device and everything, so we use a queue
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-            self.displayRenderDelegate?.addBackButton(position: Task.shared.xButtonPosition)
+            self.displayRenderDelegate?.addBackButton(position: Task.shared.xButtonPosition, markers: Task.shared.neonMarkers)
         })
 
         if Flow.shared.settings.device.type != .mac {

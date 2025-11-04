@@ -49,7 +49,7 @@ class EditTestMenu: Menu {
         makeOption(from: Flow.shared.test.distance, sectionNumber: sectionNumber)
         
         if Flow.shared.test.eyeTracker == nil {
-            Flow.shared.test.eyeTracker = TestData.makeEyeTrackerProperty(selected: 0)
+            Flow.shared.test.eyeTracker = TestData.makeEyeTrackerProperty(fixedValues: Flow.shared.possibleEyeTrackers, value: "off")
         }
         
         if let tracker = Flow.shared.test.eyeTracker {

@@ -48,14 +48,25 @@ struct TestData {
                         fixedValues: FixedGamma.allCases.map({ $0.name }),
                         selectedValue: selected)
     }
+    
 
-    static func makeEyeTrackerProperty(selected: Int) -> Property {
-        return Property(name: "measureViewingDistance",
-                        info: Texts.eyeTracker,
-                        propertyType: .testEyeTracker,
-                        unitType: .decimal,
-                        fixedValues: Flow.shared.possibleEyeTrackers,
-                        selectedValue: selected)
+    static func makeEyeTrackerProperty(fixedValues: [String], value: String) -> Property {
+        if (fixedValues.contains(value)) {
+            let selected = fixedValues.firstIndex(of: value)!
+            return Property(name: "measureViewingDistance",
+                            info: Texts.eyeTracker,
+                            propertyType: .testEyeTracker,
+                            unitType: .decimal,
+                            fixedValues: fixedValues,
+                            selectedValue: selected)
+        } else {
+            return Property(name: "measureViewingDistance",
+                            info: Texts.eyeTracker,
+                            propertyType: .testEyeTracker,
+                            unitType: .decimal,
+                            fixedValues: fixedValues,
+                            selectedValue: 0)
+        }
     }
     
     static func makeNeonProperty(selected: Int) -> Property {
