@@ -3,6 +3,7 @@
 
 import UIKit
 import ARKit
+import Network
 
 
 class Flow {
@@ -102,20 +103,7 @@ class Flow {
         }
     }
     
-    // MARK: - Camera access
     
-    func cameraAuthorization() async -> Bool {
-        let mediaType = AVMediaType.audio
-        let mediaAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: mediaType)
-        switch mediaAuthorizationStatus {
-        case .denied, .restricted: return false
-        case .authorized: return true
-        case .notDetermined: return await AVCaptureDevice.requestAccess(for: .audio)
-        @unknown default: return false
-        }
-    }
-    
-
     // MARK: - Changes in properties (for legacy properties and to control screensize)
     func applyChangesInProperties() {
         for test in self.tests {

@@ -216,9 +216,10 @@ class Task {
             
             guard authorized else {
                 return """
-                ERROR: The test uses the camera for eye tracking, but permission to use the camera is not granted.
-                Disable eyeTracker in the Test properties or allow StimuliApp to use the camera in \
-                your device Settings -> Privacy.
+                ERROR: The test uses the camera to measure the user’s distance from the screen, but permission \
+                to access the camera is not granted.
+                Disable measureViewingDistance in the Test properties, or allow StimuliApp to use the camera \
+                in your device’s Settings → Privacy.
                 """
             }
         }
@@ -240,7 +241,29 @@ class Task {
                 }
             }
         }
-    
+        
+        if self.neonSync {            
+            if Task.shared.neonSync {
+                
+                let ok = waitNeonPingBlocking(timeout: 5)
+                guard ok else {
+                    return """
+                    ERROR: Unable to connect to the Neon eye tracker. \
+                    Please check that StimuliApp has permission to access the local network in \
+                    Settings → Privacy → Local Network. \
+                    Verify that the IP address is correct and that both your device and the Neon eye tracker \
+                    are connected to the same local network. \
+                    If synchronization with Neon is not required, you can disable the \
+                    neonEyeTrackerSync option in the Test properties.
+                    """
+                }
+                
+                _Concurrency.Task {
+                    Task.shared.neon?.start(hostIP: Task.shared.neonIP, intervalSeconds: 10)
+                }
+            }
+        }
+        
         Flow.shared.test = test
         if preview != .no {
             createRandomSeeds(from: test)
@@ -262,6 +285,31 @@ class Task {
             }
         }
         return ""
+    }
+    
+    func waitNeonPingBlocking(timeout: TimeInterval = 5) -> Bool {
+
+        Task.shared.neon = NeonTimeEchoClient()
+
+        var ok = false
+        let group = DispatchGroup()
+        group.enter()
+
+        _Concurrency.Task {
+            ok = await Task.shared.neon!.pingOnce(
+                hostIP: Task.shared.neonIP,
+                timeoutSeconds: timeout
+            )
+            group.leave()
+        }
+
+        let result = group.wait(timeout: .now() + timeout)
+
+        if result == .timedOut {
+            ok = false
+        }
+
+        return ok
     }
 
     func createSection(section: Section, test: Test) -> String {

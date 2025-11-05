@@ -329,7 +329,10 @@ extension DisplayViewController: DisplayRenderDelegate {
                     if useNeon {
                         neonResult = await Task.shared.neon?.stopAndAnalyze()
                         if let neonResult = neonResult {
-                            Task.shared.saveTestAsResult(offset: neonResult.intercept,
+                            // regression was done in ms we want seconds
+                            // slope doesn't depend on the unit
+                            // rse in ms
+                            Task.shared.saveTestAsResult(offset: neonResult.intercept / 1000,
                                                          slope: neonResult.slope,
                                                          rse: neonResult.rse,
                                                          neonLinearModel: true,

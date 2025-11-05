@@ -97,12 +97,48 @@ public actor NeonTimeEchoClient {
         
         guard slope.isFinite, intercept.isFinite, rse.isFinite else { return nil }
         
+        print(samples)
+        
         return NeonResult(intercept: intercept, slope: slope, rse: rse)
     }
 
     public func stopAndAnalyze() async -> NeonResult? {
         let samples = await stopAndFetchAll()
         return analyze(samples: samples)
+    }
+    
+    public func pingOnce(hostIP: String, timeoutSeconds: TimeInterval = 5) async -> Bool {
+        do {
+            let p = try await fetchTimeEchoPort(host: hostIP)
+            self.timeEchoPort = p
+            self.hostIP = hostIP
+
+            let ok: Bool = try await raceWithTimeout(seconds: timeoutSeconds) { [weak self] in
+                guard let self else { throw NSError(domain: "NeonTimeEcho", code: -4,
+                                                    userInfo: [NSLocalizedDescriptionKey: "Deallocated"]) }
+                _ = try await self.measureOnceInternal()
+                return true
+            }
+            return ok
+        } catch {
+            print("Neon pingOnce error: \(error)")
+            return false
+        }
+    }
+
+    private func raceWithTimeout<T>(seconds: TimeInterval,
+                                    _ op: @escaping () async throws -> T) async throws -> T {
+        try await withThrowingTaskGroup(of: T.self) { group in
+            group.addTask { try await op() }
+            group.addTask {
+                try await _Concurrency.Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+                throw NSError(domain: "NeonTimeEcho", code: -3,
+                              userInfo: [NSLocalizedDescriptionKey: "timeout"])
+            }
+            let value = try await group.next()!
+            group.cancelAll()
+            return value
+        }
     }
 
     private func _startImpl(hostIP: String, intervalSeconds: TimeInterval) async {

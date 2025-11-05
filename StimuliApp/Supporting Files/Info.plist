@@ -64,7 +64,7 @@
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Access to the media</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Use of the camera for eye tracking and for calculating the distance from the user to the device</string>
+	<string>The app uses the camera to detect your face and measure distance. No images are saved or stored.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access to the photo library</string>
 	<key>UIFileSharingEnabled</key>
@@ -160,5 +160,7 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>The app connects to a Neon eye tracker on the local network to send sync messages with timestamps.</string>
 </dict>
 </plist>

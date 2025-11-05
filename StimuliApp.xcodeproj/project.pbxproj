@@ -289,7 +289,6 @@
 		CC5D18EF22A6700B005F69F5 /* CreateFakeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFakeTest.swift; sourceTree = "<group>"; };
 		CC62F8B52A04062000CD27C4 /* CalibrationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalibrationView.xib; sourceTree = "<group>"; };
 		CC736A622EB9F7AD00FE4C06 /* NeonSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeonSync.swift; sourceTree = "<group>"; };
-		CCB265692EAA5EC300D4F0E6 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = ../MyPlayground.playground; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		CCB95028222544F7002E0516 /* Variable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variable.swift; sourceTree = "<group>"; };
 		CCB9502A2225519B002E0516 /* EditVariableMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVariableMenu.swift; sourceTree = "<group>"; };
 		CCC2AFF4228A984E008A9441 /* CreateConditionsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateConditionsMenu.swift; sourceTree = "<group>"; };
@@ -663,7 +662,6 @@
 		CC460C7521E4C54B00475EC5 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				CCB265692EAA5EC300D4F0E6 /* MyPlayground.playground */,
 				CCD311D92292ADA6004F44E5 /* LokiRandomNumbersInMetal */,
 				9696A6B321E3D63E00FE5C56 /* Helper.swift */,
 				CCDEFE4122A9266C00F01361 /* MetalLibrary.swift */,
@@ -871,7 +869,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 2600;
 				ORGANIZATIONNAME = "Rafa Marín";
 				TargetAttributes = {
 					7471DE5823BBAB2E00220DCC = {
@@ -1101,7 +1099,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
-				DEVELOPMENT_TEAM = 554YMB46HK;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/MacBundle-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1109,7 +1106,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.idibaps.MacBundle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1130,7 +1127,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
-				DEVELOPMENT_TEAM = 554YMB46HK;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/MacBundle-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1138,7 +1134,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.idibaps.MacBundle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -1186,8 +1182,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 554YMB46HK;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1209,6 +1207,7 @@
 				MTL_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/**";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -1252,8 +1251,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 554YMB46HK;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1268,6 +1269,7 @@
 				MTL_FAST_MATH = YES;
 				MTL_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/**";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -1279,7 +1281,6 @@
 		9696A6AA21E3D4F700FE5C56 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "StimuliApp/Supporting Files/StimuliApp.entitlements";
@@ -1287,8 +1288,9 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 554YMB46HK;
+				ENABLE_APP_SANDBOX = YES;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1316,7 +1318,6 @@
 		9696A6AB21E3D4F700FE5C56 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "StimuliApp/Supporting Files/StimuliApp.entitlements";
@@ -1324,8 +1325,9 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 554YMB46HK;
+				ENABLE_APP_SANDBOX = YES;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

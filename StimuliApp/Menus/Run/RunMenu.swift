@@ -48,18 +48,18 @@ class RunMenu: Menu {
             } else {
                 Task.shared.error = Task.shared.createTask(test: Flow.shared.test, preview: .no)
                 if Task.shared.error == "" {
-                    if Task.shared.neonSync {
-                        Task.shared.neon = NeonTimeEchoClient()
-                        _Concurrency.Task {
-                            Task.shared.neon?.start(hostIP: Task.shared.neonIP, intervalSeconds: 10)
-                        }
-                    }
+//                    if Task.shared.neonSync {
+//                        Task.shared.neon = NeonTimeEchoClient()
+//                        _Concurrency.Task {
+//                            Task.shared.neon?.start(hostIP: Task.shared.neonIP, intervalSeconds: 10)
+//                        }
+//                    }
                     if Task.shared.testUsesTrackerSeeSo {
                         Flow.shared.eyeTracker = SeeSoTracker()
                         return Calibration()
                     } else if Task.shared.testUsesTrackerARKit {
                         Flow.shared.eyeTracker = ARKitTracker()
-                        return Display()
+                        return Calibration()
                     } else {
                         return Display()
                     }
