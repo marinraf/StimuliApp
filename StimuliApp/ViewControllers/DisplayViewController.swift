@@ -323,7 +323,7 @@ extension DisplayViewController: DisplayRenderDelegate {
             showAlertTestIsFinished(action: { _ in
                 
                 _Concurrency.Task {
-                    let useNeon = Task.shared.neonSync
+                    let useNeon = Task.shared.testUsesNeonSync
                     var neonResult: NeonResult?
                     
                     if useNeon {

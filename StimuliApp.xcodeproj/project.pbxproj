@@ -108,6 +108,7 @@
 		CC5D18F022A6700B005F69F5 /* CreateFakeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D18EF22A6700B005F69F5 /* CreateFakeTest.swift */; };
 		CC62F8B62A04062000CD27C4 /* CalibrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC62F8B52A04062000CD27C4 /* CalibrationView.xib */; };
 		CC736A632EB9F7B300FE4C06 /* NeonSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC736A622EB9F7AD00FE4C06 /* NeonSync.swift */; };
+		CC736A652EBB8B1200FE4C06 /* Borrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC736A642EBB8B0F00FE4C06 /* Borrar.swift */; };
 		CCB95029222544F7002E0516 /* Variable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB95028222544F7002E0516 /* Variable.swift */; };
 		CCB9502B2225519B002E0516 /* EditVariableMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB9502A2225519B002E0516 /* EditVariableMenu.swift */; };
 		CCC2AFF5228A984E008A9441 /* CreateConditionsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC2AFF4228A984E008A9441 /* CreateConditionsMenu.swift */; };
@@ -289,6 +290,7 @@
 		CC5D18EF22A6700B005F69F5 /* CreateFakeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFakeTest.swift; sourceTree = "<group>"; };
 		CC62F8B52A04062000CD27C4 /* CalibrationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalibrationView.xib; sourceTree = "<group>"; };
 		CC736A622EB9F7AD00FE4C06 /* NeonSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeonSync.swift; sourceTree = "<group>"; };
+		CC736A642EBB8B0F00FE4C06 /* Borrar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Borrar.swift; sourceTree = "<group>"; };
 		CCB95028222544F7002E0516 /* Variable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variable.swift; sourceTree = "<group>"; };
 		CCB9502A2225519B002E0516 /* EditVariableMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVariableMenu.swift; sourceTree = "<group>"; };
 		CCC2AFF4228A984E008A9441 /* CreateConditionsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateConditionsMenu.swift; sourceTree = "<group>"; };
@@ -420,6 +422,7 @@
 		961430A1220EEA9200AF073E /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				CC736A642EBB8B0F00FE4C06 /* Borrar.swift */,
 				CC460C6F21E4C26900475EC5 /* Settings.swift */,
 				961430A2220EEC0600AF073E /* SettingsData.swift */,
 				CC460C7121E4C2BA00475EC5 /* Device.swift */,
@@ -1064,6 +1067,7 @@
 				9644E44E21FA458D00387900 /* EditStimulusMenu.swift in Sources */,
 				96E9F479229E92E9001A40BE /* ContentViewController.swift in Sources */,
 				966FF86D227029FA000811EB /* ValueFromVariableMenu.swift in Sources */,
+				CC736A652EBB8B1200FE4C06 /* Borrar.swift in Sources */,
 				CC460CAB21E5087700475EC5 /* DataModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

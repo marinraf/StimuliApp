@@ -91,7 +91,7 @@ class DisplayRender {
 
         // in the first scene we give time to initialize the device and everything, so we use a queue
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-            self.displayRenderDelegate?.addBackButton(position: Task.shared.xButtonPosition, markers: Task.shared.neonMarkers)
+            self.displayRenderDelegate?.addBackButton(position: Task.shared.xButtonPosition, markers: Task.shared.testUsesNeonMakers)
         })
 
         if Flow.shared.settings.device.type != .mac {

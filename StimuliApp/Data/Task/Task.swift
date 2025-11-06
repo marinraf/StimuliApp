@@ -164,9 +164,9 @@ class Task {
     var testUsesTrackerSeeSo: Bool = false
     var testUsesTrackerARKit: Bool = false
     var testUsesLongAudios: Bool = false
-    var neonSync: Bool = false
+    var testUsesNeonSync: Bool = false
+    var testUsesNeonMakers: Bool = false
     var neonIP: String = ""
-    var neonMarkers: Bool = false
     var neon: NeonTimeEchoClient?
     var neonResult: String = ""
     
@@ -232,18 +232,18 @@ class Task {
         
         if let neon = test.neon {
             if neon.string == "on" {
-                self.neonSync = true
+                self.testUsesNeonSync = true
                 if neon.properties.count == 2 {
                     self.neonIP = neon.properties[0].string
                     if neon.properties[1].string == "on" {
-                        self.neonMarkers = true
+                        self.testUsesNeonMakers = true
                     }
                 }
             }
         }
         
-        if self.neonSync {            
-            if Task.shared.neonSync {
+        if self.testUsesNeonSync {            
+            if Task.shared.testUsesNeonSync {
                 
                 let ok = waitNeonPingBlocking(timeout: 5)
                 guard ok else {
@@ -259,7 +259,7 @@ class Task {
                 }
                 
                 _Concurrency.Task {
-                    Task.shared.neon?.start(hostIP: Task.shared.neonIP, intervalSeconds: 10)
+                    Task.shared.neon?.start(hostIP: Task.shared.neonIP, intervalSeconds: 5)
                 }
             }
         }
@@ -418,6 +418,9 @@ class Task {
         warningTracker = false
         testUsesTrackerSeeSo = false
         testUsesTrackerARKit = false
+        testUsesLongAudios = false
+        testUsesNeonSync = false
+        testUsesNeonMakers = false
         
         trackerCoordinates = .cartesian
         trackerFirstUnit = .none
@@ -1037,3 +1040,10 @@ class Task {
         _ = Flow.shared.createSaveAndSelectNewResult(result)
     }
 }
+
+
+
+
+
+
+

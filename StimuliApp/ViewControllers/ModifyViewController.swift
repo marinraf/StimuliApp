@@ -577,12 +577,6 @@ extension ModifyViewController: UITextFieldDelegate {
             textFieldSimple.becomeFirstResponder()
         case .seed:
             if Task.shared.error == "" {
-//                if Task.shared.neonSync {
-//                    Task.shared.neon = NeonTimeEchoClient()
-//                    _Concurrency.Task {
-//                        Task.shared.neon?.start(hostIP: Task.shared.neonIP, intervalSeconds: 10)
-//                    }
-//                }
                 if Task.shared.testUsesTrackerSeeSo {
                     Flow.shared.eyeTracker = SeeSoTracker()
                     Flow.shared.navigate(to: Calibration())

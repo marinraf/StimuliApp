@@ -274,7 +274,7 @@ extension Float {
         if self.isNaN {
             return "NaN"
         } else {
-            return String(format: "%.4f", self)
+            return String(format: "%.3f", self)
         }
     }
 }
@@ -282,7 +282,11 @@ extension Float {
 extension Double {
     
     var toString: String {
-        return String(format: "%.4f", self)
+        if self.isNaN {
+            return "NaN"
+        } else {
+            return String(format: "%.3f", self)
+        }
     }
     
 }
@@ -921,3 +925,4 @@ extension Bool {
         return self ? 1 : 0
     }
 }
+

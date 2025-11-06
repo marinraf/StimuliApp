@@ -48,14 +48,42 @@ class InfoExportViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        textView.setContentOffset(CGPoint.zero, animated: false)
     }
 
     private func setting() {
         infoExport.setting()
 
         titleLabel.text = infoExport.title
-        textView.text = infoExport.info
+        
+        // Configure textView for performance and CSV readability
+        let monoFont = UIFont.monospacedSystemFont(ofSize: 12, weight: .regular)
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineBreakMode = .byCharWrapping
+        
+        paragraph.lineBreakMode = .byCharWrapping
+        
+        paragraph.alignment = .left
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: monoFont,
+            .kern: 0,
+            .paragraphStyle: paragraph,
+            .foregroundColor: UIColor.label
+        ]
+
+        let textToShow = sanitizedDisplay(from: infoExport.info)
+        textView.attributedText = NSAttributedString(string: textToShow, attributes: attrs)
+        textView.isEditable = false
+        textView.isSelectable = true
+        textView.dataDetectorTypes = []
+        textView.isScrollEnabled = true
+        textView.smartQuotesType = .no
+        textView.smartDashesType = .no
+        textView.smartInsertDeleteType = .no
+        textView.textContainer.lineFragmentPadding = 8
+        textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        textView.textContainer.lineBreakMode = .byCharWrapping
+        textView.textContainer.widthTracksTextView = true
+
         button.setImage(UIImage(named: infoExport.buttonImage), for: .normal)
         button.isHidden = infoExport.buttonIsHidden
 
@@ -111,6 +139,51 @@ class InfoExportViewController: UIViewController {
     private func shuffle() {
         Task.shared.error = Task.shared.createSection(section: Flow.shared.section, test: Flow.shared.test)
         setting()
+    }
+    
+    private func sanitizedDisplay(from source: String) -> String {
+        let keep = CharacterSet(charactersIn: "\n\r\t")
+        let controls = CharacterSet.controlCharacters.subtracting(keep)
+        var scalars = String.UnicodeScalarView()
+        scalars.reserveCapacity(source.unicodeScalars.count)
+        for u in source.unicodeScalars {
+            if controls.contains(u) {
+                continue
+            }
+            scalars.append(u)
+        }
+        var cleaned = String(scalars)
+
+        cleaned = cleaned.replacingOccurrences(of: "\r\n", with: "\n")
+        cleaned = cleaned.replacingOccurrences(of: "\r", with: "\n")
+
+
+        let hardWrapChunk = 2000
+        let longLineThreshold = 5000
+
+        var result = String()
+        result.reserveCapacity(cleaned.count + cleaned.count / hardWrapChunk)
+
+        cleaned.enumerateLines { line, stop in
+            if line.count > longLineThreshold {
+                var i = 0
+                for ch in line {
+                    result.append(ch)
+                    i += 1
+                    if i % hardWrapChunk == 0 {
+                        result.append("\n")
+                    }
+                }
+            } else {
+                result.append(line)
+            }
+            result.append("\n")
+        }
+
+        if result.hasSuffix("\n"), !cleaned.hasSuffix("\n") {
+            result.removeLast()
+        }
+        return result
     }
 }
 

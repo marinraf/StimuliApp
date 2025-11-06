@@ -29,7 +29,7 @@ public actor NeonTimeEchoClient {
     public init() {}
     
     
-    public nonisolated func start(hostIP: String, intervalSeconds: TimeInterval = 10) {
+    public nonisolated func start(hostIP: String, intervalSeconds: TimeInterval = 5) {
         _Concurrency.Task { [weak self] in
             guard let self else { return }
             await self._startImpl(hostIP: hostIP, intervalSeconds: intervalSeconds)
@@ -37,7 +37,16 @@ public actor NeonTimeEchoClient {
     }
     
     public func analyze(samples: [NeonTimeEchoSample]) -> NeonResult? {
-        guard samples.count >= 3 else {
+        guard !samples.isEmpty else { return nil }
+
+        // Freshness check: ensure the most recent sample is within the last 20 seconds
+        let now = nowMs()
+        
+        print(now)
+        
+        print(samples)
+        
+        if let latestT2 = samples.map({ $0.t2 }).max(), now &- latestT2 > 60_000 {
             return nil
         }
 
@@ -60,11 +69,29 @@ public actor NeonTimeEchoClient {
             ws.append(weight)
         }
 
-        // weighted linear regression
         let n = Double(xs.count)
         let W = ws.reduce(0, +)
         guard W > 0 else { return nil }
 
+        // If we have fewer than 6 samples, use the single best (lowest RTT) sample
+        if xs.count < 6 {
+            // pick the sample with the minimum RTT
+            guard let best = samples.min(by: { $0.rtt < $1.rtt }) else { return nil }
+            let mid = (Double(best.t1) + Double(best.t2)) / 2.0
+            let intercept = Double(best.tH) - mid
+            let slope = 0.0
+            // RSE heuristic: half the RTT in ms, bounded by eps
+            let rse = max(eps, Double(best.rtt) / 2.0)
+
+            guard intercept.isFinite, rse.isFinite else { return nil }
+
+            print(samples)
+            print(intercept, slope)
+
+            return NeonResult(intercept: intercept, slope: slope, rse: rse)
+        }
+
+        // weighted linear regression (intercept + slope * x)
         let wx = zip(xs, ws).map { $0 * $1 }.reduce(0, +)
         let wy = zip(ys, ws).map { $0 * $1 }.reduce(0, +)
 
@@ -85,20 +112,22 @@ public actor NeonTimeEchoClient {
         let slope = num / den
         let intercept = yBar - slope * xBar
 
-        // calculating RSE (residual standard error)
+        // calculating RSE (residual standard error) with df = n - 2
         var rss = 0.0
         for i in 0..<xs.count {
             let pred = intercept + slope * xs[i]
             let res = ys[i] - pred
-            rss += ws[i] * pow(res, 2)
+            rss += ws[i] * (res * res)
         }
         guard n > 2 else { return nil }
         let rse = sqrt(rss / (n - 2.0))
-        
+
         guard slope.isFinite, intercept.isFinite, rse.isFinite else { return nil }
-        
+
+        print("more than 6")
         print(samples)
-        
+        print(intercept, slope)
+
         return NeonResult(intercept: intercept, slope: slope, rse: rse)
     }
 
@@ -167,6 +196,7 @@ public actor NeonTimeEchoClient {
         while !_Concurrency.Task.isCancelled {
             do {
                 let sample = try await measureOnceInternal()
+                print("-----------     vamos       ----------------", CACurrentMediaTime())
                 samples.append(sample)
             } catch {
                 print("TimeEcho periodic measure error: \(error)")
@@ -315,4 +345,7 @@ fileprivate extension NWConnection {
         }
     }
 }
+
+
+
 

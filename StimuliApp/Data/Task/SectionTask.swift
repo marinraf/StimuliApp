@@ -613,16 +613,16 @@ class SectionTask {
             switch coordinate {
             case .cartesian:
                 for i in 0 ..< respondedTrials {
-                    let x = sceneTask.userResponses[i].xTouches.map({ String($0) }).joined(separator: ";")
-                    let y = sceneTask.userResponses[i].yTouches.map({ String($0) }).joined(separator: ";")
+                    let x = sceneTask.userResponses[i].xTouches.map({ $0.toString }).joined(separator: ";")
+                    let y = sceneTask.userResponses[i].yTouches.map({ $0.toString }).joined(separator: ";")
                     let time = sceneTask.userResponses[i].clocks.map({
                         (offset + (1 + slope) * $0).toString }).joined(separator: ";")
                     valuesPath[i] += [x, y, time]
                 }
             case .polar:
                 for i in 0 ..< respondedTrials {
-                    let radius = sceneTask.userResponses[i].radiusTouches.map({ String($0) }).joined(separator: ";")
-                    let angle = sceneTask.userResponses[i].angleTouches.map({ String($0) }).joined(separator: ";")
+                    let radius = sceneTask.userResponses[i].radiusTouches.map({ $0.toString }).joined(separator: ";")
+                    let angle = sceneTask.userResponses[i].angleTouches.map({ $0.toString }).joined(separator: ";")
                     let time = sceneTask.userResponses[i].clocks.map({
                         (offset + (1 + slope) * $0).toString }).joined(separator: ";")
                     valuesPath[i] += [radius, angle, time]
@@ -676,7 +676,7 @@ class SectionTask {
                 }
 
                 for i in 0 ..< respondedTrials {
-                    let dist = sceneTask.distanceResponses[i].zDistances.map({ String($0) }).joined(separator: ";")
+                    let dist = sceneTask.distanceResponses[i].zDistances.map({ $0.toString }).joined(separator: ";")
                     let time = sceneTask.distanceResponses[i].clocks.map({
                         (offset + (1 + slope) * $0).toString }).joined(separator: ";")
                     
@@ -696,7 +696,7 @@ class SectionTask {
                 }
 
                 for i in 0 ..< respondedTrials {
-                    let dist = sceneTask.distanceResponses[i].zDistances.map({ String($0) }).joined(separator: ";")
+                    let dist = sceneTask.distanceResponses[i].zDistances.map({ $0.toString }).joined(separator: ";")
                     let time = sceneTask.distanceResponses[i].clocks.map({
                         (offset + (1 + slope) * $0).toString }).joined(separator: ";")
                     

@@ -228,48 +228,47 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
     }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        if let currentFrame = session.currentFrame {
-            for anchor in currentFrame.anchors {
-                guard let faceAnchor = anchor as? ARFaceAnchor else { continue }
-                
-                let leftEyeToFaceTransform: simd_float4x4 = faceAnchor.leftEyeTransform
-                let rightEyeToFaceTransform: simd_float4x4 = faceAnchor.rightEyeTransform
-                
-                let faceToCameraTransform: simd_float4x4 = faceAnchor.transform
-                let leftEyeToCameraTransform: simd_float4x4 = faceToCameraTransform * leftEyeToFaceTransform
-                let rightEyeToCameraTransform: simd_float4x4 = faceToCameraTransform * rightEyeToFaceTransform
-                
-//                let faceToOriginTransform: simd_float4x4 = cameraToOriginTransform * faceToCameraTransform
-                let leftEyeToOriginTransform: simd_float4x4 = cameraToOriginTransform * leftEyeToCameraTransform
-                let rightEyeToOriginTransform: simd_float4x4 = cameraToOriginTransform * rightEyeToCameraTransform
+        for anchor in frame.anchors {
+            guard let faceAnchor = anchor as? ARFaceAnchor else { continue }
+            
+            let leftEyeToFaceTransform: simd_float4x4 = faceAnchor.leftEyeTransform
+            let rightEyeToFaceTransform: simd_float4x4 = faceAnchor.rightEyeTransform
+            
+            let faceToCameraTransform: simd_float4x4 = faceAnchor.transform
+            let leftEyeToCameraTransform: simd_float4x4 = faceToCameraTransform * leftEyeToFaceTransform
+            let rightEyeToCameraTransform: simd_float4x4 = faceToCameraTransform * rightEyeToFaceTransform
+            
+//          let faceToOriginTransform: simd_float4x4 = cameraToOriginTransform * faceToCameraTransform
+            let leftEyeToOriginTransform: simd_float4x4 = cameraToOriginTransform * leftEyeToCameraTransform
+            let rightEyeToOriginTransform: simd_float4x4 = cameraToOriginTransform * rightEyeToCameraTransform
 
-                                
-                // only positions (from origin)
-//                let faceToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: faceToOriginTransform)
-                let leftEyeToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: leftEyeToOriginTransform)
-                let rightEyeToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: rightEyeToOriginTransform)
-                
-                
-                // distance
-                let z0 = (leftEyeToOriginPosition.2 + rightEyeToOriginPosition.2) / 2
-//                // only orientations (from origin)
-//                let faceToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: faceToOriginTransform)
-//                let leftEyeToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: leftEyeToOriginTransform)
-//                let rightEyeToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: rightEyeToOriginTransform)
-//                let facePositionX: Double = max(-1, min(1, Double(faceToOriginPosition.0)))
-//                let faceOrientationX: Double = max(-1, min(1, Double(faceToOriginOrientation.0)))
-//                let leftX: Double = max(-1, min(1, Double(leftEyeToOriginOrientation.0))) - faceOrientationX
-//                let rightX: Double = max(-1, min(1, Double(rightEyeToOriginOrientation.0))) - faceOrientationX
-//                let lrX: Double = leftX + rightX
-//                let facePositionY: Double = max(-1, min(1, Double(faceToOriginPosition.1)))
-//                let faceOrientationY: Double = max(-1, min(1, Double(faceToOriginOrientation.1)))
-//                let leftY: Double = max(-1, min(1, Double(leftEyeToOriginOrientation.1))) - faceOrientationY
-//                let rightY: Double = max(-1, min(1, Double(rightEyeToOriginOrientation.1))) - faceOrientationY
-//                let lrY: Double = leftY + rightY
-//                let x = Double(points[pointCounter].x)
-//                let y = Double(points[pointCounter].y)
-                
-                if isCalibrating && saveSamples {
+                            
+            // only positions (from origin)
+//          let faceToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: faceToOriginTransform)
+            let leftEyeToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: leftEyeToOriginTransform)
+            let rightEyeToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: rightEyeToOriginTransform)
+            
+            
+            // distance
+            let z0 = (leftEyeToOriginPosition.2 + rightEyeToOriginPosition.2) / 2
+//          // only orientations (from origin)
+//          let faceToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: faceToOriginTransform)
+//          let leftEyeToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: leftEyeToOriginTransform)
+//          let rightEyeToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: rightEyeToOriginTransform)
+//          let facePositionX: Double = max(-1, min(1, Double(faceToOriginPosition.0)))
+//          let faceOrientationX: Double = max(-1, min(1, Double(faceToOriginOrientation.0)))
+//          let leftX: Double = max(-1, min(1, Double(leftEyeToOriginOrientation.0))) - faceOrientationX
+//          let rightX: Double = max(-1, min(1, Double(rightEyeToOriginOrientation.0))) - faceOrientationX
+//          let lrX: Double = leftX + rightX
+//          let facePositionY: Double = max(-1, min(1, Double(faceToOriginPosition.1)))
+//          let faceOrientationY: Double = max(-1, min(1, Double(faceToOriginOrientation.1)))
+//          let leftY: Double = max(-1, min(1, Double(leftEyeToOriginOrientation.1))) - faceOrientationY
+//          let rightY: Double = max(-1, min(1, Double(rightEyeToOriginOrientation.1))) - faceOrientationY
+//          let lrY: Double = leftY + rightY
+//          let x = Double(points[pointCounter].x)
+//          let y = Double(points[pointCounter].y)
+            
+            if isCalibrating && saveSamples {
 //                    print(z, faceOrientationX, faceOrientationY)
 //                    matrixX.append([z,
 //                                    faceOrientationX,
@@ -346,27 +345,26 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
 //                            saveSamples = false
 //                        }
 //                    }
-                } else {
+            } else {
 //                    var x0 = faceOrientationX + facePositionX + 0.65 * lrX
 //                    var y0 = faceOrientationY + facePositionY + lrY
 //                    x0 *= pointspermeter
 //                    y0 *= pointspermeter
 //                    xs.append(x0)
 //                    ys.append(y0)
-                    zs.append(z0)
-                    
-                    if zs.count == 10 {
-                        let clock = CACurrentMediaTime()
-                        let z1 = zs.reduce(0, +) / 10
-                        self.eyeTrackerDelegate?.onFace(z: z1 * 100, clock: clock)
-                        zs.removeFirst()
+                zs.append(z0)
+                
+                if zs.count == 10 {
+                    let clock = CACurrentMediaTime()
+                    let z1 = zs.reduce(0, +) / 10
+                    self.eyeTrackerDelegate?.onFace(z: z1 * 100, clock: clock)
+                    zs.removeFirst()
 //                        let x1 = xs.reduce(0, +) / 10
 //                        let y1 = ys.reduce(0, +) / 10
 //                        self.eyeTrackerDelegate?.onGaze(gazeX: Double(x1), gazeY: Double(y1),
 //                                                        clock: clock, isTracking: true)
 //                        xs.removeFirst()
 //                        ys.removeFirst()
-                    }
                 }
             }
         }
