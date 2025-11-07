@@ -320,41 +320,42 @@ extension DisplayViewController: DisplayRenderDelegate {
         switch Task.shared.preview {
 
         case .no:
-            showAlertTestIsFinished(action: { _ in
+            var offset: Double = Task.shared.scaleTime
+            var slope: Double = 0
+            var rse: Double = 0
+            var neonLinearModel: Bool = false
+            var neonSyncError: Bool = false
+            
+            _Concurrency.Task {
+                let useNeon = Task.shared.testUsesNeonSync
+                var neonResult: NeonResult?
                 
-                _Concurrency.Task {
-                    let useNeon = Task.shared.testUsesNeonSync
-                    var neonResult: NeonResult?
-                    
-                    if useNeon {
-                        neonResult = await Task.shared.neon?.stopAndAnalyze()
-                        if let neonResult = neonResult {
-                            // regression was done in ms we want seconds
-                            // slope doesn't depend on the unit
-                            // rse in ms
-                            Task.shared.saveTestAsResult(offset: neonResult.intercept / 1000,
-                                                         slope: neonResult.slope,
-                                                         rse: neonResult.rse,
-                                                         neonLinearModel: true,
-                                                         neonSyncError: false)
-                            
-                        } else {
-                            Task.shared.saveTestAsResult(offset: Task.shared.scaleTime,
-                                                         slope: 0,
-                                                         rse: 0,
-                                                         neonLinearModel: false,
-                                                         neonSyncError: true)
-                        }
+                if useNeon {
+                    neonResult = await Task.shared.neon?.stopAndAnalyze()
+                    if let neonResult = neonResult {
+                        offset = neonResult.intercept / 1000 // regression was done in ms we want seconds
+                        slope = neonResult.slope  // slope doesn't depend on the unit
+                        rse = neonResult.rse  // rse in ms
+                        neonLinearModel = true
+                        neonSyncError = false
                     } else {
-                        Task.shared.saveTestAsResult(offset: Task.shared.scaleTime,
-                                                     slope: 0,
-                                                     rse: 0,
-                                                     neonLinearModel: false,
-                                                     neonSyncError: false)
+                        neonSyncError = true
                     }
                 }
-                Flow.shared.initTabControllerMenu()
-            })
+                
+                print("a ver si va")
+                print(offset, slope)
+                
+                showAlertTestIsFinished(action: { _ in
+                    Task.shared.saveTestAsResult(offset: offset,
+                                                 slope: slope,
+                                                 rse: rse,
+                                                 neonLinearModel: neonLinearModel,
+                                                 neonSyncError: neonSyncError)
+                    Flow.shared.initTabControllerMenu()
+                })
+            }
+            
         case .previewTest:
             showAlertTestIsFinishedPreview(action: { _ in
                 Flow.shared.navigateBack()

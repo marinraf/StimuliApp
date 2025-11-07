@@ -200,11 +200,43 @@ public actor NeonTimeEchoClient {
                 samples.append(sample)
             } catch {
                 print("TimeEcho periodic measure error: \(error)")
+                // Backoff a bit on error to let the network stack recover
+                try? await _Concurrency.Task.sleep(nanoseconds: 1_500_000_000)
             }
 
             try? await _Concurrency.Task.sleep(nanoseconds: UInt64(intervalSeconds * 1_000_000_000))
         }
     }
+    
+//    private func backgroundLoop(intervalSeconds: TimeInterval) async {
+//        var port: UInt16?
+//        do {
+//            port = try await fetchTimeEchoPort(host: hostIP)
+//        } catch {
+//            print("TimeEcho: fetch port failed")
+//        }
+//        guard let resolvedPort = port else {
+//            print("TimeEcho: could not resolve time_echo_port, giving up.")
+//            return
+//        }
+//        timeEchoPort = resolvedPort
+//
+//        while !_Concurrency.Task.isCancelled {
+//            do {
+//                let sample = try await raceWithTimeout(seconds: 5) { [self] in
+//                    try await self.measureOnceInternal()
+//                }
+//                print("-----------     vamos       ----------------", CACurrentMediaTime())
+//                samples.append(sample)
+//            } catch {
+//                print("TimeEcho periodic measure error: \(error)")
+//                // Backoff a bit on error to let the network stack recover
+//                try? await _Concurrency.Task.sleep(nanoseconds: 1_500_000_000)
+//            }
+//
+//            try? await _Concurrency.Task.sleep(nanoseconds: UInt64(intervalSeconds * 1_000_000_000))
+//        }
+//    }
 
 
     @discardableResult
@@ -219,6 +251,27 @@ public actor NeonTimeEchoClient {
     private func setPort(_ p: UInt16) {
         self.timeEchoPort = p
     }
+
+    private func waitReady(_ connection: NWConnection, timeout: TimeInterval) async throws {
+        try await raceWithTimeout(seconds: timeout) {
+            try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
+                connection.stateUpdateHandler = { st in
+                    switch st {
+                    case .ready:
+                        cont.resume(returning: ())
+                    case .failed(let e):
+                        cont.resume(throwing: e)
+                    case .waiting(let e):
+                        print("TimeEcho waiting: \(e)")
+                    default:
+                        break
+                    }
+                }
+                connection.start(queue: .global(qos: .userInitiated))
+            }
+        }
+    }
+    
 
     private func measureOnceInternal() async throws -> NeonTimeEchoSample {
         guard let port = timeEchoPort else {
@@ -235,17 +288,9 @@ public actor NeonTimeEchoClient {
                                       port: NWEndpoint.Port(rawValue: port)!,
                                       using: params)
 
-        try await withCheckedThrowingContinuation { (cont: CheckedContinuation<Void, Error>) in
-            connection.stateUpdateHandler = { st in
-                switch st {
-                case .ready: cont.resume(returning: ())
-                case .failed(let e): cont.resume(throwing: e)
-                case .waiting(let e): print("TimeEcho waiting: \(e)")
-                default: break
-                }
-            }
-            connection.start(queue: .global(qos: .userInitiated))
-        }
+        defer { connection.cancel() }
+
+        try await waitReady(connection, timeout: 3)
 
         let t1 = nowMs()
         var t1be = t1.bigEndian
@@ -253,12 +298,12 @@ public actor NeonTimeEchoClient {
 
         try await connection.sendAsync(payload)
 
-        let response = try await receiveExact(length: 16, over: connection)
+        let response = try await raceWithTimeout(seconds: 3) { [self] in
+            try await self.receiveExact(length: 16, over: connection)
+        }
         let t2 = nowMs()
         let tH = response.subdata(in: 8..<16).withUnsafeBytes { $0.load(as: UInt64.self).bigEndian }
         let rtt = t2 &- t1
-
-        connection.cancel()
 
         return NeonTimeEchoSample(t1: t1, tH: tH, t2: t2, rtt: rtt)
     }
@@ -345,7 +390,5 @@ fileprivate extension NWConnection {
         }
     }
 }
-
-
 
 

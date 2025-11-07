@@ -27,28 +27,28 @@ enum StimuliType: String, Codable, CaseIterable {
         switch self {
         case .patch:
             return """
-            Patch with uniform color.
+            Patch with a uniform color.
             """
         case .gradient:
             return """
-            Patch with gradient color. Changing linearly from color1 to color2 for the size of the gradient.
+            Patch with a color gradient. Transitions linearly from color1 to color2 over the gradient size.
             """
         case .grating:
             return """
-            Grating with color sinusoidally oscillating from color1 to color2.
+            Grating whose color oscillates sinusoidally between color1 and color2.
             """
         case .circularGrating:
             return """
-            Circular grating with color sinusoidally oscillating from color1 to color2.
+            Circular grating whose color oscillates sinusoidally between color1 and color2.
             """
         case .checkerboard:
             return """
-            Checkerboard defined by two different colors and the size of the boxes.
+            Checkerboard defined by two colors and the size of the boxes.
             """
         case .radialCheckerboard:
             return """
-            Checkerboard with radial symmetry defined by two different colors and the angle size of the boxes.
-            Divided into different circles (maximum 10 divisions).
+            Radial checkerboard defined by two colors and the angular size of the boxes.
+            Divided into concentric rings (up to 10 divisions).
             """
         case .dots:
             return """
@@ -72,7 +72,7 @@ enum StimuliType: String, Codable, CaseIterable {
             """
         case .pureTone:
             return """
-            Play auto-generated white noise audio or pure tone audio.
+            Play auto-generated white noise or a pure tone.
             """
         }
     }
@@ -111,7 +111,7 @@ enum StimuliType: String, Codable, CaseIterable {
     
     //patch
     func createPatchProperties() -> [Property] {
-        let colorInfo = "Color of the patch."
+        let colorInfo = "Patch color."
         let color = createProperty(name: "color",
                                    info: colorInfo,
                                    measure: .color,
@@ -126,8 +126,8 @@ enum StimuliType: String, Codable, CaseIterable {
     //gradient
     func createGradientProperties() -> [Property] {
         let gradientSizeInfo = """
-        The size of the gradient.
-        It is defined as the distance from the position with color = color1 to the position with color = color2.
+        Gradient size.
+        Defined as the distance from the position where color = color1 to the position where color = color2.
         """
         let gradientSize = createProperty(name: "gradientSize",
                                           info: gradientSizeInfo,
@@ -144,15 +144,15 @@ enum StimuliType: String, Codable, CaseIterable {
                                     measure: .color,
                                     value: 1)
         let gradientPositionInfo =  """
-        Position of the center of the gradient relative to the center of the shape that contains it.
-        Measured in the direction of the gradient set by the gradientRotation.
+        Position of the gradient’s center relative to the center of the containing shape.
+        Measured along the gradient direction set by gradientRotation.
         """
         let gradientPosition = createProperty(name: "gradientPosition",
                                               info: gradientPositionInfo,
                                               measure: .size,
                                               value: 0)
         let gradientRotationInfo = """
-        Orientation of the gradient. This property only rotates the gradient but not the shape that masks it.
+        Gradient orientation. This property rotates only the gradient, not the masking shape.
         """
         let gradientRotation = createProperty(name: "gradientRotation",
                                               info: gradientRotationInfo,
@@ -188,7 +188,7 @@ enum StimuliType: String, Codable, CaseIterable {
                                    measure: .angle,
                                    value: 0)
         let gratingRotationInfo = """
-        Orientation of the grating. This property only rotates the grating but not the shape that masks it.
+        Grating orientation. This property rotates only the grating, not the masking shape.
         """
         let gratingRotation = createProperty(name: "gratingRotation",
                                              info: gratingRotationInfo,
@@ -219,14 +219,14 @@ enum StimuliType: String, Codable, CaseIterable {
                                     measure: .color,
                                     value: 1)
         let checkerboardPositionInfo = """
-        Position of the center of the checkerboard relative to the center of the shape that contains it.
+        Position of the checkerboard’s center relative to the center of the containing shape.
         """
         let checkerboardPosition = createProperty(name: "checkerboardPosition",
                                                   info: checkerboardPositionInfo,
                                                   measure: .position2d,
                                                   value: 0)
         let checkerboardRotationInfo = """
-        Orientation of the checkerboard. This property only rotates the checkerboard but not the shape that masks it.
+        Checkerboard orientation. This property rotates only the checkerboard, not the masking shape.
         """
         let checkerboardRotation = createProperty(name: "checkerboardRotation",
                                                   info: checkerboardRotationInfo,
@@ -241,7 +241,7 @@ enum StimuliType: String, Codable, CaseIterable {
     
     //radial checkerboard
     func createRadialCheckerboardProperties() -> [Property] {
-        let boxAngleSizeInfo = "Angle size of the boxes."
+        let boxAngleSizeInfo = "Angular size of the boxes."
         let boxAngleSize = createProperty(name: "boxAngleSize",
                                           info: boxAngleSizeInfo,
                                           measure: .angle,
@@ -257,58 +257,58 @@ enum StimuliType: String, Codable, CaseIterable {
                                     measure: .color,
                                     value: 1)
         let checkerboardRotationInfo = """
-        Orientation of the checkerboard. This property only rotates the checkerboard but not the shape that masks it.
+        Checkerboard orientation. This property rotates only the checkerboard, not the masking shape.
         """
         let checkerboardRotation = createProperty(name: "checkerboardRotation",
                                                   info: checkerboardRotationInfo,
                                                   measure: .angle,
                                                   value: 0)
-        let diameter1Info = "Diameter of the first circle"
+        let diameter1Info = "Diameter of the first ring"
         let diameter1 = createProperty(name: "diameter1",
                                        info: diameter1Info,
                                        measure: .size,
                                        value: 0)
-        let diameter2Info = "Diameter of the second circle"
+        let diameter2Info = "Diameter of the second ring"
         let diameter2 = createProperty(name: "diameter2",
                                        info: diameter2Info,
                                        measure: .size,
                                        value: 0)
-        let diameter3Info = "Diameter of the third circle"
+        let diameter3Info = "Diameter of the third ring"
         let diameter3 = createProperty(name: "diameter3",
                                        info: diameter3Info,
                                        measure: .size,
                                        value: 0)
-        let diameter4Info = "Diameter of the fourth circle"
+        let diameter4Info = "Diameter of the fourth ring"
         let diameter4 = createProperty(name: "diameter4",
                                        info: diameter4Info,
                                        measure: .size,
                                        value: 0)
-        let diameter5Info = "Diameter of the fifth circle"
+        let diameter5Info = "Diameter of the fifth ring"
         let diameter5 = createProperty(name: "diameter5",
                                        info: diameter5Info,
                                        measure: .size,
                                        value: 0)
-        let diameter6Info = "Diameter of the sixth circle"
+        let diameter6Info = "Diameter of the sixth ring"
         let diameter6 = createProperty(name: "diameter6",
                                        info: diameter6Info,
                                        measure: .size,
                                        value: 0)
-        let diameter7Info = "Diameter of the seventh circle"
+        let diameter7Info = "Diameter of the seventh ring"
         let diameter7 = createProperty(name: "diameter7",
                                        info: diameter7Info,
                                        measure: .size,
                                        value: 0)
-        let diameter8Info = "Diameter of the eighth circle"
+        let diameter8Info = "Diameter of the eighth ring"
         let diameter8 = createProperty(name: "diameter8",
                                        info: diameter8Info,
                                        measure: .size,
                                        value: 0)
-        let diameter9Info = "Diameter of the ninth circle"
+        let diameter9Info = "Diameter of the ninth ring"
         let diameter9 = createProperty(name: "diameter9",
                                        info: diameter9Info,
                                        measure: .size,
                                        value: 0)
-        let diameter10Info = "Diameter of the tenth circle"
+        let diameter10Info = "Diameter of the tenth ring"
         let diameter10 = createProperty(name: "diameter10",
                                         info: diameter10Info,
                                         measure: .size,
@@ -343,3 +343,5 @@ enum StimuliType: String, Codable, CaseIterable {
         return [period, color1, color2, phase]
     }
 }
+
+

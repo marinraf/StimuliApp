@@ -952,7 +952,6 @@ enum Device {
     
     var cameraPosition: CameraPositions {
         switch self {
-            
         case .iPodTouch5: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
         case .iPodTouch6: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
         case .iPodTouch7: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
@@ -991,23 +990,19 @@ enum Device {
         case .iPhone14Plus: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
         case .iPhone14Pro: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
         case .iPhone14ProMax: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
-        // not sure about iPhone15, check: https://developer.apple.com/accessories/Accessory-Design-Guidelines.pdf
-        case .iPhone15: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
-        case .iPhone15Plus: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
-        case .iPhone15Pro: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
-        case .iPhone15ProMax: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
-        // not sure about iPhone15, check: https://developer.apple.com/accessories/Accessory-Design-Guidelines.pdf
-            
-        case .iPhone16: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPhone16Plus: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPhone16Pro: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPhone16ProMax: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPhone16e: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPhone17: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPhone17Pro: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPhone17ProMax: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPhoneAir: return CameraPositions(0, 0, 0, 0, 0, 0)
-                
+        case .iPhone15: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone15Plus: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone15Pro: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone15ProMax: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone16: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone16Plus: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone16Pro: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone16ProMax: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone16e: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone17: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone17Pro: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhone17ProMax: return CameraPositions(0.6, 0, 0, 0.4, 1, 0.6)
+        case .iPhoneAir: return CameraPositions(1/3, 0, 0, 2/3, 1, 1/3)
         case .iPad2: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPad3: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPad4: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
@@ -1020,26 +1015,20 @@ enum Device {
         case .iPad8: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPad9: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPad10: return  CameraPositions(1, 1/2, 1/2, 0, 1/2, 1)
-            
-        case .iPadA16: return CameraPositions(0, 0, 0, 0, 0, 0)
-
+        case .iPadA16: return CameraPositions(1, 1/2, 1/2, 0, 1/2, 1)
         case .iPadAir4: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadAir5: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
-            
-        case .iPadAir11M2: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPadAir13M2: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPadAir11M3: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPadAir13M3: return CameraPositions(0, 0, 0, 0, 0, 0)
-            
+        case .iPadAir11M2: return CameraPositions(1, 1/2, 1/2, 0, 1/2, 1)
+        case .iPadAir13M2: return CameraPositions(1, 1/2, 1/2, 0, 1/2, 1)
+        case .iPadAir11M3: return CameraPositions(1, 1/2, 1/2, 0, 1/2, 1)
+        case .iPadAir13M3: return CameraPositions(1, 1/2, 1/2, 0, 1/2, 1)
         case .iPadMini: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadMini2: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadMini3: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadMini4: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadMini5: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadMini6: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
-            
-        case .iPadMiniA17Pro: return CameraPositions(0, 0, 0, 0, 0, 0)
-            
+        case .iPadMiniA17Pro: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadPro9Inch: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadPro12Inch: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadPro12Inch2: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
@@ -1052,10 +1041,8 @@ enum Device {
         case .iPadPro12Inch5: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadPro11Inch4: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
         case .iPadPro12Inch6: return CameraPositions(1/2, 0, 0, 1/2, 1, 1/2)
-            
-        case .iPadPro11M4: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .iPadPro13M4: return CameraPositions(0, 0, 0, 0, 0, 0)
-            
+        case .iPadPro11M4: return CameraPositions(1, 1/2, 1/2, 0, 1/2, 1)
+        case .iPadPro13M4: return CameraPositions(1, 1/2, 1/2, 0, 1/2, 1)
         case .unknown: return CameraPositions(0, 0, 0, 0, 0, 0)
         case .macOS: return CameraPositions(1/2, 0, 0, 0, 0, 0)
         }
@@ -1081,7 +1068,6 @@ enum Device {
         case .macOS: return ""
         default: return "you may found some info in: https://www.displaymate.com/mobile.html"
         }
-
     }
 
     var systemName: String {
