@@ -174,7 +174,7 @@ class Flow {
             for scene in test.scenes {
                 let endTime = Property(name: "endTime",
                                          info: """
-                                         Maximum time until which it is possible to respond.
+                                         Maximum time during which it is possible to respond.
                                          """,
                                          propertyType: .simpleFloat,
                                          unitType: .time,
@@ -182,9 +182,10 @@ class Flow {
 
                 let wrongTiming = Property(name: "wrongTiming",
                                          info: """
-                                         If 0 it is not possible to respond before startTime or after endTime.
-                                         If 1 it is possible to respond before startTime or after endTime but the \
-                                         response is considered incorrect.
+                                         If set to 0: it is not possible to respond before startTime \
+                                         or after endTime.
+                                         If set to 1 it is possible to respond before startTime \
+                                         or after endTime but the response is considered incorrect.
                                          """,
                                          propertyType: .simpleFloat,
                                          unitType: .activated,

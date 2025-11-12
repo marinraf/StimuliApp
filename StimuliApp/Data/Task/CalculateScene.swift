@@ -531,8 +531,8 @@ extension Task {
     private func createImage(from object: Object, objectNumber: Int) -> String {
         guard let listOfImages = Flow.shared.test.listsOfValues.first(where: { $0.type == .images }) else {
             return """
-            ERROR: there is not a list of images. Go to the "list" menu to create a list containing all \
-            the images you want to draw.
+            ERROR: No list of images found.  
+            Please go to the “List” menu and create a list that contains all the images you wish to draw.
             """
         }
 
@@ -581,8 +581,8 @@ extension Task {
     private func createText(from object: Object, objectNumber: Int) -> String {
         guard let listOfTexts = Flow.shared.test.listsOfValues.first(where: { $0.dimensions == 5 }) else {
             return  """
-            ERROR: there is not a list of texts. Go to the "list" menu to create a list containing all \
-            the texts you want to draw.
+            ERROR: No list of texts found.  
+            Please go to the “List” menu and create a list that contains all the texts you wish to draw.
             """
         }
         guard let stimulus = object.stimulus else { return "" }
@@ -703,8 +703,8 @@ extension Task {
 
         guard let listOfVideos = Flow.shared.test.listsOfValues.first(where: { $0.type == .videos }) else {
             return  """
-            ERROR: there is not a list of videos. Go to the "list" menu to create a list containing all \
-            the videos you want to play.
+            ERROR: No list of videos found.  
+            Please go to the “List” menu and create a list that contains all the videos you wish to play.
             """
         }
         guard let stimulus = object.stimulus else { return "" }
@@ -835,8 +835,8 @@ extension Task {
         if type == .audio {
             guard let listOfAudios = Flow.shared.test.listsOfValues.first(where: { $0.type == .audios }) else {
                 return  """
-                ERROR: there is not a list of audios. Go to the "list" menu to create a list containing all \
-                the audios you want to play.
+                ERROR: No list of audios found.  
+                Please go to the “List” menu and create a list that contains all the audios you wish to play.
                 """
             }
 

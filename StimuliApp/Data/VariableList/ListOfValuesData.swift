@@ -20,7 +20,7 @@ struct ListOfValuesData {
         return Property(name: "jitteringValue",
                         info: """
                         If the jittering is not zero, a numeric value in the range (-jitteringValue, jitteringValue) \
-                        is randomly generated in each trial and added to the corresponding value from the list.
+                        is randomly generated for each trial and added to the corresponding value from the list.
                         """,
                         propertyType: .simpleFloat,
                         unitType: .decimal,
@@ -30,7 +30,7 @@ struct ListOfValuesData {
     static func makeValuesOrderProperty(selected: Int) -> Property {
         return Property(name: "shuffled",
                         info: """
-                        If the values in the list are always in the same order or if they are shuffled every \
+                        Whether the values in the list are always in the same order or if they are shuffled every \
                         time the test is run.
                         """,
                         propertyType: .listOrder,
@@ -52,7 +52,7 @@ struct ListOfValuesData {
     static func makeLengthOfBlocksProperty(float: Float) -> Property {
         return Property(name: "lengthOfBlocks",
                         info: """
-                        The length of the blocks (the number of trials for each one of the blocks).
+                        The length of the blocks (the number of trials for each block).
                         """,
                         propertyType: .simpleFloat,
                         unitType: .positiveDecimalWithoutZero,
@@ -62,7 +62,7 @@ struct ListOfValuesData {
     static func makeTypesOfBlocksProperty(selected: Int) -> Property {
         return Property(name: "typesOfBlocks",
                         info: """
-                        All blocks can be of the same type or there can be 2 different types of blocks.
+                        All blocks can be of the same type, or there can be 2 different types of blocks.
                         """,
                         propertyType: .select,
                         unitType: .decimal,
@@ -108,7 +108,7 @@ struct ListOfValuesData {
 
         return Property(name: "probChangeList",
                         info: """
-                        The probability of changing the list when a trial is finished.
+                        The probability of changing the list when a trial finishes.
                         """,
                         propertyType: .simpleFloat,
                         unitType: .valueFrom0to1,
@@ -131,7 +131,7 @@ struct ListOfValuesData {
 
         return Property(name: "probChangeBlock",
                         info: """
-                        The probability of changing the type of block when a block is finished.
+                        The probability of changing the type of block when a block finishes.
                         """,
                         propertyType: .simpleFloat,
                         unitType: .valueFrom0to1,
@@ -176,7 +176,7 @@ struct ListOfValuesData {
 
         return Property(name: "firstBlockProbChangeList",
                         info: """
-                        The probability of changing the list when a trial of the first block is finished.
+                        The probability of changing the list when a trial of the first block finishes.
                         """,
                         propertyType: .simpleFloat,
                         unitType: .valueFrom0to1,
@@ -221,7 +221,7 @@ struct ListOfValuesData {
 
         return Property(name: "secondBlockProbChangeList",
                         info: """
-                        The probability of changing the list when a trial of the second block is finished.
+                        The probability of changing the list when a trial of the second block finishes.
                         """,
                         propertyType: .simpleFloat,
                         unitType: .valueFrom0to1,
@@ -239,7 +239,7 @@ enum FixedListOrder: String, Codable, CaseIterable {
         switch self {
         case .inOrder:
             return """
-            The values in the list are always in the same order.
+            The values in the list are always in the same order. \
             When an object selects values from the list, it can select the values in order or randomly, \
             but the list itself is always in the same order.
             """

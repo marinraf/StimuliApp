@@ -58,9 +58,9 @@ class InfoExportViewController: UIViewController {
         // Configure textView for performance and CSV readability
         let monoFont = UIFont.monospacedSystemFont(ofSize: 12, weight: .regular)
         let paragraph = NSMutableParagraphStyle()
-        paragraph.lineBreakMode = .byCharWrapping
+        paragraph.lineBreakMode = .byWordWrapping
         
-        paragraph.lineBreakMode = .byCharWrapping
+        paragraph.lineBreakMode = .byWordWrapping
         
         paragraph.alignment = .left
         let attrs: [NSAttributedString.Key: Any] = [
@@ -81,7 +81,7 @@ class InfoExportViewController: UIViewController {
         textView.smartInsertDeleteType = .no
         textView.textContainer.lineFragmentPadding = 8
         textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-        textView.textContainer.lineBreakMode = .byCharWrapping
+        textView.textContainer.lineBreakMode = .byWordWrapping
         textView.textContainer.widthTracksTextView = true
 
         button.setImage(UIImage(named: infoExport.buttonImage), for: .normal)

@@ -20,35 +20,35 @@ enum TimeFunctions: String, Codable, CaseIterable {
     var description: String {
         switch self {
         case .linear: return """
-            The value changes linearly with time.
+            The value changes linearly over time.
             """
         case .quadratic: return """
-            The value changes quadratically with time.
+            The value changes quadratically over time.
             """
         case .sinusoidal: return """
-            The value oscillates sinusoidally with time.
+            The value oscillates sinusoidally over time.
             """
         case .rectangleWave: return """
-            The value follows a cycle where it is equal to value1 during duration1 and equal to value2 during duration2.
+            The value follows a cycle where it is equal to value1 for duration1 and equal to value2 for duration2.
             """
         case .triangleWave: return """
-            The value follows a cycle where it changes linearly from value1 to value2 during duration1.
-            Then it changes from value2 to value1 during duration2.
+            The value follows a cycle where it changes linearly from value1 to value2 during duration1, \
+            then changes from value2 to value1 during duration2.
             """
         case .pulse: return  """
-            The value changes linearly from zero to maximum during rampDuration.
-            It is equal to the maximum for centralDuration.
-            It changes linearly from maximum to zero during rampDuration.
+            The value changes linearly from zero to maximum during rampDuration, \
+            remains equal to the maximum for centralDuration, \
+            then changes linearly from maximum to zero during rampDuration.
             """
         case .gaussian: return  """
-            The value follows a gaussian function.
+            The value follows a Gaussian function.
             """
         case .gaussianEnergy: return """
-            The value follows a gaussian function normalised to have always the same energy (area under the curve) \
+            The value follows a Gaussian function normalized to have the same energy (area under the curve) \
             regardless of the standard deviation.
             """
         case .random: return """
-            Random values chosen in the interval from value1 to value2. The duration is the same for each one of them.
+            Random values chosen in the interval from value1 to value2. The duration is the same for each value.
             """
         }
     }
@@ -57,7 +57,7 @@ enum TimeFunctions: String, Codable, CaseIterable {
 
         let c0 = createProperty(for: property,
                                 name: "startMovement",
-                                info: "The time in which the movement starts.",
+                                info: "The time at which the movement starts.",
                                 measureSame: 0,
                                 measureTime: 1,
                                 defaultValue: 0)
@@ -125,21 +125,21 @@ enum TimeFunctions: String, Codable, CaseIterable {
 
             let c3 = createProperty(for: property,
                                     name: "amplitude",
-                                    info: "Value of the amplitude of the oscillation.",
+                                    info: "The amplitude of the oscillation.",
                                     measureSame: 1,
                                     measureTime: 0,
                                     defaultValue: 0)
 
             let c4 = createProperty(for: property,
                                     name: "frequency",
-                                    info: "Frequency of the oscillation.",
+                                    info: "The frequency of the oscillation.",
                                     measureSame: 0,
                                     measureTime: -1,
                                     defaultValue: 1)
 
             let c5 = createProperty(for: property,
                                     name: "phase",
-                                    info: "Phase of the oscillation.",
+                                    info: "The phase of the oscillation.",
                                     measureSame: 0,
                                     measureTime: 0,
                                     defaultValue: 0)
@@ -220,14 +220,14 @@ enum TimeFunctions: String, Codable, CaseIterable {
 
             let c3 = createProperty(for: property,
                                     name: "centralDuration",
-                                    info: "Duration in which the result is equal to the maximum value.",
+                                    info: "The duration in which the result is equal to the maximum value.",
                                     measureSame: 0,
                                     measureTime: 1,
                                     defaultValue: 1)
 
             let c4 = createProperty(for: property,
                                     name: "rampDuration",
-                                    info: "Duration of the linear transition from zero to maximum and viceversa.",
+                                    info: "The duration of the linear transition from zero to maximum and vice versa.",
                                     measureSame: 0,
                                     measureTime: 1,
                                     defaultValue: 1)
@@ -245,14 +245,14 @@ enum TimeFunctions: String, Codable, CaseIterable {
 
             let c3 = createProperty(for: property,
                                     name: "center",
-                                    info: "Time in which the result reaches the maximum value.",
+                                    info: "The time at which the result reaches the maximum value.",
                                     measureSame: 0,
                                     measureTime: 1,
                                     defaultValue: 1)
 
             let c4 = createProperty(for: property,
                                     name: "deviation",
-                                    info: "Standard deviation of the gauss function.",
+                                    info: "The standard deviation of the Gaussian function.",
                                     measureSame: 0,
                                     measureTime: 1,
                                     defaultValue: 1)
@@ -263,21 +263,21 @@ enum TimeFunctions: String, Codable, CaseIterable {
 
             let c2 = createProperty(for: property,
                                     name: "energy",
-                                    info: "Value of the integral of the gauss function over the entire real line.",
+                                    info: "The value of the integral of the Gaussian function over the entire real line.",
                                     measureSame: 1,
                                     measureTime: 1,
                                     defaultValue: 0)
 
             let c3 = createProperty(for: property,
                                     name: "center",
-                                    info: "Time in which the result reaches the maximum value.",
+                                    info: "The time at which the result reaches the maximum value.",
                                     measureSame: 0,
                                     measureTime: 1,
                                     defaultValue: 1)
 
             let c4 = createProperty(for: property,
                                     name: "deviation",
-                                    info: "Standard deviation of the gauss function.",
+                                    info: "The standard deviation of the Gaussian function.",
                                     measureSame: 0,
                                     measureTime: 1,
                                     defaultValue: 1)
@@ -302,7 +302,7 @@ enum TimeFunctions: String, Codable, CaseIterable {
 
             let c4 = createProperty(for: property,
                                     name: "duration",
-                                    info: "Duration of each one of the randomized values.",
+                                    info: "The duration of each of the randomized values.",
                                     measureSame: 0,
                                     measureTime: 1,
                                     defaultValue: 0)

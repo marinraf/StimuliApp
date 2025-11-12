@@ -127,11 +127,11 @@ extension Task {
                 if totalNumber % numberOfValues != 0 {
                     if let blockVar = sectionTask.allVariables.first(where: { $0.group == -1 }) {
                         return """
-                        ERROR: the \(variable.name) has associated the list \(list.name.string) which has \
-                        \(numberOfValues) values.
-                        The total number of trials in the section is \(totalNumber) that \
-                        is given by the variable: \(blockVar.name) which values are controlled by blocks.
-                        \(totalNumber) is NOT divisible by \(numberOfValues).
+                        ERROR: the variable: \(variable.name) is associated with the \
+                        list: \(list.name.string), which contains \(numberOfValues) values.  
+                        However, the total number of trials in this section is \(totalNumber), \
+                        as determined by the block-controlled variable “\(blockVar.name)”.  
+                        \(totalNumber) is not divisible by \(numberOfValues).
                         """
                     }
                 }
@@ -212,10 +212,11 @@ extension Task {
                         let numberOfVars = variable.allVariablesInSameGroup(section: section).count
                         guard numberOfVars <= numberOfValues else {
                             return """
-                            ERROR: variable: \(variable.name) is in a group with other variables.
-                            All the variables of the group are set to have a different values betweem them.
-                            The number of variables in the group is bigger than the number of possible values \
-                            that the group can take.
+                            ERROR: the variable: \(variable.name) is grouped with other variables \
+                            that must each take a different value.
+                            However, there are fewer available distinct \
+                            values than there are variables in the group, making it impossible to \
+                            assign each variable a different one.
                             """
                         }
                         var values = List(numberOfValues: numberOfValues,
@@ -728,9 +729,9 @@ extension Task {
     private func checkErrors(list: ListOfValues, variable: Variable) -> String {
         if list.jitteringActive {
             return """
-            ERROR: the list: \(list.name.string) has jittering.
-            It is not possible to use jittering in lists that are controlled by blocks.
-            Please go to the list and turn the jittering off.
+            Error: The list “\(list.name.string)” uses jittering, but jittering cannot \
+            be enabled for lists that are controlled by blocks.  
+            Please edit the list settings and disable jittering before continuing.
             """
         }
         if list.dimensions != variable.dimensions &&

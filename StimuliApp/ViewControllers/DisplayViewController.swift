@@ -185,6 +185,7 @@ extension DisplayViewController: DisplayRenderDelegate {
         displayRender?.inactive = true
         player?.pause()
         audioSystem.pauseAudio()
+        Flow.shared.eyeTracker?.stopTracking()
         showAlertNeedToSync(resume: { _ in self.resumeFromPause() }, end: { _ in self.end() })
     }
     
@@ -192,6 +193,7 @@ extension DisplayViewController: DisplayRenderDelegate {
         displayRender?.inactive = true
         player?.pause()
         audioSystem.pauseAudio()
+        Flow.shared.eyeTracker?.stopTracking()
         switch error {
         case .no:
             break
@@ -210,6 +212,7 @@ extension DisplayViewController: DisplayRenderDelegate {
         displayRender?.inactive = true
         player?.pause()
         audioSystem.pauseAudio()
+        Flow.shared.eyeTracker?.stopTracking()
         if Flow.shared.settings.device.type == .mac {
             showAlertFirstMessageMac(resume: { _ in self.resumeFromPauseFirst() }, end: { _ in self.end() })
         } else {
@@ -322,9 +325,12 @@ extension DisplayViewController: DisplayRenderDelegate {
         case .no:
             var offset: Double = Task.shared.scaleTime
             var slope: Double = 0
+            var halfMinRtt: Double = 0
             var rse: Double = 0
+            var numberOfSamples: Int = 0
             var neonLinearModel: Bool = false
             var neonSyncError: Bool = false
+            var calculationsError: Bool = false
             
             _Concurrency.Task {
                 let useNeon = Task.shared.testUsesNeonSync
@@ -335,23 +341,26 @@ extension DisplayViewController: DisplayRenderDelegate {
                     if let neonResult = neonResult {
                         offset = neonResult.intercept / 1000 // regression was done in ms we want seconds
                         slope = neonResult.slope  // slope doesn't depend on the unit
+                        halfMinRtt = neonResult.halfMinRtt  //half of the min rtt in ms
                         rse = neonResult.rse  // rse in ms
+                        numberOfSamples = neonResult.numberOfSamples
                         neonLinearModel = true
                         neonSyncError = false
                     } else {
-                        neonSyncError = true
+                        calculationsError = true
                     }
+                    
                 }
-                
-                print("a ver si va")
-                print(offset, slope)
                 
                 showAlertTestIsFinished(action: { _ in
                     Task.shared.saveTestAsResult(offset: offset,
                                                  slope: slope,
+                                                 halfMinRtt: halfMinRtt,
                                                  rse: rse,
+                                                 numberOfSamples: numberOfSamples,
                                                  neonLinearModel: neonLinearModel,
-                                                 neonSyncError: neonSyncError)
+                                                 neonSyncError: neonSyncError,
+                                                 calculationsError: calculationsError)
                     Flow.shared.initTabControllerMenu()
                 })
             }
@@ -387,6 +396,7 @@ extension DisplayViewController: DisplayRenderDelegate {
     func pause() {
         player?.pause()
         audioSystem.pauseAudio()
+        Flow.shared.eyeTracker?.stopTracking()
         switch Task.shared.preview {
         case .no, .previewTest:
             showAlertCancelTest(resume: { _ in self.resumeFromPause() }, end: { _ in self.end() })
@@ -439,6 +449,7 @@ extension DisplayViewController: DisplayRenderDelegate {
         self.inTitle = inTitle
         player?.pause()
         audioSystem.pauseAudio()
+        Flow.shared.eyeTracker?.stopTracking()
         textField.isHidden = false
         numberKeyboard = type == .numeric ? true : false
         textField.text = ""
@@ -454,6 +465,7 @@ extension DisplayViewController: DisplayRenderDelegate {
         displayRender?.inactive = false
         player?.play()
         audioSystem.resumeAudio()
+        Flow.shared.eyeTracker?.startTracking()
     }
     
     func resumeFromWarning() {
@@ -471,6 +483,7 @@ extension DisplayViewController: DisplayRenderDelegate {
         displayRender?.inactive = false
         player?.play()
         audioSystem.resumeAudio()
+        Flow.shared.eyeTracker?.startTracking()
         Task.shared.warningTracker = true
         Task.shared.warningTrackerPause = .no
     }
@@ -483,6 +496,7 @@ extension DisplayViewController: DisplayRenderDelegate {
         displayRender?.inactive = false
         player?.play()
         audioSystem.resumeAudio()
+        Flow.shared.eyeTracker?.startTracking()
     }
 
     func addVideoPlayer(videoUrl: URL, to view: UIView) {
@@ -872,9 +886,6 @@ extension DisplayViewController : TrackerOnViewDelegate {
                 }
                 
                 if Task.shared.sceneTask.gazeFixation {
-                    
-                    print(radius)
-                    
                     if radius > Task.shared.sceneTask.maxGazeErrorInPixels || radius.isNaN {
                         Task.shared.sceneTask.trackerResponses[trial].errors.append(1)
                     } else {

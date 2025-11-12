@@ -40,14 +40,14 @@ extension StimuliType {
 
 
         let coherence = createProperty(name: "coherence",
-                                       info: "The proportion of type1 dots from the total number of dots.",
+                                       info: "The proportion of type1 dots out of the total number of dots.",
                                        measure: .valueFrom0to1,
                                        value: 0.5)
 
         let dotsLife1 = createProperty(name: "dotsLife1",
                                        info: """
-                                       The life of each one of the dots. When a dot reaches their life it \
-                                       disappears and another dot is created in a random position. If life is zero \
+                                       The life of each dot. When a dot reaches its life limit, it \
+                                       disappears and another dot is created at a random position. If life is zero, \
                                        the dots change their position each frame.
                                        """,
                                        measure: .time,
@@ -59,7 +59,7 @@ extension StimuliType {
                                        value: 8)
 
         let direction1 = Property(name: "direction1",
-                                  info: "Possibles ways to establish the dot direction for type1 dots.",
+                                  info: "Possible ways to establish the dot direction for type1 dots.",
                                   propertyType: .direction,
                                   unitType: .decimal,
                                   fixedValues: FixedDirection.allCases.map({ $0.name }),
@@ -72,8 +72,8 @@ extension StimuliType {
 
         let dotsLife2 = createProperty(name: "dotsLife2",
                                        info: """
-                                       The life of each one of the dots. When a dot reaches their life it \
-                                       disappears and another dot is created in a random position. If life is zero \
+                                       The life of each dot. When a dot reaches its life limit, it \
+                                       disappears and another dot is created at a random position. If life is zero, \
                                        the dots change their position each frame.
                                        """,
                                        measure: .time,
@@ -85,7 +85,7 @@ extension StimuliType {
                                        value: 8)
 
         let direction2 = Property(name: "direction2",
-                                  info: "Possibles ways to establish the dot direction for type2 dots.",
+                                  info: "Possible ways to establish the dot direction for type2 dots.",
                                   propertyType: .direction,
                                   unitType: .decimal,
                                   fixedValues: FixedDirection.allCases.map({ $0.name }),
@@ -133,8 +133,8 @@ extension StimuliType {
                                  unitType: .size,
                                  float: 0)
 
-        let color = createProperty(name: "textColor", //don´t change the name because is checked in addPropertiesToColor
-                                   info: "Color of the text.",
+        let color = createProperty(name: "textColor", //don't change the name because it's checked in addPropertiesToColor
+                                   info: "The color of the text.",
                                    measure: .color,
                                    value: 0)
 
@@ -144,7 +144,7 @@ extension StimuliType {
     func createImageProperties() -> [Property] {
 
         let image = Property(name: "imageNumber",
-                             info: "The number of the image selected from the lists of images.",
+                             info: "The number of the image selected from the list of images.",
                              propertyType: .image,
                              unitType: .positiveIntegerWithoutZero,
                              float: 1)
@@ -159,7 +159,7 @@ extension StimuliType {
 
         let imageRotation = createProperty(name: "imageRotation",
                                            info: """
-                                                 Orientation of the image.
+                                                 Orientation of the image. \
                                                  This property only rotates the image but not the shape that masks it.
                                                  """,
                                            measure: .angle,
@@ -171,7 +171,7 @@ extension StimuliType {
     func createVideoProperties() -> [Property] {
 
         let video = Property(name: "videoNumber",
-                             info: "The number of the video selected from the lists of videos.",
+                             info: "The number of the video selected from the list of videos.",
                              propertyType: .video,
                              unitType: .positiveIntegerWithoutZero,
                              float: 1)
@@ -182,14 +182,14 @@ extension StimuliType {
     func createAudioProperties() -> [Property] {
 
         let audio = Property(name: "audioNumber",
-                             info: "The number of the audio selected from the lists of audios.",
+                             info: "The number of the audio file selected from the list of audio files.",
                              propertyType: .audio,
                              unitType: .positiveIntegerWithoutZero,
                              float: 1)
 
         let amplitude = Property(name: "amplitude",
                                  info: """
-                                 The amplitude of the sound.
+                                 The amplitude of the sound. \
                                  The perceived loudness of the sound is approximately proportional to the logarithm \
                                  of the amplitude.
                                  """,
@@ -211,7 +211,7 @@ extension StimuliType {
 
         let amplitude = Property(name: "amplitude",
                                  info: """
-                                 The amplitude of the sinewave.
+                                 The amplitude of the sine wave. \
                                  The perceived loudness of the sound is approximately proportional to the logarithm \
                                  of the amplitude.
                                  """,
@@ -221,7 +221,7 @@ extension StimuliType {
 
         let leftRightBalance =  Property(name: "leftRightBalance",
                                 info: """
-                                From 0 = totally to the left to 1 = totally to the right.
+                                From 0 (totally to the left) to 1 (totally to the right).
                                 leftAmplitude = leftRightBalance * amplitude
                                 rightAmplitude = (1 - leftRightBalance) * amplitude
                                 """,

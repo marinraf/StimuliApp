@@ -168,7 +168,6 @@ class Task {
     var testUsesNeonMakers: Bool = false
     var neonIP: String = ""
     var neon: NeonTimeEchoClient?
-    var neonResult: String = ""
     
     var trackerCoordinates: FixedPositionEyeTracker = .cartesian
     var trackerFirstUnit: Unit = .none
@@ -457,8 +456,8 @@ class Task {
                 let sceneName = variable.scene?.name.string ?? "unknown"
                 let sectionName = variable.section?.name.string ?? "unknown"
                 return """
-                ERROR: variable: \(variable.name) in scene: \(sceneName) and section: \(sectionName)
-                has no list assigned.
+                ERROR: the variable: \(variable.name) in scene: \(sceneName) and \
+                section: \(sectionName) has no list assigned.
                 """
             }
             let listError = listOfValues.calculateGoodValues()
@@ -474,15 +473,15 @@ class Task {
                     if let varProperty = variable.selection.properties.first(where: { $0.somethingId == variable.id}) {
                         let number = varProperty.float.toInt
                         if number > listOfValues.values.count { return """
-                            ERROR: in variable: \(variable.name).
-                            The listOfValues: \(listOfValues.name.string) has \(listOfValues.values.count) values
-                            and you are selecting the value \(number) as first value.
+                            ERROR: the variable: \(variable.name) has been asigned a list of \
+                            values: \(listOfValues.name.string) that contains \(listOfValues.values.count) \
+                            values, yet you are selecting value #\(number) as the first value.
                             """ }
                     } else {
                         if listOfValues.values.count < 2 { return """
-                            ERROR: in variable: \(variable.name).
-                            The listOfValues: \(listOfValues.name.string) has \(listOfValues.values.count) values
-                            and for a variable of type correct/incorrect you need at least 2 values.
+                            ERROR: the variable: \(variable.name) uses a correct/incorrect type but \
+                            the list of values: \(listOfValues.name.string) only contains \
+                            \(listOfValues.values.count) value. 2 values are required for this variable type.
                             """
                         }
                     }
@@ -928,9 +927,12 @@ class Task {
 
     func saveTestAsResult(offset: Double,
                           slope: Double,
+                          halfMinRtt: Double,
                           rse: Double,
+                          numberOfSamples: Int,
                           neonLinearModel: Bool,
-                          neonSyncError: Bool) {
+                          neonSyncError: Bool,
+                          calculationsError: Bool) {
         
         let result = Result(name: name, order: Flow.shared.results.count)
 
@@ -938,11 +940,42 @@ class Task {
         
         var testSettings = ""
         
-        if neonSyncError {
+        if calculationsError {
+            testSettings += "NEON EYE TRACKER CLOCK SYNC\n"
             testSettings += """
-        WARNING: Unable to synchronize the clocks between the device and the Neon eye tracker.
+        WARNING: Unexpected error. Unable to synchronize the eye tracker with the device clock.
         """
             testSettings += Constants.separator
+            
+        } else if neonSyncError {
+            let interceptString = (offset / 1000.0).toString
+            let slopeString = "NaN"
+            let halfMinRttString = halfMinRtt.toString
+            let rseString = rse.toString
+            
+            testSettings += "NEON EYE TRACKER CLOCK SYNC\n"
+            testSettings += """
+        WARNING: Message exchange with the Neon eye tracker stopped unexpectedly, \
+        likely due to a local network issue. As a result, clock drift could not be computed.\n
+        """
+            testSettings += "Estimated clock difference: \(interceptString) s\n"
+            testSettings += "Estimated clock drift: \(slopeString) ms/hour\n"
+            testSettings += "Theoretical sync resolution (½ RTTmin): \(halfMinRttString) ms\n"
+            testSettings += "Clock sync precision (Residual Standard Error): \(rseString) ms\n"
+            testSettings += "Based on \(numberOfSamples) sync messages." + Constants.separator
+            
+        } else if neonLinearModel {
+            let interceptString = (offset / 1000.0).toString
+            let slopeString = (slope * 3_600_000.0).toString
+            let halfMinRttString = halfMinRtt.toString
+            let rseString = rse.toString
+            
+            testSettings += "NEON EYE TRACKER CLOCK SYNC\n"
+            testSettings += "Estimated clock difference: \(interceptString) s\n"
+            testSettings += "Estimated clock drift: \(slopeString) ms/hour\n"
+            testSettings += "Theoretical sync resolution (½ RTTmin): \(halfMinRttString) ms\n"
+            testSettings += "Clock sync precision (Residual Standard Error): \(rseString) ms\n"
+            testSettings += "Based on \(numberOfSamples) sync messages." + Constants.separator
         }
         
         testSettings += """
@@ -1030,10 +1063,6 @@ class Task {
         let stimuliString = stimuli.joined(separator: "\n")
 
         result.data += "VALUES OF THE CONSTANT PROPERTIES:" + "\n\n" + stimuliString + Constants.separator
-        
-        if neonLinearModel {
-            result.data += "NEON CLOCK SYNC RSE (Residual Standard Error): " + rse.toString + "ms" + Constants.separator
-        }
 
         result.data += "FRAME RATE:" + "\n\n" + Flow.shared.frameControl.longFramesString + Constants.separator
 

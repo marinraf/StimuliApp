@@ -141,15 +141,14 @@ struct SectionData {
 
         let sortedProperty = Property(name: "orderIsImportant",
                                  info: """
-                                 If 0 when we compare responseValue with trialValue in responses involving more than \
-                                 one object, the order in which the objects are touched is not taken into account.
+                                 If 0, when we compare responseValue with trialValue in responses involving more than \
+                                 one object, the order in which the objects are touched is not taken into account. \
+                                 If 1, the order in which they are touched is taken into account.
 
-                                 If 1 the order in which they are touched is taken into account.
-
-                                 For example, if the trialValue = 2;4 and in the response we touch first object with \
-                                 value 4 and then object with value 2 the responseValue is 4;2.
-                                 If orderIsImportant = 1 order is important, so the trial will be considered incorrect,
-                                 if orderIsImportant = 0 order is not important, the trial will be considered correct.
+                                 For example, if trialValue = 2;4 and in the response we touch the object with \
+                                 value 4 first and then the object with value 2, the responseValue is 4;2. \
+                                 If orderIsImportant = 1, order is important, so the trial will be considered incorrect. \
+                                 If orderIsImportant = 0, order is not important, so the trial will be considered correct.
                                  """,
                                  propertyType: .simpleFloat,
                                  unitType: .activated,
@@ -215,18 +214,18 @@ enum FixedValueType: String, Codable, CaseIterable {
         switch self {
         case .same:
             return """
-            In each of the trials the variable has a value that is one of the possible values of a list of
-            values plus a jittering value. This is the value associated to each trial.
+            In each trial, the variable has a value that is one of the possible values from a list of \
+            values plus a jittering value. This is the value associated with each trial.
             """
         case .other:
             return """
-            For each one of the possible values of the variable, we can define a corresponding value for the trial.
-            At first the value we define is a numeric value without any unit. If we define a response value \
-            for the interaction of the participant, then the value we define here as value for the trial \
-            will be considered to have the same unit as the unit we are using as response.
-            Example: if we have fixed the response of the user as the x position of the touch in the screen, \
-            measured in cms, and we fix here the trial values to be: 5, 10, then these values willl be treated \
-            as 5cm and 10cm in order to do the comparisons with the response.
+            For each of the possible values of the variable, we can define a corresponding value for the trial. \
+            Initially, the value we define is a numeric value without any unit. If we define a response value \
+            for the participant's interaction, then the value we define here as the trial value \
+            will be considered to have the same unit as the unit we are using for the response. \
+            Example: if we have set the user's response as the x position of the touch on the screen, \
+            measured in cm, and we set the trial values here to be 5, 10, then these values will be treated \
+            as 5 cm and 10 cm in order to make comparisons with the response.
             """
         }
     }

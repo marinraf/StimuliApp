@@ -240,7 +240,6 @@ extension DisplayRender {
             Task.shared.userResponse.xTouches.append(touchInView.x)
             Task.shared.userResponse.yTouches.append(touchInView.y)
             Task.shared.userResponse.clocks.append(touchInView.time)
-            print("appendding the following time: ", touchInView.time)
             displayRenderDelegate?.stopAudio(forceStop: false)
             responded = true
         } else if touchInView.location.x > 2 * touchInView.screenSize.width / 3 {

@@ -207,6 +207,7 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
         configuration.maximumNumberOfTrackedFaces = 1
         configuration.worldAlignment = .camera
         session?.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+        self.isTracking = true
         self.eyeTrackerDelegate?.onInitialized(error: false)
         
         let v1: simd_float4 = SIMD4(Float(Flow.shared.angle00),
@@ -377,10 +378,19 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
         self.isCalibrating = false
     }
     func startTracking() {
-        self.isTracking = true
+        if self.isTracking == false {
+            let configuration = ARFaceTrackingConfiguration()
+            configuration.maximumNumberOfTrackedFaces = 1
+            configuration.worldAlignment = .camera
+            session?.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+            self.isTracking = true
+        }
     }
     func stopTracking() {
-        self.isTracking = false
+        if self.isTracking == true {
+            self.isTracking = false
+            self.session?.pause()
+        }
     }
     
     func moveToFirstPosition() {

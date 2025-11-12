@@ -318,10 +318,11 @@ class SectionTask {
 
         for sceneTask in sceneTasks {
             for i in 0 ..< respondedTrials {
-                let newValue = (offset + (1 + slope) * sceneTask.realStartTime[i]).toString
-                values[i].append(newValue)
-                let newValue2 = (sceneTask.realEndTime[i] - sceneTask.realStartTime[i]).toString
-                values[i].append(newValue2)
+                let startTime = offset + (1 + slope) * sceneTask.realStartTime[i]
+                let endTime = offset + (1 + slope) * sceneTask.realEndTime[i]
+                values[i].append(startTime.toString)
+                let duration = endTime - startTime
+                values[i].append(duration.toString)
             }
         }
 
