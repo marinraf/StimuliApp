@@ -57,7 +57,6 @@ class Settings {
     var delayAudio120Property: Property
     
     var retina: Float
-    var languageProperty: Property
 
     init(device: Device) {
         self.device = device
@@ -148,8 +147,6 @@ class Settings {
         let systemString = "\(device.systemName), version: \(device.systemVersion)"
         let userString = UserDefaults.standard.string(forKey: "user") ?? "user"
         let emailString = UserDefaults.standard.string(forKey: "email") ?? "user@email.com"
-        let languageString = UserDefaults.standard.string(forKey: "language") ?? "english"
-        let languageValue: Int = FixedLanguage(rawValue: languageString) == .spanish ? 1 : 0
 
         self.userProperty = SettingsData.makeUserProperty(text: userString)
         self.emailProperty = SettingsData.makeEmailProperty(text: emailString)
@@ -172,13 +169,11 @@ class Settings {
         self.positionXProperty = SettingsData.makePositionXProperty(float: positionX)
         self.positionYProperty = SettingsData.makePositionYProperty(float: positionY)
         
-        self.languageProperty = SettingsData.makeLanguageProperty(selected: languageValue)
-
         self.userProperties = [userProperty, emailProperty]
 
         self.deviceProperties = [versionProperty, descriptionProperty, systemProperty, audioRateProperty,
                                  maximumFrameRateProperty, resolutionProperty, ppiProperty, maximumBrightnessProperty,
-                                 rampTimeProperty, delayAudio60Property, languageProperty]
+                                 rampTimeProperty, delayAudio60Property]
 
         if self.maximumFrameRate == 120 {
             self.deviceProperties.append(delayAudio120Property)

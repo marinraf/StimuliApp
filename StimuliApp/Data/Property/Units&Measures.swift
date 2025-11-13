@@ -338,7 +338,6 @@ enum PropertyType: String, Codable, CaseIterable {
     case selectionOrder
     case correctType
 
-    case language
     case testEyeTracker
     case neon
     case sceneGazeFixation
@@ -413,7 +412,6 @@ enum PropertyType: String, Codable, CaseIterable {
         case .neon: return [.alwaysConstant]
         case .originEyeTracker: return [.alwaysConstant]
         case .positionEyeTracker: return [.alwaysConstant]
-        case .language: return [.alwaysConstant]
         case .origin2d: return [.alwaysConstant]
         case .originResponse: return [.alwaysConstant]
         case .position2d: return [.alwaysConstant]
@@ -476,7 +474,6 @@ enum PropertyType: String, Codable, CaseIterable {
         case .neon: return false
         case .originEyeTracker: return false
         case .positionEyeTracker: return false
-        case .language: return false
         case .origin2d: return false
         case .originResponse: return false
         case .position2d: return false
@@ -538,7 +535,6 @@ enum PropertyType: String, Codable, CaseIterable {
         case .neon: return FixedNeon.allCases.map({ $0.name })
         case .originEyeTracker: return FixedOrigin2d.allCases.map { $0.name }
         case .positionEyeTracker: return FixedPositionEyeTracker.allCases.map { $0.name }
-        case .language: return FixedLanguage.allCases.map { $0.name }
         case .origin2d: return FixedOrigin2d.allCases.map({ $0.name })
         case .originResponse: return FixedOrigin2d.allCases.map({ $0.name })
         case .position2d: return FixedPosition2d.allCases.map({ $0.name })
@@ -601,7 +597,6 @@ enum PropertyType: String, Codable, CaseIterable {
         case .neon: return FixedNeon.allCases.map { $0.description }
         case .originEyeTracker: return FixedOrigin2d.allCases.map { $0.description }
         case .positionEyeTracker: return FixedPositionEyeTracker.allCases.map { $0.description }
-        case .language: return FixedLanguage.allCases.map { $0.description }
         case .origin2d: return FixedOrigin2d.allCases.map({ $0.description })
         case .originResponse: return FixedOrigin2d.allCases.map({ $0.description })
         case .position2d: return FixedPosition2d.allCases.map({ $0.description })

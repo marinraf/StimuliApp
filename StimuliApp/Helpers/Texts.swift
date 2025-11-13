@@ -186,10 +186,6 @@ struct Texts {
         return text
     }
     
-    static let language = """
-    This variable only changes the texts of the alerts that the user receives while performing the test.
-    """
-    
     static let testWindowPositionX = """
     The x position of the test window, from the upper left corner of the screen.
     """
@@ -845,11 +841,10 @@ struct Texts {
     are always rendered above everything else.
     You can change the order of the objects by clicking the Edit button and moving them in the menu.
     """
-  
+    
     
     // MARK: - Alerts
-    static var firstMessageTest: String {
-        var text = """
+    static let firstMessageTest = """
         Remember to disable Notifications while performing the test.
         
         For stimuliApp to display luminance properly:
@@ -858,187 +853,62 @@ struct Texts {
         
         - Disable Auto-Brightness (Settings -> Accessibility, Display & Text Size).
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Recuerda desactivar las notificaciones mientras realizas la prueba.
-            
-            Para que StimuliApp muestre correctamente la luminancia:
-            
-            - Desactiva TrueTone y Night Shift en tu dispositivo (Configuración -> Pantalla y brillo).
-            
-            - Desactiva el brillo automático (Configuración -> Accesibilidad, Tamaño de texto y pantalla).
-            """
-        }
-        return text
-    }
     
-    static var needToSync: String {
-        var text = """
+    static let needToSync = """
         Screen needs to re-sync. Press OK to continue.
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            La pantalla necesita volver a sincronizarse. Presiona OK para continuar.
-            """
-        }
-        return text
-    }
     
-    static var fixationBroken: String{
-        var text = """
+    static let fixationBroken = """
         Please look at the center of the screen during the fixation period.
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Por favor, mira al centro de la pantalla durante el período de fijación.
-            """
-        }
-        return text
-    }
-
-    static var distanceBrokenFar: String {
-        var text = """
+    
+    static let distanceBrokenFar = """
         You are too far from the screen. Please, come closer and check that the distance is correct.
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Estás demasiado lejos de la pantalla. Por favor, acércate y verifica que la distancia sea correcta.
-            """
-        }
-        return text
-    }
-
-    static var distanceBrokenClose: String {
-        var text = """
+    
+    static let distanceBrokenClose = """
         You are too close to the screen. Please, move away and check that the distance is correct.
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Estás demasiado cerca de la pantalla. Por favor, aléjate y verifica que la distancia sea correcta.
-            """
-        }
-        return text
-    }
-
-    static var distanceBrokenNan: String {
-        var text = """
+    
+    static let distanceBrokenNan = """
         It is not possible to calculate the distance from your face to the screen. Please stand right in front of the device.
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            No es posible calcular la distancia desde tu rostro hasta la pantalla. Por favor, colócate justo frente al dispositivo.
-            """
-        }
-        return text
-    }
-
-
+    
+    
     // MARK: - Alerts titles
-    static var testFinished: String {
-        var text = """
+    static let testFinished = """
         Test ended
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Test finalizado
-            """
-        }
-        return text
-    }
-
-    static var testStarted: String {
-        var text = """
+    
+    static let testStarted = """
         Test running
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Test inicializado
-            """
-        }
-        return text
-    }
-
-    static var fixation: String {
-        var text = """
+    
+    static let fixation = """
         Fixation broken
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Fijación rota
-            """
-        }
-        return text
-    }
-
-    static var distance: String {
-        var text = """
+    
+    static let distance = """
         Incorrect distance with the device
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Distancia incorrecta con el dispositivo
-            """
-        }
-        return text
-    }
-
-    static var testEnd: String {
-        var text = """
+    
+    static let testEnd = """
         End test
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Finalizar test
-            """
-        }
-        return text
-    }
-
-    static var testEnd2: String {
-        var text = """
+    
+    static let testEnd2 = """
         Are you sure you want to end the test?
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Estás seguro de querer finalizar el test?
-            """
-        }
-        return text
-    }
-
-    static var testContinue: String {
-        var text = """
+    
+    static let testContinue = """
         Continue test
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Continuar el test
-            """
-        }
-        return text
-    }
-
-    static var calibrationTitle: String {
-        var text = """
+    
+    static let calibrationTitle = """
         Calibration
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Calibración
-            """
-        }
-        return text
-    }
-
-    static var thanks: String {
-        var text = """
+    
+    static let thanks = """
         Thank you.
         """
-        if FixedLanguage(rawValue: Flow.shared.settings.languageProperty.string) == .spanish {
-            text = """
-            Muchas gracias.
-            """
-        }
-        return text
-    }
 }
