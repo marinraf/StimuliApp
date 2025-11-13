@@ -4,12 +4,32 @@
 import UIKit
 
 extension UIViewController {
+    
+    // Helper para verificar si ya hay una alerta presentada
+    private func canPresentAlert() -> Bool {
+        return presentedViewController == nil
+    }
+    
+    private func presentAlertSafely(_ alert: UIAlertController) {
+        if canPresentAlert() {
+            self.present(alert, animated: false, completion: nil)
+        } else {
+            // Si ya hay algo presentado, esperamos un poco y reintentamos
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                guard let self = self else { return }
+                if self.canPresentAlert() {
+                    self.present(alert, animated: false, completion: nil)
+                }
+            }
+        }
+    }
+    
     func showAlertOk(title: String, message: String) {
         let alert = UIAlertController(title: title,
                                       message: message,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
     func showAlertTestIsFinished(action: @escaping (UIAlertAction) -> Void) {
@@ -17,7 +37,7 @@ extension UIViewController {
                                       message: Texts.thanks,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: action))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
     func showAlertTestIsFinishedPreview(action: @escaping (UIAlertAction) -> Void,
@@ -31,7 +51,7 @@ extension UIViewController {
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: action))
         alert.addAction(UIAlertAction(title: "More Info", style: UIAlertAction.Style.default, handler: action2))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
     func showAlertFirstMessageTest(resume: @escaping (UIAlertAction) -> Void, end: @escaping (UIAlertAction) -> Void) {
@@ -39,7 +59,7 @@ extension UIViewController {
                                       message: Texts.firstMessageTest,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: resume))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
     func showAlertFirstMessageMac(resume: @escaping (UIAlertAction) -> Void, end: @escaping (UIAlertAction) -> Void) {
@@ -47,7 +67,7 @@ extension UIViewController {
                                       message: "",
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: resume))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
     func showAlertNeedToSync(resume: @escaping (UIAlertAction) -> Void, end: @escaping (UIAlertAction) -> Void) {
@@ -55,7 +75,7 @@ extension UIViewController {
                                       message: Texts.needToSync,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: resume))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
     
     func showAlertFixationBroken(resume: @escaping (UIAlertAction) -> Void) {
@@ -63,7 +83,7 @@ extension UIViewController {
                                       message: Texts.fixationBroken,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: resume))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
     
     func showAlertDistanceBrokenFar(resume: @escaping (UIAlertAction) -> Void) {
@@ -71,7 +91,7 @@ extension UIViewController {
                                       message: Texts.distanceBrokenFar,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: resume))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
     
     func showAlertDistanceBrokenClose(resume: @escaping (UIAlertAction) -> Void) {
@@ -79,7 +99,7 @@ extension UIViewController {
                                       message: Texts.distanceBrokenClose,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: resume))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
     func showAlertDistanceBrokenNan(resume: @escaping (UIAlertAction) -> Void) {
@@ -87,7 +107,7 @@ extension UIViewController {
                                       message: Texts.distanceBrokenNan,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: resume))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
     func showAlertCancelTest(resume: @escaping (UIAlertAction) -> Void, end: @escaping (UIAlertAction) -> Void) {
@@ -96,7 +116,7 @@ extension UIViewController {
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: Texts.testContinue, style: UIAlertAction.Style.default, handler: resume))
         alert.addAction(UIAlertAction(title: Texts.testEnd, style: UIAlertAction.Style.default, handler: end))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
     func showAlertDelete(title: String, message: String, action: @escaping (UIAlertAction) -> Void) {
@@ -105,7 +125,7 @@ extension UIViewController {
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil))
         alert.addAction(UIAlertAction(title: "Delete", style: UIAlertAction.Style.default, handler: action))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
     func showAlertDuplicate(action: @escaping (UIAlertAction) -> Void) {
@@ -114,7 +134,7 @@ extension UIViewController {
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil))
         alert.addAction(UIAlertAction(title: "Duplicate", style: UIAlertAction.Style.default, handler: action))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
     func showAlertPermissions() {
@@ -128,7 +148,7 @@ extension UIViewController {
                                       options: [:],
                                       completionHandler: nil)
         })
-        present(alert, animated: false)
+        presentAlertSafely(alert)
     }
 
     func showAlertDRM() {
@@ -136,7 +156,7 @@ extension UIViewController {
                                       message: "Unable to read DRM protected file.",
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
     
     func showAlertCalibration(action: @escaping (UIAlertAction) -> Void) {
@@ -144,7 +164,7 @@ extension UIViewController {
                                       message: Texts.calibration,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: action))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
     
     func showAlertCalibrationError(action: @escaping (UIAlertAction) -> Void) {
@@ -152,7 +172,7 @@ extension UIViewController {
                                       message: Texts.calibrationError,
                                       preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: action))
-        self.present(alert, animated: false, completion: nil)
+        presentAlertSafely(alert)
     }
 
 }

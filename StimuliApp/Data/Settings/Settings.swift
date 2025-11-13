@@ -64,7 +64,21 @@ class Settings {
 
         self.screenInfo = device.screenInfo
         self.maximumFrameRate = device.maximumFrameRate
-        self.audioRate = Int(AVAudioSession.sharedInstance().sampleRate)
+        
+        var shouldUseMacConfiguration = false
+        if #available(iOS 14.0, *) {
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                shouldUseMacConfiguration = true
+            }
+        }
+        
+        if shouldUseMacConfiguration {
+            let tempEngine = AVAudioEngine()
+            self.audioRate = Int(tempEngine.outputNode.outputFormat(forBus: 0).sampleRate)
+        } else {
+            self.audioRate = Int(AVAudioSession.sharedInstance().sampleRate)
+        }
+        
         self.radiansPerDegree = Constants.radiansPerDegree
 
         self.distance = Constants.defaultDistanceCm
@@ -162,15 +176,9 @@ class Settings {
 
         self.userProperties = [userProperty, emailProperty]
 
-        #if targetEnvironment(macCatalyst)
-        self.deviceProperties = [versionProperty, descriptionProperty, systemProperty, audioRateProperty,
-                                 maximumFrameRateProperty,resolutionProperty, positionXProperty, positionYProperty,
-                                 ppiProperty, maximumBrightnessProperty, rampTimeProperty, delayAudio60Property, languageProperty]
-        #else
         self.deviceProperties = [versionProperty, descriptionProperty, systemProperty, audioRateProperty,
                                  maximumFrameRateProperty, resolutionProperty, ppiProperty, maximumBrightnessProperty,
                                  rampTimeProperty, delayAudio60Property, languageProperty]
-        #endif
 
         if self.maximumFrameRate == 120 {
             self.deviceProperties.append(delayAudio120Property)

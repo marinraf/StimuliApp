@@ -74,12 +74,6 @@ class Flow {
         let fetchedResults = dataModel.fetchAllResults()
         tests = fetchedTests.sorted(by: { $0.order < $1.order })
         results = fetchedResults.sorted(by: { $0.order < $1.order })
-
-        #if targetEnvironment(macCatalyst)
-        Bundle(path: Bundle.main.builtInPlugInsPath?.appending("/MacBundle.bundle") ?? "")?.load()
-        self.macApp = NSClassFromString("MacApp") as AnyObject as? NSObjectProtocol
-        self.animated = false
-        #endif
     }
 
     var navigationController: UINavigationController? {

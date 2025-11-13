@@ -456,7 +456,6 @@ enum Device {
     }
 
     private static func mapToDevice(identifier: String) -> Device {
-        #if !targetEnvironment(macCatalyst)
         switch identifier {
         case "iPod5,1": return iPodTouch5
         case "iPod7,1": return iPodTouch6
@@ -551,9 +550,6 @@ enum Device {
         case "iPad16,5", "iPad16,6": return iPadPro13M4
         default: return unknown(identifier)
         }
-        #else
-        return macOS
-        #endif
     }
 
     var description: String {

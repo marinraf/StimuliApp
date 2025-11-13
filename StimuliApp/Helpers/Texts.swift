@@ -6,34 +6,17 @@ import Foundation
 struct Texts {
     
     // MARK: - Other
-    #if targetEnvironment(macCatalyst)
-    static let version = "StimuliApp beta " + String(format:"%.1f", Constants.version)
-    #else
     static let version = "StimuliApp " + String(format:"%.1f", Constants.version)
-    #endif
-    
     static let versionInfo = "StimuliApp version"
     
     static var firstLaunch: String {
-        var text = """
+        let text = """
         Welcome to \(version)!!
         
         We have included some demos in the Tests menu to show you some of the StimuliApp features.
         You can duplicate, edit or delete them.
         You'll always find a copy of them available to download on our website (www.stimuliapp.com).
         """
-        #if targetEnvironment(macCatalyst)
-        text =  """
-        Welcome to \(version)!!
-        
-        We have included some demos in the Tests menu to show you some of the StimuliApp features.
-        You can duplicate, edit or delete them.
-        You'll always find a copy of them available to download on our website (www.stimuliapp.com).
-        
-        Make sure to tune the screen resolution, ppi and test window size to match the specifics of your device,\
-        otherwise stimuli may appear wrongly formatted or not visible at all.
-        """
-        #endif
         return text
     }
     
@@ -141,30 +124,12 @@ struct Texts {
     """
     
     static var ppi: String {
-        var text = """
+        let text = """
         The pixel density per inch of the screen.
         This value is provided directly when the device is identified.
         If the device is not correctly identified, you can provide a value manually.
         This value is only necessary if you plan to work in centimeters, inches or visual degrees instead of pixels.
         """
-        #if targetEnvironment(macCatalyst)
-        text =  """
-        The pixel density per inch of the screen.
-        It is important that you calculate this value yourself, if you plan to work in centimeters, inches \
-        or visual degrees.
-        Do not use the value provided by apple or the manufacturer of your screen, because the value of your current \
-        ppi can depend on some system settings.
-        The only way to be sure that you are using the right value for the ppi is to measure it yourself.
-        To do that, first measure the size of the test window in pixels and then the length of the diagonal of the \
-        test window in inches.
-        With these values you can easily get your ppi, for example using:
-        
-        https://www.pxcalc.com
-        
-        Always verify that the ppi value is correct by drawing a rectangle of a certain size in cm or inches and \
-        measuring the actual size.
-        """
-        #endif
         return text
     }
     
@@ -215,23 +180,9 @@ struct Texts {
     """
     
     static var resolution: String {
-        var text = """
+        let text = """
         Screen resolution in landscape mode.
         """
-        #if targetEnvironment(macCatalyst)
-        text =  """
-        Tests are always run and previewed with StimuliApp in fullscreen mode.
-        
-        When a test is run, a test window is created with the size indicated in this property.
-        
-        Depending on your computer's CPU and GPU model, you may find that running tests \
-        using a large window results in a drop in performance and unstable frame rate.
-        
-        If that is the case, you can try reducing the size of the window.
-        
-        You can change the position of the window in the screen with the testWindowPosition properties.
-        """
-        #endif
         return text
     }
     

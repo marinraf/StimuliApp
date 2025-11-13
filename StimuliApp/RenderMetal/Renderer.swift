@@ -232,15 +232,11 @@ extension Renderer: MTKViewDelegate {
 
         commandEncoder.endEncoding()
 
-        #if targetEnvironment(macCatalyst)
-        commandBuffer.present(drawable)
-        #else
         if Flow.shared.settings.frameRate == Flow.shared.settings.maximumFrameRate {
             commandBuffer.present(drawable)
         } else {
             commandBuffer.present(drawable, afterMinimumDuration: Double(Flow.shared.settings.delta) - 0.001)
         }
-        #endif
         
         if let displayRender = self.displayRender {
             let register = !displayRender.inactive

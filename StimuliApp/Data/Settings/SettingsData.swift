@@ -151,9 +151,6 @@ struct SettingsData {
                                   unitType: .pixelSize,
                                   float: float)
         
-        #if targetEnvironment(macCatalyst)
-        property.name = "testWindowSize"
-        #endif
         property.float1 = float1
         property.onlyInfo = onlyInfo
         return property

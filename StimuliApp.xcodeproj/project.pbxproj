@@ -108,7 +108,6 @@
 		CC5D18F022A6700B005F69F5 /* CreateFakeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5D18EF22A6700B005F69F5 /* CreateFakeTest.swift */; };
 		CC62F8B62A04062000CD27C4 /* CalibrationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CC62F8B52A04062000CD27C4 /* CalibrationView.xib */; };
 		CC736A632EB9F7B300FE4C06 /* NeonSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC736A622EB9F7AD00FE4C06 /* NeonSync.swift */; };
-		CC736A652EBB8B1200FE4C06 /* Borrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC736A642EBB8B0F00FE4C06 /* Borrar.swift */; };
 		CCB95029222544F7002E0516 /* Variable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB95028222544F7002E0516 /* Variable.swift */; };
 		CCB9502B2225519B002E0516 /* EditVariableMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB9502A2225519B002E0516 /* EditVariableMenu.swift */; };
 		CCC2AFF5228A984E008A9441 /* CreateConditionsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC2AFF4228A984E008A9441 /* CreateConditionsMenu.swift */; };
@@ -290,7 +289,6 @@
 		CC5D18EF22A6700B005F69F5 /* CreateFakeTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateFakeTest.swift; sourceTree = "<group>"; };
 		CC62F8B52A04062000CD27C4 /* CalibrationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalibrationView.xib; sourceTree = "<group>"; };
 		CC736A622EB9F7AD00FE4C06 /* NeonSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeonSync.swift; sourceTree = "<group>"; };
-		CC736A642EBB8B0F00FE4C06 /* Borrar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Borrar.swift; sourceTree = "<group>"; };
 		CCB95028222544F7002E0516 /* Variable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variable.swift; sourceTree = "<group>"; };
 		CCB9502A2225519B002E0516 /* EditVariableMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVariableMenu.swift; sourceTree = "<group>"; };
 		CCC2AFF4228A984E008A9441 /* CreateConditionsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateConditionsMenu.swift; sourceTree = "<group>"; };
@@ -422,7 +420,6 @@
 		961430A1220EEA9200AF073E /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				CC736A642EBB8B0F00FE4C06 /* Borrar.swift */,
 				CC460C6F21E4C26900475EC5 /* Settings.swift */,
 				961430A2220EEC0600AF073E /* SettingsData.swift */,
 				CC460C7121E4C2BA00475EC5 /* Device.swift */,
@@ -872,7 +869,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 2610;
 				ORGANIZATIONNAME = "Rafa Marín";
 				TargetAttributes = {
 					7471DE5823BBAB2E00220DCC = {
@@ -1067,7 +1064,6 @@
 				9644E44E21FA458D00387900 /* EditStimulusMenu.swift in Sources */,
 				96E9F479229E92E9001A40BE /* ContentViewController.swift in Sources */,
 				966FF86D227029FA000811EB /* ValueFromVariableMenu.swift in Sources */,
-				CC736A652EBB8B1200FE4C06 /* Borrar.swift in Sources */,
 				CC460CAB21E5087700475EC5 /* DataModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1117,7 +1113,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "StimuliApp/Audio/StimuliApp-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = bundle;
 			};
@@ -1154,6 +1150,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1223,6 +1220,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1291,7 +1289,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_APP_SANDBOX = YES;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = YES;
@@ -1303,13 +1301,15 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 2.0;
 				MTL_ENABLE_MODULES = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.idibaps.Stimulios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
 				SWIFT_OBJC_BRIDGING_HEADER = "StimuliApp/Audio/StimuliApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -1328,7 +1328,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_APP_SANDBOX = YES;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = YES;
@@ -1340,13 +1340,15 @@
 					"@executable_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.4;
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 2.0;
 				MTL_ENABLE_MODULES = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.idibaps.Stimulios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
 				SWIFT_OBJC_BRIDGING_HEADER = "StimuliApp/Audio/StimuliApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";

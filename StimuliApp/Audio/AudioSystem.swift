@@ -25,20 +25,36 @@ class AudioSystem {
     var audioFiles: [AudioFile] = []
     var sess: AVAudioSession?
     
-
+    
     func setup(songs: [URL?]) {
-        sess = AVAudioSession.sharedInstance()
-
-        if let sess = sess {
-            do {
-                let durationBuffer = Constants.bufferAudio
-                try sess.setCategory(.playback, mode: .default, options: [])
-                try sess.setPreferredIOBufferDuration(durationBuffer)
-                try sess.setActive(true)
-
-                Flow.shared.settings.updateAudioRate(new: sess.sampleRate)
-                myAUSampleRateHz = Float(Flow.shared.settings.audioRate)
-            } catch { }
+        var shouldUseMacConfiguration = false
+        
+        if #available(iOS 14.0, *) {
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                shouldUseMacConfiguration = true
+            }
+        }
+        
+        if shouldUseMacConfiguration {
+            let tempEngine = AVAudioEngine()
+            let value = tempEngine.outputNode.outputFormat(forBus: 0).sampleRate
+            print(value)
+            Flow.shared.settings.updateAudioRate(new: value)
+            myAUSampleRateHz = Float(Flow.shared.settings.audioRate)
+        } else {
+            sess = AVAudioSession.sharedInstance()
+            
+            if let sess = sess {
+                do {
+                    let durationBuffer = Constants.bufferAudio
+                    try sess.setCategory(.playback, mode: .default, options: [])
+                    try sess.setPreferredIOBufferDuration(durationBuffer)
+                    try sess.setActive(true)
+                    
+                    Flow.shared.settings.updateAudioRate(new: sess.sampleRate)
+                    myAUSampleRateHz = Float(Flow.shared.settings.audioRate)
+                } catch { }
+            }
         }
 
         audioEngine = AVAudioEngine()
@@ -80,7 +96,23 @@ class AudioSystem {
 
     func begin() {
         myAUAmplitude = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-        let outputFormat = audioEngine!.outputNode.inputFormat(forBus: 0) // AVAudioFormat
+        
+        var shouldUseMacConfiguration = false
+        
+        if #available(iOS 14.0, *) {
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                shouldUseMacConfiguration = true
+            }
+        }
+        
+        let outputFormat: AVAudioFormat
+        if shouldUseMacConfiguration {
+            outputFormat = AVAudioFormat(standardFormatWithSampleRate: Double(Flow.shared.settings.audioRate),
+                                         channels: 2)!
+        } else {
+            outputFormat = audioEngine!.outputNode.inputFormat(forBus: 0)
+        }
+        
         audioEngine!.connect(audioEngine!.mainMixerNode,
                              to: audioEngine!.outputNode,
                              format: outputFormat)

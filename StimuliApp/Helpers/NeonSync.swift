@@ -93,7 +93,7 @@ public actor NeonTimeEchoClient {
             rse = halfMinRtt
             
         } else if xs.count < 36 {
-            // If we have fewer than 36 samples (5 min), use regression with slope = 0 (only intercept)
+            // If we have fewer than 36 samples (3 min), use regression with slope = 0 (only intercept)
             let wy = zip(ys, ws).map { $0 * $1 }.reduce(0, +)
             intercept = wy / W
             slope = 0.0

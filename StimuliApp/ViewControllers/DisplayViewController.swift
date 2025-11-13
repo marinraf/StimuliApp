@@ -34,9 +34,9 @@ class DisplayViewController: UIViewController {
     private let bottomLeftMarkerButton = UIButton(type: .custom)
     private let bottomRightMarkerButton = UIButton(type: .custom)
     
-    private let buttonMargin: CGFloat = 12
+    private let buttonMargin: CGFloat = 100
     private let buttonSize: CGFloat = 55
-    private let markerSize: CGFloat = 70
+    private let markerSize: CGFloat = 150
     
     
 //    var session: ARSession!
@@ -234,30 +234,32 @@ extension DisplayViewController: DisplayRenderDelegate {
                 if btn.superview == nil { self.controlView.addSubview(btn) }
                 btn.translatesAutoresizingMaskIntoConstraints = false
                 btn.setImage(UIImage(named: imageName), for: .normal)
-                btn.imageView?.contentMode = .scaleAspectFit
+                btn.imageView?.contentMode = .scaleToFill  // Cambiado para llenar todo el botón
+                btn.contentVerticalAlignment = .fill
+                btn.contentHorizontalAlignment = .fill
                 btn.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
                 btn.widthAnchor.constraint(equalToConstant: markerSize).isActive = true
                 btn.heightAnchor.constraint(equalToConstant: markerSize).isActive = true
             }
             // Top-left
             NSLayoutConstraint.activate([
-                topLeftMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor, constant: buttonMargin),
-                topLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: buttonMargin)
+                topLeftMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor, constant: 60),
+                topLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: 120)
             ])
             // Top-right
             NSLayoutConstraint.activate([
-                topRightMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor, constant: buttonMargin),
-                topRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -buttonMargin)
+                topRightMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor, constant: 60),
+                topRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -120)
             ])
             // Bottom-left
             NSLayoutConstraint.activate([
-                bottomLeftMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -buttonMargin),
-                bottomLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: buttonMargin)
+                bottomLeftMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -60),
+                bottomLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: 120)
             ])
             // Bottom-right
             NSLayoutConstraint.activate([
-                bottomRightMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -buttonMargin),
-                bottomRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -buttonMargin)
+                bottomRightMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -60),
+                bottomRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -120)
             ])
             return
         }
