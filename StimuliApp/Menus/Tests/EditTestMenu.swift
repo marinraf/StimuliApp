@@ -70,6 +70,14 @@ class EditTestMenu: Menu {
             makeOption(from: neon, sectionNumber: sectionNumber)
         }
         
+        if Flow.shared.test.markers == nil {
+            Flow.shared.test.markers = TestData.makeMarkersProperty(selected: 0)
+        }
+        
+        if let markers = Flow.shared.test.markers {
+            makeOption(from: markers, sectionNumber: sectionNumber)
+        }
+        
         if Flow.shared.test.longAudios == nil {
             Flow.shared.test.longAudios = TestData.makeLongAudiosProperty(selected: 0)
         }

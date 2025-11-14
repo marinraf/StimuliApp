@@ -78,6 +78,15 @@ struct TestData {
                         selectedValue: selected)
     }
     
+    static func makeMarkersProperty(selected: Int) -> Property {
+        return Property(name: "referenceMarkers",
+                        info: Texts.referenceMarkers,
+                        propertyType: .markers,
+                        unitType: .decimal,
+                        fixedValues: FixedMarkers.allCases.map({ $0.name }),
+                        selectedValue: selected)
+    }
+    
     static func makeLongAudiosProperty(selected: Int) -> Property {
         return Property(name: "longAudios",
                         info: Texts.longAudios,
@@ -264,19 +273,41 @@ struct TestData {
                                 """,
                               text: "192.168.1.1")
             
-            let markers = Property(name: "useMarkers",
-                                   info: """
-                               Enables the display of reference markers (one at each corner of the screen) \
-                               during the test. These markers allow the Neon eye tracker to map the screen \
-                               position accurately within the environment.
-                               """,
-                                   propertyType: .select,
-                                   unitType: .decimal,
-                                   fixedValues: ["off", "on"],
-                                   selectedValue: 0)
-            
             property.properties.append(ip)
-            property.properties.append(markers)
+        }
+    }
+    
+    static func addPropertiesToMarkers(property: Property) {
+        
+        property.properties = []
+        
+        let selected = property.string
+        
+        if selected == "on" {
+            
+            let size = Property(name: "size",
+                                info: "Size of each reference marker (in pixels).",
+                                propertyType: .simpleFloat,
+                                unitType: .positiveIntegerWithoutZero,
+                                float: 60
+            )
+            
+            let horizontalMargin = Property(name: "horizontalMargin",
+                                            info: "Horizontal distance from each marker to the screen edges (in pixels).",
+                                            propertyType: .simpleFloat,
+                                            unitType: .positiveIntegerWithoutZero,
+                                            float: 50
+            )
+            
+            let verticalMargin = Property(name: "verticalMargin",
+                                          info: "Vertical distance from each marker to the screen edges (in pixels).",
+                                          propertyType: .simpleFloat,
+                                          unitType: .positiveIntegerWithoutZero
+            )
+            
+            property.properties.append(size)
+            property.properties.append(horizontalMargin)
+            property.properties.append(verticalMargin)
         }
     }
 }
@@ -358,6 +389,25 @@ enum FixedRandomness: String, Codable, CaseIterable {
 }
 
 enum FixedNeon: String, Codable, CaseIterable {
+    
+    case off = "off"
+    case on = "on"
+    
+    var description: String {
+        switch self {
+        case .off:
+            return "off"
+        case .on:
+            return "on"
+        }
+    }
+    
+    var name: String {
+        return self.rawValue
+    }
+}
+
+enum FixedMarkers: String, Codable, CaseIterable {
     
     case off = "off"
     case on = "on"

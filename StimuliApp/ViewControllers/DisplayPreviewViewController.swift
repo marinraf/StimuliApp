@@ -256,7 +256,11 @@ extension DisplayPreviewViewController: DisplayRenderDelegate {
 
     func showKeyboard(type: FixedKeyboard, inTitle: Bool) {}
 
-    func addBackButton(position: FixedXButton, markers: Bool) {
+    func addBackButton(position: FixedXButton,
+                       markers: Bool,
+                       markersSize: Int,
+                       markersHorizontal: Int,
+                       markersVertical: Int) {
         self.controlView.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.topAnchor.constraint(equalTo: controlView.topAnchor, constant: buttonMargin).isActive = true

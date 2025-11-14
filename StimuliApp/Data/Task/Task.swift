@@ -165,7 +165,10 @@ class Task {
     var testUsesTrackerARKit: Bool = false
     var testUsesLongAudios: Bool = false
     var testUsesNeonSync: Bool = false
-    var testUsesNeonMakers: Bool = false
+    var testUsesReferenceMakers: Bool = false
+    var testReferenceMarkersSize: Int = 0
+    var testReferenceMarkersHorizontal: Int = 0
+    var testReferenceMarkersVertical: Int = 0
     var neonIP: String = ""
     var neon: NeonTimeEchoClient?
     
@@ -232,11 +235,19 @@ class Task {
         if let neon = test.neon {
             if neon.string == "on" {
                 self.testUsesNeonSync = true
-                if neon.properties.count == 2 {
+                if neon.properties.count > 0 {
                     self.neonIP = neon.properties[0].string
-                    if neon.properties[1].string == "on" {
-                        self.testUsesNeonMakers = true
-                    }
+                }
+            }
+        }
+        
+        if let markers = test.markers {
+            if markers.string == "on" {
+                self.testUsesReferenceMakers = true
+                if markers.properties.count == 3 {
+                    self.testReferenceMarkersSize = Int(markers.properties[0].float)
+                    self.testReferenceMarkersHorizontal = Int(markers.properties[1].float)
+                    self.testReferenceMarkersVertical = Int(markers.properties[2].float)
                 }
             }
         }
@@ -419,7 +430,7 @@ class Task {
         testUsesTrackerARKit = false
         testUsesLongAudios = false
         testUsesNeonSync = false
-        testUsesNeonMakers = false
+        testUsesReferenceMakers = false
         
         trackerCoordinates = .cartesian
         trackerFirstUnit = .none

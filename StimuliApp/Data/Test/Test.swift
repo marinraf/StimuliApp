@@ -23,6 +23,7 @@ class Test: NSObject, Codable {
     var screenWidth: Float?
     var screenHeight: Float?
     var neon: Property?
+    var markers: Property?
     var eyeTracker: Property?
     var longAudios: Property?
 
@@ -63,6 +64,7 @@ class Test: NSObject, Codable {
         self.gamma = TestData.makeGammaProperty(selected: 0)
         self.eyeTracker = TestData.makeEyeTrackerProperty(fixedValues: Flow.shared.possibleEyeTrackers, value: "off")
         self.neon = TestData.makeNeonProperty(selected: 0)
+        self.markers = TestData.makeMarkersProperty(selected: 0)
         self.longAudios = TestData.makeLongAudiosProperty(selected: 0)
         self.distance = TestData.makeDistanceProperty(selected: 0)
         self.cancelButtonPosition = TestData.makeCancelProperty(selected: 0)

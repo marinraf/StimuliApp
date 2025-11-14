@@ -176,7 +176,7 @@ class Menu: Screen {
                  .objectResponse, .objectResponse2, .keyResponse, .endPathResponse, .gamma, .randomness, .listOrder,
                  .distanceResponse, .selectionDifferent, .selectionOrder, .valueType, .correctType,
                  .distance, .correct2, .sceneGazeFixation, .sceneDistanceFixation,
-                 .testEyeTracker, .neon, .originEyeTracker, .positionEyeTracker:
+                 .testEyeTracker, .neon, .markers, .originEyeTracker, .positionEyeTracker:
                 makeOptionSelect(from: property, sectionNumber: sectionNumber, position: position)
                 for element in property.properties {
                     makeOption(from: element, sectionNumber: sectionNumber,

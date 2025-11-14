@@ -11,7 +11,11 @@ var elapsed: Double = 0
 // MARK: - Protocol
 protocol DisplayRenderDelegate: AnyObject {
 
-    func addBackButton(position: FixedXButton, markers: Bool)
+    func addBackButton(position: FixedXButton,
+                       markers: Bool,
+                       markersSize: Int,
+                       markersHorizontal: Int,
+                       markersVertical: Int)
 
     func end()
     func clear()
@@ -91,7 +95,11 @@ class DisplayRender {
 
         // in the first scene we give time to initialize the device and everything, so we use a queue
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-            self.displayRenderDelegate?.addBackButton(position: Task.shared.xButtonPosition, markers: Task.shared.testUsesNeonMakers)
+            self.displayRenderDelegate?.addBackButton(position: Task.shared.xButtonPosition,
+                                                      markers: Task.shared.testUsesReferenceMakers,
+                                                      markersSize: Task.shared.testReferenceMarkersSize,
+                                                      markersHorizontal: Task.shared.testReferenceMarkersHorizontal,
+                                                      markersVertical: Task.shared.testReferenceMarkersVertical)
         })
 
         switch Task.shared.preview {

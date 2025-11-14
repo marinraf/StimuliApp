@@ -273,6 +273,12 @@ struct Texts {
     very low, provided that the local network has sufficient bandwidth and stability.
     """
     
+    static let referenceMarkers = """
+    Enables the display of reference markers (one at each corner of the screen) during the test. 
+    These markers allow an eye tracker — such as the Neon eye tracker — to accurately detect \
+    the screen boundaries and map gaze positions onto the display.
+    """
+    
     static let distanceValue = """
     Distance value.
     """

@@ -36,9 +36,6 @@ class DisplayViewController: UIViewController {
     
     private let buttonMargin: CGFloat = 50
     private let buttonSize: CGFloat = 55
-    private let markerHorizontalMargin: CGFloat = 100
-    private let markerVerticalMargin: CGFloat = 100
-    private let markerSize: CGFloat = 120
     
     
 //    var session: ARSession!
@@ -223,7 +220,11 @@ extension DisplayViewController: DisplayRenderDelegate {
         }
     }
 
-    func addBackButton(position: FixedXButton, markers: Bool) {
+    func addBackButton(position: FixedXButton,
+                       markers: Bool,
+                       markersSize: Int,
+                       markersHorizontal: Int,
+                       markersVertical: Int) {
         // If markers is true, add corner marker images only; if false, add main back button only
         if markers {
             // Configure common properties for all marker images
@@ -238,36 +239,36 @@ extension DisplayViewController: DisplayRenderDelegate {
                 imageView.translatesAutoresizingMaskIntoConstraints = false
                 imageView.image = UIImage(named: imageName)
                 imageView.contentMode = .scaleToFill
-                imageView.widthAnchor.constraint(equalToConstant: markerSize).isActive = true
-                imageView.heightAnchor.constraint(equalToConstant: markerSize).isActive = true
+                imageView.widthAnchor.constraint(equalToConstant: CGFloat(markersSize)).isActive = true
+                imageView.heightAnchor.constraint(equalToConstant: CGFloat(markersSize)).isActive = true
             }
             // Top-left
             NSLayoutConstraint.activate([
                 topLeftMarkerImage.topAnchor.constraint(equalTo: controlView.topAnchor,
-                                                         constant: markerVerticalMargin),
+                                                        constant: CGFloat(markersVertical)),
                 topLeftMarkerImage.leftAnchor.constraint(equalTo: controlView.leftAnchor,
-                                                          constant: markerHorizontalMargin)
+                                                         constant: CGFloat(markersHorizontal))
             ])
             // Top-right
             NSLayoutConstraint.activate([
                 topRightMarkerImage.topAnchor.constraint(equalTo: controlView.topAnchor,
-                                                          constant: markerVerticalMargin),
+                                                         constant: CGFloat(markersVertical)),
                 topRightMarkerImage.rightAnchor.constraint(equalTo: controlView.rightAnchor,
-                                                            constant: -markerHorizontalMargin)
+                                                           constant: -CGFloat(markersHorizontal))
             ])
             // Bottom-left
             NSLayoutConstraint.activate([
                 bottomLeftMarkerImage.bottomAnchor.constraint(equalTo: controlView.bottomAnchor,
-                                                               constant: -markerVerticalMargin),
+                                                              constant: -CGFloat(markersVertical)),
                 bottomLeftMarkerImage.leftAnchor.constraint(equalTo: controlView.leftAnchor,
-                                                             constant: markerHorizontalMargin)
+                                                            constant: CGFloat(markersHorizontal))
             ])
             // Bottom-right
             NSLayoutConstraint.activate([
                 bottomRightMarkerImage.bottomAnchor.constraint(equalTo: controlView.bottomAnchor,
-                                                                constant: -markerVerticalMargin),
+                                                               constant: -CGFloat(markersVertical)),
                 bottomRightMarkerImage.rightAnchor.constraint(equalTo: controlView.rightAnchor,
-                                                               constant: -markerHorizontalMargin)
+                                                              constant: -CGFloat(markersHorizontal))
             ])
         }
 
