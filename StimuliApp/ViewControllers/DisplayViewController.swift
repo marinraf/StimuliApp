@@ -29,16 +29,16 @@ class DisplayViewController: UIViewController {
     var y: CGFloat = 0
 
     private let button = UIButton(type: .custom)
-    private let topLeftMarkerButton = UIButton(type: .custom)
-    private let topRightMarkerButton = UIButton(type: .custom)
-    private let bottomLeftMarkerButton = UIButton(type: .custom)
-    private let bottomRightMarkerButton = UIButton(type: .custom)
+    private let topLeftMarkerImage = UIImageView()
+    private let topRightMarkerImage = UIImageView()
+    private let bottomLeftMarkerImage = UIImageView()
+    private let bottomRightMarkerImage = UIImageView()
     
     private let buttonMargin: CGFloat = 50
     private let buttonSize: CGFloat = 55
     private let markerHorizontalMargin: CGFloat = 100
     private let markerVerticalMargin: CGFloat = 100
-    private let markerSize: CGFloat = 150
+    private let markerSize: CGFloat = 120
     
     
 //    var session: ARSession!
@@ -224,58 +224,53 @@ extension DisplayViewController: DisplayRenderDelegate {
     }
 
     func addBackButton(position: FixedXButton, markers: Bool) {
-        // If markers is true, add corner marker buttons only; if false, add main back button only
+        // If markers is true, add corner marker images only; if false, add main back button only
         if markers {
-            // Configure common properties for all marker buttons
-            let markerButtons: [(UIButton, String)] = [
-                (topLeftMarkerButton, "marker1"),
-                (topRightMarkerButton, "marker2"),
-                (bottomLeftMarkerButton, "marker3"),
-                (bottomRightMarkerButton, "marker4")
+            // Configure common properties for all marker images
+            let markerImages: [(UIImageView, String)] = [
+                (topLeftMarkerImage, "marker1"),
+                (topRightMarkerImage, "marker2"),
+                (bottomLeftMarkerImage, "marker3"),
+                (bottomRightMarkerImage, "marker4")
             ]
-            markerButtons.forEach { (btn, imageName) in
-                if btn.superview == nil { self.controlView.addSubview(btn) }
-                btn.translatesAutoresizingMaskIntoConstraints = false
-                btn.setImage(UIImage(named: imageName), for: .normal)
-                btn.imageView?.contentMode = .scaleToFill  // Cambiado para llenar todo el botón
-                btn.contentVerticalAlignment = .fill
-                btn.contentHorizontalAlignment = .fill
-                btn.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-                btn.widthAnchor.constraint(equalToConstant: markerSize).isActive = true
-                btn.heightAnchor.constraint(equalToConstant: markerSize).isActive = true
+            markerImages.forEach { (imageView, imageName) in
+                if imageView.superview == nil { self.controlView.addSubview(imageView) }
+                imageView.translatesAutoresizingMaskIntoConstraints = false
+                imageView.image = UIImage(named: imageName)
+                imageView.contentMode = .scaleToFill
+                imageView.widthAnchor.constraint(equalToConstant: markerSize).isActive = true
+                imageView.heightAnchor.constraint(equalToConstant: markerSize).isActive = true
             }
             // Top-left
             NSLayoutConstraint.activate([
-                topLeftMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor,
+                topLeftMarkerImage.topAnchor.constraint(equalTo: controlView.topAnchor,
                                                          constant: markerVerticalMargin),
-                topLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor,
+                topLeftMarkerImage.leftAnchor.constraint(equalTo: controlView.leftAnchor,
                                                           constant: markerHorizontalMargin)
             ])
             // Top-right
             NSLayoutConstraint.activate([
-                topRightMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor,
+                topRightMarkerImage.topAnchor.constraint(equalTo: controlView.topAnchor,
                                                           constant: markerVerticalMargin),
-                topRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor,
+                topRightMarkerImage.rightAnchor.constraint(equalTo: controlView.rightAnchor,
                                                             constant: -markerHorizontalMargin)
             ])
             // Bottom-left
             NSLayoutConstraint.activate([
-                bottomLeftMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor,
+                bottomLeftMarkerImage.bottomAnchor.constraint(equalTo: controlView.bottomAnchor,
                                                                constant: -markerVerticalMargin),
-                bottomLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor,
+                bottomLeftMarkerImage.leftAnchor.constraint(equalTo: controlView.leftAnchor,
                                                              constant: markerHorizontalMargin)
             ])
             // Bottom-right
             NSLayoutConstraint.activate([
-                bottomRightMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor,
+                bottomRightMarkerImage.bottomAnchor.constraint(equalTo: controlView.bottomAnchor,
                                                                 constant: -markerVerticalMargin),
-                bottomRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor,
+                bottomRightMarkerImage.rightAnchor.constraint(equalTo: controlView.rightAnchor,
                                                                constant: -markerHorizontalMargin)
             ])
-            return
         }
 
-        // markers == false: add only the main back button in the requested position
         switch position {
         case .topLeft:
             self.controlView.addSubview(button)
