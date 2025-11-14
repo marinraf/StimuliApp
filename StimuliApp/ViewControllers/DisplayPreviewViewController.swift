@@ -127,13 +127,6 @@ class DisplayPreviewViewController: UIViewController {
         metalView.device = MTLCreateSystemDefaultDevice()
         metalView.framebufferOnly = false
 
-        if Flow.shared.settings.device.type == .mac {
-            screenSize = CGSize(width: CGFloat(Flow.shared.settings.width),
-                                height: CGFloat(Flow.shared.settings.height))
-            x = CGFloat(Flow.shared.settings.positionX)
-            y = CGFloat(Flow.shared.settings.positionY)
-        }
-
         metalView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
         metalView.preferredFramesPerSecond = Flow.shared.settings.frameRate
         guard let device = metalView.device else {

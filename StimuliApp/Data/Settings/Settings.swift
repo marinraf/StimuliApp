@@ -22,7 +22,6 @@ class Settings {
     var maximumBrightnessApple: Float
     var ppi: Float
     var ppiCanChange: Bool
-    var resolutionCanChange: Bool
     var ppcm: Float
     var ppVisualAngleDegree: Float
     var cmPerPixel: Float
@@ -100,21 +99,8 @@ class Settings {
             self.ppiCanChange = true
         }
 
-        if let width = device.width {
-            self.width = width
-            self.resolutionCanChange = false
-        } else {
-            let width = max(UserDefaults.standard.float(forKey: "testWindowSize"), Constants.minimumResolutionMac)
-            self.width = width
-            self.resolutionCanChange = true
-        }
-
-        if let height = device.height {
-            self.height = height
-        } else {
-            let height = max(UserDefaults.standard.float(forKey: "testWindowSize1"), Constants.minimumResolutionMac)
-            self.height = height
-        }
+        self.width = device.width
+        self.height = device.height
 
         self.frameRate = self.maximumFrameRate
 
@@ -159,7 +145,7 @@ class Settings {
         self.audioRateProperty = SettingsData.makeAudioRateProperty(float: Float(self.audioRate))
         self.resolutionProperty = SettingsData.makeResolutionProperty(float: self.width,
                                                                       float1: self.height,
-                                                                      onlyInfo: !resolutionCanChange)
+                                                                      onlyInfo: true)
         self.ppiProperty = SettingsData.makePpiProperty(float: self.ppi, onlyInfo: !ppiCanChange)
 
         self.rampTimeProperty = SettingsData.makeRampTimeProperty(float: self.rampTime)
@@ -203,21 +189,8 @@ class Settings {
             self.ppiCanChange = true
         }
 
-        if let width = device.width {
-            self.width = width
-            self.resolutionCanChange = false
-        } else {
-            let width = max(UserDefaults.standard.float(forKey: "testWindowSize"), Constants.minimumResolutionMac)
-            self.width = width
-            self.resolutionCanChange = true
-        }
-
-        if let height = device.height {
-            self.height = height
-        } else {
-            let height = max(UserDefaults.standard.float(forKey: "testWindowSize1"), Constants.minimumResolutionMac)
-            self.height = height
-        }
+        self.width = device.width
+        self.height = device.height
 
         self.ppcm = self.ppi / Constants.cmsInInch
         self.ppVisualAngleDegree = self.ppcm * self.distance / Constants.distanceDegreeEqualCm

@@ -763,7 +763,13 @@ class Property: Codable {
 
                 var value = self.float * Flow.shared.settings.maximumBrightness
 
-                if Flow.shared.settings.device.type != .mac  {
+                var shouldUseMacConfiguration = false
+                if #available(iOS 14.0, *) {
+                    if ProcessInfo.processInfo.isiOSAppOnMac {
+                        shouldUseMacConfiguration = true
+                    }
+                }
+                if !shouldUseMacConfiguration {
                     value *=  Flow.shared.test.brightness.float
                 }
                 return " (\(value) cd/m²)"

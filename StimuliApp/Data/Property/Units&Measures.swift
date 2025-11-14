@@ -207,7 +207,7 @@ enum UnitType: String, Codable, CaseIterable {
         case .externalSize, .pixelDensity, .diagonalSize:
             return max(1, abs(float))
         case .pixelSize:
-            return max(Constants.minimumResolutionMac, abs(float))
+            return abs(float)
         case .positiveDecimalOrZero, .rampTime:
             return abs(float)
         case .time:

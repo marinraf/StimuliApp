@@ -34,8 +34,10 @@ class DisplayViewController: UIViewController {
     private let bottomLeftMarkerButton = UIButton(type: .custom)
     private let bottomRightMarkerButton = UIButton(type: .custom)
     
-    private let buttonMargin: CGFloat = 100
+    private let buttonMargin: CGFloat = 50
     private let buttonSize: CGFloat = 55
+    private let markerHorizontalMargin: CGFloat = 100
+    private let markerVerticalMargin: CGFloat = 100
     private let markerSize: CGFloat = 150
     
     
@@ -102,13 +104,6 @@ class DisplayViewController: UIViewController {
         //metal device
         metalView.device = MTLCreateSystemDefaultDevice()
         metalView.framebufferOnly = false
-
-        if Flow.shared.settings.device.type == .mac {
-            screenSize = CGSize(width: CGFloat(Flow.shared.settings.width),
-                                height: CGFloat(Flow.shared.settings.height))
-            x = CGFloat(Flow.shared.settings.positionX)
-            y = CGFloat(Flow.shared.settings.positionY)
-        }
 
         metalView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
         metalView.preferredFramesPerSecond = Flow.shared.settings.frameRate
@@ -213,7 +208,15 @@ extension DisplayViewController: DisplayRenderDelegate {
         player?.pause()
         audioSystem.pauseAudio()
         Flow.shared.eyeTracker?.stopTracking()
-        if Flow.shared.settings.device.type == .mac {
+        
+        var shouldUseMacConfiguration = false
+        if #available(iOS 14.0, *) {
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                shouldUseMacConfiguration = true
+            }
+        }
+        
+        if shouldUseMacConfiguration {
             showAlertFirstMessageMac(resume: { _ in self.resumeFromPauseFirst() }, end: { _ in self.end() })
         } else {
             showAlertFirstMessageTest(resume: { _ in self.resumeFromPauseFirst() }, end: { _ in self.end() })
@@ -243,23 +246,31 @@ extension DisplayViewController: DisplayRenderDelegate {
             }
             // Top-left
             NSLayoutConstraint.activate([
-                topLeftMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor, constant: 60),
-                topLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: 120)
+                topLeftMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor,
+                                                         constant: markerVerticalMargin),
+                topLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor,
+                                                          constant: markerHorizontalMargin)
             ])
             // Top-right
             NSLayoutConstraint.activate([
-                topRightMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor, constant: 60),
-                topRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -120)
+                topRightMarkerButton.topAnchor.constraint(equalTo: controlView.topAnchor,
+                                                          constant: markerVerticalMargin),
+                topRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor,
+                                                            constant: -markerHorizontalMargin)
             ])
             // Bottom-left
             NSLayoutConstraint.activate([
-                bottomLeftMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -60),
-                bottomLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor, constant: 120)
+                bottomLeftMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor,
+                                                               constant: -markerVerticalMargin),
+                bottomLeftMarkerButton.leftAnchor.constraint(equalTo: controlView.leftAnchor,
+                                                             constant: markerHorizontalMargin)
             ])
             // Bottom-right
             NSLayoutConstraint.activate([
-                bottomRightMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor, constant: -60),
-                bottomRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor, constant: -120)
+                bottomRightMarkerButton.bottomAnchor.constraint(equalTo: controlView.bottomAnchor,
+                                                                constant: -markerVerticalMargin),
+                bottomRightMarkerButton.rightAnchor.constraint(equalTo: controlView.rightAnchor,
+                                                               constant: -markerHorizontalMargin)
             ])
             return
         }
@@ -461,9 +472,6 @@ extension DisplayViewController: DisplayRenderDelegate {
     }
 
     func resumeFromPause() {
-        if Flow.shared.settings.device.type == .mac {
-            view.frame = CGRect(x: x, y:y, width: screenSize.width, height: screenSize.height)
-        }
         displayRender?.inactive = false
         player?.play()
         audioSystem.resumeAudio()
@@ -479,9 +487,6 @@ extension DisplayViewController: DisplayRenderDelegate {
             Task.shared.sceneTask.distanceResponses[Task.shared.sectionTask.currentTrial].errorMins = []
             Task.shared.sceneTask.distanceResponses[Task.shared.sectionTask.currentTrial].errorNans = []
         }
-        if Flow.shared.settings.device.type == .mac {
-            view.frame = CGRect(x: x, y:y, width: screenSize.width, height: screenSize.height)
-        }
         displayRender?.inactive = false
         player?.play()
         audioSystem.resumeAudio()
@@ -491,10 +496,6 @@ extension DisplayViewController: DisplayRenderDelegate {
     }
 
     func resumeFromPauseFirst() {
-        if Flow.shared.settings.device.type == .mac {
-            view.frame = CGRect(x: x, y:y, width: screenSize.width, height: screenSize.height)
-            metalView.frame = CGRect(x: 0, y:0, width: screenSize.width, height: screenSize.height)
-        }
         displayRender?.inactive = false
         player?.play()
         audioSystem.resumeAudio()

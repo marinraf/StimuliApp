@@ -42,13 +42,6 @@ class CalibrationViewController: UIViewController {
         UIScreen.main.brightness = CGFloat(brightness - 0.01)
         UIScreen.main.brightness = CGFloat(brightness)
 
-        if Flow.shared.settings.device.type == .mac {
-            screenSize = CGSize(width: CGFloat(Flow.shared.settings.width),
-                                height: CGFloat(Flow.shared.settings.height))
-            x = CGFloat(Flow.shared.settings.positionX)
-            y = CGFloat(Flow.shared.settings.positionY)
-        }
-
         view.frame = CGRect(x: x, y: y, width: screenSize.width, height: screenSize.height)
 
         let size = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height)

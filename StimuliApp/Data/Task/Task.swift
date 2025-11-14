@@ -988,7 +988,14 @@ class Task {
 
         var testOptions = ["FRAME RATE: \(Flow.shared.test.frameRate.string)"]
 
-        if Flow.shared.settings.device.type != .mac  {
+        
+        var shouldUseMacConfiguration = false
+        if #available(iOS 14.0, *) {
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                shouldUseMacConfiguration = true
+            }
+        }
+        if !shouldUseMacConfiguration {
             testOptions += ["LUMINANCE: \(Flow.shared.test.brightness.string)"]
         }
         

@@ -188,9 +188,6 @@ class ModifyViewController: UIViewController {
             textFieldTriple1.isHidden = true
             textFieldTriple2.isHidden = true
             textFieldTriple3.isHidden = true
-            if Flow.shared.settings.device.type == .mac  {
-                textFieldDoble1.becomeFirstResponder()
-            }
         case .triple, .sequence:
             textFieldSimple.isHidden = true
             textFieldDoble1.isHidden = true
@@ -198,9 +195,6 @@ class ModifyViewController: UIViewController {
             textFieldTriple1.isHidden = false
             textFieldTriple2.isHidden = false
             textFieldTriple3.isHidden = false
-            if Flow.shared.settings.device.type == .mac  {
-                textFieldTriple1.becomeFirstResponder()
-            }
         default:
             textFieldSimple.isHidden = false
             textFieldDoble1.isHidden = true
@@ -208,9 +202,6 @@ class ModifyViewController: UIViewController {
             textFieldTriple1.isHidden = true
             textFieldTriple2.isHidden = true
             textFieldTriple3.isHidden = true
-            if Flow.shared.settings.device.type == .mac  {
-                textFieldSimple.becomeFirstResponder()
-            }
         }
         titleLabel.text = modify.title
     }

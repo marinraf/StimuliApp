@@ -63,7 +63,6 @@ struct CameraPositions {
 enum DeviceType {
     case iphone
     case ipad
-    case mac
 }
 
 enum Device {
@@ -434,8 +433,6 @@ enum Device {
     case iPadPro13M4
     /// Device is unknown
     case unknown(String)
-    //// Device is running macOS
-    case macOS
 
 
     // MARK: - Init
@@ -646,7 +643,6 @@ enum Device {
         case .iPadPro11M4: return "iPad Pro (11-inch) (M4)"
         case .iPadPro13M4: return "iPad Pro (13-inch) (M4)"
         case .unknown(let identifier): return "unknown: \(identifier)"
-        case .macOS: return "macos"
         }
     }
     
@@ -745,7 +741,6 @@ enum Device {
         case .iPadPro11M4: return 264
         case .iPadPro13M4: return 264
         case .unknown: return nil
-        case .macOS: return nil
         }
     }
 
@@ -843,7 +838,6 @@ enum Device {
         case .iPadPro11M4: return 1000
         case .iPadPro13M4: return 1000
         case .unknown: return nil
-        case .macOS: return nil
         }
     }
 
@@ -942,7 +936,6 @@ enum Device {
         case .iPadPro11M4: return .ipad
         case .iPadPro13M4: return .ipad
         case .unknown: return .iphone
-        case .macOS: return .mac
         }
     }
     
@@ -1040,7 +1033,6 @@ enum Device {
         case .iPadPro11M4: return CameraPositions(1, 1/2, 1/2, 0, 1/2, 1)
         case .iPadPro13M4: return CameraPositions(1, 1/2, 1/2, 0, 1/2, 1)
         case .unknown: return CameraPositions(0, 0, 0, 0, 0, 0)
-        case .macOS: return CameraPositions(1/2, 0, 0, 0, 0, 0)
         }
     }
 
@@ -1061,7 +1053,6 @@ enum Device {
         case .iPadMini4: return "https://www.displaymate.com/iPad_2015_ShootOut_1.htm"
         case .iPadPro9Inch: return "https://www.displaymate.com/iPad_Pro9_ShootOut_1.htm"
         case .iPadPro12Inch: return "https://www.displaymate.com/iPad_2015_ShootOut_1.htm"
-        case .macOS: return ""
         default: return "you may found some info in: https://www.displaymate.com/mobile.html"
         }
     }
@@ -1075,44 +1066,23 @@ enum Device {
     }
 
     var maximumFrameRate: Int {
-        if type == .mac {
-            return 60
-        } else {
-            return UIScreen.main.maximumFramesPerSecond
-        }
+        return UIScreen.main.maximumFramesPerSecond
     }
 
-    private var x: Float? {
-        if type == .mac {
-            return nil
-        } else {
-            return Float(UIScreen.main.bounds.width * UIScreen.main.scale)
-        }
+    private var x: Float {
+        return Float(UIScreen.main.bounds.width * UIScreen.main.scale)
     }
 
-    private var y: Float? {
-        if type == .mac {
-            return nil
-        } else {
-            return Float(UIScreen.main.bounds.height * UIScreen.main.scale)
-        }
+    private var y: Float {
+        return Float(UIScreen.main.bounds.height * UIScreen.main.scale)
     }
 
-    var width: Float? {
-        if let x = x, let y = y {
-            return max(x, y)
-        } else {
-            return nil
-        }
-
+    var width: Float {
+        return max(x, y)
     }
 
-    var height: Float? {
-        if let x = x, let y = y {
-            return min(x, y)
-        } else {
-            return nil
-        }
+    var height: Float {
+        return min(x, y)
     }
 }
 

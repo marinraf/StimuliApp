@@ -28,7 +28,6 @@ class AudioSystem {
     
     func setup(songs: [URL?]) {
         var shouldUseMacConfiguration = false
-        
         if #available(iOS 14.0, *) {
             if ProcessInfo.processInfo.isiOSAppOnMac {
                 shouldUseMacConfiguration = true
@@ -98,7 +97,6 @@ class AudioSystem {
         myAUAmplitude = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         
         var shouldUseMacConfiguration = false
-        
         if #available(iOS 14.0, *) {
             if ProcessInfo.processInfo.isiOSAppOnMac {
                 shouldUseMacConfiguration = true

@@ -39,7 +39,13 @@ class EditTestMenu: Menu {
 
         makeOption(from: Flow.shared.test.frameRate, sectionNumber: sectionNumber)
 
-        if Flow.shared.settings.device.type != .mac {
+        var shouldUseMacConfiguration = false
+        if #available(iOS 14.0, *) {
+            if ProcessInfo.processInfo.isiOSAppOnMac {
+                shouldUseMacConfiguration = true
+            }
+        }
+        if !shouldUseMacConfiguration {
             makeOption(from: Flow.shared.test.brightness, sectionNumber: sectionNumber)
         }
         makeOption(from: Flow.shared.test.gamma, sectionNumber: sectionNumber)
