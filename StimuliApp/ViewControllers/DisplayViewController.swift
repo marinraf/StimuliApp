@@ -618,6 +618,7 @@ extension DisplayViewController: UITextFieldDelegate {
             displayRender?.responded = true
             textField.isHidden = true
             button.isHidden = false
+            Flow.shared.eyeTracker?.startTracking()
         }
         return true
     }
