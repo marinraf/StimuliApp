@@ -302,7 +302,8 @@ struct TestData {
             let verticalMargin = Property(name: "verticalMargin",
                                           info: "Vertical distance from each marker to the screen edges (in pixels).",
                                           propertyType: .simpleFloat,
-                                          unitType: .positiveIntegerWithoutZero
+                                          unitType: .positiveIntegerWithoutZero,
+                                          float: 50)
             )
             
             property.properties.append(size)
