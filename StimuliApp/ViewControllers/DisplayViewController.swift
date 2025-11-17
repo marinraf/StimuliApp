@@ -97,6 +97,7 @@ class DisplayViewController: UIViewController {
         
         //tracker
         Flow.shared.eyeTracker?.eyeTrackerDelegate = self
+        Flow.shared.eyeTracker?.start()
 
         //metal device
         metalView.device = MTLCreateSystemDefaultDevice()

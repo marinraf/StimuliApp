@@ -43,23 +43,27 @@ class RunMenu: Menu {
                     }
                 }
             }
-            if manualSeeds || manualDistance {
-                return EnterSeedsModify(test: test, manualSeeds: manualSeeds, manualDistance: manualDistance)
-            } else {
-                Task.shared.error = Task.shared.createTask(test: Flow.shared.test, preview: .no)
-                if Task.shared.error == "" {
-                    if Task.shared.testUsesTrackerSeeSo {
-                        Flow.shared.eyeTracker = SeeSoTracker()
+            Task.shared.error = Task.shared.createTask(test: Flow.shared.test, preview: .no)
+            if Task.shared.error == "" {
+                if Task.shared.testUsesTrackerSeeSo {
+                    Flow.shared.eyeTracker = SeeSoTracker()
+                    if manualSeeds || manualDistance {
+                        return EnterSeedsModify(test: test, manualSeeds: manualSeeds, manualDistance: manualDistance)
+                    } else {
                         return Calibration()
-                    } else if Task.shared.testUsesTrackerARKit {
-                        Flow.shared.eyeTracker = ARKitTracker()
-                        return Calibration()
+                    }
+                } else if Task.shared.testUsesTrackerARKit {
+                    Flow.shared.eyeTracker = ARKitTracker()
+                    if manualSeeds || manualDistance {
+                        return EnterSeedsModify(test: test, manualSeeds: manualSeeds, manualDistance: manualDistance)
                     } else {
                         return Display()
                     }
                 } else {
-                    return InfoExport(type: .previewErrorStimulusOrTest)
+                    return Display()
                 }
+            } else {
+                return InfoExport(type: .previewErrorStimulusOrTest)
             }
         }
         sections[sectionNumber].options.append(option)

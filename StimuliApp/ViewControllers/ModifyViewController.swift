@@ -569,11 +569,9 @@ extension ModifyViewController: UITextFieldDelegate {
         case .seed:
             if Task.shared.error == "" {
                 if Task.shared.testUsesTrackerSeeSo {
-                    Flow.shared.eyeTracker = SeeSoTracker()
                     Flow.shared.navigate(to: Calibration())
                 } else if Task.shared.testUsesTrackerARKit {
-                    Flow.shared.eyeTracker = ARKitTracker()
-                    Flow.shared.navigate(to: Calibration())
+                    Flow.shared.navigate(to: Display())
                 } else {
                     Flow.shared.navigate(to: Display())
                 }
