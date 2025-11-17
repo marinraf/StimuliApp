@@ -34,7 +34,7 @@ class DisplayViewController: UIViewController {
     private let bottomLeftMarkerImage = UIImageView()
     private let bottomRightMarkerImage = UIImageView()
     
-    private let buttonMargin: CGFloat = 50
+    private let buttonMargin: CGFloat = 25
     private let buttonSize: CGFloat = 55
     
     
