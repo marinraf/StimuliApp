@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4FFE54F92A444238008FB50F /* Texts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFE54F82A444238008FB50F /* Texts.swift */; };
-		4FFE54FA2A444238008FB50F /* Texts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FFE54F82A444238008FB50F /* Texts.swift */; };
 		741000122466EB2700DCF20F /* FrameControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741000112466EB2700DCF20F /* FrameControl.swift */; };
 		741BDA52241E986100F6E3BC /* EditListOfValuesBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741BDA51241E986100F6E3BC /* EditListOfValuesBlock.swift */; };
 		741BDA54241F9CAA00F6E3BC /* SelectListOfValuesBlockMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 741BDA53241F9CAA00F6E3BC /* SelectListOfValuesBlockMenu.swift */; };
@@ -16,8 +15,6 @@
 		743DB58924EFDB1100889FB6 /* contrastDiscriminationDemo.json in Resources */ = {isa = PBXBuildFile; fileRef = 743DB58824EFDB1100889FB6 /* contrastDiscriminationDemo.json */; };
 		743DB58B250121A000889FB6 /* soundDiscriminationDemo.json in Resources */ = {isa = PBXBuildFile; fileRef = 743DB58A250121A000889FB6 /* soundDiscriminationDemo.json */; };
 		745E2115248FD4CF00D28721 /* PositionsBufferProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 745E2114248FD4CF00D28721 /* PositionsBufferProvider.swift */; };
-		7471DE5F23BBAB8300220DCC /* MacBundle.bundle in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 7471DE5923BBAB2E00220DCC /* MacBundle.bundle */; platformFilter = maccatalyst; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		7471DE6823BBB03000220DCC /* MacApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 7471DE6423BBAC7C00220DCC /* MacApp.m */; };
 		74AEA811243F1E4F00E326F8 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 74AEA810243F1E4F00E326F8 /* .gitignore */; };
 		74AF81C423B750C9007B73EE /* ObjectFromStimulusMenu2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74AF81C323B750C9007B73EE /* ObjectFromStimulusMenu2.swift */; };
 		74B409C0243EF7F00053AD69 /* LokiHeader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 74B409BF243EF7F00053AD69 /* LokiHeader.metal */; };
@@ -146,16 +143,6 @@
 		CCFB8AED228DC69F00D80F65 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFB8AEC228DC69F00D80F65 /* Content.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		7471DE6023BBAB8300220DCC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9696A68421E3D4F700FE5C56 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 7471DE5823BBAB2E00220DCC;
-			remoteInfo = MacBundle;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		7471DE6223BBAB8400220DCC /* Embed PlugIns */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -163,7 +150,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				7471DE5F23BBAB8300220DCC /* MacBundle.bundle in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,7 +175,6 @@
 		743DB58824EFDB1100889FB6 /* contrastDiscriminationDemo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = contrastDiscriminationDemo.json; sourceTree = "<group>"; };
 		743DB58A250121A000889FB6 /* soundDiscriminationDemo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = soundDiscriminationDemo.json; sourceTree = "<group>"; };
 		745E2114248FD4CF00D28721 /* PositionsBufferProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PositionsBufferProvider.swift; sourceTree = "<group>"; };
-		7471DE5923BBAB2E00220DCC /* MacBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MacBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		7471DE5B23BBAB2E00220DCC /* MacBundle-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MacBundle-Info.plist"; sourceTree = "<group>"; };
 		7471DE6323BBAC7C00220DCC /* MacApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MacApp.h; path = "StimuliApp/Supporting Files/MacApp.h"; sourceTree = SOURCE_ROOT; };
 		7471DE6423BBAC7C00220DCC /* MacApp.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MacApp.m; path = "StimuliApp/Supporting Files/MacApp.m"; sourceTree = SOURCE_ROOT; };
@@ -330,13 +315,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		7471DE5623BBAB2E00220DCC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9696A68921E3D4F700FE5C56 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -491,7 +469,6 @@
 			isa = PBXGroup;
 			children = (
 				9696A68C21E3D4F700FE5C56 /* StimuliApp.app */,
-				7471DE5923BBAB2E00220DCC /* MacBundle.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -824,23 +801,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		7471DE5823BBAB2E00220DCC /* MacBundle */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 7471DE5C23BBAB2E00220DCC /* Build configuration list for PBXNativeTarget "MacBundle" */;
-			buildPhases = (
-				7471DE5523BBAB2E00220DCC /* Sources */,
-				7471DE5623BBAB2E00220DCC /* Frameworks */,
-				7471DE5723BBAB2E00220DCC /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = MacBundle;
-			productName = MacBundle;
-			productReference = 7471DE5923BBAB2E00220DCC /* MacBundle.bundle */;
-			productType = "com.apple.product-type.bundle";
-		};
 		9696A68B21E3D4F700FE5C56 /* StimuliApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9696A6A921E3D4F700FE5C56 /* Build configuration list for PBXNativeTarget "StimuliApp" */;
@@ -854,7 +814,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				7471DE6123BBAB8300220DCC /* PBXTargetDependency */,
 			);
 			name = StimuliApp;
 			productName = Stimulios;
@@ -872,10 +831,6 @@
 				LastUpgradeCheck = 2610;
 				ORGANIZATIONNAME = "Rafa Marín";
 				TargetAttributes = {
-					7471DE5823BBAB2E00220DCC = {
-						CreatedOnToolsVersion = 11.3;
-						LastSwiftMigration = 1130;
-					};
 					9696A68B21E3D4F700FE5C56 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
@@ -896,19 +851,11 @@
 			projectRoot = "";
 			targets = (
 				9696A68B21E3D4F700FE5C56 /* StimuliApp */,
-				7471DE5823BBAB2E00220DCC /* MacBundle */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		7471DE5723BBAB2E00220DCC /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9696A68A21E3D4F700FE5C56 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -938,15 +885,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		7471DE5523BBAB2E00220DCC /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4FFE54FA2A444238008FB50F /* Texts.swift in Sources */,
-				7471DE6823BBB03000220DCC /* MacApp.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9696A68821E3D4F700FE5C56 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1070,15 +1008,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		7471DE6123BBAB8300220DCC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = maccatalyst;
-			target = 7471DE5823BBAB2E00220DCC /* MacBundle */;
-			targetProxy = 7471DE6023BBAB8300220DCC /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
 		9696A69821E3D4F700FE5C56 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -1091,61 +1020,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		7471DE5D23BBAB2E00220DCC /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
-				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
-				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/MacBundle-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.idibaps.MacBundle;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "StimuliApp/Audio/StimuliApp-Bridging-Header.h";
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 5.0;
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		7471DE5E23BBAB2E00220DCC /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEAD_CODE_STRIPPING = YES;
-				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
-				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/MacBundle-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.idibaps.MacBundle;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "StimuliApp/Audio/StimuliApp-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
 		9696A6A721E3D4F700FE5C56 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1291,12 +1165,14 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 554YMB46HK;
 				ENABLE_APP_SANDBOX = YES;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = StimuliApp;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1310,7 +1186,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
 				SWIFT_OBJC_BRIDGING_HEADER = "StimuliApp/Audio/StimuliApp-Bridging-Header.h";
@@ -1328,7 +1204,6 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "StimuliApp/Supporting Files/StimuliApp.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = "";
@@ -1337,6 +1212,8 @@
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = YES;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				INFOPLIST_FILE = "$(SRCROOT)/StimuliApp/Supporting Files/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = StimuliApp;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1350,7 +1227,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)";
 				SWIFT_OBJC_BRIDGING_HEADER = "StimuliApp/Audio/StimuliApp-Bridging-Header.h";
@@ -1364,15 +1241,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7471DE5C23BBAB2E00220DCC /* Build configuration list for PBXNativeTarget "MacBundle" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				7471DE5D23BBAB2E00220DCC /* Debug */,
-				7471DE5E23BBAB2E00220DCC /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		9696A68721E3D4F700FE5C56 /* Build configuration list for PBXProject "StimuliApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

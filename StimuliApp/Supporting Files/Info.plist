@@ -62,11 +62,36 @@
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Access to the media</string>
+	<string>The app needs access to your media library to play audio used as stimuli.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>The app uses the camera to detect your face and measure distance. No images are saved or stored.</string>
+	<string>The app uses the camera to detect your face and measure viewing distance. The camera feed is processed in real time and never saved.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>The app can connect to a Neon eye tracker on your local network (if available) to exchange synchronization timestamps.
+</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Access to the photo library</string>
+	<string>The app needs access to your photo library to present images as stimuli during the tests.
+</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>LaunchScreen</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -139,28 +164,5 @@
 			<string></string>
 		</dict>
 	</array>
-	<key>UIApplicationSceneManifest</key>
-	<dict>
-		<key>UIApplicationSupportsMultipleScenes</key>
-		<false/>
-		<key>UISceneConfigurations</key>
-		<dict>
-			<key>UIWindowSceneSessionRoleApplication</key>
-			<array>
-				<dict>
-					<key>UISceneClassName</key>
-					<string>UIWindowScene</string>
-					<key>UISceneDelegateClassName</key>
-					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
-					<key>UISceneConfigurationName</key>
-					<string>Default Configuration</string>
-					<key>UISceneStoryboardFile</key>
-					<string>LaunchScreen</string>
-				</dict>
-			</array>
-		</dict>
-	</dict>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>The app connects to a Neon eye tracker on the local network to send sync messages with timestamps.</string>
 </dict>
 </plist>

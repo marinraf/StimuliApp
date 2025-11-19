@@ -12,6 +12,13 @@ class MainViewController: UIViewController {
         let svc = SFSafariViewController(url: url)
         present(svc, animated: true, completion: nil)
     }
+    
+    @IBAction func privacyButtonPressed(_ sender: Any) {
+        guard let url = URL(string: "https://www.stimuliapp.com/privacy-policy/") else { return }
+
+        let svc = SFSafariViewController(url: url)
+        present(svc, animated: true, completion: nil)
+    }
 
     @IBAction func brainButtonPressed(_ sender: Any) {
         guard let url = URL(string: "https://braincircuitsbehavior.org") else { return }
