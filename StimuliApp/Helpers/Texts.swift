@@ -834,6 +834,10 @@ struct Texts {
     message is displayed and the trial is skipped.
     """
     
+    static let distanceInScreen = """
+    For this scene, the distance between the user and the screen —calculated using ARKit— is displayed on the screen.
+    """
+    
     static let backgroundColor = """
     Background object that sets the color of the screen.
     """

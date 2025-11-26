@@ -18,6 +18,7 @@ class Scene: Codable {
     var durationType: Property
     var gazeFixation: Property?
     var distanceFixation: Property?
+    var distanceInScreen: Property?
     var objects: [Object]
 
     //empty
@@ -33,6 +34,7 @@ class Scene: Codable {
         self.continuousResolution = Property()
         self.gazeFixation = Property()
         self.distanceFixation = Property()
+        self.distanceInScreen = Property()
         self.responseType = Property()
         self.durationType = Property()
         self.objects = []
@@ -56,6 +58,7 @@ class Scene: Codable {
         self.continuousResolution = SceneData.makeContinuousResolutionProperty(selected: 0)
         self.gazeFixation = SceneData.makeSceneFixationProperty(selected: 0)
         self.distanceFixation = SceneData.makeSceneDistanceMeasureProperty(selected: 0)
+        self.distanceInScreen = SceneData.makeSceneDistanceInScreenProperty(selected: 0)
         self.responseType = SceneData.makeResponseProperty(selected: 0)
         self.durationType = SceneData.makeDurationProperty(selected: 0)
         self.objects = [SceneData.makeBackground(id: self.id)]
@@ -82,6 +85,11 @@ class Scene: Codable {
             self.distanceFixation = Property(from: dis)
         } else {
             self.distanceFixation = SceneData.makeSceneDistanceMeasureProperty(selected: 0)
+        }
+        if let screen = oldScene.distanceInScreen {
+            self.distanceInScreen = Property(from: screen)
+        } else {
+            self.distanceInScreen = SceneData.makeSceneDistanceInScreenProperty(selected: 0)
         }
         self.responseType = Property(from: oldScene.responseType)
         self.durationType = Property(from: oldScene.durationType)

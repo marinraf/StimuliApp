@@ -37,6 +37,7 @@ class DisplayViewController: UIViewController {
     private let buttonMargin: CGFloat = 25
     private let buttonSize: CGFloat = 55
     
+    private let distanceLabel = UILabel()
     
 //    var session: ARSession!
     
@@ -115,6 +116,7 @@ class DisplayViewController: UIViewController {
 
         //buttons and texts
         textField.isHidden = true
+        setupDistanceLabel()
 
         //displayRender & renderer
         displayRender = DisplayRender(device: device, size: view.bounds.size, previewScene: false)
@@ -168,6 +170,28 @@ class DisplayViewController: UIViewController {
 
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
+    }
+    
+    // MARK: - Distance Label Setup
+    private func setupDistanceLabel() {
+        distanceLabel.translatesAutoresizingMaskIntoConstraints = false
+        distanceLabel.textColor = .green
+        distanceLabel.font = UIFont.monospacedSystemFont(ofSize: 14, weight: .bold)
+        distanceLabel.textAlignment = .center
+        distanceLabel.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        distanceLabel.layer.cornerRadius = 6
+        distanceLabel.clipsToBounds = true
+        distanceLabel.text = ""
+        distanceLabel.isHidden = true
+        
+        controlView.addSubview(distanceLabel)
+        
+        NSLayoutConstraint.activate([
+            distanceLabel.topAnchor.constraint(equalTo: controlView.topAnchor, constant: 35),
+            distanceLabel.centerXAnchor.constraint(equalTo: controlView.centerXAnchor),
+            distanceLabel.widthAnchor.constraint(equalToConstant: 160),
+            distanceLabel.heightAnchor.constraint(equalToConstant: 30)
+        ])
     }
 }
 
@@ -924,6 +948,37 @@ extension DisplayViewController : TrackerOnViewDelegate {
 
                 Task.shared.sceneTask.distanceResponses[trial].zDistances.append(zUnit)
                 Task.shared.sceneTask.distanceResponses[trial].clocks.append(clock)
+                
+                // Actualizar label de distancia
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    
+                    if Task.shared.sceneTask.distanceInScreen {
+                        // Mostrar y actualizar el label
+                        if z.isNaN {
+                            self.distanceLabel.text = "Face not detected"
+                            self.distanceLabel.textColor = .red
+                        } else {
+                            var unitText = "cm"
+                            
+                            if unit == .inch {
+                                unitText = "in"
+                            }
+                            
+                            self.distanceLabel.text = String(format: "Distance: %.1f %@", zUnit, unitText)
+                            self.distanceLabel.textColor = .green
+                        }
+                        
+                        if self.distanceLabel.isHidden {
+                            self.distanceLabel.isHidden = false
+                        }
+                    } else {
+                        // Ocultar el label si estaba visible
+                        if !self.distanceLabel.isHidden {
+                            self.distanceLabel.isHidden = true
+                        }
+                    }
+                }
 
 
                 if Task.shared.sceneTask.distanceFixation {

@@ -174,6 +174,7 @@ class SceneTask {
     var continuousResolution = false
     var gazeFixation = false
     var distanceFixation = false
+    var distanceInScreen = false
     var maxGazeErrorInPixels: Float = 0
     var maxDistanceErrorInCm: Float = 0
     var minDistanceErrorInCm: Float = 0

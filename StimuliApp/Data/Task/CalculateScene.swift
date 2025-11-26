@@ -27,6 +27,7 @@ extension Task {
         
         sceneTask.gazeFixation = scene.gazeFixation?.selectedValue == 1 ? true : false
         sceneTask.distanceFixation = scene.distanceFixation?.selectedValue == 1 ? true : false
+        sceneTask.distanceInScreen = scene.distanceInScreen?.selectedValue == 1 ? true : false
 
         if let gazeFixation = scene.gazeFixation {
             if gazeFixation.properties.count > 0 {
