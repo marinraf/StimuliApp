@@ -229,8 +229,13 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
     }
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        var faceDetected = false
+        
         for anchor in frame.anchors {
             guard let faceAnchor = anchor as? ARFaceAnchor else { continue }
+            guard faceAnchor.isTracked else { continue }
+            
+            faceDetected = true
             
             let leftEyeToFaceTransform: simd_float4x4 = faceAnchor.leftEyeTransform
             let rightEyeToFaceTransform: simd_float4x4 = faceAnchor.rightEyeTransform
@@ -368,6 +373,11 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
 //                        ys.removeFirst()
                 }
             }
+        }
+        
+        if !faceDetected && isTracking {
+            let clock = CACurrentMediaTime()
+            self.eyeTrackerDelegate?.onFace(z: Float.nan, clock: clock)
         }
     }
     

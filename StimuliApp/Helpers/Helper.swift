@@ -5,7 +5,7 @@ import UIKit
 import GameKit
 
 struct Constants {
-    static let version: Double = 2.0
+    static let version: Double = 2.1
     static let epsilon: Float = 0.00001
     static let cmsInInch: Float = 2.54
     static let gamma: Float = 2.2

@@ -101,6 +101,12 @@ class EditSceneMenu: Menu {
             if let dis = Flow.shared.scene.distanceFixation {
                 makeOption(from: dis, sectionNumber: sectionNumber)
             }
+            if Flow.shared.scene.distanceInScreen == nil {
+                Flow.shared.scene.distanceInScreen = SceneData.makeSceneDistanceInScreenProperty(selected: 0)
+            }
+            if let dis = Flow.shared.scene.distanceInScreen {
+                makeOption(from: dis, sectionNumber: sectionNumber)
+            }
         }
     }
 

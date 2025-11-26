@@ -67,6 +67,15 @@ struct SceneData {
                         fixedValues: FixedSceneDistanceFixation.allCases.map { $0.name },
                         selectedValue: selected)
     }
+    
+    static func makeSceneDistanceInScreenProperty(selected: Int) -> Property {
+        return Property(name: "distanceInScreen",
+                        info: Texts.distanceInScreen,
+                        propertyType: .select,
+                        unitType: .decimal,
+                        fixedValues: FixedSceneDistanceInScreen.allCases.map { $0.name },
+                        selectedValue: selected)
+    }
 
     static func makeResponseProperty(selected: Int) -> Property {
         return Property(name: "response",
@@ -887,6 +896,25 @@ enum FixedSceneDistanceFixation: String, Codable, CaseIterable {
             return "Warning and skipping off"
         case .on:
             return "Warning and skipping on"
+        }
+    }
+
+    var name: String {
+        return self.rawValue
+    }
+}
+
+enum FixedSceneDistanceInScreen: String, Codable, CaseIterable {
+
+    case off
+    case on
+
+    var description: String {
+        switch self {
+        case .off:
+            return "Distance display off"
+        case .on:
+            return "Distance display on"
         }
     }
 
