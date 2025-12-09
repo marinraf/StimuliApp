@@ -129,6 +129,7 @@ class Task {
     var sectionTask = SectionTask()
     var sceneTask = SceneTask()
     var previousSceneTask = SceneTask()
+    var previousSceneTrial = 0
     var dataTask = DataTask()
     var sectionZeroTask = SectionTask()
 

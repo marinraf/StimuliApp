@@ -389,6 +389,7 @@ class DisplayRender {
 
     func changeToNextSceneInSection() {
         Task.shared.previousSceneTask = Task.shared.sceneTask
+        Task.shared.previousSceneTrial = Task.shared.sectionTask.totalTrials
         Task.shared.sceneTask.saveSceneData(trial: Task.shared.sectionTask.currentTrial)
         Task.shared.sectionTask.sceneNumber += 1
         initScene()
@@ -396,6 +397,7 @@ class DisplayRender {
 
     func lastSceneOfSection() {
         Task.shared.previousSceneTask = Task.shared.sceneTask
+        Task.shared.previousSceneTrial = Task.shared.sectionTask.totalTrials
         Task.shared.sceneTask.saveSceneData(trial: Task.shared.sectionTask.currentTrial)
         
         let numberOfTrials = Task.shared.sectionTask.sceneTasks[0].realStartTime.count
@@ -456,6 +458,7 @@ class DisplayRender {
         Task.shared.sectionTask.respondedInTime = true
         Task.shared.sectionTask.respondedOutTime = false
 
+        Task.shared.sectionTask.totalTrials += 1
         if Task.shared.sectionTask.currentTrial < Task.shared.sectionTask.numberOfTrials - 1 {
             Task.shared.sectionTask.currentTrial += 1
         } else {

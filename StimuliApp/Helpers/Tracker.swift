@@ -210,21 +210,85 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
         self.isTracking = true
         self.eyeTrackerDelegate?.onInitialized(error: false)
         
+        let screenSize: CGSize = UIScreen.main.bounds.size
+        
+        switch UIApplication.shared.windows.first?.windowScene?.interfaceOrientation ?? .unknown {
+        case .unknown:
+            AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
+            Flow.shared.cameraXPosition = Flow.shared.settings.device.cameraPosition.portraitX * screenSize.width
+            Flow.shared.cameraYPosition = Flow.shared.settings.device.cameraPosition.portraitY * screenSize.height
+            Flow.shared.angle00 = 0
+            Flow.shared.angle01 = 1
+            Flow.shared.angle10 = 1
+            Flow.shared.angle11 = 0
+        case .portrait:
+            AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
+            Flow.shared.cameraXPosition = Flow.shared.settings.device.cameraPosition.portraitX * screenSize.width
+            Flow.shared.cameraYPosition = Flow.shared.settings.device.cameraPosition.portraitY * screenSize.height
+            Flow.shared.angle00 = 0
+            Flow.shared.angle01 = 1
+            Flow.shared.angle10 = 1
+            Flow.shared.angle11 = 0
+        case .portraitUpsideDown:
+            AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
+            Flow.shared.cameraXPosition = Flow.shared.settings.device.cameraPosition.portraitX * screenSize.width
+            Flow.shared.cameraYPosition = Flow.shared.settings.device.cameraPosition.portraitY * screenSize.height
+            Flow.shared.angle00 = 0
+            Flow.shared.angle01 = 1
+            Flow.shared.angle10 = 1
+            Flow.shared.angle11 = 0
+        case .landscapeRight:
+            AppUtility.lockOrientation(.landscapeRight)
+            Flow.shared.orientation = .landscapeRight
+            Flow.shared.cameraXPosition = Flow.shared.settings.device.cameraPosition.landscapeRightX * screenSize.width
+            Flow.shared.cameraYPosition = Flow.shared.settings.device.cameraPosition.landscapeRightY * screenSize.height
+            Flow.shared.angle00 = 1
+            Flow.shared.angle01 = 0
+            Flow.shared.angle10 = 0
+            Flow.shared.angle11 = -1
+        case .landscapeLeft:
+            AppUtility.lockOrientation(.landscapeLeft)
+            Flow.shared.orientation = .landscapeLeft
+            Flow.shared.cameraXPosition = Flow.shared.settings.device.cameraPosition.landscapeLeftX * screenSize.width
+            Flow.shared.cameraYPosition = Flow.shared.settings.device.cameraPosition.landscapeLeftY * screenSize.height
+            Flow.shared.angle00 = -1
+            Flow.shared.angle01 = 0
+            Flow.shared.angle10 = 0
+            Flow.shared.angle11 = 1
+        @unknown default:
+            AppUtility.lockOrientation(.portrait)
+            Flow.shared.orientation = .portrait
+            Flow.shared.cameraXPosition = Flow.shared.settings.device.cameraPosition.portraitX * screenSize.width
+            Flow.shared.cameraYPosition = Flow.shared.settings.device.cameraPosition.portraitY * screenSize.height
+            Flow.shared.angle00 = 0
+            Flow.shared.angle01 = 1
+            Flow.shared.angle10 = 1
+            Flow.shared.angle11 = 0
+        }
+        
+        let screenCenterX = screenSize.width / 2
+        let screenCenterY = screenSize.height / 2
+        
+        let cameraOffsetX = (Flow.shared.cameraXPosition - screenCenterX) / pointspermeter
+        let cameraOffsetY = (Flow.shared.cameraYPosition - screenCenterY) / pointspermeter
+        
         let v1: simd_float4 = SIMD4(Float(Flow.shared.angle00),
                                     Float(Flow.shared.angle01),
                                     0,
-                                    Float(Flow.shared.cameraXPosition / pointspermeter))
+                                    Float(cameraOffsetX))
         
         let v2: simd_float4 = SIMD4(Float(Flow.shared.angle10),
                                     Float(Flow.shared.angle11),
                                     0,
-                                    Float(Flow.shared.cameraYPosition / pointspermeter))
+                                    Float(cameraOffsetY))
         
         let v3: simd_float4 = SIMD4(0, 0, -1, 0)
         let v4: simd_float4 = SIMD4(0, 0, 0, 1)
         
         cameraToOriginTransform = simd_float4x4(rows: [v1, v2, v3, v4])
-        
         self.eyeTrackerDelegate?.onCalibrationFinished(calibrationData: [])
     }
     
@@ -253,10 +317,25 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
 //          let faceToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: faceToOriginTransform)
             let leftEyeToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: leftEyeToOriginTransform)
             let rightEyeToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: rightEyeToOriginTransform)
+//            let cameraToOriginPosition = AppUtility.extractPositionFromMatrix(matrix: cameraToOriginTransform)
+//            print("📷 Cámara al origen - X: \(cameraToOriginPosition.0), Y: \(cameraToOriginPosition.1), Z: \(cameraToOriginPosition.2)")
+//            print("👁️ Ojo izquierdo al origen - X: \(leftEyeToOriginPosition.0), Y: \(leftEyeToOriginPosition.1), Z: \(leftEyeToOriginPosition.2)")
+//            print("👁️ Ojo derecho al origen - X: \(rightEyeToOriginPosition.0), Y: \(rightEyeToOriginPosition.1), Z: \(rightEyeToOriginPosition.2)")
+            // distance (euclidean distance from origin)
+            let leftEyeDistance = sqrt(pow(leftEyeToOriginPosition.0, 2) +
+                                      pow(leftEyeToOriginPosition.1, 2) + 
+                                      pow(leftEyeToOriginPosition.2, 2))
+            let rightEyeDistance = sqrt(pow(rightEyeToOriginPosition.0, 2) + 
+                                       pow(rightEyeToOriginPosition.1, 2) + 
+                                       pow(rightEyeToOriginPosition.2, 2))
+            let z0 = (leftEyeDistance + rightEyeDistance) / 2
+            // Distancia solo componente Z (perpendicular a la pantalla)
+//            let leftEyeDistanceZ = -leftEyeToOriginPosition.2
+//            let rightEyeDistanceZ = -rightEyeToOriginPosition.2
+//            print("📏 Ojo izquierdo - Distancia en módulo: \(leftEyeDistance), Solo Z: \(leftEyeDistanceZ)")
+//            print("📏 Ojo derecho - Distancia en módulo: \(rightEyeDistance), Solo Z: \(rightEyeDistanceZ)")
             
             
-            // distance
-            let z0 = (leftEyeToOriginPosition.2 + rightEyeToOriginPosition.2) / 2
 //          // only orientations (from origin)
 //          let faceToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: faceToOriginTransform)
 //          let leftEyeToOriginOrientation = AppUtility.extractOrientationFromMatrix(matrix: leftEyeToOriginTransform)
@@ -358,7 +437,7 @@ class ARKitTracker: NSObject, ARSessionDelegate, TrackerDelegate {
 //                    y0 *= pointspermeter
 //                    xs.append(x0)
 //                    ys.append(y0)
-                zs.append(z0)
+                zs.append(z0 - 0.02) // we substract 2 cm because it works better this way
                 
                 if zs.count == 10 {
                     let clock = CACurrentMediaTime()

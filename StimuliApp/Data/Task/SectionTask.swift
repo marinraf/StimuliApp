@@ -46,6 +46,9 @@ class SectionTask {
 
     var sceneNumber: Int = 0
     var currentTrial: Int = 0
+    var totalTrials: Int = 0
+    // totalTrials matches currentTrial except when all trials have been completed:
+    // currentTrial resets to 0, while totalTrials keeps increasing.
     var numberOfCorrects: Int = 0
     var numberOfIncorrects: Int = 0
     var numberOfRespondedInTime: Int = 0

@@ -126,6 +126,7 @@ class DisplayViewController: UIViewController {
         renderer?.view = metalView
         renderer?.createThreadsBuffersAndTextures()
         metalView.delegate = renderer
+        
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -176,7 +177,7 @@ class DisplayViewController: UIViewController {
     private func setupDistanceLabel() {
         distanceLabel.translatesAutoresizingMaskIntoConstraints = false
         distanceLabel.textColor = .green
-        distanceLabel.font = UIFont.monospacedSystemFont(ofSize: 14, weight: .bold)
+        distanceLabel.font = UIFont.monospacedSystemFont(ofSize: 40, weight: .bold)
         distanceLabel.textAlignment = .center
         distanceLabel.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         distanceLabel.layer.cornerRadius = 6
@@ -189,8 +190,8 @@ class DisplayViewController: UIViewController {
         NSLayoutConstraint.activate([
             distanceLabel.topAnchor.constraint(equalTo: controlView.topAnchor, constant: 35),
             distanceLabel.centerXAnchor.constraint(equalTo: controlView.centerXAnchor),
-            distanceLabel.widthAnchor.constraint(equalToConstant: 160),
-            distanceLabel.heightAnchor.constraint(equalToConstant: 30)
+            distanceLabel.widthAnchor.constraint(equalToConstant: 200),
+            distanceLabel.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
 }
@@ -346,6 +347,7 @@ extension DisplayViewController: DisplayRenderDelegate {
 
     func end() {
         Task.shared.previousSceneTask = Task.shared.sceneTask
+        Task.shared.previousSceneTrial = Task.shared.sectionTask.totalTrials
         Flow.shared.initScene = true
 
         Flow.shared.eyeTracker?.stopTracking()
@@ -500,13 +502,14 @@ extension DisplayViewController: DisplayRenderDelegate {
     }
     
     func resumeFromWarning() {
-        if Task.shared.sceneTask.trackerResponses.count > Task.shared.sectionTask.currentTrial {
-            Task.shared.sceneTask.trackerResponses[Task.shared.sectionTask.currentTrial].errors = []
+        let trial = Task.shared.sectionTask.totalTrials
+        if Task.shared.sceneTask.trackerResponses.count > trial {
+            Task.shared.sceneTask.trackerResponses[trial].errors = []
         }
-        if Task.shared.sceneTask.distanceResponses.count > Task.shared.sectionTask.currentTrial {
-            Task.shared.sceneTask.distanceResponses[Task.shared.sectionTask.currentTrial].errorMaxs = []
-            Task.shared.sceneTask.distanceResponses[Task.shared.sectionTask.currentTrial].errorMins = []
-            Task.shared.sceneTask.distanceResponses[Task.shared.sectionTask.currentTrial].errorNans = []
+        if Task.shared.sceneTask.distanceResponses.count > trial {
+            Task.shared.sceneTask.distanceResponses[trial].errorMaxs = []
+            Task.shared.sceneTask.distanceResponses[trial].errorMins = []
+            Task.shared.sceneTask.distanceResponses[trial].errorNans = []
         }
         displayRender?.inactive = false
         player?.play()
@@ -930,15 +933,10 @@ extension DisplayViewController : TrackerOnViewDelegate {
         
         if (Task.shared.testUsesTrackerSeeSo || Task.shared.testUsesTrackerARKit) && Task.shared.warningTrackerPause == .no {
             
-            let trial = Task.shared.sectionTask.currentTrial
+            let trial = Task.shared.sectionTask.totalTrials
 
             guard trial > 0 || Task.shared.sceneTask.distanceResponses.count < 2 else { return }
-
-            if (!Task.shared.sceneTask.distanceResponses.isEmpty) {
-                if (Task.shared.sceneTask.distanceResponses.count < trial + 1) {
-                    Task.shared.sceneTask.distanceResponses.append(DistanceResponse())
-                }
-
+            if Task.shared.sceneTask.realStartTime.count <= trial {
                 let unit = Task.shared.distanceUnit
 
                 var zUnit = z
@@ -946,71 +944,87 @@ extension DisplayViewController : TrackerOnViewDelegate {
                     zUnit = z / Constants.cmsInInch
                 }
 
-                Task.shared.sceneTask.distanceResponses[trial].zDistances.append(zUnit)
-                Task.shared.sceneTask.distanceResponses[trial].clocks.append(clock)
-                
-                // Actualizar label de distancia
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
+                if Task.shared.previousSceneTask.distanceResponses.count == Task.shared.previousSceneTrial + 1 {
+                    Task.shared.previousSceneTask.distanceResponses[Task.shared.previousSceneTrial].zDistances.append(zUnit)
+                    Task.shared.previousSceneTask.distanceResponses[Task.shared.previousSceneTrial].clocks.append(clock)
+                }
+            } else {
+                if (!Task.shared.sceneTask.distanceResponses.isEmpty) {
+                    if (Task.shared.sceneTask.distanceResponses.count < trial + 1) {
+                        Task.shared.sceneTask.distanceResponses.append(DistanceResponse())
+                    }
+
+                    let unit = Task.shared.distanceUnit
+
+                    var zUnit = z
+                    if unit == .inch {
+                        zUnit = z / Constants.cmsInInch
+                    }
+
+                    Task.shared.sceneTask.distanceResponses[trial].zDistances.append(zUnit)
+                    Task.shared.sceneTask.distanceResponses[trial].clocks.append(clock)
                     
-                    if Task.shared.sceneTask.distanceInScreen {
-                        // Mostrar y actualizar el label
-                        if z.isNaN {
-                            self.distanceLabel.text = "Face not detected"
-                            self.distanceLabel.textColor = .red
-                        } else {
-                            var unitText = "cm"
-                            
-                            if unit == .inch {
-                                unitText = "in"
+                    DispatchQueue.main.async { [weak self] in
+                        guard let self = self else { return }
+                        
+                        if Task.shared.sceneTask.distanceInScreen {
+                            if z.isNaN {
+                                self.distanceLabel.text = "Face not detected"
+                                self.distanceLabel.textColor = .red
+                            } else {
+                                var unitText = "cm"
+                                
+                                if unit == .inch {
+                                    unitText = "in"
+                                }
+                                
+                                self.distanceLabel.text = String(format: " %.1f %@", zUnit, unitText)
+                                self.distanceLabel.textColor = .green
                             }
                             
-                            self.distanceLabel.text = String(format: "Distance: %.1f %@", zUnit, unitText)
-                            self.distanceLabel.textColor = .green
+                            if self.distanceLabel.isHidden {
+                                self.distanceLabel.isHidden = false
+                            }
+                        } else {
+                            if !self.distanceLabel.isHidden {
+                                self.distanceLabel.isHidden = true
+                            }
                         }
-                        
-                        if self.distanceLabel.isHidden {
-                            self.distanceLabel.isHidden = false
+                    }
+
+
+                    if Task.shared.sceneTask.distanceFixation {
+                        if z > Task.shared.sceneTask.maxDistanceErrorInCm {
+                            Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(1)
+                            Task.shared.sceneTask.distanceResponses[trial].errorMins.append(0)
+                            Task.shared.sceneTask.distanceResponses[trial].errorNans.append(0)
+                        } else if z < Task.shared.sceneTask.minDistanceErrorInCm {
+                            Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(0)
+                            Task.shared.sceneTask.distanceResponses[trial].errorMins.append(1)
+                            Task.shared.sceneTask.distanceResponses[trial].errorNans.append(0)
+                        } else if z.isNaN {
+                            Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(0)
+                            Task.shared.sceneTask.distanceResponses[trial].errorMins.append(0)
+                            Task.shared.sceneTask.distanceResponses[trial].errorNans.append(1)
+                        } else {
+                            Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(0)
+                            Task.shared.sceneTask.distanceResponses[trial].errorMins.append(0)
+                            Task.shared.sceneTask.distanceResponses[trial].errorNans.append(0)
                         }
-                    } else {
-                        // Ocultar el label si estaba visible
-                        if !self.distanceLabel.isHidden {
-                            self.distanceLabel.isHidden = true
+
+                        if Task.shared.sceneTask.distanceResponses[trial].errorMaxs.reduce(0, +) >= Constants.numberOfTrackingErrors {
+                            Task.shared.warningTrackerPause = .distanceMax
+                            Task.shared.sceneTask.distanceResponses[trial].errorMaxs = []
+                        } else if Task.shared.sceneTask.distanceResponses[trial].errorMins.reduce(0, +) >= Constants.numberOfTrackingErrors {
+                            Task.shared.warningTrackerPause = .distanceMin
+                            Task.shared.sceneTask.distanceResponses[trial].errorMins = []
+                        } else if Task.shared.sceneTask.distanceResponses[trial].errorNans.reduce(0, +) >= Constants.numberOfTrackingErrors {
+                            Task.shared.warningTrackerPause = .distanceNan
+                            Task.shared.sceneTask.distanceResponses[trial].errorNans = []
                         }
                     }
                 }
-
-
-                if Task.shared.sceneTask.distanceFixation {
-                    if z > Task.shared.sceneTask.maxDistanceErrorInCm {
-                        Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(1)
-                        Task.shared.sceneTask.distanceResponses[trial].errorMins.append(0)
-                        Task.shared.sceneTask.distanceResponses[trial].errorNans.append(0)
-                    } else if z < Task.shared.sceneTask.minDistanceErrorInCm {
-                        Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(0)
-                        Task.shared.sceneTask.distanceResponses[trial].errorMins.append(1)
-                        Task.shared.sceneTask.distanceResponses[trial].errorNans.append(0)
-                    } else if z.isNaN {
-                        Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(0)
-                        Task.shared.sceneTask.distanceResponses[trial].errorMins.append(0)
-                        Task.shared.sceneTask.distanceResponses[trial].errorNans.append(1)
-                    } else {
-                        Task.shared.sceneTask.distanceResponses[trial].errorMaxs.append(0)
-                        Task.shared.sceneTask.distanceResponses[trial].errorMins.append(0)
-                        Task.shared.sceneTask.distanceResponses[trial].errorNans.append(0)
-                    }
-
-                    if Task.shared.sceneTask.distanceResponses[trial].errorMaxs.reduce(0, +) >= Constants.numberOfTrackingErrors {
-                        Task.shared.warningTrackerPause = .distanceMax
-                        Task.shared.sceneTask.distanceResponses[trial].errorMaxs = []
-                    } else if Task.shared.sceneTask.distanceResponses[trial].errorMins.reduce(0, +) >= Constants.numberOfTrackingErrors {
-                        Task.shared.warningTrackerPause = .distanceMin
-                        Task.shared.sceneTask.distanceResponses[trial].errorMins = []
-                    } else if Task.shared.sceneTask.distanceResponses[trial].errorNans.reduce(0, +) >= Constants.numberOfTrackingErrors {
-                        Task.shared.warningTrackerPause = .distanceNan
-                        Task.shared.sceneTask.distanceResponses[trial].errorNans = []
-                    }
-                }
+                
             }
         }
     }
